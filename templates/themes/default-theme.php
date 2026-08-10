@@ -60,7 +60,7 @@
 				<?php do_action( 'mpwem_seat_status', $event_id, $event_infos ); ?>
 				<?php if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
-                        <h5 class="_mb_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+                        <h5 class="_mb_xs"><span class="far fa-calendar-alt _mr_xs" aria-hidden="true"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>

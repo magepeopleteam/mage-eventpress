@@ -19,7 +19,6 @@
                             $time         = is_array($time_line_info) && array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
                             $content      = is_array($time_line_info) && array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
                             $collapse_id  = uniqid( 'mpwem_time_line' );
-                            $active_class = $counter == 0 ? 'mActive' : '';
                             $counter++;
                             ?>
                             <div class="timeline_item">
@@ -37,7 +36,7 @@
                                             </span>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="mp_wp_editor <?php echo esc_attr( $active_class ); ?>" data-collapse="<?php echo esc_attr( $collapse_id ); ?>">
+                                    <div class="mp_wp_editor" data-collapse="<?php echo esc_attr( $collapse_id ); ?>">
                                         <?php echo apply_filters( 'the_content', $content ); ?>
                                     </div>
                                 </div>

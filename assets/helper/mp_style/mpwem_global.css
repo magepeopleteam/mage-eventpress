@@ -446,7 +446,8 @@
 	div.superSlider .slideIndicatorItem { border: 3px solid #DDD; margin: 5px; background-color: #DDD; width: 75px; overflow: hidden; position: relative; }
 	div.superSlider .slideIndicatorItem.activeSlide { border-color: var(--color_active); background-color: var(--color_active); }
 	/*******Icon indicator***************/
-	div.superSlider .iconIndicator { position: absolute; z-index: 111; top: calc(50% - 15px); font-size: 30px; cursor: pointer; color: #FFF; }
+	/* z-index only needs to clear slide layers (0/1); keep below site sticky headers (~100+) */
+	div.superSlider .iconIndicator { position: absolute; z-index: 5; top: calc(50% - 15px); font-size: 30px; cursor: pointer; color: #FFF; }
 	div.superSlider .iconIndicator:hover { color: #FFF; }
 	div.superSlider .iconIndicator.prevItem { left: 20px; }
 	div.superSlider .iconIndicator.nextItem { right: 20px; }

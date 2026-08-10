@@ -163,6 +163,20 @@
   margin-top: 0;
 }
 
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_details > h2,
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_details > h2._mb {
+	margin: 0 0 14px !important;
+	padding: 0 !important;
+	font-size: 1.45rem !important;
+	font-weight: 700 !important;
+	line-height: 1.25 !important;
+	color: #1a1a1f !important;
+	letter-spacing: -0.02em;
+	background: transparent !important;
+	border: 0 !important;
+	text-transform: none;
+}
+
 #mage-container.mage div.mpwem_details_content p,
 #mage-container.mage div.mpwem_details_content ul,
 #mage-container.mage div.mpwem_details_content ul li {
@@ -1250,6 +1264,238 @@
   background-color: var(--color_6);
   padding: var(--dmp);
   border-radius: 10px;
+}
+
+/* ========== Default Theme — Event Timelines ========== */
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area {
+	--mep-tl-radius: 12px;
+	--mep-tl-border: #e6e8ee;
+	--mep-tl-bg: #fff;
+	--mep-tl-text: #1a1a1f;
+	--mep-tl-muted: #6b6b76;
+	--mep-tl-soft: #f5f6f8;
+	--mep-tl-accent: var(--color_theme, #2563eb);
+	--mep-tl-accent-text: var(--color_theme_alter, #fff);
+	--mep-tl-shadow: 0 2px 8px rgba(26, 26, 31, 0.05);
+	--mep-tl-shadow-hover: 0 10px 24px rgba(26, 26, 31, 0.08);
+	margin: 40px 0 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	overflow: visible;
+	box-shadow: none;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_section_header {
+	background: transparent !important;
+	padding: 0 0 6px !important;
+	margin: 0 0 4px !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_section_header h2 {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 1.45rem !important;
+	font-weight: 700 !important;
+	line-height: 1.25 !important;
+	color: var(--mep-tl-text) !important;
+	letter-spacing: -0.02em;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_body {
+	padding: 14px 0 0 !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_area {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	position: relative;
+	padding-left: 0;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_area::before {
+	display: none !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item {
+	display: grid;
+	grid-template-columns: 40px minmax(0, 1fr);
+	gap: 12px;
+	align-items: start;
+	padding: 0 !important;
+	position: relative;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:not(:last-child)::before {
+	content: '';
+	position: absolute;
+	left: 19px;
+	top: 40px;
+	bottom: -12px;
+	width: 2px;
+	background: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--mep-tl-accent) 45%, var(--mep-tl-border)),
+		color-mix(in srgb, var(--mep-tl-accent) 12%, var(--mep-tl-soft))
+	);
+	border-radius: 2px;
+	z-index: 0;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item .timeline_counter {
+	position: relative !important;
+	left: auto !important;
+	top: auto !important;
+	width: 40px !important;
+	height: 40px !important;
+	margin: 0;
+	border: 2px solid color-mix(in srgb, var(--mep-tl-accent) 24%, var(--mep-tl-border));
+	border-radius: 10px !important;
+	background: color-mix(in srgb, var(--mep-tl-accent) 10%, #fff) !important;
+	color: var(--mep-tl-accent) !important;
+	font-size: 13px !important;
+	font-weight: 800 !important;
+	box-shadow: 0 6px 16px color-mix(in srgb, var(--mep-tl-accent) 14%, transparent);
+	z-index: 2;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .timeline_counter {
+	background: var(--mep-tl-accent) !important;
+	border-color: var(--mep-tl-accent) !important;
+	color: var(--mep-tl-accent-text) !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content {
+	min-width: 0;
+	background: var(--mep-tl-bg) !important;
+	border: 1px solid var(--mep-tl-border) !important;
+	border-radius: var(--mep-tl-radius) !important;
+	box-shadow: var(--mep-tl-shadow) !important;
+	overflow: hidden;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:hover .timeline_content {
+	border-color: color-mix(in srgb, var(--mep-tl-accent) 28%, var(--mep-tl-border)) !important;
+	box-shadow: var(--mep-tl-shadow-hover) !important;
+	transform: translateY(-1px);
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .timeline_content {
+	border-color: color-mix(in srgb, var(--mep-tl-accent) 40%, var(--mep-tl-border)) !important;
+	box-shadow: 0 12px 28px color-mix(in srgb, var(--mep-tl-accent) 14%, transparent) !important;
+	transform: none;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_header {
+	display: flex !important;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 14px 16px !important;
+	cursor: pointer;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_tag {
+	display: block !important;
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 0 !important;
+	background: transparent !important;
+	clip-path: none !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .tl_title {
+	display: block !important;
+	max-width: none !important;
+	overflow: visible !important;
+	text-overflow: unset !important;
+	white-space: normal !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	line-height: 1.35 !important;
+	color: var(--mep-tl-text) !important;
+	text-transform: none !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .tl_title {
+	color: var(--mep-tl-accent) !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_connector {
+	display: none !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_time {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+	padding: 7px 11px !important;
+	border: 1px solid color-mix(in srgb, var(--mep-tl-accent) 24%, var(--mep-tl-border)) !important;
+	border-radius: 10px !important;
+	background: color-mix(in srgb, var(--mep-tl-accent) 8%, #fff) !important;
+	color: var(--mep-tl-accent) !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .timeline_time {
+	background: var(--mep-tl-accent) !important;
+	border-color: var(--mep-tl-accent) !important;
+	color: var(--mep-tl-accent-text) !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor {
+	margin: 0 !important;
+	padding: 0 16px 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: var(--mep-tl-muted);
+	font-size: 14px;
+	line-height: 1.7;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor.mActive {
+	border-top: 1px solid var(--mep-tl-border) !important;
+	padding: 14px 16px 16px !important;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor p {
+	margin: 0 0 10px;
+}
+
+#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor p:last-child {
+	margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+	#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_section_header h2 {
+		font-size: 1.25rem !important;
+	}
+
+	#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item {
+		grid-template-columns: 34px minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:not(:last-child)::before {
+		left: 16px;
+		top: 34px;
+	}
+
+	#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item .timeline_counter {
+		width: 34px !important;
+		height: 34px !important;
+		border-radius: 8px !important;
+	}
+
+	#mage-container.mage .default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_header {
+		flex-wrap: wrap;
+		padding: 12px 14px !important;
+	}
 }
 
 /* ========== Smart Theme — Event Timelines ========== */

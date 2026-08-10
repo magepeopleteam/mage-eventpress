@@ -170,6 +170,10 @@ div.mpwem_wrapper {
 	width: 100%;
 }
 
+.mpwem_style.mpwem_wrapper.mep-events-wrapper.wrapper {
+	padding-top: 0;
+}
+
 div.mpwem_container {
 	max-width: 1320px;
 	width: 100%;
@@ -314,6 +318,25 @@ div.mpwem_details {
 	margin-top: 0;
 }
 
+.default_theme:not(.mep_smart_theme) .mpwem_details > h2,
+.default_theme:not(.mep_smart_theme) .mpwem_details > h2._mb {
+	margin: 0 0 14px !important;
+	padding: 0 !important;
+	font-size: 1.45rem !important;
+	font-weight: 700 !important;
+	line-height: 1.25 !important;
+	color: #1a1a1f !important;
+	letter-spacing: -0.02em;
+	background: transparent !important;
+	border: 0 !important;
+	text-transform: none;
+}
+
+div.mpwem_details_content,
+div.mpwem_details_content.mp_wp_editor {
+	text-align: justify;
+}
+
 div.mpwem_details_content p,
 div.mpwem_details_content ul,
 div.mpwem_details_content ul li {
@@ -321,6 +344,7 @@ div.mpwem_details_content ul li {
 	margin: 15px 0;
 	list-style: inherit;
 	margin-left: 10px;
+	text-align: justify;
 }
 
 div.mpwem_style div.date_time_location_short {
@@ -356,6 +380,126 @@ div.date_time_location_short .short_item h6 {
 div.date_time_location_short .short_item p {
 	color: #878787;
 	margin: 5px 0 0 0;
+}
+
+/* ========== Default Theme — Date / Time / Location ========== */
+.default_theme:not(.mep_smart_theme) .date_time_location_short {
+	--mep-meta-radius: 14px;
+	--mep-meta-border: #e6e8ee;
+	--mep-meta-bg: #fff;
+	--mep-meta-text: #1a1a1f;
+	--mep-meta-muted: #6b6b76;
+	--mep-meta-soft: #f5f6f8;
+	--mep-meta-accent: var(--color_theme, #2563eb);
+	--mep-meta-shadow: 0 2px 8px rgba(26, 26, 31, 0.05);
+	--mep-meta-shadow-hover: 0 10px 24px rgba(26, 26, 31, 0.08);
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+	margin: 22px 0 0;
+	padding: 0;
+}
+
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item {
+	width: auto;
+	max-width: none;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 16px 18px;
+	margin: 0;
+	background: var(--mep-meta-bg);
+	border: 1px solid var(--mep-meta-border);
+	border-radius: var(--mep-meta-radius);
+	box-shadow: var(--mep-meta-shadow);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item:hover {
+	border-color: color-mix(in srgb, var(--mep-meta-accent) 28%, var(--mep-meta-border));
+	box-shadow: var(--mep-meta-shadow-hover);
+	transform: translateY(-2px);
+}
+
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item h4,
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item h4.__icon_circle_mr {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	min-width: 44px;
+	margin: 0;
+	padding: 0;
+	font-size: 17px;
+	line-height: 1;
+	border-radius: 12px;
+	border: 1px solid color-mix(in srgb, var(--mep-meta-accent) 22%, var(--mep-meta-border));
+	background: color-mix(in srgb, var(--mep-meta-accent) 10%, #fff) !important;
+	color: var(--mep-meta-accent) !important;
+	box-shadow: 0 6px 14px color-mix(in srgb, var(--mep-meta-accent) 12%, transparent);
+}
+
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item h4 span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item ._fdColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+	flex: 1;
+}
+
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item h6 {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	line-height: 1.2 !important;
+	letter-spacing: 0.06em;
+	text-transform: uppercase !important;
+	color: var(--mep-meta-muted) !important;
+}
+
+.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item p {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.35;
+	color: var(--mep-meta-text);
+	word-break: break-word;
+}
+
+@media only screen and (max-width: 1199px) {
+	.default_theme:not(.mep_smart_theme) .date_time_location_short {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item:last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.default_theme:not(.mep_smart_theme) .date_time_location_short {
+		grid-template-columns: 1fr;
+		gap: 10px;
+		margin-top: 16px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item {
+		padding: 14px 16px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .date_time_location_short .short_item:last-child:nth-child(odd) {
+		grid-column: auto;
+	}
 }
 
 div.mpwem_location,
@@ -1106,6 +1250,36 @@ div.mpwem_organizer h5 {
 	color: var(--color_white);
 }
 
+/* ========== Default Theme — Organizer alignment ========== */
+.default_theme:not(.mep_smart_theme) .mpwem_organizer {
+	--mep-org-icon-size: 1.15em;
+	--mep-org-gap: 8px;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_organizer h5 {
+	display: flex;
+	align-items: center;
+	gap: var(--mep-org-gap);
+	margin: 0 0 6px;
+	line-height: 1.35;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_organizer h5 .mi {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--mep-org-icon-size);
+	min-width: var(--mep-org-icon-size);
+	flex-shrink: 0;
+	line-height: 1;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_organizer_item {
+	margin: 0;
+	padding-left: calc(var(--mep-org-icon-size) + var(--mep-org-gap));
+	line-height: 1.35;
+}
+
 div.mep_smart_theme .mpwem_organizer {
 	display: -webkit-flex;
 	display: flex;
@@ -1257,6 +1431,275 @@ div.mpwem_timeline_area .timeline_content .mp_wp_editor {
 	padding: var(--dmp);
 	border-radius: 10px;
 	border: 1px solid #ddd;
+}
+
+/* ========== Default Theme — Event Timelines ========== */
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area {
+	--mep-tl-radius: 12px;
+	--mep-tl-border: #e6e8ee;
+	--mep-tl-bg: #fff;
+	--mep-tl-text: #1a1a1f;
+	--mep-tl-muted: #6b6b76;
+	--mep-tl-soft: #f5f6f8;
+	--mep-tl-accent: var(--color_theme, #2563eb);
+	--mep-tl-accent-text: var(--color_theme_alter, #fff);
+	--mep-tl-shadow: 0 2px 8px rgba(26, 26, 31, 0.05);
+	--mep-tl-shadow-hover: 0 10px 24px rgba(26, 26, 31, 0.08);
+	margin: 40px 0 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	overflow: visible;
+	box-shadow: none;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_section_header {
+	background: transparent !important;
+	padding: 0 0 6px !important;
+	margin: 0 0 4px !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_section_header h2 {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 1.45rem !important;
+	font-weight: 700 !important;
+	line-height: 1.25 !important;
+	color: var(--mep-tl-text) !important;
+	letter-spacing: -0.02em;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_body {
+	padding: 14px 0 0 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_area {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	position: relative;
+	padding-left: 0;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_area::before {
+	display: none !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item {
+	display: grid;
+	grid-template-columns: 40px minmax(0, 1fr);
+	gap: 12px;
+	align-items: start;
+	padding: 0 !important;
+	position: relative;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:not(:last-child)::before {
+	content: '';
+	position: absolute;
+	left: 19px;
+	top: 40px;
+	bottom: -12px;
+	width: 2px;
+	background: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--mep-tl-accent) 45%, var(--mep-tl-border)),
+		color-mix(in srgb, var(--mep-tl-accent) 12%, var(--mep-tl-soft))
+	);
+	border-radius: 2px;
+	z-index: 0;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item .timeline_counter {
+	position: relative !important;
+	left: auto !important;
+	top: auto !important;
+	width: 40px !important;
+	height: 40px !important;
+	margin: 0;
+	border: 2px solid color-mix(in srgb, var(--mep-tl-accent) 24%, var(--mep-tl-border));
+	border-radius: 10px !important;
+	background: color-mix(in srgb, var(--mep-tl-accent) 10%, #fff) !important;
+	color: var(--mep-tl-accent) !important;
+	font-size: 13px !important;
+	font-weight: 800 !important;
+	line-height: 1;
+	box-shadow: 0 6px 16px color-mix(in srgb, var(--mep-tl-accent) 14%, transparent);
+	z-index: 2;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .timeline_counter {
+	background: var(--mep-tl-accent) !important;
+	border-color: var(--mep-tl-accent) !important;
+	color: var(--mep-tl-accent-text) !important;
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--mep-tl-accent) 28%, transparent);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content {
+	min-width: 0;
+	background: var(--mep-tl-bg) !important;
+	border: 1px solid var(--mep-tl-border) !important;
+	border-radius: var(--mep-tl-radius) !important;
+	box-shadow: var(--mep-tl-shadow) !important;
+	overflow: hidden;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:hover .timeline_content {
+	border-color: color-mix(in srgb, var(--mep-tl-accent) 28%, var(--mep-tl-border)) !important;
+	box-shadow: var(--mep-tl-shadow-hover) !important;
+	transform: translateY(-1px);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .timeline_content {
+	border-color: color-mix(in srgb, var(--mep-tl-accent) 40%, var(--mep-tl-border)) !important;
+	box-shadow: 0 12px 28px color-mix(in srgb, var(--mep-tl-accent) 14%, transparent) !important;
+	transform: none;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_header {
+	display: flex !important;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 14px 16px !important;
+	margin: 0;
+	cursor: pointer;
+	user-select: none;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_tag {
+	display: block !important;
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 0 !important;
+	background: transparent !important;
+	clip-path: none !important;
+	filter: none !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_header:hover .timeline_tag {
+	filter: none !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .tl_title {
+	display: block !important;
+	max-width: none !important;
+	overflow: visible !important;
+	text-overflow: unset !important;
+	white-space: normal !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	line-height: 1.35 !important;
+	color: var(--mep-tl-text) !important;
+	text-transform: none !important;
+	letter-spacing: -0.01em;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .tl_title {
+	color: var(--mep-tl-accent) !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_connector {
+	display: none !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_time {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+	margin: 0;
+	padding: 7px 11px !important;
+	border: 1px solid color-mix(in srgb, var(--mep-tl-accent) 24%, var(--mep-tl-border)) !important;
+	border-radius: 10px !important;
+	background: color-mix(in srgb, var(--mep-tl-accent) 8%, #fff) !important;
+	color: var(--mep-tl-accent) !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:has(.mp_wp_editor.mActive) .timeline_time {
+	background: var(--mep-tl-accent) !important;
+	border-color: var(--mep-tl-accent) !important;
+	color: var(--mep-tl-accent-text) !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_time i {
+	font-size: 12px;
+	line-height: 1;
+	opacity: 0.9;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor {
+	margin: 0 !important;
+	padding: 0 16px 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: var(--mep-tl-muted);
+	font-size: 14px;
+	line-height: 1.7;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor.mActive {
+	border-top: 1px solid var(--mep-tl-border) !important;
+	padding: 14px 16px 16px !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor p {
+	margin: 0 0 10px;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor p:last-child {
+	margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area {
+		margin-top: 28px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_section_header h2 {
+		font-size: 1.25rem !important;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item {
+		grid-template-columns: 34px minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:not(:last-child)::before {
+		left: 16px;
+		top: 34px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item .timeline_counter {
+		width: 34px !important;
+		height: 34px !important;
+		border-radius: 8px !important;
+		font-size: 12px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_header {
+		flex-wrap: wrap;
+		padding: 12px 14px !important;
+		gap: 10px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .tl_title {
+		font-size: 14px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_content .mp_wp_editor.mActive {
+		padding: 12px 14px 14px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_timeline_area .timeline_item:hover .timeline_content {
+		transform: none;
+	}
 }
 
 /* ========== Smart Theme — Event Timelines ========== */
@@ -1542,6 +1985,164 @@ div.mpwem_calender_area {
 	border-top: 1px solid var(--color_border);
 }
 
+/* ========== Default Theme — Add Calendar ========== */
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area--default {
+	--mep-cal-radius: 12px;
+	--mep-cal-border: #e6e8ee;
+	--mep-cal-text: #1a1a1f;
+	--mep-cal-soft: #f5f6f8;
+	--mep-cal-accent: var(--color_theme, #2563eb);
+	padding: 18px 18px 16px;
+	border-top: 1px solid var(--mep-cal-border);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area > button,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area > button._button_theme_margin_auto_min_150 {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: 100%;
+	min-width: 0 !important;
+	min-height: 46px;
+	margin: 0 !important;
+	padding: 12px 16px !important;
+	border: 1px solid color-mix(in srgb, var(--mep-cal-accent) 28%, var(--mep-cal-border)) !important;
+	border-radius: var(--mep-cal-radius) !important;
+	background: color-mix(in srgb, var(--mep-cal-accent) 8%, #fff) !important;
+	color: var(--mep-cal-accent) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area > button i,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area > button span {
+	color: inherit !important;
+	margin: 0 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area > button:hover {
+	background: var(--mep-cal-accent) !important;
+	border-color: var(--mep-cal-accent) !important;
+	color: #fff !important;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--mep-cal-accent) 24%, transparent) !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area > [data-collapse] {
+	margin-top: 12px;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area > [data-collapse].mActive {
+	display: block !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area ._mt_xs_fdColumn {
+	display: grid !important;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
+	margin: 0 !important;
+	padding: 0;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a._button_general_mt_xs {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	min-height: 42px;
+	margin: 0 !important;
+	padding: 10px 12px !important;
+	border: 1px solid var(--mep-cal-border) !important;
+	border-radius: var(--mep-cal-radius) !important;
+	background: #fff !important;
+	color: var(--mep-cal-text) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	text-decoration: none !important;
+	box-shadow: 0 4px 14px rgba(26, 26, 31, 0.04);
+	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a._button_general_mt_xs:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 10px 22px rgba(26, 26, 31, 0.1);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_google,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="calendar.google.com"] {
+	border-color: color-mix(in srgb, #4285F4 22%, var(--mep-cal-border)) !important;
+	background: color-mix(in srgb, #4285F4 8%, #fff) !important;
+	color: #1a73e8 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_google:hover,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="calendar.google.com"]:hover {
+	background: #4285F4 !important;
+	border-color: #4285F4 !important;
+	color: #fff !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_yahoo,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="calendar.yahoo.com"] {
+	border-color: color-mix(in srgb, #6001D2 22%, var(--mep-cal-border)) !important;
+	background: color-mix(in srgb, #6001D2 8%, #fff) !important;
+	color: #6001D2 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_yahoo:hover,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="calendar.yahoo.com"]:hover {
+	background: #6001D2 !important;
+	border-color: #6001D2 !important;
+	color: #fff !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_outlook,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="outlook.live.com"] {
+	border-color: color-mix(in srgb, #0078D4 22%, var(--mep-cal-border)) !important;
+	background: color-mix(in srgb, #0078D4 8%, #fff) !important;
+	color: #0078D4 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_outlook:hover,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="outlook.live.com"]:hover {
+	background: #0078D4 !important;
+	border-color: #0078D4 !important;
+	color: #fff !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_apple,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="download-ics.php"] {
+	border-color: color-mix(in srgb, #111827 16%, var(--mep-cal-border)) !important;
+	background: color-mix(in srgb, #111827 5%, #fff) !important;
+	color: #111827 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a.mpwem_cal_apple:hover,
+.default_theme:not(.mep_smart_theme) .mpwem_calender_area a[href*="download-ics.php"]:hover {
+	background: #111827 !important;
+	border-color: #111827 !important;
+	color: #fff !important;
+}
+
+@media (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme) .mpwem_calender_area,
+	.default_theme:not(.mep_smart_theme) .mpwem_calender_area--default {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_calender_area ._mt_xs_fdColumn {
+		grid-template-columns: 1fr;
+	}
+}
+
 /* ========== Smart Theme — Add Calendar ========== */
 .mep_smart_theme .mpwem_calender_area {
 	padding: 18px 18px 16px;
@@ -1724,6 +2325,216 @@ div.event_date_list_area .date_item a {
 
 div.event_date_list_area .date-list-item {
 	border-radius: 10px;
+}
+
+/* ========== Default Theme — Event Schedule Details ========== */
+.default_theme:not(.mep_smart_theme) .event_date_list_area {
+	--mep-sched-radius: 12px;
+	--mep-sched-border: #e6e8ee;
+	--mep-sched-text: #1a1a1f;
+	--mep-sched-muted: #6b6b76;
+	--mep-sched-soft: #f5f6f8;
+	--mep-sched-accent: var(--color_theme, #2563eb);
+	padding: 18px 18px 16px;
+	border-top: 1px solid var(--mep-sched-border);
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area > h5 {
+	display: flex !important;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 14px !important;
+	padding: 0 !important;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	line-height: 1.3 !important;
+	color: var(--mep-sched-text) !important;
+	letter-spacing: -0.01em;
+	text-transform: none;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area > h5 > span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 !important;
+	border-radius: 10px;
+	border: 1px solid color-mix(in srgb, var(--mep-sched-accent) 22%, var(--mep-sched-border));
+	background: color-mix(in srgb, var(--mep-sched-accent) 10%, #fff);
+	color: var(--mep-sched-accent) !important;
+	font-size: 14px;
+	flex-shrink: 0;
+	box-shadow: 0 4px 12px color-mix(in srgb, var(--mep-sched-accent) 10%, transparent);
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_list_area {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-height: 340px;
+	overflow: auto;
+	margin: 0;
+	padding: 2px 2px 4px;
+	scrollbar-width: thin;
+	scrollbar-color: #d5dbe7 transparent;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_list_area::-webkit-scrollbar {
+	width: 6px;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_list_area::-webkit-scrollbar-thumb {
+	background: #d5dbe7;
+	border-radius: 999px;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date-list-item,
+.default_theme:not(.mep_smart_theme) .event_date_list_area ._layout_info_xs.date-list-item {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: var(--mep-sched-radius) !important;
+	background: transparent !important;
+	box-shadow: none !important;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item {
+	position: relative;
+	padding: 0 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item::before {
+	display: none !important;
+	content: none !important;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a {
+	position: relative;
+	display: block !important;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	padding: 12px 5px 12px 28px !important;
+	margin: 0 !important;
+	border: 1px solid var(--mep-sched-border);
+	border-radius: var(--mep-sched-radius);
+	background: #fff;
+	color: var(--mep-sched-text) !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	line-height: 1.4 !important;
+	white-space: nowrap !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-decoration: none !important;
+	box-shadow: 0 2px 8px rgba(26, 26, 31, 0.04);
+	transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, color 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a::before {
+	content: '';
+	position: absolute;
+	left: 14px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--mep-sched-accent);
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--mep-sched-accent) 14%, transparent);
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a::after {
+	content: '';
+	position: absolute;
+	right: 14px;
+	top: 50%;
+	width: 7px;
+	height: 7px;
+	border-right: 2px solid #9aa3b5;
+	border-bottom: 2px solid #9aa3b5;
+	transform: translateY(-50%) rotate(-45deg);
+	transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a:hover {
+	border-color: color-mix(in srgb, var(--mep-sched-accent) 32%, var(--mep-sched-border));
+	background: color-mix(in srgb, var(--mep-sched-accent) 6%, #fff);
+	color: var(--mep-sched-accent) !important;
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--mep-sched-accent) 12%, transparent);
+	transform: translateY(-1px);
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a:hover::after {
+	border-color: var(--mep-sched-accent);
+	transform: translateY(-50%) translateX(2px) rotate(-45deg);
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a._ml {
+	padding-left: 34px !important;
+	font-weight: 500 !important;
+	color: var(--mep-sched-muted) !important;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a._ml::before {
+	width: 6px;
+	height: 6px;
+	left: 15px;
+	box-shadow: none;
+	opacity: 0.7;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area button[data-collapse-target],
+.default_theme:not(.mep_smart_theme) .event_date_list_area ._button_theme_margin_auto {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	min-height: 42px;
+	margin: 12px 0 0 !important;
+	padding: 10px 16px !important;
+	border: 1px solid color-mix(in srgb, var(--mep-sched-accent) 28%, var(--mep-sched-border)) !important;
+	border-radius: var(--mep-sched-radius) !important;
+	background: color-mix(in srgb, var(--mep-sched-accent) 8%, #fff) !important;
+	color: var(--mep-sched-accent) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area button[data-collapse-target]:hover,
+.default_theme:not(.mep_smart_theme) .event_date_list_area ._button_theme_margin_auto:hover {
+	background: var(--mep-sched-accent) !important;
+	border-color: var(--mep-sched-accent) !important;
+	color: #fff !important;
+	transform: translateY(-1px);
+}
+
+.default_theme:not(.mep_smart_theme) .event_date_list_area button[data-collapse-target] span,
+.default_theme:not(.mep_smart_theme) .event_date_list_area ._button_theme_margin_auto span {
+	color: inherit !important;
+}
+
+@media (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme) .event_date_list_area {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .event_date_list_area .date_list_area {
+		max-height: 280px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .event_date_list_area .date_item a {
+		padding: 11px 34px 11px 30px !important;
+		font-size: 12px !important;
+		white-space: normal !important;
+	}
 }
 
 /* ========== Smart Theme — Event Schedule Details ========== */
@@ -2122,6 +2933,210 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	color: #FFF;
 }
 
+/* ========== Default Theme — Share This Event ========== */
+.default_theme:not(.mep_smart_theme) .share_widgets,
+.default_theme:not(.mep_smart_theme) .share_widgets--default {
+	--mep-share-radius: 12px;
+	--mep-share-border: #e6e8ee;
+	--mep-share-text: #1a1a1f;
+	--mep-share-soft: #f5f6f8;
+	--mep-share-accent: var(--color_theme, #2563eb);
+	padding: 18px 18px 16px;
+	border-top: 1px solid var(--mep-share-border);
+	color: var(--mep-share-text);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_title {
+	display: flex !important;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	margin: 0 0 14px !important;
+	padding: 0 !important;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	line-height: 1.3 !important;
+	color: var(--mep-share-text) !important;
+	text-align: left !important;
+	text-transform: none;
+	letter-spacing: -0.01em;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_title > span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 !important;
+	border-radius: 10px;
+	border: 1px solid color-mix(in srgb, var(--mep-share-accent) 22%, var(--mep-share-border));
+	background: color-mix(in srgb, var(--mep-share-accent) 10%, #fff);
+	color: var(--mep-share-accent) !important;
+	font-size: 13px;
+	flex-shrink: 0;
+	box-shadow: 0 4px 12px color-mix(in srgb, var(--mep-share-accent) 10%, transparent);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list li {
+	margin: 0 !important;
+	padding: 0 !important;
+	list-style: none;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 1px solid var(--mep-share-border);
+	border-radius: var(--mep-share-radius);
+	background: #fff;
+	box-shadow: 0 4px 14px rgba(26, 26, 31, 0.04);
+	text-decoration: none !important;
+	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list i {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	width: auto !important;
+	height: auto !important;
+	min-width: 0;
+	padding: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	font-size: 16px !important;
+	line-height: 1 !important;
+	transition: color 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 22px rgba(26, 26, 31, 0.1);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook {
+	border-color: color-mix(in srgb, #1877F2 22%, var(--mep-share-border));
+	background: color-mix(in srgb, #1877F2 8%, #fff);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook i {
+	color: #1877F2 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook:hover {
+	background: #1877F2 !important;
+	border-color: #1877F2 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter {
+	border-color: color-mix(in srgb, #111827 18%, var(--mep-share-border));
+	background: color-mix(in srgb, #111827 6%, #fff);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter i {
+	color: #111827 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter:hover {
+	background: #111827 !important;
+	border-color: #111827 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin {
+	border-color: color-mix(in srgb, #0A66C2 22%, var(--mep-share-border));
+	background: color-mix(in srgb, #0A66C2 8%, #fff);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin i {
+	color: #0A66C2 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin:hover {
+	background: #0A66C2 !important;
+	border-color: #0A66C2 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp {
+	border-color: color-mix(in srgb, #25D366 22%, var(--mep-share-border));
+	background: color-mix(in srgb, #25D366 8%, #fff);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp i {
+	color: #25D366 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp:hover {
+	background: #25D366 !important;
+	border-color: #25D366 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email {
+	border-color: color-mix(in srgb, #EA4335 22%, var(--mep-share-border));
+	background: color-mix(in srgb, #EA4335 8%, #fff);
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email i {
+	color: #EA4335 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email:hover {
+	background: #EA4335 !important;
+	border-color: #EA4335 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+@media (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme) .share_widgets,
+	.default_theme:not(.mep_smart_theme) .share_widgets--default {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a {
+		width: 42px;
+		height: 42px;
+	}
+}
+
 /* ========== Smart Theme — Share This Event ========== */
 .mep_smart_theme .share_widgets {
 	padding: 18px 18px 16px;
@@ -2431,6 +3446,193 @@ div.mpwem_location_sidebar p {
 
 div.mpwem_location_sidebar #mpwem_map_area {
 	margin: 0;
+}
+
+/* ========== Default Theme — Event Location ========== */
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar--default {
+	--mep-loc-radius: 12px;
+	--mep-loc-border: #e6e8ee;
+	--mep-loc-text: #1a1a1f;
+	--mep-loc-muted: #6b6b76;
+	--mep-loc-soft: #f5f6f8;
+	--mep-loc-accent: var(--color_theme, #2563eb);
+	padding: 18px 18px 16px;
+	border-top: 1px solid var(--mep-loc-border);
+	color: var(--mep-loc-text);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .widgets_title {
+	display: flex !important;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 14px !important;
+	padding: 0 !important;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	line-height: 1.3 !important;
+	color: var(--mep-loc-text) !important;
+	letter-spacing: -0.01em;
+	text-transform: none;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .widgets_title > span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 !important;
+	border-radius: 10px;
+	border: 1px solid color-mix(in srgb, var(--mep-loc-accent) 22%, var(--mep-loc-border));
+	background: color-mix(in srgb, var(--mep-loc-accent) 10%, #fff);
+	color: var(--mep-loc-accent) !important;
+	font-size: 14px;
+	flex-shrink: 0;
+	box-shadow: 0 4px 12px color-mix(in srgb, var(--mep-loc-accent) 10%, transparent);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .mpwem_location_address {
+	display: block;
+	margin: 0 0 14px !important;
+	padding: 12px 14px !important;
+	border: 1px solid var(--mep-loc-border);
+	border-radius: var(--mep-loc-radius);
+	background: var(--mep-loc-soft);
+	box-shadow: none;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .mpwem_location_address p {
+	margin: 0 !important;
+	padding: 0 !important;
+	color: #374151 !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 1.55 !important;
+	word-break: break-word;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button[data-target-popup],
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button.mpwem_location_map_btn,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button._button_theme_margin_auto {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: 100%;
+	min-width: 0 !important;
+	min-height: 46px;
+	margin: 0 !important;
+	padding: 12px 16px !important;
+	border: 1px solid color-mix(in srgb, var(--mep-loc-accent) 28%, var(--mep-loc-border)) !important;
+	border-radius: var(--mep-loc-radius) !important;
+	background: color-mix(in srgb, var(--mep-loc-accent) 8%, #fff) !important;
+	color: var(--mep-loc-accent) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button[data-target-popup]:hover,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button.mpwem_location_map_btn:hover,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button._button_theme_margin_auto:hover {
+	background: var(--mep-loc-accent) !important;
+	border-color: var(--mep-loc-accent) !important;
+	color: #fff !important;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--mep-loc-accent) 24%, transparent) !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button[data-target-popup] i,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button.mpwem_location_map_btn i,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button._button_theme_margin_auto i,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button[data-target-popup] span,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button.mpwem_location_map_btn span,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar button._button_theme_margin_auto span {
+	color: inherit !important;
+	margin: 0 !important;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .mpPopup .popupMainArea {
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 24px 48px rgba(26, 26, 31, 0.18);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .mpPopup .popup_close {
+	top: 14px;
+	right: 14px;
+	width: 36px;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.92);
+	color: var(--mep-loc-text);
+	box-shadow: 0 4px 14px rgba(26, 26, 31, 0.12);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar #mpwem_map_area {
+	margin: 0;
+	background: #fff;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	overflow: hidden;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar #mpwem_map_area .map_title {
+	margin: 0;
+	padding: 18px 20px 14px;
+	background: #fff;
+	border-bottom: 1px solid var(--mep-loc-border);
+	color: var(--mep-loc-text);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	text-transform: none;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar #mpwem_map_area .map_section {
+	padding: 16px 18px 18px;
+	background: var(--mep-loc-soft);
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar #mpwem_map,
+.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar #mpwem_map_area iframe {
+	min-height: 360px;
+	max-height: 420px;
+	height: 380px;
+	border: 1px solid var(--mep-loc-border);
+	border-radius: 12px;
+	box-shadow: 0 8px 20px rgba(26, 26, 31, 0.06);
+}
+
+@media (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar,
+	.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar--default {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .mpwem_location_address {
+		padding: 11px 12px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar .mpwem_location_address p {
+		font-size: 12px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar #mpwem_map,
+	.default_theme:not(.mep_smart_theme) .mpwem_location_sidebar #mpwem_map_area iframe {
+		min-height: 260px;
+		max-height: 300px;
+		height: 280px;
+	}
 }
 
 /* ========== Smart Theme — Event Location ========== */
@@ -7667,6 +8869,7 @@ div.mpwem_style [data-bg-image] {
 	font-size: 1rem;
 	line-height: 1.7;
 	color: #3a3a40;
+	text-align: justify;
 }
 
 .mep_smart_theme .mpwem_details_content p,
@@ -7678,6 +8881,7 @@ div.mpwem_style [data-bg-image] {
 	color: inherit;
 	font-size: inherit;
 	line-height: inherit;
+	text-align: justify;
 }
 
 .mep_smart_theme .mpwem_details_content ul,

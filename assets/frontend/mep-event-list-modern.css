@@ -571,35 +571,54 @@
 /* ── List style (horizontal) ────────────────────────────────────── */
 
 .list_with_filter_section.mep_event_list .filter_item.mep_event_list_item {
-	flex-direction: row;
+	flex-direction: column;
 	width: 100% !important;
 	align-items: stretch;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__surface {
+	flex-direction: row;
+	align-items: stretch;
+	width: 100%;
+	min-height: 180px;
 }
 
 .list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__media {
 	width: 240px;
 	flex-shrink: 0;
+	align-self: stretch;
+	border-radius: var(--mep-card-radius) 0 0 var(--mep-card-radius);
+	overflow: hidden;
 }
 
 .list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb {
+	position: relative;
 	width: 100%;
 	height: 100%;
 	min-height: 180px;
 	border-radius: 0;
+	overflow: hidden;
+	background: var(--mep-card-soft);
 }
 
 .list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb > [data-bg-image],
 .list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb > div[style*="background-image"] {
 	position: absolute !important;
 	inset: 0 !important;
+	width: 100% !important;
 	height: 100% !important;
 	min-height: 100% !important;
 	background-size: cover !important;
 	background-position: center !important;
 }
 
-.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_event_details {
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_event_details,
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__body {
+	flex: 1 1 auto;
+	width: auto;
+	min-width: 0;
 	padding: 20px 24px;
+	justify-content: center;
 }
 
 .list_with_filter_section.mep_event_list .mep_event_list_item .list_content.upcomming_organizer {
@@ -916,13 +935,25 @@
 		flex-direction: column;
 	}
 
+	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__surface {
+		flex-direction: column;
+		min-height: 0;
+	}
+
 	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__media {
 		width: 100%;
+		border-radius: var(--mep-card-radius) var(--mep-card-radius) 0 0;
 	}
 
 	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb {
 		height: 200px;
 		min-height: 200px;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_event_details,
+	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__body {
+		width: 100%;
+		padding: 18px 20px 20px;
 	}
 
 	.list_with_filter_section.mep_event_list .mep_event_grid_item .mep_list_thumb {

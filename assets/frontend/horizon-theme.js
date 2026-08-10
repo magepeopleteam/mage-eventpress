@@ -1888,4 +1888,117 @@
 			}
 		});
 	})();
+
+	/* ── Gallery zoom lightbox ───────────────────────────────────── */
+	(function initHorizonGalleryLightbox() {
+		var root = document.querySelector('[data-horizon-gallery]');
+		if (!root) {
+			return;
+		}
+
+		var lightbox = root.querySelector('[data-horizon-gallery-lightbox]');
+		var img = root.querySelector('[data-horizon-gallery-img]');
+		var counter = root.querySelector('[data-horizon-gallery-counter]');
+		var prevBtn = root.querySelector('[data-horizon-gallery-prev]');
+		var nextBtn = root.querySelector('[data-horizon-gallery-next]');
+		var triggers = Array.prototype.slice.call(root.querySelectorAll('[data-horizon-gallery-trigger]'));
+
+		if (!lightbox || !img || !triggers.length) {
+			return;
+		}
+
+		var items = triggers.map(function (trigger) {
+			return {
+				src: trigger.getAttribute('data-horizon-gallery-src') || '',
+				alt: trigger.getAttribute('data-horizon-gallery-alt') || ''
+			};
+		}).filter(function (item) {
+			return !!item.src;
+		});
+
+		if (!items.length) {
+			return;
+		}
+
+		var current = 0;
+
+		function show(index) {
+			current = (index + items.length) % items.length;
+			img.src = items[current].src;
+			img.alt = items[current].alt;
+
+			var multi = items.length > 1;
+			if (prevBtn) {
+				prevBtn.hidden = !multi;
+			}
+			if (nextBtn) {
+				nextBtn.hidden = !multi;
+			}
+			if (counter) {
+				if (multi) {
+					counter.hidden = false;
+					counter.textContent = (current + 1) + ' / ' + items.length;
+				} else {
+					counter.hidden = true;
+				}
+			}
+
+			lightbox.removeAttribute('hidden');
+			document.body.classList.add('horizon-gallery-lightbox-open');
+		}
+
+		function close() {
+			lightbox.setAttribute('hidden', '');
+			document.body.classList.remove('horizon-gallery-lightbox-open');
+			img.removeAttribute('src');
+			img.alt = '';
+		}
+
+		root.addEventListener('click', function (event) {
+			var trigger = event.target.closest('[data-horizon-gallery-trigger]');
+			if (trigger && root.contains(trigger)) {
+				event.preventDefault();
+				var index = parseInt(trigger.getAttribute('data-horizon-gallery-index'), 10);
+				show(isNaN(index) ? 0 : index);
+				return;
+			}
+
+			if (event.target.closest('[data-horizon-gallery-close]')) {
+				event.preventDefault();
+				close();
+				return;
+			}
+
+			if (event.target.closest('[data-horizon-gallery-prev]')) {
+				event.preventDefault();
+				event.stopPropagation();
+				show(current - 1);
+				return;
+			}
+
+			if (event.target.closest('[data-horizon-gallery-next]')) {
+				event.preventDefault();
+				event.stopPropagation();
+				show(current + 1);
+			}
+		});
+
+		document.addEventListener('keydown', function (event) {
+			if (lightbox.hasAttribute('hidden')) {
+				return;
+			}
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				close();
+				return;
+			}
+			if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				show(current - 1);
+			} else if (event.key === 'ArrowRight') {
+				event.preventDefault();
+				show(current + 1);
+			}
+		});
+	})();
 })(jQuery);

@@ -76,7 +76,7 @@
                 <div class="mpwem_sidebar_content _mt">
                     <div class="event_speaker_list_area">
                         <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
-						<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
+						<?php require MPWEM_Functions::template_path( 'layout/smart/speakers.php' ); ?>
                     </div>
                 </div>
 			<?php } ?>

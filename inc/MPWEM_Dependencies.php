@@ -237,7 +237,57 @@
 
 				do_action( 'add_mpwem_admin_script' );
 			}
+			/**
+			 * Gate for the whole frontend bundle (mage-icon font, Font Awesome,
+			 * Flaticon, Slick, Owl Carousel, timeline, calendar, mixitup, moment.js...).
+			 * Opt-in via settings - default stays "load on every page" so sites
+			 * relying on a shortcode placement we can't detect here (widgets,
+			 * page builders that don't store it in post_content) don't silently
+			 * lose icons/styles. Use the mpwem_force_load_frontend_assets filter
+			 * to force-load on a page this misses once the setting is enabled.
+			 */
+			public function should_load_frontend_assets() {
+				$only_on_event_pages = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_assets_only_on_event_pages', 'no' );
+				if ( $only_on_event_pages !== 'yes' ) {
+					return true;
+				}
+				if ( apply_filters( 'mpwem_force_load_frontend_assets', false ) ) {
+					return true;
+				}
+				if ( is_singular( array( 'mep_events', 'mep_event_speaker', 'mep_events_reg_form' ) )
+					|| is_post_type_archive( 'mep_events' )
+					|| is_tax( array( 'mep_cat', 'mep_org', 'mep_tag' ) ) ) {
+					return true;
+				}
+				global $post;
+				if ( $post instanceof WP_Post ) {
+					$shortcodes = array(
+						'event-list-recurring',
+						'event-list',
+						'events_list',
+						'expire-event-list',
+						'event-add-cart-section',
+						'event-city-list',
+						'event-speaker-list',
+						'event-calendar',
+						'mep-event-calendar',
+						'mep_booking_confirmation',
+					);
+					foreach ( $shortcodes as $shortcode ) {
+						if ( has_shortcode( $post->post_content, $shortcode ) ) {
+							return true;
+						}
+					}
+					if ( function_exists( 'has_block' ) && has_block( 'mage/event-list', $post ) ) {
+						return true;
+					}
+				}
+				return false;
+			}
 			public function frontend_enqueue() {
+				if ( ! $this->should_load_frontend_assets() ) {
+					return;
+				}
 				$this->global_enqueue();
 				$is_divi = function_exists('et_divi_builder_init') || defined('ET_BUILDER_PLUGIN_ACTIVE');
 				wp_enqueue_script( 'mep-mixitup-min-js', 'https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.0/mixitup.min.js', array(), '3.3.0', true );

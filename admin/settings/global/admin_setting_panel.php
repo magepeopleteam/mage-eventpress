@@ -1622,6 +1622,17 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'    => 'mep_load_assets_only_on_event_pages',
+								'label'   => __( 'Load Event Styles/Scripts Only on Event Pages?', 'mage-eventpress' ),
+								'desc'    => __( 'Improves page speed by only loading the plugin\'s icon font, carousel, calendar and other frontend assets on pages that actually contain an event (single event, event archive, or an event shortcode/block). If an event shortcode is placed inside a widget or page builder module that this can\'t detect, select "No" or use the mpwem_force_load_frontend_assets filter.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
 								'name'    => 'mep_speed_up_list_page',
 								'label'   => __( 'Speed up the Event List Page Loading?', 'mage-eventpress' ),
 								'desc'    => __( 'If your event list page is loading slowly, you can select this option to improve performance. Keep in mind that selecting this option will disable Waitlist and Seat count features. ', 'mage-eventpress' ),

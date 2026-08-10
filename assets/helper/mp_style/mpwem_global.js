@@ -939,7 +939,12 @@ function mpwem_load_more_scroll(parent, pagination_page) {
 (function ($) {
     "use strict";
     $(document).on('click', '.mpwem_style [data-target-popup]', function () {
-        let target = $(this).attr('data-active-popup', '').data('target-popup');
+        let target = $(this).data('target-popup');
+        // Gallery slider popup is handled by the Super Slider module (correct slide index).
+        if (target === 'superSlider' || $(this).closest('.superSlider, .post_thumb.is-style-2').length) {
+            return;
+        }
+        $(this).attr('data-active-popup', '');
         $('body').addClass('noScroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
             mpwem_load_bg_image();
             return true;
@@ -968,7 +973,9 @@ function mpwem_load_more_scroll(parent, pagination_page) {
             $(this).addClass('activeSlide');
         }
     });
-    $(document).on('click', 'div.mpwem_style .superSlider .iconIndicator', function () {
+    $(document).on('click', 'div.mpwem_style .superSlider .iconIndicator', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         let parent = $(this).closest('.superSlider');
         let activeItem = parseInt(parent.find('.sliderAllItem').first().find('.sliderItem.activeSlide').data('slide-index'));
         if ($(this).hasClass('nextItem')) {
@@ -1027,12 +1034,31 @@ function mpwem_load_more_scroll(parent, pagination_page) {
         activeItem = activeItem > itemLength ? 1 : activeItem;
         return activeItem;
     }
-    //popup
-    $(document).on('click', 'div.mpwem_style .superSlider [data-target-popup]', function () {
+    //popup — feature image / zoom opens gallery modal (all images as slider)
+    $(document).on('click', 'div.mpwem_style .superSlider [data-target-popup], div.mpwem_style .post_thumb.is-style-2 [data-target-popup]', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         let target = $(this).data('target-popup');
-        let activeItem = $(this).data('slide-index');
-        $('body').addClass('noScroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
-            sliderItemActive($(this), activeItem);
+        let activeItem = parseInt($(this).data('slide-index'), 10) || 1;
+        // Style Two zoom control: open modal on the currently visible slide.
+        if ($(this).hasClass('mpwem_slider_style2_zoom')) {
+            let current = $(this).closest('.superSlider, .mpwem_slider_area').find('.sliderAllItem').first().find('.sliderItem.activeSlide').data('slide-index');
+            if (current) {
+                activeItem = parseInt(current, 10) || 1;
+            }
+        } else if ($(this).hasClass('sliderItem')) {
+            activeItem = parseInt($(this).data('slide-index'), 10) || 1;
+        }
+        let $popup = $(this).closest('.superSlider, .post_thumb').find('[data-popup="' + target + '"]').first();
+        if (!$popup.length) {
+            $popup = $(this).closest('.mpwem_slider_area').find('[data-popup="' + target + '"]').first();
+        }
+        if (!$popup.length) {
+            return;
+        }
+        $('body').addClass('noScroll');
+        $popup.addClass('in').promise().done(function () {
+            sliderItemActive($popup, activeItem);
             mpwem_load_bg_image();
         });
     });

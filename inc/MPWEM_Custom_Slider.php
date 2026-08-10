@@ -24,19 +24,29 @@
 				$has_slider  = $has_gallery && $type == 'slider' && sizeof( $image_ids ) > 1;
 				$showcase_visible  = MPWEM_Global_Function::get_slider_settings( 'showcase_visible', 'on' );
 				$showcase_position = MPWEM_Global_Function::get_slider_settings( 'showcase_position', 'right' );
+				$slider_style      = MPWEM_Global_Function::get_slider_settings( 'slider_style', 'style_1' );
+				$is_style_2        = ( 'style_2' === $slider_style );
+				// Style Two is full-bleed: no side showcase strip.
+				if ( $is_style_2 ) {
+					$showcase_visible = 'off';
+				}
+				$area_class = 'mpwem_slider_area mpwem_style is-loading';
+				if ( $is_style_2 ) {
+					$area_class .= ' is-style-2 mpwem-slider--style-2';
+				}
 					?>
-                    <div class="mpwem_slider_area mpwem_style is-loading" data-slider-ready="0">
+                    <div class="<?php echo esc_attr( $area_class ); ?>" data-slider-ready="0" data-slider-style="<?php echo esc_attr( $slider_style ); ?>">
 					<?php
 					$this->render_slider_skeleton( $has_slider, $showcase_visible, $showcase_position );
 					if ( $has_gallery ) {
 						if ( $has_slider ) {
 							$this->slider( $post_id, $image_ids );
 						} else {
-							$this->post_thumbnail( $image_ids[0] );
+							$this->post_thumbnail( $image_ids[0], $image_ids, $post_id, $is_style_2 );
 						}
 					} else {
 						$thumb_id  = get_post_thumbnail_id( $post_id );
-						$this->post_thumbnail($thumb_id);
+						$this->post_thumbnail( $thumb_id, $thumb_id ? array( $thumb_id ) : array(), $post_id, $is_style_2 );
 					}
 					?></div><?php
 			}
@@ -96,36 +106,33 @@
 			public function slider( $post_id, $image_ids ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					$showcase_position = MPWEM_Global_Function::get_slider_settings( 'showcase_position', 'right' );
-					$column_class      = $showcase_position == 'top' || $showcase_position == 'bottom' ? 'area_column' : '';
 					$slider_style      = MPWEM_Global_Function::get_slider_settings( 'slider_style', 'style_1' );
+					$is_style_2        = ( 'style_2' === $slider_style );
+					$column_class      = ( ! $is_style_2 && ( $showcase_position == 'top' || $showcase_position == 'bottom' ) ) ? 'area_column' : '';
 					?>
-                    <div class="superSlider placeholder_area fdColumn">
+                    <div class="superSlider placeholder_area fdColumn<?php echo $is_style_2 ? ' is-style-2 mpwem-slider--style-2' : ''; ?>">
                         <input type="hidden" name="slider_height_type" value="<?php echo esc_attr( MPWEM_Global_Function::get_slider_settings( 'slider_height', 'avg' ) ); ?>"/>
                         <div class="dFlex  <?php echo esc_attr( $column_class ); ?>">
 							<?php
-								if ( $showcase_position == 'top' || $showcase_position == 'left' ) {
+								if ( ! $is_style_2 && ( $showcase_position == 'top' || $showcase_position == 'left' ) ) {
 									$this->slider_showcase( $image_ids );
 								}
-								$this->slider_all_item( $image_ids );
-								if ( $showcase_position == 'bottom' || $showcase_position == 'right' ) {
+								$this->slider_all_item( $image_ids, '', $is_style_2 );
+								if ( ! $is_style_2 && ( $showcase_position == 'bottom' || $showcase_position == 'right' ) ) {
 									$this->slider_showcase( $image_ids );
 								}
-								if ( $slider_style == 'style_2' ) {
-									?>
-                                    <div class="_pab_top_left">
-                                        <button type="button" class="_button_default_bgWhite_text_default" data-target-popup="superSlider" data-slide-index="1">
-											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' ' . (is_array( $image_ids ) ? sizeof( $image_ids ) : 0) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
-                                        </button>
-                                    </div>
-									<?php
+								if ( $is_style_2 ) {
+									$this->style_2_controls( $image_ids );
 								}
 							?>
                         </div>
 						<?php
-							$slider_indicator = MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' );
-							$icon             = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
-							if ( $slider_indicator == 'on' && $icon == 'image' ) {
-								$this->image_indicator( $image_ids );
+							if ( ! $is_style_2 ) {
+								$slider_indicator = MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' );
+								$icon             = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
+								if ( $slider_indicator == 'on' && $icon == 'image' ) {
+									$this->image_indicator( $image_ids );
+								}
 							}
 						?>
 						<?php $this->slider_popup( $post_id, $image_ids ); ?>
@@ -133,18 +140,69 @@
 					<?php
 				}
 			}
-			public function post_thumbnail( $image_id = '' ) {
+
+			/**
+			 * Style Two controls: prev / next / zoom, pinned bottom-right.
+			 *
+			 * @param array $image_ids
+			 * @return void
+			 */
+			public function style_2_controls( $image_ids ) {
+				$count = is_array( $image_ids ) ? count( $image_ids ) : 0;
+				if ( $count < 1 ) {
+					return;
+				}
+				?>
+				<div class="mpwem_slider_style2_controls">
+					<?php if ( $count > 1 ) : ?>
+						<button type="button" class="mpwem_slider_style2_btn iconIndicator prevItem" aria-label="<?php esc_attr_e( 'Previous image', 'mage-eventpress' ); ?>">
+							<span class="fas fa-chevron-left" aria-hidden="true"></span>
+						</button>
+						<button type="button" class="mpwem_slider_style2_btn iconIndicator nextItem" aria-label="<?php esc_attr_e( 'Next image', 'mage-eventpress' ); ?>">
+							<span class="fas fa-chevron-right" aria-hidden="true"></span>
+						</button>
+					<?php endif; ?>
+					<button
+						type="button"
+						class="mpwem_slider_style2_btn mpwem_slider_style2_zoom"
+						data-target-popup="superSlider"
+						data-slide-index="1"
+						aria-label="<?php esc_attr_e( 'Zoom gallery', 'mage-eventpress' ); ?>"
+					>
+						<span class="fas fa-search-plus" aria-hidden="true"></span>
+					</button>
+				</div>
+				<?php
+			}
+			public function post_thumbnail( $image_id = '', $image_ids = array(), $post_id = 0, $is_style_2 = false ) {
 				$thumbnail = MPWEM_Global_Function::get_image_url( '', $image_id );
 				if ( $thumbnail ) {
+					$ids = ! empty( $image_ids ) ? (array) $image_ids : ( $image_id ? array( $image_id ) : array() );
 					?>
-                    <div class="post_thumb">
-	                    <?php //MPWEM_Custom_Layout::bg_image( '', $image_id ); ?>
-                        <img src="<?php echo esc_url($thumbnail); ?>" class="img" alt="">
+                    <div class="post_thumb<?php echo $is_style_2 ? ' is-style-2' : ''; ?>">
+                        <?php if ( $is_style_2 && $post_id && ! empty( $ids ) ) : ?>
+							<button
+								type="button"
+								class="mpwem_slider_style2_feature"
+								data-target-popup="superSlider"
+								data-slide-index="1"
+								aria-label="<?php esc_attr_e( 'Zoom gallery', 'mage-eventpress' ); ?>"
+							>
+								<img src="<?php echo esc_url( $thumbnail ); ?>" class="img" alt="<?php echo esc_attr( get_the_title( $post_id ) ); ?>">
+								<span class="mpwem_slider_style2_feature_zoom" aria-hidden="true"><span class="fas fa-search-plus"></span></span>
+							</button>
+							<?php $this->style_2_controls( $ids ); ?>
+							<div class="superSlider">
+								<?php $this->slider_popup( $post_id, $ids ); ?>
+							</div>
+						<?php else : ?>
+                        	<img src="<?php echo esc_url( $thumbnail ); ?>" class="img" alt="">
+						<?php endif; ?>
                     </div>
 					<?php
 				}
 			}
-			public function slider_all_item( $image_ids, $popup_slider_icon = '' ) {
+			public function slider_all_item( $image_ids, $popup_slider_icon = '', $is_style_2 = false ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					?>
                     <div class="sliderAllItem">
@@ -161,7 +219,7 @@
 						?>
 						<?php
 							$icon = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
-							if ( ( $icon == 'icon' || $popup_slider_icon == 'on' ) && is_array( $image_ids ) && sizeof( $image_ids ) > 1 ) {
+							if ( ! $is_style_2 && ( $icon == 'icon' || $popup_slider_icon == 'on' ) && is_array( $image_ids ) && sizeof( $image_ids ) > 1 ) {
 								$this->icon_indicator( $popup_slider_icon );
 							}
 						?>

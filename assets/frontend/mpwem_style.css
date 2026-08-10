@@ -9092,7 +9092,8 @@ div.mpwem_style [data-bg-image] {
 .mep_smart_theme .mpwem_slider_area.is-loading .superSlider .iconIndicator.nextItem,
 .mep_smart_theme .mpwem_slider_area.is-loading .superSlider .slideIndicator,
 .mep_smart_theme .mpwem_slider_area.is-loading .superSlider .sliderShowcase,
-.mep_smart_theme .mpwem_slider_area.is-loading .superSlider .sliderAllItem {
+.mep_smart_theme .mpwem_slider_area.is-loading .superSlider .sliderAllItem,
+.mep_smart_theme .mpwem_slider_area.is-loading .mpwem_slider_style2_controls {
 	opacity: 0 !important;
 	visibility: hidden !important;
 	pointer-events: none !important;
@@ -9100,9 +9101,22 @@ div.mpwem_style [data-bg-image] {
 
 .mep_smart_theme .mpwem_slider_area.is-ready .superSlider .iconIndicator,
 .mep_smart_theme .mpwem_slider_area.is-ready .superSlider .sliderAllItem,
-.mep_smart_theme .mpwem_slider_area.is-ready .superSlider .sliderShowcase {
+.mep_smart_theme .mpwem_slider_area.is-ready .superSlider .sliderShowcase,
+.mep_smart_theme .mpwem_slider_area.is-ready .mpwem_slider_style2_controls {
 	opacity: 1;
 	visibility: visible;
+}
+
+/* Style Two: feature image fills the hero; no showcase strip */
+.mep_smart_theme .mpwem_slider_area.is-style-2 .superSlider .sliderAllItem {
+	width: 100% !important;
+	min-width: 100% !important;
+}
+.mep_smart_theme .mpwem_slider_area.is-style-2 .superSlider .sliderShowcase {
+	display: none !important;
+}
+.mep_smart_theme .smart_theme_hero .mpwem_slider_area.is-style-2 .mpwem_slider_style2_controls {
+	z-index: 12;
 }
 
 /* Slider skeleton — mirrors main slide + showcase thumbs */

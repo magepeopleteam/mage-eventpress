@@ -12,7 +12,6 @@
 	--mep-card-soft: #f4f4f6;
 	--mep-card-shadow: 0 1px 2px rgba(17, 17, 19, 0.04);
 	--mep-card-shadow-hover: 0 16px 40px rgba(17, 17, 19, 0.1);
-	--mep-card-accent: var(--color_theme, #111113);
 	max-width: 1240px;
 	margin: 0 auto;
 }
@@ -164,7 +163,7 @@
 
 .list_with_filter_section.mep_event_list .mep-ev-start-date .mep-month {
 	background: transparent;
-	color: var(--mep-card-accent);
+	color: var(--mep-card-muted);
 	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 0.06em;
@@ -284,7 +283,7 @@
 }
 
 .list_with_filter_section.mep_event_list .filter_item:hover h2.mep_list_title {
-	color: var(--mep-card-accent);
+	color: var(--mep-card-text);
 }
 
 .list_with_filter_section.mep_event_list .list_content {
@@ -318,7 +317,7 @@
 }
 
 .list_with_filter_section.mep_event_list .list_content.upcomming_date_only_only {
-	color: var(--mep-card-accent);
+	color: var(--mep-card-text);
 	font-weight: 600;
 	font-size: 12px;
 	letter-spacing: 0.02em;
@@ -423,7 +422,7 @@
 	font-size: 12px;
 	font-weight: 700;
 	background: var(--mep-card-soft);
-	color: var(--mep-card-accent);
+	color: var(--mep-card-text);
 	border: 1px solid transparent;
 }
 
@@ -579,27 +578,248 @@
 
 /* ── Filters / search chrome ────────────────────────────────────── */
 
-.list_with_filter_section.mep_event_list .sort_code_search_box,
 .list_with_filter_section.mep_event_list .search_sort_code_area {
-	border: 1px solid var(--mep-card-border);
-	border-radius: 14px;
-	background: var(--mep-card-bg);
-	padding: 12px;
-	gap: 10px;
+	margin: 0 0 22px;
+	border: none;
+	padding: 0;
+	background: transparent;
 }
 
-.list_with_filter_section.mep_event_list .formControl {
-	border: 1px solid var(--mep-card-border) !important;
-	border-radius: 10px !important;
-	box-shadow: none !important;
-	height: 44px !important;
-	background: #fff;
-	font-size: 14px;
+.list_with_filter_section.mep_event_list .search_sort_code,
+.list_with_filter_section.mep_event_list .sort_code_search_box,
+.list_with_filter_section.mep_event_list .sort_code_search_box.mep_filter_bar {
+	display: block;
+	border: none;
+	padding: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_bar {
+	position: relative;
+	border: 1px solid rgba(17, 17, 19, 0.06);
+	border-radius: 22px;
+	background:
+		radial-gradient(120% 140% at 0% 0%, rgba(255, 255, 255, 0.95) 0%, rgba(248, 248, 250, 0.92) 45%, rgba(244, 244, 246, 0.96) 100%);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.8) inset,
+		0 10px 30px rgba(17, 17, 19, 0.05);
+	padding: 18px 18px 16px;
+	overflow: visible;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.list_with_filter_section.mep_event_list .filter_input_area,
+.list_with_filter_section.mep_event_list .mep_filter_bar__fields,
+.list_with_filter_section.mep_event_list .flexEqual.filter_input_area {
+	display: grid !important;
+	grid-template-columns: minmax(240px, 1.55fr) repeat(auto-fit, minmax(148px, 1fr));
+	gap: 14px 12px;
+	align-items: end;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	border: none !important;
+	background: transparent;
+}
+
+.list_with_filter_section.mep_event_list .filter_input_area > *,
+.list_with_filter_section.mep_event_list .mep_filter_bar__fields > * {
+	flex: none !important;
+	border: none !important;
+	border-right: none !important;
+	min-width: 0;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field {
+	display: flex !important;
+	flex-direction: column;
+	gap: 7px;
+	margin: 0;
+	width: 100%;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field__label {
+	display: block;
+	padding-left: 2px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #8a8a96;
+	line-height: 1.2;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field__control {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field__icon {
+	position: absolute;
+	left: 15px;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	color: #93939f;
+	pointer-events: none;
+	font-size: 13px;
+	line-height: 1;
+	transition: color 160ms ease;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field:focus-within .mep_filter_field__icon {
+	color: var(--mep-card-text);
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field--search .formControl,
+.list_with_filter_section.mep_event_list .mep_filter_field--date .formControl {
+	padding-left: 42px !important;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field__control--select::after {
+	content: "";
+	position: absolute;
+	right: 16px;
+	top: 50%;
+	width: 7px;
+	height: 7px;
+	border-right: 1.5px solid #93939f;
+	border-bottom: 1.5px solid #93939f;
+	transform: translateY(-62%) rotate(45deg);
+	pointer-events: none;
+	z-index: 2;
+	transition: border-color 160ms ease;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field:focus-within .mep_filter_field__control--select::after {
+	border-color: var(--mep-card-text);
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field__control--select .formControl {
+	appearance: none;
+	-webkit-appearance: none;
+	padding-right: 38px !important;
+	cursor: pointer;
+}
+
+.list_with_filter_section.mep_event_list .search_sort_code_area .formControl,
+.list_with_filter_section.mep_event_list .mep_filter_bar .formControl {
+	display: block !important;
+	width: 100% !important;
+	height: 48px !important;
+	min-height: 48px !important;
+	margin: 0 !important;
+	padding: 0 16px !important;
+	border: 1px solid transparent !important;
+	border-radius: 14px !important;
+	background: rgba(255, 255, 255, 0.88) !important;
+	box-shadow:
+		0 0 0 1px rgba(17, 17, 19, 0.06),
+		0 1px 2px rgba(17, 17, 19, 0.03) !important;
+	color: var(--mep-card-text) !important;
+	font-size: 14px !important;
+	font-weight: 500;
+	line-height: 1.3 !important;
+	transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field--search .formControl {
+	padding-left: 42px !important;
+	background: #fff !important;
+	box-shadow:
+		0 0 0 1px rgba(17, 17, 19, 0.07),
+		0 8px 18px rgba(17, 17, 19, 0.05) !important;
+	font-weight: 550;
+}
+
+.list_with_filter_section.mep_event_list .mep_filter_field--date .formControl {
+	padding-left: 42px !important;
+}
+
+.list_with_filter_section.mep_event_list .search_sort_code_area .formControl::placeholder {
+	color: #9c9ca8;
+	font-weight: 400;
+}
+
+.list_with_filter_section.mep_event_list .search_sort_code_area .formControl:hover {
+	background: #fff !important;
+	box-shadow:
+		0 0 0 1px rgba(17, 17, 19, 0.1),
+		0 4px 12px rgba(17, 17, 19, 0.04) !important;
+}
+
+.list_with_filter_section.mep_event_list .search_sort_code_area .formControl:focus {
+	outline: none;
+	background: #fff !important;
+	border-color: transparent !important;
+	box-shadow:
+		0 0 0 1.5px rgba(17, 17, 19, 0.22),
+		0 0 0 5px rgba(17, 17, 19, 0.06),
+		0 8px 20px rgba(17, 17, 19, 0.06) !important;
+}
+
+.list_with_filter_section.mep_event_list .search_sort_code_counts,
+.list_with_filter_section.mep_event_list .mep_filter_counts {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin: 12px 4px 0;
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: var(--mep-card-soft);
+	font-size: 12px;
+	color: var(--mep-card-muted);
+	text-align: left;
+	line-height: 1.3;
+}
+
+.list_with_filter_section.mep_event_list .search_sort_code_counts strong {
+	color: var(--mep-card-text);
+	font-weight: 700;
 }
 
 .list_with_filter_section.mep_event_list [class*="defaultButton"] {
 	border-radius: 999px;
 	font-weight: 600;
+}
+
+@media (max-width: 900px) {
+	.list_with_filter_section.mep_event_list .filter_input_area,
+	.list_with_filter_section.mep_event_list .mep_filter_bar__fields,
+	.list_with_filter_section.mep_event_list .flexEqual.filter_input_area {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.list_with_filter_section.mep_event_list .mep_filter_field--search {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (max-width: 560px) {
+	.list_with_filter_section.mep_event_list .mep_filter_bar {
+		padding: 14px;
+		border-radius: 18px;
+	}
+
+	.list_with_filter_section.mep_event_list .filter_input_area,
+	.list_with_filter_section.mep_event_list .mep_filter_bar__fields,
+	.list_with_filter_section.mep_event_list .flexEqual.filter_input_area {
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+
+	.list_with_filter_section.mep_event_list .search_sort_code_area .formControl,
+	.list_with_filter_section.mep_event_list .mep_filter_bar .formControl {
+		height: 46px !important;
+		min-height: 46px !important;
+	}
 }
 
 /* ── Pagination ─────────────────────────────────────────────────── */

@@ -137,36 +137,46 @@
                 <div class="mpwem_style">
                     <div class="search_sort_code_area">
                         <div class="search_sort_code">
-                            <div class="sort_code_search_box defaultLayout_xs">
-                                <div class="flexEqual filter_input_area">
+                            <div class="sort_code_search_box mep_filter_bar">
+                                <div class="flexEqual filter_input_area mep_filter_bar__fields">
 									<?php
 										if ( $params['title-filter'] == 'yes' ) { ?>
-                                            <label>
-                                                <input type="text" name="filter_with_title" class="formControl" placeholder="<?php esc_html_e( 'Search by Title', 'mage-eventpress' ); ?>">
+                                            <label class="mep_filter_field mep_filter_field--search">
+                                                <span class="mep_filter_field__label"><?php esc_html_e( 'Search', 'mage-eventpress' ); ?></span>
+                                                <span class="mep_filter_field__control">
+                                                    <span class="mep_filter_field__icon" aria-hidden="true"><i class="fas fa-search"></i></span>
+                                                    <input type="text" name="filter_with_title" class="formControl" placeholder="<?php esc_attr_e( 'Search by title…', 'mage-eventpress' ); ?>">
+                                                </span>
                                             </label>
 										<?php }
 										$category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat', 'name', true, true );
 										if ( $params['category-filter'] == 'yes' && is_array( $category_lists ) && sizeof( $category_lists ) > 0 ) {
 											?>
-                                            <label>
-                                                <select class="formControl" name="filter_with_category">
-                                                    <option selected value=""><?php esc_html_e( 'Select Category', 'mage-eventpress' ); ?></option>
-													<?php foreach ( $category_lists as $category ) { ?>
-                                                        <option value="<?php echo esc_attr( $category ); ?>"><?php echo esc_html( $category ); ?></option>
-													<?php } ?>
-                                                </select>
+                                            <label class="mep_filter_field">
+                                                <span class="mep_filter_field__label"><?php esc_html_e( 'Category', 'mage-eventpress' ); ?></span>
+                                                <span class="mep_filter_field__control mep_filter_field__control--select">
+                                                    <select class="formControl" name="filter_with_category">
+                                                        <option selected value=""><?php esc_html_e( 'All Categories', 'mage-eventpress' ); ?></option>
+														<?php foreach ( $category_lists as $category ) { ?>
+                                                            <option value="<?php echo esc_attr( $category ); ?>"><?php echo esc_html( $category ); ?></option>
+														<?php } ?>
+                                                    </select>
+                                                </span>
                                             </label>
 										<?php }
 										$organizer_lists = MPWEM_Global_Function::get_all_term_data( 'mep_org', 'name', true, true );
 										if ( $params['organizer-filter'] == 'yes' && is_array( $organizer_lists ) && sizeof( $organizer_lists ) > 0 ) {
 											?>
-                                            <label>
-                                                <select class="formControl" name="filter_with_organizer">
-                                                    <option selected value=""><?php esc_html_e( 'Select Organizer', 'mage-eventpress' ); ?></option>
-													<?php foreach ( $organizer_lists as $organizer ) { ?>
-                                                        <option value="<?php echo esc_attr( $organizer ); ?>"><?php echo esc_html( $organizer ); ?></option>
-													<?php } ?>
-                                                </select>
+                                            <label class="mep_filter_field">
+                                                <span class="mep_filter_field__label"><?php esc_html_e( 'Organizer', 'mage-eventpress' ); ?></span>
+                                                <span class="mep_filter_field__control mep_filter_field__control--select">
+                                                    <select class="formControl" name="filter_with_organizer">
+                                                        <option selected value=""><?php esc_html_e( 'All Organizers', 'mage-eventpress' ); ?></option>
+														<?php foreach ( $organizer_lists as $organizer ) { ?>
+                                                            <option value="<?php echo esc_attr( $organizer ); ?>"><?php echo esc_html( $organizer ); ?></option>
+														<?php } ?>
+                                                    </select>
+                                                </span>
                                             </label>
 										<?php }
 										if ( $params['state-filter'] == 'yes' ) {
@@ -184,13 +194,16 @@
 											sort( $states );
 											if ( ! empty( $states ) ) {
 												?>
-                                                <label>
-                                                    <select class="formControl" name="filter_with_state">
-                                                        <option selected value=""><?php esc_html_e( 'Select State', 'mage-eventpress' ); ?></option>
-														<?php foreach ( $states as $state ) { ?>
-                                                            <option value="<?php echo esc_attr( $state ); ?>"><?php echo esc_html( $state ); ?></option>
-														<?php } ?>
-                                                    </select>
+                                                <label class="mep_filter_field">
+                                                    <span class="mep_filter_field__label"><?php esc_html_e( 'State', 'mage-eventpress' ); ?></span>
+                                                    <span class="mep_filter_field__control mep_filter_field__control--select">
+                                                        <select class="formControl" name="filter_with_state">
+                                                            <option selected value=""><?php esc_html_e( 'All States', 'mage-eventpress' ); ?></option>
+															<?php foreach ( $states as $state ) { ?>
+                                                                <option value="<?php echo esc_attr( $state ); ?>"><?php echo esc_html( $state ); ?></option>
+															<?php } ?>
+                                                        </select>
+                                                    </span>
                                                 </label>
 												<?php
 											}
@@ -220,28 +233,35 @@
 											} );
 											if ( ! empty( $cities ) ) {
 												?>
-                                                <label>
-                                                    <select class="formControl" name="filter_with_city">
-                                                        <option selected value=""><?php esc_html_e( 'Select City', 'mage-eventpress' ); ?></option>
-														<?php foreach ( $cities as $city_data ) { ?>
-                                                            <option value="<?php echo esc_attr( $city_data['city'] ); ?>"><?php echo esc_html( $city_data['display'] ); ?></option>
-														<?php } ?>
-                                                    </select>
+                                                <label class="mep_filter_field">
+                                                    <span class="mep_filter_field__label"><?php esc_html_e( 'City', 'mage-eventpress' ); ?></span>
+                                                    <span class="mep_filter_field__control mep_filter_field__control--select">
+                                                        <select class="formControl" name="filter_with_city">
+                                                            <option selected value=""><?php esc_html_e( 'All Cities', 'mage-eventpress' ); ?></option>
+															<?php foreach ( $cities as $city_data ) { ?>
+                                                                <option value="<?php echo esc_attr( $city_data['city'] ); ?>"><?php echo esc_html( $city_data['display'] ); ?></option>
+															<?php } ?>
+                                                        </select>
+                                                    </span>
                                                 </label>
 												<?php
 											}
 											wp_reset_postdata();
 										}
 										if ( $params['date-filter'] == 'yes' ) { ?>
-                                            <label>
-                                                <input type="date" name="filter_with_date" class="formControl">
+                                            <label class="mep_filter_field mep_filter_field--date">
+                                                <span class="mep_filter_field__label"><?php esc_html_e( 'Date', 'mage-eventpress' ); ?></span>
+                                                <span class="mep_filter_field__control">
+                                                    <span class="mep_filter_field__icon" aria-hidden="true"><i class="far fa-calendar-alt"></i></span>
+                                                    <input type="date" name="filter_with_date" class="formControl">
+                                                </span>
                                             </label>
 										<?php } ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p class="textGray _text_center search_sort_code_counts">
+                    <p class="textGray _text_center search_sort_code_counts mep_filter_counts">
 						<?php esc_html_e( 'Showing', 'mage-eventpress' ); ?>
                         <strong class="qty_count"><?php echo esc_html( $params['show'] == - 1 ? $loop->post_count : $params['show'] ); ?></strong>
 						<?php esc_html_e( 'of', 'mage-eventpress' ); ?>

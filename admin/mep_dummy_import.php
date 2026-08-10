@@ -1369,6 +1369,13 @@
 							7 => ['name' => 'Press Conference Event'],
 							8 => ['name' => 'Reunion Event'],
 						],
+						'mep_tag' => [
+							0 => ['name' => 'Music'],
+							1 => ['name' => 'Festival'],
+							2 => ['name' => 'Concert'],
+							3 => ['name' => 'Networking'],
+							4 => ['name' => 'Workshop'],
+						],
 						'mep_org' => [
 							0 => ['name' => 'Best Buy Ltd'],
 							1 => [
@@ -2406,12 +2413,18 @@
 									0 => array(
 										'taxonomy_name' => 'mep_cat',
 										'terms' => array(
-											0 => 'Business Event',
-											1 => 'Cooking Class',
-											2 => 'Home Event',
+											0 => 'Live Event',
+											1 => 'Home Event',
 										)
 									),
 									1 => array(
+										'taxonomy_name' => 'mep_tag',
+										'terms' => array(
+											0 => 'Music',
+											1 => 'Concert',
+										)
+									),
+									2 => array(
 										'taxonomy_name' => 'mep_org',
 										'terms' => array(
 											0 => 'Duperstar LLC',
@@ -2591,11 +2604,18 @@
 									0 => array(
 										'taxonomy_name' => 'mep_cat',
 										'terms' => array(
-											0 => 'Home Event',
+											0 => 'Live Event',
 											1 => 'Indoor Games',
 										)
 									),
 									1 => array(
+										'taxonomy_name' => 'mep_tag',
+										'terms' => array(
+											0 => 'Music',
+											1 => 'Festival',
+										)
+									),
+									2 => array(
 										'taxonomy_name' => 'mep_org',
 										'terms' => array(
 											0 => 'Cooking Studio',
@@ -3003,6 +3023,493 @@
 									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									
+									'mep_total_seat_left' => '0',
+								],
+							],
+							8 => [
+								'name' => 'Summer Music Festival & Outdoor Concert',
+								'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+								'taxonomy_terms' => [
+									0 => array(
+										'taxonomy_name' => 'mep_cat',
+										'terms' => array(
+											0 => 'Live Event',
+											1 => 'Other Event',
+										)
+									),
+									1 => array(
+										'taxonomy_name' => 'mep_tag',
+										'terms' => array(
+											0 => 'Music',
+											1 => 'Festival',
+											2 => 'Concert',
+										)
+									),
+									2 => array(
+										'taxonomy_name' => 'mep_org',
+										'terms' => array(
+											0 => 'MyPeople Inc',
+											1 => 'Duperstar LLC',
+										)
+									)
+								],
+								'post_data' => [
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-11.jpg',
+									'mep_event_type' => 'off',
+									'mp_event_virtual_type_des' => '',
+									'mep_org_address' => '0',
+									'mep_location_venue' => 'Central Park Great Lawn, New York, NY, USA',
+									'mep_street' => '',
+									'mep_city' => '',
+									'mep_state' => '',
+									'mep_postcode' => '',
+									'mep_country' => '',
+									'mep_sgm' => '1',
+									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
+									'mep_show_advance_col_status' => 'off',
+									'mep_event_ticket_type' => array(
+										0 => array(
+											'option_name_t' => 'General Admission',
+											'option_details_t' => 'Access to all outdoor stages and festival grounds.',
+											'option_price_t' => '75',
+											'option_qty_t' => '500',
+											'option_rsv_t' => '0',
+											'option_default_qty_t' => '0',
+											'option_qty_t_type' => 'inputbox',
+											'option_sale_end_date' => '',
+											'option_sale_end_time' => '',
+											'option_sale_end_date_t' => date('Y-m-d', strtotime('+45 days', time())) . ' 19:00:00',
+										),
+										1 => array(
+											'option_name_t' => 'VIP Front Stage',
+											'option_details_t' => 'Front-stage viewing area with complimentary drinks.',
+											'option_price_t' => '180',
+											'option_qty_t' => '150',
+											'option_rsv_t' => '0',
+											'option_default_qty_t' => '0',
+											'option_qty_t_type' => 'inputbox',
+											'option_sale_end_date' => '',
+											'option_sale_end_time' => '',
+											'option_sale_end_date_t' => date('Y-m-d', strtotime('+45 days', time())) . ' 19:00:00',
+										),
+									),
+									'mep_events_extra_prices' => array(
+										0 => array(
+											'option_name' => 'Festival T-Shirt',
+											'option_price' => '35',
+											'option_qty' => '200',
+											'option_qty_type' => 'inputbox',
+										),
+										1 => array(
+											'option_name' => 'Picnic Blanket',
+											'option_price' => '25',
+											'option_qty' => '100',
+											'option_qty_type' => 'inputbox',
+										),
+									),
+									'mep_enable_custom_dt_format' => 'off',
+									'mep_event_date_format' => 'F j, Y',
+									'mep_event_time_format' => 'g:i a',
+									'mep_event_custom_date_format' => 'F j, Y',
+									'mep_custom_event_time_format' => 'g:i a',
+									'mep_time_zone_display' => 'no',
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+20 days', time())),
+									'event_start_time' => $start_time = '14:00',
+									'event_end_date' => $end_date = date('Y-m-d', strtotime('+22 days', time())),
+									'event_end_time' => $end_time = '23:00',
+									'event_start_datetime' => $start_date . ' ' . $start_time . ':00',
+									'event_end_datetime' => $end_date . ' ' . $end_time . ':00',
+									'event_expire_datetime' => $end_date . ' ' . $end_time . ':00',
+									'_sku' => '',
+									'mep_show_end_datetime' => 'yes',
+									'mep_available_seat' => 'on',
+									'mep_reset_status' => 'off',
+									'mep_member_only_event' => 'for_all',
+									'mep_member_only_user_role' => array(0 => 'all'),
+									'mep_rich_text_status' => 'enable',
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									'mep_related_event_status' => 'on',
+									'related_section_label' => 'Releted Events',
+									'event_list' => array(),
+									'mep_event_template' => 'default-theme.php',
+									'mep_faq_description' => 'Explore essential details and clear up any doubts about the event.',
+									'mep_event_faq' => array(
+										0 => array(
+											'mep_faq_title' => 'Who can attend this event?',
+											'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+										),
+										1 => array(
+											'mep_faq_title' => 'What should I bring?',
+											'mep_faq_content' => 'Bring sunscreen, water, and a picnic blanket. Outside food is welcome in designated areas.',
+										),
+									),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => 'Gates Open',
+											'mep_day_time' => '2:00 PM - 4:00 PM',
+											'mep_day_content' => 'Doors open, vendor booths, soundcheck on main stage.',
+										],
+										[
+											'mep_day_title' => 'Main Stage Performances',
+											'mep_day_time' => '4:00 PM - 10:00 PM',
+											'mep_day_content' => 'Live bands, DJ sets, and special guest appearances.',
+										],
+										[
+											'mep_day_title' => 'Closing Fireworks',
+											'mep_day_time' => '10:00 PM - 11:00 PM',
+											'mep_day_content' => 'Festival finale with fireworks and final encore.',
+										],
+									),
+									'mep_gallery_images' => Array(),
+									'mep_list_thumbnail' => '',
+									'mep_total_seat_left' => '0',
+								],
+							],
+							9 => [
+								'name' => 'Jazz Night & Acoustic Sessions',
+								'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+								'taxonomy_terms' => [
+									0 => array(
+										'taxonomy_name' => 'mep_cat',
+										'terms' => array(
+											0 => 'Live Event',
+											1 => 'Indoor Games',
+										)
+									),
+									1 => array(
+										'taxonomy_name' => 'mep_tag',
+										'terms' => array(
+											0 => 'Music',
+											1 => 'Concert',
+										)
+									),
+									2 => array(
+										'taxonomy_name' => 'mep_org',
+										'terms' => array(
+											0 => 'Cooking Studio',
+											1 => 'RTC Consultants LLC',
+										)
+									)
+								],
+								'post_data' => [
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-12.jpg',
+									'mep_event_type' => 'off',
+									'mp_event_virtual_type_des' => '',
+									'mep_org_address' => '0',
+									'mep_location_venue' => 'Blue Note Jazz Club, Greenwich Village, New York, NY, USA',
+									'mep_street' => '',
+									'mep_city' => '',
+									'mep_state' => '',
+									'mep_postcode' => '',
+									'mep_country' => '',
+									'mep_sgm' => '1',
+									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
+									'mep_show_advance_col_status' => 'off',
+									'mep_event_ticket_type' => array(
+										0 => array(
+											'option_name_t' => 'Standard Seat',
+											'option_details_t' => 'Reserved seating for the evening jazz program.',
+											'option_price_t' => '55',
+											'option_qty_t' => '120',
+											'option_rsv_t' => '0',
+											'option_default_qty_t' => '0',
+											'option_qty_t_type' => 'inputbox',
+											'option_sale_end_date' => '',
+											'option_sale_end_time' => '',
+											'option_sale_end_date_t' => date('Y-m-d', strtotime('+30 days', time())) . ' 21:00:00',
+										),
+										1 => array(
+											'option_name_t' => 'Premium Table',
+											'option_details_t' => 'Table seating near the stage with one complimentary drink.',
+											'option_price_t' => '120',
+											'option_qty_t' => '40',
+											'option_rsv_t' => '0',
+											'option_default_qty_t' => '0',
+											'option_qty_t_type' => 'inputbox',
+											'option_sale_end_date' => '',
+											'option_sale_end_time' => '',
+											'option_sale_end_date_t' => date('Y-m-d', strtotime('+30 days', time())) . ' 21:00:00',
+										),
+									),
+									'mep_events_extra_prices' => array(
+										0 => array(
+											'option_name' => 'Welcome Drink',
+											'option_price' => '15',
+											'option_qty' => '100',
+											'option_qty_type' => 'inputbox',
+										),
+										1 => array(
+											'option_name' => 'Artist Meet & Greet',
+											'option_price' => '40',
+											'option_qty' => '30',
+											'option_qty_type' => 'inputbox',
+										),
+									),
+									'mep_enable_custom_dt_format' => 'off',
+									'mep_event_date_format' => 'F j, Y',
+									'mep_event_time_format' => 'g:i a',
+									'mep_event_custom_date_format' => 'F j, Y',
+									'mep_custom_event_time_format' => 'g:i a',
+									'mep_time_zone_display' => 'no',
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+28 days', time())),
+									'event_start_time' => $start_time = '19:00',
+									'event_end_date' => $end_date = date('Y-m-d', strtotime('+28 days', time())),
+									'event_end_time' => $end_time = '23:00',
+									'event_start_datetime' => $start_date . ' ' . $start_time . ':00',
+									'event_end_datetime' => $end_date . ' ' . $end_time . ':00',
+									'event_expire_datetime' => $end_date . ' ' . $end_time . ':00',
+									'_sku' => '',
+									'mep_show_end_datetime' => 'yes',
+									'mep_available_seat' => 'on',
+									'mep_reset_status' => 'off',
+									'mep_member_only_event' => 'for_all',
+									'mep_member_only_user_role' => array(0 => 'all'),
+									'mep_rich_text_status' => 'enable',
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									'mep_related_event_status' => 'on',
+									'related_section_label' => 'Releted Events',
+									'event_list' => array(),
+									'mep_event_template' => 'default-theme.php',
+									'mep_faq_description' => 'Explore essential details and clear up any doubts about the event.',
+									'mep_event_faq' => array(
+										0 => array(
+											'mep_faq_title' => 'Is there a dress code?',
+											'mep_faq_content' => 'Smart casual is recommended. Formal attire is welcome but not required.',
+										),
+										1 => array(
+											'mep_faq_title' => 'Are food and drinks available?',
+											'mep_faq_content' => 'A full bar and light dinner menu will be available throughout the evening.',
+										),
+									),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => 'Doors & Seating',
+											'mep_day_time' => '7:00 PM - 7:30 PM',
+											'mep_day_content' => 'Check-in, table seating, and welcome cocktails.',
+										],
+										[
+											'mep_day_title' => 'Acoustic Opening Set',
+											'mep_day_time' => '7:30 PM - 8:30 PM',
+											'mep_day_content' => 'Intimate acoustic performances by featured artists.',
+										],
+										[
+											'mep_day_title' => 'Headliner Jazz Ensemble',
+											'mep_day_time' => '9:00 PM - 11:00 PM',
+											'mep_day_content' => 'Main jazz ensemble with guest soloists and encore.',
+										],
+									),
+									'mep_gallery_images' => Array(),
+									'mep_list_thumbnail' => '',
+									'mep_total_seat_left' => '0',
+								],
+							],
+							10 => [
+								'name' => 'Electronic Dance Music Carnival',
+								'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+								'taxonomy_terms' => [
+									0 => array(
+										'taxonomy_name' => 'mep_cat',
+										'terms' => array(
+											0 => 'Live Event',
+											1 => 'Online Event',
+										)
+									),
+									1 => array(
+										'taxonomy_name' => 'mep_tag',
+										'terms' => array(
+											0 => 'Music',
+											1 => 'Festival',
+										)
+									),
+									2 => array(
+										'taxonomy_name' => 'mep_org',
+										'terms' => array(
+											0 => 'Myamazon Inc',
+											1 => 'Doogle Inc',
+										)
+									)
+								],
+								'post_data' => [
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-1.jpg',
+									'mep_event_type' => 'off',
+									'mp_event_virtual_type_des' => '',
+									'mep_org_address' => '0',
+									'mep_location_venue' => 'Ultra Beach Arena, Miami, FL, USA',
+									'mep_street' => '',
+									'mep_city' => '',
+									'mep_state' => '',
+									'mep_postcode' => '',
+									'mep_country' => '',
+									'mep_sgm' => '1',
+									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
+									'mep_show_advance_col_status' => 'off',
+									'mep_event_ticket_type' => array(
+										0 => array(
+											'option_name_t' => 'GA Dance Floor',
+											'option_details_t' => 'General admission access to the main dance floor and stages.',
+											'option_price_t' => '90',
+											'option_qty_t' => '800',
+											'option_rsv_t' => '0',
+											'option_default_qty_t' => '0',
+											'option_qty_t_type' => 'inputbox',
+											'option_sale_end_date' => '',
+											'option_sale_end_time' => '',
+											'option_sale_end_date_t' => date('Y-m-d', strtotime('+55 days', time())) . ' 23:00:00',
+										),
+										1 => array(
+											'option_name_t' => 'VIP Lounge',
+											'option_details_t' => 'VIP lounge access, express entry, and complimentary drink tokens.',
+											'option_price_t' => '220',
+											'option_qty_t' => '200',
+											'option_rsv_t' => '0',
+											'option_default_qty_t' => '0',
+											'option_qty_t_type' => 'inputbox',
+											'option_sale_end_date' => '',
+											'option_sale_end_time' => '',
+											'option_sale_end_date_t' => date('Y-m-d', strtotime('+55 days', time())) . ' 23:00:00',
+										),
+										2 => array(
+											'option_name_t' => 'Backstage Pass',
+											'option_details_t' => 'Backstage artist area access with photo opportunity.',
+											'option_price_t' => '350',
+											'option_qty_t' => '50',
+											'option_rsv_t' => '0',
+											'option_default_qty_t' => '0',
+											'option_qty_t_type' => 'inputbox',
+											'option_sale_end_date' => '',
+											'option_sale_end_time' => '',
+											'option_sale_end_date_t' => date('Y-m-d', strtotime('+55 days', time())) . ' 23:00:00',
+										),
+									),
+									'mep_events_extra_prices' => array(
+										0 => array(
+											'option_name' => 'Glow Stick Pack',
+											'option_price' => '12',
+											'option_qty' => '300',
+											'option_qty_type' => 'inputbox',
+										),
+										1 => array(
+											'option_name' => 'Event Hoodie',
+											'option_price' => '55',
+											'option_qty' => '150',
+											'option_qty_type' => 'inputbox',
+										),
+										2 => array(
+											'option_name' => 'Hydration Pack',
+											'option_price' => '20',
+											'option_qty' => '200',
+											'option_qty_type' => 'inputbox',
+										),
+									),
+									'mep_enable_custom_dt_format' => 'off',
+									'mep_event_date_format' => 'F j, Y',
+									'mep_event_time_format' => 'g:i a',
+									'mep_event_custom_date_format' => 'F j, Y',
+									'mep_custom_event_time_format' => 'g:i a',
+									'mep_time_zone_display' => 'no',
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+40 days', time())),
+									'event_start_time' => $start_time = '16:00',
+									'event_end_date' => $end_date = date('Y-m-d', strtotime('+41 days', time())),
+									'event_end_time' => $end_time = '02:00',
+									'event_start_datetime' => $start_date . ' ' . $start_time . ':00',
+									'event_end_datetime' => $end_date . ' ' . $end_time . ':00',
+									'event_expire_datetime' => $end_date . ' ' . $end_time . ':00',
+									'_sku' => '',
+									'mep_show_end_datetime' => 'yes',
+									'mep_available_seat' => 'on',
+									'mep_reset_status' => 'off',
+									'mep_member_only_event' => 'for_all',
+									'mep_member_only_user_role' => array(0 => 'all'),
+									'mep_rich_text_status' => 'enable',
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									'mep_related_event_status' => 'on',
+									'related_section_label' => 'Releted Events',
+									'event_list' => array(),
+									'mep_event_template' => 'default-theme.php',
+									'mep_faq_description' => 'Explore essential details and clear up any doubts about the event.',
+									'mep_event_faq' => array(
+										0 => array(
+											'mep_faq_title' => 'What is the age requirement?',
+											'mep_faq_content' => 'Attendees must be 18+ with a valid photo ID at the entrance.',
+										),
+										1 => array(
+											'mep_faq_title' => 'Is re-entry allowed?',
+											'mep_faq_content' => 'Re-entry is available with a valid wristband scanned at the gate.',
+										),
+									),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => 'Opening Sets',
+											'mep_day_time' => '4:00 PM - 7:00 PM',
+											'mep_day_content' => 'Warm-up DJs across beach and main stages.',
+										],
+										[
+											'mep_day_title' => 'Peak Hours',
+											'mep_day_time' => '7:00 PM - 12:00 AM',
+											'mep_day_content' => 'Headliner DJ performances with full production lights and visuals.',
+										],
+										[
+											'mep_day_title' => 'After Hours',
+											'mep_day_time' => '12:00 AM - 2:00 AM',
+											'mep_day_content' => 'Closing carnival set and late-night chill zone.',
+										],
+									),
+									'mep_gallery_images' => Array(),
+									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
 							],

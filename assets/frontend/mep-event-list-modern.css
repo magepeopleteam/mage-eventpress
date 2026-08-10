@@ -130,7 +130,7 @@
 	position: absolute;
 	top: 14px;
 	right: 14px;
-	z-index: 12;
+	z-index: 13;
 	background: rgba(255, 255, 255, 0.95);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
@@ -142,7 +142,7 @@
 	text-transform: uppercase;
 	color: var(--mep-card-text);
 	line-height: 1.2;
-	max-width: calc(100% - 92px);
+	max-width: min(46%, 140px);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -179,16 +179,67 @@
 	color: var(--mep-card-text);
 }
 
-/* Ribbons */
-.list_with_filter_section.mep_event_list .mepev-ribbons {
+/*
+ * Ribbons sit bottom-right on the image so they never collide with
+ * the date badge (top-left) or category chip (top-right).
+ */
+.list_with_filter_section.mep_event_list .mepev-ribbons,
+.list_with_filter_section.mep_event_list .mep_list_thumb .mepev-ribbons,
+.list_with_filter_section.mep_event_list div.mep-event-list-loop .mepev-ribbons {
+	position: absolute;
+	top: auto !important;
+	left: auto !important;
+	right: 14px !important;
+	bottom: 14px !important;
 	z-index: 12;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+	max-width: calc(100% - 28px);
+	pointer-events: none;
 }
 
-.list_with_filter_section.mep_event_list .mepev-ribbon {
+.list_with_filter_section.mep_event_list .mepev-ribbon,
+.list_with_filter_section.mep_event_list div.mep-event-list-loop .mepev-ribbons .mepev-ribbon {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	pointer-events: auto;
+	padding: 5px 10px;
 	border-radius: 8px;
+	border: 0;
+	background: rgba(17, 17, 19, 0.82);
+	color: #fff;
 	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 0.04em;
+	line-height: 1.2;
+	white-space: nowrap;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+.list_with_filter_section.mep_event_list .mepev-ribbon.multidate,
+.list_with_filter_section.mep_event_list .mepev-ribbon.recurring {
+	background: rgba(37, 99, 235, 0.9);
+	color: #fff;
+}
+
+.list_with_filter_section.mep_event_list .mepev-ribbon.hybrid,
+.list_with_filter_section.mep_event_list .mepev-ribbon.online {
+	background: rgba(124, 58, 237, 0.9);
+	color: #fff;
+}
+
+.list_with_filter_section.mep_event_list .mepev-ribbon.sold-out {
+	background: rgba(220, 38, 38, 0.92);
+	color: #fff;
+}
+
+.list_with_filter_section.mep_event_list .mepev-ribbon.limited-availability {
+	background: rgba(217, 119, 6, 0.92);
+	color: #fff;
 }
 
 /* ── Body ───────────────────────────────────────────────────────── */
@@ -468,10 +519,12 @@
 
 /* Media stays clipped; never compete with open dropdowns. */
 .list_with_filter_section.mep_event_list .mep_event_card__media,
-.list_with_filter_section.mep_event_list .mep_list_thumb,
-.list_with_filter_section.mep_event_list .mep-ev-start-date,
-.list_with_filter_section.mep_event_list .mepev-ribbons {
+.list_with_filter_section.mep_event_list .mep_list_thumb {
 	z-index: 1;
+}
+
+.list_with_filter_section.mep_event_list .mep-ev-start-date {
+	z-index: 13;
 }
 
 /* Hide Book Now hover overlay if enabled — card already has Book CTA */
@@ -618,5 +671,319 @@
 	.list_with_filter_section.mep_event_list .mep_event_grid_item .mep_list_thumb {
 		height: 190px;
 		min-height: 190px;
+	}
+}
+
+/* ── Loading skeleton (shown before mixitup/pagination reveals the grid) ─ */
+
+.list_with_filter_section.mep_event_list.mep-list-is-loading .pagination_area,
+.list_with_filter_section.mep_event_list:not(.mep-list-is-ready) .pagination_area {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	height: 0 !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden;
+}
+
+.list_with_filter_section.mep_event_list.mep-list-is-loading > .spinner_loading {
+	display: none !important;
+}
+
+.list_with_filter_section.mep_event_list.mep-list-is-ready .mep_event_list_skeleton {
+	display: none !important;
+}
+
+/* Mirror real .mep_event_card grid/list layouts. */
+.mep_event_list_skeleton {
+	margin: 8px 0 24px;
+}
+
+.mep_event_list_skeleton--grid .mep_event_list_skeleton__grid {
+	display: grid;
+	grid-template-columns: repeat(var(--mep-skel-cols, 3), minmax(0, 1fr));
+	gap: 20px;
+	align-items: stretch;
+}
+
+.mep_event_list_skeleton--grid .mep_event_list_skeleton__card {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-width: 0;
+	background: var(--mep-card-bg, #fff);
+	border: 1px solid var(--mep-card-border, #e8e8ec);
+	border-radius: var(--mep-card-radius, 16px);
+	overflow: hidden;
+	box-shadow: var(--mep-card-shadow, 0 1px 2px rgba(17, 17, 19, 0.04));
+}
+
+.mep_event_list_skeleton__media {
+	position: relative;
+	flex-shrink: 0;
+	border-radius: var(--mep-card-radius, 16px) var(--mep-card-radius, 16px) 0 0;
+	overflow: hidden;
+}
+
+.mep_event_list_skeleton--grid .mep_event_list_skeleton__thumb {
+	display: block;
+	width: 100%;
+	height: 210px;
+}
+
+.mep_event_list_skeleton__date {
+	position: absolute;
+	top: 14px;
+	left: 14px;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	min-width: 52px;
+	padding: 8px 10px;
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.95);
+	box-shadow: 0 4px 16px rgba(17, 17, 19, 0.08);
+}
+
+.mep_event_list_skeleton__date-month {
+	display: block;
+	width: 28px;
+	height: 8px;
+	border-radius: 999px;
+}
+
+.mep_event_list_skeleton__date-day {
+	display: block;
+	width: 22px;
+	height: 16px;
+	border-radius: 6px;
+}
+
+.mep_event_list_skeleton__category {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	z-index: 2;
+	display: block;
+	width: 72px;
+	height: 24px;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.95) !important;
+	box-shadow: 0 2px 8px rgba(17, 17, 19, 0.06);
+}
+
+.mep_event_list_skeleton__body {
+	padding: 18px 20px 20px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	box-sizing: border-box;
+}
+
+.mep_event_list_skeleton__meta {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex: 1;
+}
+
+.mep_event_list_skeleton__line {
+	display: block;
+	border-radius: 999px;
+}
+
+.mep_event_list_skeleton__line--date {
+	width: 48%;
+	height: 11px;
+}
+
+.mep_event_list_skeleton__line--title {
+	width: 88%;
+	height: 17px;
+	border-radius: 8px;
+	margin-top: 2px;
+}
+
+.mep_event_list_skeleton__line--loc {
+	width: 62%;
+	height: 12px;
+}
+
+.mep_event_list_skeleton__line--excerpt {
+	width: 96%;
+	height: 12px;
+	margin-top: 2px;
+}
+
+.mep_event_list_skeleton__line--excerpt-2 {
+	width: 78%;
+	height: 12px;
+}
+
+.mep_event_list_skeleton__line--org {
+	width: 54%;
+	height: 12px;
+}
+
+.mep_event_list_skeleton__foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin-top: 16px;
+	padding-top: 14px;
+	border-top: 1px solid var(--mep-card-border, #e8e8ec);
+}
+
+.mep_event_list_skeleton__price {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.mep_event_list_skeleton__line--price-label {
+	width: 64px;
+	height: 9px;
+}
+
+.mep_event_list_skeleton__line--price-value {
+	width: 72px;
+	height: 16px;
+	border-radius: 6px;
+}
+
+.mep_event_list_skeleton__book {
+	display: block;
+	width: 84px;
+	height: 32px;
+	border-radius: 999px;
+	flex-shrink: 0;
+	margin-left: auto;
+}
+
+.mep_event_list_skeleton__shimmer {
+	background: linear-gradient(90deg, #ececf0 0%, #f6f6f8 45%, #ececf0 100%);
+	background-size: 200% 100%;
+	animation: mep-skel-shimmer 1.25s ease-in-out infinite;
+}
+
+.mep_event_list_skeleton__status {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin: 18px 0 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--mep-card-muted, #6b6b76);
+}
+
+.mep_event_list_skeleton__spinner {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: 2px solid #d8d8de;
+	border-top-color: var(--color_theme, #111113);
+	animation: mep-skel-spin 0.7s linear infinite;
+}
+
+/* List style — horizontal card matching .mep_event_list_item */
+.mep_event_list_skeleton--list .mep_event_list_skeleton__grid {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.mep_event_list_skeleton--list .mep_event_list_skeleton__card {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	width: 100%;
+	background: var(--mep-card-bg, #fff);
+	border: 1px solid var(--mep-card-border, #e8e8ec);
+	border-radius: var(--mep-card-radius, 16px);
+	overflow: hidden;
+	box-shadow: var(--mep-card-shadow, 0 1px 2px rgba(17, 17, 19, 0.04));
+}
+
+.mep_event_list_skeleton--list .mep_event_list_skeleton__media {
+	width: 240px;
+	border-radius: 0;
+}
+
+.mep_event_list_skeleton--list .mep_event_list_skeleton__thumb {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 180px;
+}
+
+.mep_event_list_skeleton--list .mep_event_list_skeleton__body {
+	padding: 20px 24px;
+	justify-content: center;
+}
+
+.mep_event_list_skeleton--list .mep_event_list_skeleton__line--title {
+	width: 70%;
+	height: 20px;
+}
+
+@keyframes mep-skel-shimmer {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: -100% 0;
+	}
+}
+
+@keyframes mep-skel-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (max-width: 1000px) {
+	.mep_event_list_skeleton--grid .mep_event_list_skeleton__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.mep_event_list_skeleton--list .mep_event_list_skeleton__media {
+		width: 180px;
+	}
+}
+
+@media (max-width: 640px) {
+	.mep_event_list_skeleton--grid .mep_event_list_skeleton__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.mep_event_list_skeleton--grid .mep_event_list_skeleton__thumb {
+		height: 190px;
+	}
+
+	.mep_event_list_skeleton--list .mep_event_list_skeleton__card {
+		flex-direction: column;
+	}
+
+	.mep_event_list_skeleton--list .mep_event_list_skeleton__media {
+		width: 100%;
+	}
+
+	.mep_event_list_skeleton--list .mep_event_list_skeleton__thumb {
+		height: 200px;
+		min-height: 200px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mep_event_list_skeleton__shimmer,
+	.mep_event_list_skeleton__spinner {
+		animation: none;
 	}
 }

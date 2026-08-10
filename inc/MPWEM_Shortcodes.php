@@ -88,7 +88,7 @@
                 ob_start();
                 //echo $total_item;
                 ?>
-                <div class='mage list_with_filter_section mep_event_list' id='mage-container'>
+                <div class='mage list_with_filter_section mep_event_list mep-list-is-loading' id='mage-container'>
                     <?php if ( $total_item > 0 ) {
                         if ( $cat_f == 'yes' && $cat < 1 ) {
                             do_action( 'mpwem_taxonomy_filter', 'mep_cat', $unq_id );
@@ -232,6 +232,8 @@
                                 <strong class="total_filter_qty"><?php echo esc_html( $total_item ); ?></strong>
                             </p>
                         </div>
+
+					<?php $this->render_event_list_skeleton( $column, $style, ( $style === 'list' ? 4 : max( 3, (int) $column * 2 ) ) ); ?>
 
                     <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
                                  data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
@@ -532,7 +534,7 @@
 				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, $state, $year, 0, $tag );
 				$total_item = $loop->found_posts;
 				?>
-                <div class='mage list_with_filter_section mep_event_list' id='mage-container'>
+                <div class='mage list_with_filter_section mep_event_list mep-list-is-loading' id='mage-container'>
 					<?php
 						if ( $total_item > 0 ) {
 							if ( $cat_f == 'yes' && $cat < 1 ) {
@@ -547,6 +549,7 @@
 							if ( $filter == 'yes' && $style != 'timeline' ) {
 								do_action( 'mpwem_list_with_filter_section', $loop, $params );
 							}
+							$this->render_event_list_skeleton( $column, $style, ( $style === 'list' ? 4 : max( 3, (int) $column * 2 ) ) );
 							?>
                             <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
                                  data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
@@ -913,6 +916,62 @@
 			}
 			public function calender( $atts = array() ) {
 				return do_shortcode( '[mep-event-calendar]' );
+			}
+
+			/**
+			 * Skeleton placeholders shown while pagination/mixitup initializes.
+			 *
+			 * @param int    $column Grid column count.
+			 * @param string $style  List style (grid|list|…).
+			 * @param int    $count  Number of skeleton cards.
+			 */
+			private function render_event_list_skeleton( $column = 3, $style = 'grid', $count = 6 ) {
+				$column  = max( 1, min( 4, absint( $column ) ) );
+				$count   = max( 3, min( 9, absint( $count ) ) );
+				$is_list = ( $style === 'list' );
+				?>
+				<div class="mep_event_list_skeleton<?php echo $is_list ? ' mep_event_list_skeleton--list' : ' mep_event_list_skeleton--grid'; ?>" aria-hidden="true" aria-busy="true">
+					<div class="mep_event_list_skeleton__grid" style="--mep-skel-cols: <?php echo esc_attr( (string) $column ); ?>;">
+						<?php for ( $i = 0; $i < $count; $i++ ) : ?>
+							<article class="mep_event_list_skeleton__card">
+								<div class="mep_event_list_skeleton__media">
+									<div class="mep_event_list_skeleton__thumb mep_event_list_skeleton__shimmer"></div>
+									<span class="mep_event_list_skeleton__date">
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__date-month"></span>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__date-day"></span>
+									</span>
+									<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__category"></span>
+								</div>
+								<div class="mep_event_list_skeleton__body">
+									<div class="mep_event_list_skeleton__meta">
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--date"></span>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--title"></span>
+										<?php if ( $is_list ) : ?>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--excerpt"></span>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--excerpt-2"></span>
+										<?php endif; ?>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--loc"></span>
+										<?php if ( $is_list ) : ?>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--org"></span>
+										<?php endif; ?>
+									</div>
+									<div class="mep_event_list_skeleton__foot">
+										<div class="mep_event_list_skeleton__price">
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--price-label"></span>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--price-value"></span>
+										</div>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__book"></span>
+									</div>
+								</div>
+							</article>
+						<?php endfor; ?>
+					</div>
+					<p class="mep_event_list_skeleton__status">
+						<span class="mep_event_list_skeleton__spinner" aria-hidden="true"></span>
+						<?php esc_html_e( 'Loading events…', 'mage-eventpress' ); ?>
+					</p>
+				</div>
+				<?php
 			}
 		}
 		new MPWEM_Shortcodes();

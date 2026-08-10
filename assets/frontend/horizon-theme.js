@@ -1515,7 +1515,7 @@
 			$rating.remove();
 		});
 
-		if (!$items.length && !$panel.find('.horizon_reviews_empty').length) {
+		if (!$items.length && !$panel.find('.horizon_reviews_empty, .mep_reviews_empty, .mep_reviews_panel--empty').length) {
 			$list.append(
 				$('<div class="horizon_reviews_empty"></div>').text(
 					i18n('noReviewsYet', 'Be the first to share your experience.')

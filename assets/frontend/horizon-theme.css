@@ -2957,14 +2957,45 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	margin-top: 8px;
 }
 
-.horizon_theme .horizon_reviews_empty {
-	padding: 28px 22px;
-	text-align: center;
+.horizon_theme .horizon_reviews_empty,
+.horizon_theme .mep_reviews_empty {
+	display: none;
+}
+
+.horizon_theme .mep_reviews_panel--empty,
+.horizon_theme .horizon_reviews_panel.mep_reviews_panel--empty {
+	margin: 0;
+	padding: 18px 20px;
 	background: var(--hz-card);
-	border: 1px dashed var(--hz-purple-mid);
+	border: 1px solid var(--hz-border);
 	border-radius: var(--hz-radius);
+	box-shadow: var(--hz-shadow);
+}
+
+.horizon_theme .mep_reviews_panel--empty .horizon_reviews_head,
+.horizon_theme .mep_reviews_panel--empty .mep_reviews_head {
+	margin: 0;
+	align-items: center;
+}
+
+.horizon_theme .mep_reviews_panel--empty .horizon_reviews_title,
+.horizon_theme .mep_reviews_panel--empty .mep_reviews_title {
+	font-family: var(--hz-serif) !important;
+	font-size: 1.25rem !important;
+	margin: 0 0 4px !important;
+}
+
+.horizon_theme .mep_reviews_panel--empty .horizon_reviews_meta,
+.horizon_theme .mep_reviews_panel--empty .mep_reviews_meta {
+	margin: 0;
+	font-size: 0.9rem;
 	color: var(--hz-muted);
-	font-size: 0.95rem;
+}
+
+.horizon_theme .mep_reviews_panel--empty #give-review-btn {
+	padding: 10px 16px;
+	font-size: 0.88rem;
+	box-shadow: none;
 }
 
 @media (max-width: 640px) {

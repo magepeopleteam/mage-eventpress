@@ -5985,20 +5985,123 @@ span.mep-datepicker-input-box {
 	position: relative;
 }
 
-.mep-event-review-list-wrapper {
+.mep-event-review-list-wrapper,
+.mep_reviews_panel {
 	padding: 0;
-	margin: 20px;
+	margin: 28px 0 12px;
+}
+
+.mep_reviews_head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px 24px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+
+.mep_reviews_eyebrow {
+	display: inline-block;
+	margin: 0 0 8px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: #8a8a96;
+}
+
+.mep_reviews_title {
+	margin: 0 0 8px !important;
+	font-size: 1.6rem !important;
+	font-weight: 700 !important;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: #111113 !important;
+}
+
+.mep_reviews_meta,
+.mep_reviews_count {
+	color: #6b6b76;
+	font-size: 0.92rem;
+	font-weight: 500;
 }
 
 .mep-event-review-list-wrapper #give-review-btn {
-	font-weight: 500;
-	font-size: 15px;
-	border-radius: 50px;
-	line-height: 35px;
-	height: 35px;
-	padding: 0 15px 0 15px;
+	appearance: none;
+	-webkit-appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	margin: 0;
+	padding: 12px 20px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--color_theme, #111113);
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.94rem;
+	line-height: 1.2;
 	cursor: pointer;
-	margin-bottom: 60px;
+	box-shadow: 0 8px 20px rgba(17, 17, 19, 0.12);
+	transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.mep-event-review-list-wrapper #give-review-btn:hover {
+	color: #fff;
+	text-decoration: none;
+	filter: brightness(1.05);
+	transform: translateY(-1px);
+}
+
+.mep_reviews_empty {
+    display: none;
+}
+
+.mep_reviews_meta--empty {
+    margin: 0;
+}
+
+.mep_reviews_panel--empty {
+    margin: 20px 0 8px;
+    padding: 16px 18px;
+    border: 1px solid #ececf0;
+    border-radius: 16px;
+    background: #fafafb;
+}
+
+.mep_reviews_panel--empty .mep_reviews_head {
+    margin: 0;
+    align-items: center;
+    gap: 12px 20px;
+}
+
+.mep_reviews_panel--empty .mep_reviews_title {
+    margin: 0 0 4px !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+}
+
+.mep_reviews_panel--empty .mep_reviews_meta,
+.mep_reviews_panel--empty .mep_reviews_meta--empty {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 450;
+    line-height: 1.45;
+    color: #8a8a96;
+}
+
+.mep_reviews_panel--empty #give-review-btn {
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    font-weight: 650;
+    box-shadow: none;
+}
+
+.mep_reviews_panel--empty #give-review-btn:hover {
+    transform: none;
+    box-shadow: none;
 }
 
 .mep-event-review-form .label {
@@ -6010,14 +6113,16 @@ span.mep-datepicker-input-box {
 
 .mep-event-review-form input[type=submit],
 .mep-event-review-form button[type=submit] {
-	font-weight: 500;
+	font-weight: 700;
 	font-size: 15px;
-	border-radius: 50px;
-	line-height: 35px;
-	height: 35px;
-	padding: 0 15px 0 15px;
+	border-radius: 999px;
+	line-height: 1.2;
+	min-height: 44px;
+	padding: 12px 20px;
 	cursor: pointer;
 	background: var(--color_theme);
+	border: 0;
+	color: #fff;
 }
 
 .woocommerce-Price-amount {

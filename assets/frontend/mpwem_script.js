@@ -594,8 +594,14 @@ function mpwem_attendee_management(parent, total_qty) {
         let $this = $(this);
         let parent = $this.closest('.mpwem_list_date_list');
         let target = parent.find('.date_list_area');
+        if (!target.length) {
+            return;
+        }
         if (target.find('.date_item').length === 0) {
             let event_id = $this.data('event-id');
+            if (!event_id) {
+                return;
+            }
             jQuery.ajax({
                 type: 'POST',
                 url: mpwem_script_var.url,
@@ -609,7 +615,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 },
                 success: function (data) {
                     target.html(data);
-                    target.addClass('open_list');
+                    target.addClass('open_list mActive').show();
                     mpwem_loader_remove($this);
                 }
             });

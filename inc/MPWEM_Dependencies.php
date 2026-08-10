@@ -253,6 +253,12 @@
 				} else {
 					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), MPWEM_PLUGIN_VERSION );
 				}
+				wp_enqueue_style(
+					'mep_event_list_modern',
+					MPWEM_PLUGIN_URL . '/assets/frontend/mep-event-list-modern.css',
+					array( $is_divi ? 'divi_style' : 'mpwem_style' ),
+					MPWEM_PLUGIN_VERSION
+				);
 				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
 				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array(
 					'url'             => admin_url( 'admin-ajax.php' ),

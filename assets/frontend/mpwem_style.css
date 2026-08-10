@@ -4712,13 +4712,13 @@ div.mep_event_list div.mage_grid_box>div {
 
 .mep_list_event_details a.event_details_link {
 	display: block;
-	margin-bottom: 30px;
-	min-height: 180px;
+	min-height: 0 !important;
+	margin-bottom: 0 !important;
 }
 
 .mep_smart_theme .mep_list_event_details a.event_details_link {
-	min-height: 0;
-	margin-bottom: 0;
+	min-height: 0 !important;
+	margin-bottom: 0 !important;
 }
 
 .mep_event_grid_item .mep-list-footer {

@@ -23,10 +23,16 @@
 	$cat_class                      = is_array($event_infos) && array_key_exists( 'cat_class', $event_infos ) ? $event_infos['cat_class'] : '';
 	$tag_class                      = is_array($event_infos) && array_key_exists( 'tag_class', $event_infos ) ? $event_infos['tag_class'] : '';
 	$title                          = get_the_title( $event_id );
+	$permalink                      = get_the_permalink( $event_id );
 	$event_infos['organizer_title'] = __( 'Organized By:', 'mage-eventpress' );
 	$event_infos['location_title']  = __( 'Location : ', 'mage-eventpress' );
+	$first_category                 = '';
+	if ( is_string( $taxonomy_category ) && $taxonomy_category !== '' ) {
+		$category_parts = array_map( 'trim', explode( ',', $taxonomy_category ) );
+		$first_category = $category_parts[0] ?? '';
+	}
 ?>
-    <div class='filter_item mep-event-list-loop mix <?php echo esc_attr( $column_number . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
+    <div class='filter_item mep-event-list-loop mix mep_event_card <?php echo esc_attr( $column_number . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
          data-title="<?php echo esc_attr( $title ); ?>"
          data-city-name="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
          data-state="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"
@@ -36,17 +42,22 @@
          style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
 		<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
 		<?php do_action( 'mpwem_list_sort_date', $event_infos ); ?>
-		
-		<?php do_action( 'mpwem_list_thumb', $event_infos ); ?>
 
-        <div class="mep_list_event_details">
-            <a class="event_details_link" href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
+		<div class="mep_event_card__media">
+			<?php do_action( 'mpwem_list_thumb', $event_infos ); ?>
+			<?php if ( $first_category ) : ?>
+				<span class="mep_event_card__category"><?php echo esc_html( $first_category ); ?></span>
+			<?php endif; ?>
+		</div>
+
+        <div class="mep_list_event_details mep_event_card__body">
+            <a class="event_details_link" href="<?php echo esc_url( $permalink ); ?>">
 				<h2 class='mep_list_title' title="<?php echo esc_attr( $title ); ?>"><?php echo esc_html( mb_strimwidth( $title, 0, 80, '...' ) ); ?></h2>
 				<?php
 					if ( $available_seat == 0 ) {
 						do_action( 'mep_show_waitlist_label' );
 					}
-					
+
 					if ( $style == 'list' ) { ?>
                         <div class="mep-event-excerpt">
 							<?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
@@ -55,16 +66,20 @@
 					do_action( 'mpwem_list_upcoming_date', $event_infos );
 					do_action( 'mpwem_list_location', $event_infos );
 					do_action( 'mpwem_list_organizer', $event_infos );
-					
+
 				?>
             </a>
-			<div class="mpwem-price-area">
+			<div class="mpwem-price-area mep_event_card__footer">
 				<?php
 				do_action( 'mpwem_list_price', $event_infos );
-				do_action( 'mpwem_list_more_date_button', $event_infos ); 
+				do_action( 'mpwem_list_more_date_button', $event_infos );
 				?>
+				<a class="mep_event_card__book" href="<?php echo esc_url( $permalink ); ?>">
+					<?php esc_html_e( 'Book', 'mage-eventpress' ); ?>
+					<span aria-hidden="true">→</span>
+				</a>
 			</div>
-			
+
         </div>
 		<?php do_action( 'mpwem_list_hover', $event_infos ); ?>
     </div>

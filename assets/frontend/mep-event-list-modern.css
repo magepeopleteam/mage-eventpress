@@ -1,0 +1,622 @@
+/**
+ * Modern event list (grid + list) — scoped to .list_with_filter_section.mep_event_list
+ * Keeps MixItUp / filter / pagination classes intact.
+ */
+
+.list_with_filter_section.mep_event_list {
+	--mep-card-radius: 16px;
+	--mep-card-border: #e8e8ec;
+	--mep-card-bg: #ffffff;
+	--mep-card-text: #111113;
+	--mep-card-muted: #6b6b76;
+	--mep-card-soft: #f4f4f6;
+	--mep-card-shadow: 0 1px 2px rgba(17, 17, 19, 0.04);
+	--mep-card-shadow-hover: 0 16px 40px rgba(17, 17, 19, 0.1);
+	--mep-card-accent: var(--color_theme, #111113);
+	max-width: 1240px;
+	margin: 0 auto;
+}
+
+/* ── Grid shell ─────────────────────────────────────────────────── */
+
+.list_with_filter_section.mep_event_list div.mage_grid_box {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	align-items: stretch;
+}
+
+.list_with_filter_section.mep_event_list .filter_item.mep_event_card,
+.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item,
+.list_with_filter_section.mep_event_list .filter_item.mep_event_list_item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: var(--mep-card-bg);
+	border: 1px solid var(--mep-card-border);
+	border-radius: var(--mep-card-radius);
+	/* Keep visible so Add To Calendar / View More Dates popups are not clipped. */
+	overflow: visible;
+	box-shadow: var(--mep-card-shadow);
+	margin: 0 !important;
+	transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+	z-index: 1;
+}
+
+.list_with_filter_section.mep_event_list .filter_item.mep_event_card:hover,
+.list_with_filter_section.mep_event_list .filter_item.mep_event_card:focus-within {
+	transform: translateY(-4px);
+	box-shadow: var(--mep-card-shadow-hover);
+	border-color: transparent;
+	z-index: 5;
+}
+
+.list_with_filter_section.mep_event_list .filter_item.mep_event_card:has(.mActive),
+.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item:has(.mActive),
+.list_with_filter_section.mep_event_list .filter_item.mep_event_list_item:has(.mActive) {
+	z-index: 100;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.list_with_filter_section.mep_event_list .filter_item.mep_event_card:hover,
+	.list_with_filter_section.mep_event_list .filter_item.mep_event_card:focus-within {
+		transform: none;
+	}
+}
+
+/* Compensate for inline width calc that assumed 14px gutter only */
+.list_with_filter_section.mep_event_list [data-column="2"] .filter_item.mep_event_grid_item,
+.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item[style*="50%"] {
+	width: calc(50% - 10px) !important;
+}
+
+.list_with_filter_section.mep_event_list [data-column="3"] .filter_item.mep_event_grid_item,
+.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item[style*="33."] {
+	width: calc(33.333% - 14px) !important;
+}
+
+.list_with_filter_section.mep_event_list [data-column="4"] .filter_item.mep_event_grid_item,
+.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item[style*="25%"] {
+	width: calc(25% - 15px) !important;
+}
+
+/* ── Media / thumbnail ──────────────────────────────────────────── */
+
+.list_with_filter_section.mep_event_list .mep_event_card__media {
+	position: relative;
+	flex-shrink: 0;
+	border-radius: var(--mep-card-radius) var(--mep-card-radius) 0 0;
+	overflow: hidden;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_grid_item .mep_list_thumb {
+	width: 100%;
+	height: 210px;
+	min-height: 210px;
+	border-radius: 0;
+	overflow: hidden;
+	background: var(--mep-card-soft);
+}
+
+.list_with_filter_section.mep_event_list .mep_event_card__body,
+.list_with_filter_section.mep_event_list .mpwem-price-area,
+.list_with_filter_section.mep_event_list .mpwem_status_area,
+.list_with_filter_section.mep_event_list .mpwem_list_date_list,
+.list_with_filter_section.mep_event_list .mpwem_get_status_calender {
+	overflow: visible;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_grid_item .mep_list_thumb > [data-bg-image],
+.list_with_filter_section.mep_event_list .mep_event_grid_item .mep_list_thumb > div[style*="background-image"] {
+	position: absolute !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	min-height: 100% !important;
+	background-size: cover !important;
+	background-position: center center !important;
+	background-repeat: no-repeat !important;
+	transition: transform 500ms ease;
+	cursor: pointer;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_grid_item:hover .mep_list_thumb > [data-bg-image],
+.list_with_filter_section.mep_event_list .mep_event_grid_item:hover .mep_list_thumb > div[style*="background-image"] {
+	transform: scale(1.04);
+}
+
+.list_with_filter_section.mep_event_list .mep_event_card__category {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	z-index: 12;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border-radius: 8px;
+	padding: 5px 10px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--mep-card-text);
+	line-height: 1.2;
+	max-width: calc(100% - 92px);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Date badge */
+.list_with_filter_section.mep_event_list .mep-ev-start-date {
+	top: 14px;
+	left: 14px;
+	padding: 8px 10px;
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	color: var(--mep-card-text);
+	box-shadow: 0 4px 16px rgba(17, 17, 19, 0.08);
+	min-width: 52px;
+}
+
+.list_with_filter_section.mep_event_list .mep-ev-start-date .mep-month {
+	background: transparent;
+	color: var(--mep-card-accent);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	border-radius: 0;
+	line-height: 1.2;
+}
+
+.list_with_filter_section.mep_event_list .mep-ev-start-date .mep-day {
+	font-size: 22px;
+	font-weight: 800;
+	line-height: 1.1;
+	color: var(--mep-card-text);
+}
+
+/* Ribbons */
+.list_with_filter_section.mep_event_list .mepev-ribbons {
+	z-index: 12;
+}
+
+.list_with_filter_section.mep_event_list .mepev-ribbon {
+	border-radius: 8px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+}
+
+/* ── Body ───────────────────────────────────────────────────────── */
+
+.list_with_filter_section.mep_event_list .mep_event_grid_item .mep_list_event_details,
+.list_with_filter_section.mep_event_list .mep_event_card__body {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	width: 100%;
+	min-height: 0;
+	padding: 18px 20px 20px;
+	box-sizing: border-box;
+}
+
+.list_with_filter_section.mep_event_list .event_details_link,
+.list_with_filter_section.mep_event_list .mep_list_event_details a.event_details_link {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	text-decoration: none !important;
+	color: inherit;
+	flex: 1;
+	min-height: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.list_with_filter_section.mep_event_list a {
+	text-decoration: none;
+}
+
+.list_with_filter_section.mep_event_list div.mep_list_event_details .mep_list_title,
+.list_with_filter_section.mep_event_list h2.mep_list_title {
+	margin: 0 0 4px;
+	padding: 0;
+	font-size: 17px;
+	font-weight: 700;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	color: var(--mep-card-text);
+	text-transform: none;
+}
+
+.list_with_filter_section.mep_event_list .filter_item:hover h2.mep_list_title {
+	color: var(--mep-card-accent);
+}
+
+.list_with_filter_section.mep_event_list .list_content {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	font-size: 13px;
+	line-height: 1.45;
+	color: var(--mep-card-muted);
+}
+
+.list_with_filter_section.mep_event_list .list_content span[class*="mi"],
+.list_with_filter_section.mep_event_list .list_content span[class*="fa"] {
+	flex-shrink: 0;
+	margin-top: 2px;
+	opacity: 0.75;
+}
+
+.list_with_filter_section.mep_event_list .list_content.upcomming_organizer {
+	display: none;
+}
+
+.list_with_filter_section.mep_event_list .list_content.upcomming_location {
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	margin-bottom: 4px;
+}
+
+.list_with_filter_section.mep_event_list .list_content.upcomming_date_only_only {
+	color: var(--mep-card-accent);
+	font-weight: 600;
+	font-size: 12px;
+	letter-spacing: 0.02em;
+}
+
+/* ── Footer / price / actions ───────────────────────────────────── */
+
+.list_with_filter_section.mep_event_list .mpwem-price-area,
+.list_with_filter_section.mep_event_list .mep_event_card__footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin-top: 16px;
+	padding-top: 14px;
+	border-top: 1px solid var(--mep-card-border);
+	flex-wrap: wrap;
+}
+
+.list_with_filter_section.mep_event_list .list_price {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.list_with_filter_section.mep_event_list div.mpwem-price-area .list_price_label {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--mep-card-muted);
+	line-height: 1.2;
+}
+
+.list_with_filter_section.mep_event_list div.mpwem-price-area .list_price_value,
+.list_with_filter_section.mep_event_list div.mpwem-price-area .list_price_value .amount {
+	font-size: 16px;
+	font-weight: 800;
+	color: var(--mep-card-text);
+	line-height: 1.2;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_card__book {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-left: auto;
+	background: var(--mep-card-text);
+	color: #fff;
+	border-radius: 999px;
+	padding: 8px 16px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none !important;
+	transition: opacity 150ms ease;
+	flex-shrink: 0;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_card__book:hover {
+	opacity: 0.88;
+	color: #fff;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_card__book span {
+	transition: transform 150ms ease;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_card__book:hover span {
+	transform: translateX(3px);
+}
+
+/* Status chips / calendar / more dates — compact secondary actions */
+.list_with_filter_section.mep_event_list .mpwem_status_area,
+.list_with_filter_section.mep_event_list .mpwem_list_date_list {
+	order: 3;
+	width: 100%;
+	margin: 0;
+}
+
+.list_with_filter_section.mep_event_list button.mpwem_get_date_list,
+.list_with_filter_section.mep_event_list .mpwem_get_status_calender .mpwem_get_date_list {
+	min-width: 0;
+	width: 100%;
+	padding: 8px 12px;
+	border-radius: 10px;
+	font-size: 12px;
+	font-weight: 600;
+	background: var(--mep-card-soft);
+	color: var(--mep-card-text);
+	border: 1px solid var(--mep-card-border);
+}
+
+.list_with_filter_section.mep_event_list div.mpwem-price-area .mpwem_get_status,
+.list_with_filter_section.mep_event_list .mpwem_get_status {
+	min-width: 0;
+	width: 100%;
+	justify-content: center;
+	padding: 8px 12px;
+	border-radius: 10px;
+	font-size: 12px;
+	font-weight: 700;
+	background: var(--mep-card-soft);
+	color: var(--mep-card-accent);
+	border: 1px solid transparent;
+}
+
+/* Dropdown shell: only this wrapper is absolute. Inner .list_date_list must
+   stay in normal flow — base mpwem_style makes it absolute, which collapsed
+   this shell to 0 height and hid the dates under neighboring card images. */
+.list_with_filter_section.mep_event_list .mpwem_list_date_list,
+.list_with_filter_section.mep_event_list .mpwem_get_status_calender {
+	position: relative;
+	z-index: 2;
+}
+
+/* Style the open panel only. Do not force display — collapse JS toggles
+   visibility for "Hide Date Lists" / "Hide Calender" via .mActive + slideUp. */
+.list_with_filter_section.mep_event_list .calendar-list-area.mActive,
+.list_with_filter_section.mep_event_list .date_list_area.mActive {
+	position: absolute !important;
+	left: 0;
+	right: 0;
+	top: calc(100% + 8px) !important;
+	bottom: auto !important;
+	z-index: 1200 !important;
+	max-height: 280px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: #fff;
+	padding: 10px;
+	border: 1px solid var(--mep-card-border);
+	border-radius: 12px;
+	box-shadow: 0 16px 40px rgba(17, 17, 19, 0.14);
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.list_with_filter_section.mep_event_list .date_list_area .list_date_list,
+.list_with_filter_section.mep_event_list div.mpwem_list_date_list .list_date_list {
+	position: static !important;
+	left: auto !important;
+	top: auto !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	max-height: none !important;
+	overflow: visible !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	background: transparent !important;
+	z-index: auto !important;
+}
+
+.list_with_filter_section.mep_event_list .date_list_area .date_item {
+	background: var(--mep-card-soft);
+	border-radius: 8px;
+	padding: 10px 12px;
+	margin: 0 0 6px;
+}
+
+.list_with_filter_section.mep_event_list .date_list_area .date_item:last-child {
+	margin-bottom: 0;
+}
+
+.list_with_filter_section.mep_event_list .date_list_area .date_item a {
+	display: block;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--mep-card-text);
+	text-decoration: none;
+	line-height: 1.35;
+}
+
+.list_with_filter_section.mep_event_list .date_list_area .date_item:hover {
+	background: #ebebef;
+}
+
+.list_with_filter_section.mep_event_list .date_list_area.open_list:before,
+.list_with_filter_section.mep_event_list .date_list_area.mActive:before {
+	display: none;
+}
+
+.list_with_filter_section.mep_event_list .calendar-list-area .list_calender {
+	border-radius: 8px;
+	font-size: 13px;
+}
+
+.list_with_filter_section.mep_event_list div.mage_grid_box,
+.list_with_filter_section.mep_event_list .all_filter_item,
+.list_with_filter_section.mep_event_list {
+	overflow: visible !important;
+}
+
+/* Media stays clipped; never compete with open dropdowns. */
+.list_with_filter_section.mep_event_list .mep_event_card__media,
+.list_with_filter_section.mep_event_list .mep_list_thumb,
+.list_with_filter_section.mep_event_list .mep-ev-start-date,
+.list_with_filter_section.mep_event_list .mepev-ribbons {
+	z-index: 1;
+}
+
+/* Hide Book Now hover overlay if enabled — card already has Book CTA */
+.list_with_filter_section.mep_event_list .item_hover_effect {
+	display: none !important;
+}
+
+/* ── List style (horizontal) ────────────────────────────────────── */
+
+.list_with_filter_section.mep_event_list .filter_item.mep_event_list_item {
+	flex-direction: row;
+	width: 100% !important;
+	align-items: stretch;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__media {
+	width: 240px;
+	flex-shrink: 0;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb {
+	width: 100%;
+	height: 100%;
+	min-height: 180px;
+	border-radius: 0;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb > [data-bg-image],
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb > div[style*="background-image"] {
+	position: absolute !important;
+	inset: 0 !important;
+	height: 100% !important;
+	min-height: 100% !important;
+	background-size: cover !important;
+	background-position: center !important;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_event_details {
+	padding: 20px 24px;
+}
+
+.list_with_filter_section.mep_event_list .mep_event_list_item .list_content.upcomming_organizer {
+	display: flex;
+}
+
+.list_with_filter_section.mep_event_list .mep-event-excerpt {
+	font-size: 14px;
+	line-height: 1.55;
+	color: var(--mep-card-muted);
+	margin: 4px 0 8px;
+}
+
+/* ── Filters / search chrome ────────────────────────────────────── */
+
+.list_with_filter_section.mep_event_list .sort_code_search_box,
+.list_with_filter_section.mep_event_list .search_sort_code_area {
+	border: 1px solid var(--mep-card-border);
+	border-radius: 14px;
+	background: var(--mep-card-bg);
+	padding: 12px;
+	gap: 10px;
+}
+
+.list_with_filter_section.mep_event_list .formControl {
+	border: 1px solid var(--mep-card-border) !important;
+	border-radius: 10px !important;
+	box-shadow: none !important;
+	height: 44px !important;
+	background: #fff;
+	font-size: 14px;
+}
+
+.list_with_filter_section.mep_event_list [class*="defaultButton"] {
+	border-radius: 999px;
+	font-weight: 600;
+}
+
+/* ── Pagination ─────────────────────────────────────────────────── */
+
+.list_with_filter_section.mep_event_list .pagination_area {
+	margin-top: 28px;
+}
+
+.list_with_filter_section.mep_event_list .pagination_area .allCenter {
+	align-items: center;
+}
+
+.list_with_filter_section.mep_event_list .pagination_area button.pagination_load_more,
+.list_with_filter_section.mep_event_list .pagination_area [class*="Button"] {
+	min-width: 160px;
+	min-height: 44px;
+	border-radius: 999px;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 0 22px;
+	border: none;
+	background: var(--mep-card-text);
+	color: #fff;
+}
+
+.list_with_filter_section.mep_event_list .pagination_area button.pagination_load_more:hover {
+	opacity: 0.88;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+
+@media (max-width: 1000px) {
+	.list_with_filter_section.mep_event_list [data-column="3"] .filter_item.mep_event_grid_item,
+	.list_with_filter_section.mep_event_list [data-column="4"] .filter_item.mep_event_grid_item,
+	.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item[style*="33."],
+	.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item[style*="25%"] {
+		width: calc(50% - 10px) !important;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__media {
+		width: 180px;
+	}
+}
+
+@media (max-width: 640px) {
+	.list_with_filter_section.mep_event_list div.mage_grid_box {
+		gap: 14px;
+	}
+
+	.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item,
+	.list_with_filter_section.mep_event_list [data-column] .filter_item.mep_event_grid_item,
+	.list_with_filter_section.mep_event_list .filter_item.mep_event_grid_item[style*="%"] {
+		width: 100% !important;
+	}
+
+	.list_with_filter_section.mep_event_list .filter_item.mep_event_list_item {
+		flex-direction: column;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_event_card__media {
+		width: 100%;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item .mep_list_thumb {
+		height: 200px;
+		min-height: 200px;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_grid_item .mep_list_thumb {
+		height: 190px;
+		min-height: 190px;
+	}
+}

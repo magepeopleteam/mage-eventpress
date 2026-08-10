@@ -545,6 +545,20 @@ function mpwem_attendee_management(parent, total_qty) {
 //*****************************Related Event***********************************//
 (function ($) {
     "use strict";
+    function mpwem_related_refresh_slider($slider) {
+        if (!$slider || !$slider.length || !$slider.hasClass('slick-initialized')) {
+            return;
+        }
+        // Clear list-template inline % widths so slick can own exact pixel widths.
+        $slider.find('.slick-slide, .filter_item.mep_event_card').each(function () {
+            var el = this;
+            if (el.style && el.style.width && String(el.style.width).indexOf('%') !== -1) {
+                el.style.removeProperty('width');
+            }
+        });
+        $slider.slick('setPosition');
+    }
+
     $(document).ready(function () {
         $('.mpwem_related_area').each(function () {
             var $area = $(this);
@@ -552,42 +566,57 @@ function mpwem_attendee_management(parent, total_qty) {
             if (!$slider.length || $slider.hasClass('slick-initialized')) {
                 return;
             }
+
+            // Drop grid % widths before init so slides don't overflow / look cut.
+            $slider.find('.filter_item.mep_event_card, .mep-event-list-loop').each(function () {
+                this.style.removeProperty('width');
+            });
+
+            var slideCount = $slider.children('.filter_item, .mep-event-list-loop').length;
+            var desktopShow = Math.min(3, Math.max(1, slideCount));
+            var tabletShow = Math.min(2, desktopShow);
+            var mobileShow = 1;
+
             $slider.slick({
                 dots: false,
                 arrows: true,
                 prevArrow: $area.find('.related_prev'),
                 nextArrow: $area.find('.related_next'),
-                infinite: true,
+                infinite: slideCount > desktopShow,
                 centerMode: false,
+                variableWidth: false,
                 autoplay: false,
                 autoplaySpeed: 2000,
                 centerPadding: '0px',
-                slidesToShow: 3,
+                slidesToShow: desktopShow,
                 slidesToScroll: 1,
                 responsive: [
                     {
                         breakpoint: 1024,
                         settings: {
-                            slidesToShow: 2,
+                            slidesToShow: tabletShow,
                             slidesToScroll: 1,
-                            infinite: true,
+                            infinite: slideCount > tabletShow,
                             dots: false,
-                            centerMode: false
+                            centerMode: false,
+                            variableWidth: false
                         }
                     },
                     {
                         breakpoint: 767,
                         settings: {
-                            slidesToShow: 1,
+                            slidesToShow: mobileShow,
                             slidesToScroll: 1,
-                            infinite: true,
+                            infinite: slideCount > mobileShow,
                             dots: false,
-                            centerMode: false
+                            centerMode: false,
+                            variableWidth: false
                         }
                     }
                 ]
             }).promise().done(function () {
                 $area.removeClass('on_load_off');
+                mpwem_related_refresh_slider($slider);
                 // Re-apply lazy bg images after slick has real slide widths (incl. clones).
                 $slider.find('.mep_list_thumb [data-bg-image]').each(function () {
                     var $img = $(this);
@@ -607,7 +636,20 @@ function mpwem_attendee_management(parent, total_qty) {
                 if (typeof mpwem_load_bg_image === 'function') {
                     mpwem_load_bg_image();
                 }
+                // Recalc after fonts/images settle so the 3rd card isn't clipped.
+                setTimeout(function () {
+                    mpwem_related_refresh_slider($slider);
+                }, 50);
+                $(window).on('load.mpwemRelated', function () {
+                    mpwem_related_refresh_slider($slider);
+                });
             });
+        });
+    });
+
+    $(window).on('resize.mpwemRelated', function () {
+        $('.mpwem_related_area .related_item.slick-initialized').each(function () {
+            mpwem_related_refresh_slider($(this));
         });
     });
 }(jQuery));

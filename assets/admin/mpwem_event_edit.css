@@ -11987,3 +11987,370 @@ textarea.mpwem-field-error:focus,
     border-radius: 10px;
     box-shadow: 0 0 0 2px #e11d48 !important;
 }
+
+/* ============================================================
+   Seat Plan panel (Step 2) — reskin of the Seat Plan addon's
+   legacy admin UI to match the wizard's design system. The
+   addon's own markup/behavior is untouched; only appearance.
+
+   #mpwemasp_settings needs `position: relative` here because the
+   addon's seat-edit popup (.mp_event_seat_item) is positioned
+   absolutely and, on the classic screen, anchors off WordPress's
+   `.postbox` wrapper (which sets position:relative). This mount
+   point isn't a postbox, so without this the popup renders
+   relative to the wrong ancestor and never appears where clicked.
+   ============================================================ */
+#mpwem_wizard_seat_plan_card #mpwemasp_settings {
+    position: relative;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+#mpwem_wizard_seat_plan_card .seat_name_warning {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: var(--mpwem-btn-radius);
+    font-size: 13px;
+    color: #92400e;
+}
+
+/* The addon's markup relies on <table table-layout:fixed> with a
+   different real column count per row (row 1 has 2 columns, rows 2-3
+   have 5), which makes the browser compute column widths from row 1
+   and squeeze/overlap the wider rows. Flexing every <tr> instead lets
+   each label+control pair size to its own content and wrap freely. */
+#mpwem_wizard_seat_plan_card .mpwemasp_command,
+#mpwem_wizard_seat_plan_card .mpwemasp_command tbody {
+    display: block;
+    width: 100%;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--mpwem-border);
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command tr:last-child {
+    border-bottom: none;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command th,
+#mpwem_wizard_seat_plan_card .mpwemasp_command td {
+    display: block;
+    padding: 0;
+    vertical-align: middle;
+    white-space: normal;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command th:empty,
+#mpwem_wizard_seat_plan_card .mpwemasp_command td:empty {
+    display: none;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command th {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: var(--mpwem-muted);
+    text-align: left;
+    white-space: nowrap;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command td .mp_form_control {
+    width: auto;
+    min-width: 160px;
+}
+
+#mpwem_wizard_seat_plan_card .mp_seat_row_column_area .mp_form_control {
+    width: 76px;
+    min-width: 0;
+}
+
+#mpwem_wizard_seat_plan_card .mp_form_control {
+    border: 1px solid var(--mpwem-btn-secondary-border);
+    border-radius: var(--mpwem-btn-radius);
+    background: #fff;
+    color: var(--mpwem-text);
+    font-size: 14px;
+    padding: 8px 10px;
+    min-height: 38px;
+    box-sizing: border-box;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+#mpwem_wizard_seat_plan_card .mp_form_control:focus {
+    outline: none;
+    border-color: var(--mpwem-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+}
+
+#mpwem_wizard_seat_plan_card select.mp_form_control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m19 9-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+#mpwem_wizard_seat_plan_card .mp_seat_row_column_area {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px;
+    background: var(--mpwem-bg);
+    border: 1px solid var(--mpwem-border);
+    border-radius: var(--mpwem-btn-radius);
+}
+
+#mpwem_wizard_seat_plan_card .mp_seat_row_column_area .mp_form_control {
+    border-color: transparent;
+    background: #fff;
+}
+
+/* Buttons */
+#mpwem_wizard_seat_plan_card .dButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    padding: var(--mpwem-btn-padding);
+    border: 1px solid transparent;
+    border-radius: var(--mpwem-btn-radius);
+    cursor: pointer;
+    transition: opacity .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+#mpwem_wizard_seat_plan_card .dButton .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_create_seat_plan {
+    background: var(--mpwem-btn-primary-bg);
+    color: var(--mpwem-btn-primary-text);
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_create_seat_plan:hover {
+    background: var(--mpwem-btn-primary-hover-bg);
+    opacity: 1;
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_copy_seat_plan {
+    background: var(--mpwem-btn-secondary-bg);
+    color: var(--mpwem-btn-secondary-text);
+    border-color: var(--mpwem-btn-secondary-border);
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_copy_seat_plan:hover {
+    background: var(--mpwem-btn-secondary-hover-bg);
+    border-color: var(--mpwem-btn-secondary-hover-border);
+    opacity: 1;
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_delete_seat_plan {
+    background: var(--mpwem-btn-danger-bg);
+    color: var(--mpwem-btn-danger-text);
+    border-color: var(--mpwem-btn-danger-border);
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_delete_seat_plan:hover {
+    background: var(--mpwem-btn-danger-hover-bg);
+    color: var(--mpwem-btn-danger-hover-text);
+    opacity: 1;
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_save {
+    margin-top: 20px;
+    font-size: 14px;
+    max-width: none;
+    background: var(--mpwem-btn-primary-bg);
+    color: var(--mpwem-btn-primary-text);
+    box-shadow: var(--mpwem-shadow);
+}
+
+#mpwem_wizard_seat_plan_card button.mpwemasp_save:hover {
+    background: var(--mpwem-btn-primary-hover-bg);
+    color: #fff;
+    opacity: 1;
+}
+
+/* "Common seat" toggle switch */
+#mpwem_wizard_seat_plan_card .mpwemasp_command label:has(.mp_opacity_zero) {
+    position: relative;
+    display: inline-flex;
+    width: 44px;
+    height: 24px;
+    margin: 0;
+}
+
+#mpwem_wizard_seat_plan_card .mp_opacity_zero {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command label span.round {
+    position: absolute;
+    inset: 0;
+    width: 44px;
+    height: 24px;
+    padding: 0;
+    min-width: 0;
+    border-radius: 999px;
+    background: #cbd5e1;
+    transition: background .2s ease;
+    pointer-events: none;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_command label span.round::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .2);
+    transition: transform .2s ease;
+}
+
+#mpwem_wizard_seat_plan_card .mp_opacity_zero:checked+span.round {
+    background: linear-gradient(135deg, var(--mpwem-primary) 0%, var(--mpwem-primary-hover) 100%);
+}
+
+#mpwem_wizard_seat_plan_card .mp_opacity_zero:checked+span.round::after {
+    transform: translateX(20px);
+}
+
+/* Seat grid */
+#mpwem_wizard_seat_plan_card .mp_seat_plan_area {
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--mpwem-bg);
+    border: 1px solid var(--mpwem-border);
+    border-radius: var(--mpwem-radius);
+}
+
+#mpwem_wizard_seat_plan_card .mp_seat_create_table td {
+    border-color: var(--mpwem-border) !important;
+}
+
+#mpwem_wizard_seat_plan_card .mage_seat_item {
+    border-radius: 6px !important;
+    transition: box-shadow .15s ease;
+}
+
+#mpwem_wizard_seat_plan_card .mage_seat_item .empty_seat_area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 6px;
+}
+
+#mpwem_wizard_seat_plan_card .mage_seat_item.remove {
+    background: #f1f5f9 !important;
+}
+
+/* A brand-new/unassigned cell renders as .regular_area.admin_seat_item
+   with data-seat-item="remove" and NO .mage_seat_item class at all — it's
+   a genuinely bare, unstyled div (true on the classic screen too), so the
+   rule above never touches it and it's invisible until clicked. Target the
+   data attribute directly so every cell has a visible, clickable slot. */
+#mpwem_wizard_seat_plan_card .admin_seat_item[data-seat-item="remove"] {
+    background: #f1f5f9;
+    border: 1px dashed var(--mpwem-btn-secondary-border);
+    border-radius: 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_item:hover .admin_seat_item[data-seat-item="remove"] {
+    background: #e2e8f0;
+    border-color: var(--mpwem-primary);
+}
+
+#mpwem_wizard_seat_plan_card .mpwemasp_item_active .admin_seat_item,
+#mpwem_wizard_seat_plan_card .mpwemasp_item_active .admin_seat_item>div {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .35) !important;
+    border-color: var(--mpwem-primary) !important;
+    border-radius: 6px !important;
+}
+
+/* Seat editor popup */
+#mpwem_wizard_seat_plan_card .mp_event_seat_item {
+    background: #fff;
+    border: 1px solid var(--mpwem-border);
+    border-radius: var(--mpwem-radius);
+    box-shadow: var(--mpwem-shadow);
+    /* Extra top padding reserves a clear row for the close button — it's
+       `position: absolute` and the seat-name field is the very next
+       element in markup, so without this the field renders underneath it. */
+    padding: 40px 16px 16px;
+    min-width: 220px;
+    max-width: 260px;
+    z-index: 9999;
+}
+
+#mpwem_wizard_seat_plan_card .mp_event_seat_item label {
+    display: block;
+    margin: 0 0 10px;
+}
+
+#mpwem_wizard_seat_plan_card .mp_event_seat_item .row_column_area {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-top: 4px;
+}
+
+#mpwem_wizard_seat_plan_card .mp_event_seat_item .row_column_area label {
+    flex: 1;
+    margin: 0;
+}
+
+#mpwem_wizard_seat_plan_card .mp_event_seat_item .row_column_area>.dashicons-no-alt {
+    display: none;
+}
+
+#mpwem_wizard_seat_plan_card .close_seat_settings {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+#mpwem_wizard_seat_plan_card .close_seat_settings:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}

@@ -5833,7 +5833,10 @@ function mep_change_date_status() {
         $global_qty_status       = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
         $event_global_qty_status = get_post_meta( $event_id, 'enable_global_qty', true ) ? get_post_meta( $event_id, 'enable_global_qty', true ) : 'off';
         $recurring               = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-        if ( $recurring == 'no' && $global_qty_status == 'yes' && $event_global_qty_status == 'on' ) {
+        // mep_gq_type is 'global' ("Full Event Base") or 'date_wise' ("Particular Date Wise") -
+        // never 'yes'/'no' - so comparing against 'yes' here always evaluated false, making this
+        // Single Event override permanently dead regardless of the admin's Global Quantity setting.
+        if ( $recurring == 'no' && $global_qty_status == 'global' && $event_global_qty_status == 'on' ) {
             $total_seat = get_post_meta( $event_id, 'mep_gq_total_seat', true ) ? get_post_meta( $event_id, 'mep_gq_total_seat', true ) : $total_seat;
         }
         return $total_seat;
@@ -5887,9 +5890,12 @@ function mep_change_date_status() {
     }
     add_filter( 'mep_event_total_seat_count', 'mep_gq_modifiy_event_total_seat_label', 90, 2 );
     function mep_gq_modifiy_event_total_seat_label( $total_left, $post_id ) {
+        // enable_global_qty is 'on'/'off' (see save_global_quantity()) - never 'yes', so this
+        // comparison always evaluated false, same copy-paste mistake as
+        // mep_gq_modifiy_event_total_seat() above.
         $event_global_qty_status = get_post_meta( $post_id, 'enable_global_qty', true ) ? get_post_meta( $post_id, 'enable_global_qty', true ) : 'off';
         $count_datewise_gq       = mep_gq_check_datewise_data( $post_id );
-        $total_left_gq           = $event_global_qty_status == 'yes' || $count_datewise_gq > 0 ? 1 : $total_left;
+        $total_left_gq           = $event_global_qty_status == 'on' || $count_datewise_gq > 0 ? 1 : $total_left;
         return $total_left_gq;
     }
     add_filter( 'mep_total_available_seat', 'mep_gq_modifiy_event_ticket_type_total_seat', 90, 4 );

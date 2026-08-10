@@ -92,9 +92,14 @@
 //				);
 				$fontAwesome = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
 				if ( $fontAwesome == 'no' ) {
-					wp_enqueue_style( 'mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0' );
-					wp_enqueue_style( 'mp_font_awesome-660', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css', array(), '6.6.0' );
-					wp_enqueue_style( 'mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4' );
+					// Self-hosted instead of 3 redundant external CDN requests (an old
+					// v4 build nothing here actually uses, plus v5 and v6 of the same
+					// icon set). Every icon in this plugin/PRO uses the "fas" prefix,
+					// which v5.15.4 already covers, so this is a straight swap with no
+					// icon-name changes. Self-hosting also means icons no longer go
+					// blank whenever the visitor's browser/network blocks cdnjs.cloudflare.com
+					// or cdn.jsdelivr.net (ad blockers commonly target both by name).
+					wp_enqueue_style( 'mp_font_awesome', MPWEM_PLUGIN_URL . '/assets/vendor/fontawesome/css/all.min.css', array(), '5.15.4' );
 				}
 				$flatIcon = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_flaticon_from_theme', 'no' );
 				if ( $flatIcon == 'no' ) {

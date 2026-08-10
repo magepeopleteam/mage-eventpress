@@ -516,6 +516,38 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<?php
 		}
 
+		private function is_seat_plan_addon_active(): bool
+		{
+			if (class_exists('MP_ESP_Admin_Meta')) {
+				return true;
+			}
+
+			if (! function_exists('is_plugin_active')) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+
+			return function_exists('is_plugin_active')
+				&& is_plugin_active('woocommerce-event-manager-addon-seat-plan/event_seat_plan.php');
+		}
+
+		private function render_seat_plan_panel(int $post_id): void
+		{
+			if (! $this->is_seat_plan_addon_active()) {
+				return;
+			}
+			?>
+			<div class="mpwem-card" id="mpwem_wizard_seat_plan_card">
+				<div class="mpwem-card__head">
+					<h2><?php esc_html_e('Seat Plan', 'mage-eventpress'); ?></h2>
+					<p><?php esc_html_e('Configure the seating layout attendees choose from at checkout.', 'mage-eventpress'); ?></p>
+				</div>
+				<div class="mpwem-card__body">
+					<?php do_action('mpwem_seat_plan_settings_mount', $post_id); ?>
+				</div>
+			</div>
+			<?php
+		}
+
 		private function is_review_addon_active(): bool
 		{
 			// The Review & Rating addon ships bundled inside mage-eventpress-pro/lib
@@ -1770,6 +1802,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<div class="mpwem-panel-mount" id="mpwem_wizard_extra_services_mount"></div>
 															</div>
 														</div>
+														<?php $this->render_seat_plan_panel($post_id); ?>
 														<div class="mpwem-ticket-modal" id="mpwem_ticket_editor_modal" aria-hidden="true">
 															<div class="mpwem-ticket-modal__backdrop" data-mpwem-ticket-modal-close></div>
 															<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_ticket_modal_title">

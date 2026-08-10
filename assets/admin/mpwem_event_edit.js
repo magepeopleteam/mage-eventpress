@@ -264,6 +264,374 @@
         }
     }
 
+    function initSpeakerPicker($root) {
+        const $panels = $root.find('.mpwem_speaker_settings');
+        if (!$panels.length) {
+            return;
+        }
+
+        const cfg = getConfig();
+        const strings = cfg.speaker || {};
+        let speakerModalSaving = false;
+        let speakerMediaFrame = null;
+
+        const escapeHtml = function(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        };
+
+        const updateCount = function($panel) {
+            const count = $panel.find('.mpwem-speaker-option input[type="checkbox"]:checked').length;
+            const $badge = $panel.find('[data-speaker-count]');
+            if ($badge.length) {
+                $badge.text(count + ' selected');
+            }
+        };
+
+        const getSpeakerModal = function() {
+            return document.getElementById('mpwem-event-speaker-modal');
+        };
+
+        const setSpeakerImagePreview = function(url, id) {
+            const preview = document.getElementById('mpwem-event-speaker-image-preview');
+            const removeBtn = document.getElementById('mpwem-event-speaker-image-remove');
+            const selectBtn = document.getElementById('mpwem-event-speaker-image-select');
+            const idInput = document.getElementById('mpwem-event-speaker-image-id');
+            if (!preview || !idInput) {
+                return;
+            }
+            idInput.value = String(id || 0);
+            if (url) {
+                preview.classList.add('has-image');
+                preview.innerHTML = '<img src="' + escapeHtml(url) + '" alt="" />';
+                if (removeBtn) {
+                    removeBtn.hidden = false;
+                }
+                if (selectBtn) {
+                    selectBtn.textContent = strings.imageChange || 'Change Image';
+                }
+            } else {
+                preview.classList.remove('has-image');
+                preview.innerHTML = '<span class="dashicons dashicons-format-image"></span>';
+                if (removeBtn) {
+                    removeBtn.hidden = true;
+                }
+                if (selectBtn) {
+                    selectBtn.textContent = strings.imageSelect || 'Select Image';
+                }
+            }
+        };
+
+        const setSpeakerModalStatus = function(message, type) {
+            const status = document.getElementById('mpwem-event-speaker-modal-status');
+            if (!status) {
+                return;
+            }
+            if (!message) {
+                status.hidden = true;
+                status.textContent = '';
+                status.className = 'mpwem-speaker-modal__status';
+                return;
+            }
+            status.hidden = false;
+            status.textContent = message;
+            status.className = 'mpwem-speaker-modal__status is-' + (type || 'error');
+        };
+
+        const closeSpeakerModal = function() {
+            const modal = getSpeakerModal();
+            if (!modal) {
+                return;
+            }
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('mpwem-speaker-modal-open');
+            speakerModalSaving = false;
+        };
+
+        const resetSpeakerModalForm = function() {
+            const form = document.getElementById('mpwem-event-speaker-create-form');
+            if (form) {
+                form.reset();
+            }
+            setSpeakerImagePreview('', 0);
+            setSpeakerModalStatus('', '');
+            const saveBtn = document.getElementById('mpwem-event-speaker-save-btn');
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.textContent = strings.save || 'Create Speaker';
+            }
+        };
+
+        const openSpeakerMedia = function() {
+            if (typeof wp === 'undefined' || !wp.media) {
+                return;
+            }
+            if (!speakerMediaFrame) {
+                speakerMediaFrame = wp.media({
+                    title: strings.imageSelect || 'Select Image',
+                    button: { text: strings.imageSelect || 'Select Image' },
+                    library: { type: 'image' },
+                    multiple: false
+                });
+                speakerMediaFrame.on('select', function() {
+                    const attachment = speakerMediaFrame.state().get('selection').first().toJSON();
+                    const url = (attachment.sizes && attachment.sizes.thumbnail)
+                        ? attachment.sizes.thumbnail.url
+                        : attachment.url;
+                    setSpeakerImagePreview(url, attachment.id);
+                });
+            }
+            speakerMediaFrame.open();
+        };
+
+        const ensureSpeakerSelectGrid = function($panel) {
+            let $select = $panel.find('.mpwem-speaker-select').first();
+            if (!$select.length) {
+                $panel.find('.mpwem-speaker-select__empty-state').remove();
+                $select = $(
+                    '<div class="mpwem-speaker-select">' +
+                        '<div class="mpwem-speaker-select__grid"></div>' +
+                    '</div>'
+                );
+                $panel.find('.mpwem-speaker-picker').append($select);
+            }
+            return $select.find('.mpwem-speaker-select__grid').first();
+        };
+
+        const appendSpeakerOption = function($panel, data) {
+            const id = parseInt(data.id, 10) || 0;
+            if (!id) {
+                return;
+            }
+            if ($panel.find('.mpwem-speaker-option input[value="' + id + '"]').length) {
+                $panel.find('.mpwem-speaker-option input[value="' + id + '"]').prop('checked', true).trigger('change');
+                return;
+            }
+
+            const name = data.name || '';
+            const role = data.role || '';
+            const imageUrl = data.image_url || '';
+            const initial = name ? name.charAt(0).toUpperCase() : '?';
+            const avatarHtml = imageUrl
+                ? '<img src="' + escapeHtml(imageUrl) + '" alt="" />'
+                : '<span class="mpwem-speaker-option__initial">' + escapeHtml(initial) + '</span>';
+
+            const $option = $(
+                '<label class="mpwem-speaker-option is-selected">' +
+                    '<input type="checkbox" name="mep_event_speakers_list[]" value="' + id + '" checked="checked" data-no-mpwem-switch="1" />' +
+                    '<span class="mpwem-speaker-option__avatar' + (imageUrl ? ' has-image' : '') + '" aria-hidden="true">' +
+                        avatarHtml +
+                        '<span class="mpwem-speaker-option__check"><span class="dashicons dashicons-yes"></span></span>' +
+                    '</span>' +
+                    '<span class="mpwem-speaker-option__meta">' +
+                        '<span class="mpwem-speaker-option__name">' + escapeHtml(name) + '</span>' +
+                        (role ? '<span class="mpwem-speaker-option__role">' + escapeHtml(role) + '</span>' : '') +
+                    '</span>' +
+                '</label>'
+            );
+
+            const $grid = ensureSpeakerSelectGrid($panel);
+            $grid.prepend($option);
+            updateCount($panel);
+        };
+
+        const submitSpeakerForm = function(event) {
+            event.preventDefault();
+            if (speakerModalSaving) {
+                return;
+            }
+
+            const nameInput = document.getElementById('mpwem-event-speaker-name');
+            const name = nameInput ? nameInput.value.trim() : '';
+            if (!name) {
+                setSpeakerModalStatus(strings.nameRequired || 'Please enter a speaker name.', 'error');
+                if (nameInput) {
+                    nameInput.focus();
+                }
+                return;
+            }
+
+            speakerModalSaving = true;
+            setSpeakerModalStatus('', '');
+            const saveBtn = document.getElementById('mpwem-event-speaker-save-btn');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.textContent = strings.saving || 'Creating…';
+            }
+
+            const body = new FormData();
+            body.append('action', 'mpwem_speaker_create');
+            body.append('nonce', cfg.speaker_nonce || '');
+            body.append('name', name);
+            body.append('excerpt', (document.getElementById('mpwem-event-speaker-role') || {}).value || '');
+            body.append('description', (document.getElementById('mpwem-event-speaker-desc') || {}).value || '');
+            body.append('image_id', (document.getElementById('mpwem-event-speaker-image-id') || {}).value || '0');
+            body.append('status', (document.getElementById('mpwem-event-speaker-status') || {}).value || 'publish');
+
+            fetch(cfg.ajax_url || window.ajaxurl || '', {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: body
+            })
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(json) {
+                    if (!json || !json.success) {
+                        const msg = (json && json.data) ? json.data : (strings.createError || 'Could not create speaker.');
+                        throw new Error(typeof msg === 'string' ? msg : (strings.createError || 'Could not create speaker.'));
+                    }
+                    const data = json.data || {};
+                    $panels.each(function() {
+                        appendSpeakerOption($(this), data);
+                    });
+                    closeSpeakerModal();
+                    if (typeof showToast === 'function') {
+                        showToast(data.message || strings.createSuccess || 'Speaker created successfully.', 'success');
+                    }
+                })
+                .catch(function(err) {
+                    setSpeakerModalStatus(err.message || strings.createError || 'Could not create speaker.', 'error');
+                    speakerModalSaving = false;
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.textContent = strings.save || 'Create Speaker';
+                    }
+                });
+        };
+
+        const ensureSpeakerModal = function() {
+            let modal = getSpeakerModal();
+            if (modal) {
+                return modal;
+            }
+
+            modal = document.createElement('div');
+            modal.id = 'mpwem-event-speaker-modal';
+            modal.className = 'mpwem-speaker-modal';
+            modal.setAttribute('aria-hidden', 'true');
+            modal.innerHTML =
+                '<div class="mpwem-speaker-modal__backdrop" data-event-speaker-modal-close="1"></div>' +
+                '<div class="mpwem-speaker-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem-event-speaker-modal-title">' +
+                    '<button type="button" class="mpwem-speaker-modal__close" data-event-speaker-modal-close="1" aria-label="' + escapeHtml(strings.cancel || 'Cancel') + '">' +
+                        '<span class="dashicons dashicons-no-alt"></span>' +
+                    '</button>' +
+                    '<div class="mpwem-speaker-modal__header">' +
+                        '<span class="mpwem-speaker-modal__icon dashicons dashicons-groups" aria-hidden="true"></span>' +
+                        '<div>' +
+                            '<h2 id="mpwem-event-speaker-modal-title">' + escapeHtml(strings.modalTitle || 'Add New Speaker') + '</h2>' +
+                            '<p>' + escapeHtml(strings.modalSubtitle || 'Create a speaker profile and assign it to this event.') + '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<form id="mpwem-event-speaker-create-form" class="mpwem-speaker-modal__form" novalidate>' +
+                        '<div class="mpwem-speaker-modal__grid">' +
+                            '<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+                                '<label for="mpwem-event-speaker-name">' + escapeHtml(strings.nameLabel || 'Speaker Name') + ' <span>*</span></label>' +
+                                '<input type="text" id="mpwem-event-speaker-name" name="name" required maxlength="200" placeholder="' + escapeHtml(strings.namePlaceholder || '') + '" />' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+                                '<label for="mpwem-event-speaker-role">' + escapeHtml(strings.roleLabel || 'Role / Title') + '</label>' +
+                                '<input type="text" id="mpwem-event-speaker-role" name="excerpt" maxlength="200" placeholder="' + escapeHtml(strings.rolePlaceholder || '') + '" />' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+                                '<label for="mpwem-event-speaker-desc">' + escapeHtml(strings.descLabel || 'Description') + '</label>' +
+                                '<textarea id="mpwem-event-speaker-desc" name="description" rows="4" placeholder="' + escapeHtml(strings.descPlaceholder || '') + '"></textarea>' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field">' +
+                                '<label>' + escapeHtml(strings.imageLabel || 'Featured Image') + '</label>' +
+                                '<div class="mpwem-speaker-modal__image">' +
+                                    '<div class="mpwem-speaker-modal__preview" id="mpwem-event-speaker-image-preview">' +
+                                        '<span class="dashicons dashicons-format-image"></span>' +
+                                    '</div>' +
+                                    '<div class="mpwem-speaker-modal__image-actions">' +
+                                        '<button type="button" class="button" id="mpwem-event-speaker-image-select">' + escapeHtml(strings.imageSelect || 'Select Image') + '</button>' +
+                                        '<button type="button" class="button-link-delete" id="mpwem-event-speaker-image-remove" hidden>' + escapeHtml(strings.imageRemove || 'Remove') + '</button>' +
+                                        '<input type="hidden" id="mpwem-event-speaker-image-id" name="image_id" value="0" />' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field">' +
+                                '<label for="mpwem-event-speaker-status">' + escapeHtml(strings.statusLabel || 'Status') + '</label>' +
+                                '<select id="mpwem-event-speaker-status" name="status">' +
+                                    '<option value="publish">' + escapeHtml(strings.statusPublish || 'Publish') + '</option>' +
+                                    '<option value="draft">' + escapeHtml(strings.statusDraft || 'Draft') + '</option>' +
+                                '</select>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="mpwem-speaker-modal__status" id="mpwem-event-speaker-modal-status" hidden></div>' +
+                        '<div class="mpwem-speaker-modal__actions">' +
+                            '<button type="button" class="button" data-event-speaker-modal-close="1">' + escapeHtml(strings.cancel || 'Cancel') + '</button>' +
+                            '<button type="submit" class="button button-primary" id="mpwem-event-speaker-save-btn">' + escapeHtml(strings.save || 'Create Speaker') + '</button>' +
+                        '</div>' +
+                    '</form>' +
+                '</div>';
+
+            document.body.appendChild(modal);
+
+            modal.addEventListener('click', function(event) {
+                if (event.target.closest('[data-event-speaker-modal-close]')) {
+                    closeSpeakerModal();
+                }
+            });
+            document.getElementById('mpwem-event-speaker-image-select').addEventListener('click', openSpeakerMedia);
+            document.getElementById('mpwem-event-speaker-image-remove').addEventListener('click', function() {
+                setSpeakerImagePreview('', 0);
+            });
+            document.getElementById('mpwem-event-speaker-create-form').addEventListener('submit', submitSpeakerForm);
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+                    closeSpeakerModal();
+                }
+            });
+
+            return modal;
+        };
+
+        const openSpeakerModal = function() {
+            const modal = ensureSpeakerModal();
+            resetSpeakerModalForm();
+            modal.classList.add('is-open');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('mpwem-speaker-modal-open');
+            window.setTimeout(function() {
+                const nameInput = document.getElementById('mpwem-event-speaker-name');
+                if (nameInput) {
+                    nameInput.focus();
+                }
+            }, 30);
+        };
+
+        $panels.each(function() {
+            const $panel = $(this);
+            updateCount($panel);
+
+            // Classic editor still uses the nested enable toggle; the modern
+            // wizard card owns enable/disable and strips this control's name.
+            if ($panel.hasClass('mpwem-embedded-panel')) {
+                $panel.find('#mep_event_enable_speaker').removeAttr('name');
+                $panel.find('#mpwem-speaker-fields').show();
+            }
+        });
+
+        $root.off('click.mpwemSpeakerAdd', '[data-mpwem-speaker-add]')
+            .on('click.mpwemSpeakerAdd', '[data-mpwem-speaker-add]', function(event) {
+                event.preventDefault();
+                openSpeakerModal();
+            });
+
+        $root.off('change.mpwemSpeakerSelect', '.mpwem-speaker-option input[type="checkbox"]')
+            .on('change.mpwemSpeakerSelect', '.mpwem-speaker-option input[type="checkbox"]', function() {
+                const $option = $(this).closest('.mpwem-speaker-option');
+                $option.toggleClass('is-selected', $(this).is(':checked'));
+                updateCount($option.closest('.mpwem_speaker_settings'));
+            });
+    }
+
     function normalizePanelLabel(text) {
         return (text || '')
             .toString()
@@ -6398,10 +6766,19 @@
         const syncSpeakerToggle = function() {
             const $toggle = $root.find('#mpwem_enable_speaker_toggle');
             if (!$toggle.length) return;
-            $root.find('#mpwem_speaker_card_body').toggle($toggle.is(':checked'));
+            const enabled = $toggle.is(':checked');
+            $root.find('#mpwem_speaker_card_body').toggle(enabled);
+            // Card-head toggle owns the saved value in the modern editor; strip
+            // the nested panel control so we never submit two same-named fields.
+            const $nested = $root.find('#mpwem_wizard_speaker_mount #mep_event_enable_speaker');
+            if ($nested.length) {
+                $nested.prop('checked', enabled).attr('value', enabled ? 'yes' : 'no').removeAttr('name');
+            }
+            $root.find('#mpwem_wizard_speaker_mount #mpwem-speaker-fields').toggle(enabled);
         };
         $root.on('change', '#mpwem_enable_speaker_toggle', syncSpeakerToggle);
         syncSpeakerToggle();
+        initSpeakerPicker($root);
 
         // Clear the required-field highlight as soon as the user fills the field.
         $root.on('input change', '.mpwem-field-error', function() {
@@ -6686,6 +7063,7 @@
         try {
             enhanceVenueGrid($classicRoot);
             enhanceEventType($classicRoot, { skipTicketSync: true });
+            initSpeakerPicker($classicRoot);
         } catch (error) {
             if (window.console && window.console.error) {
                 window.console.error('MPWEM classic venue/event-type enhancement failed.', error);

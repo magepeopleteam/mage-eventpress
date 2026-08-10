@@ -791,9 +791,12 @@
 
 				wp_send_json_success(
 					[
-						'id'      => (int) $post_id,
-						'message' => __( 'Speaker created successfully.', 'mage-eventpress' ),
-						'editUrl' => get_edit_post_link( $post_id, 'raw' ),
+						'id'        => (int) $post_id,
+						'name'      => get_the_title( $post_id ),
+						'role'      => $excerpt,
+						'image_url' => $image_id ? (string) wp_get_attachment_image_url( $image_id, [ 80, 80 ] ) : '',
+						'message'   => __( 'Speaker created successfully.', 'mage-eventpress' ),
+						'editUrl'   => get_edit_post_link( $post_id, 'raw' ),
 					]
 				);
 			}

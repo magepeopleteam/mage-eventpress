@@ -1300,6 +1300,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					['mpwem_admin'],
 					$this->get_asset_version('assets/admin/mpwem_event_edit.css')
 				);
+				wp_enqueue_style(
+					'mpwem-post-list-modern',
+					MPWEM_PLUGIN_URL . '/assets/admin/css/mpwem-post-list-modern.css',
+					[],
+					$this->get_asset_version('assets/admin/css/mpwem-post-list-modern.css')
+				);
 			} elseif ($is_classic) {
 				// The classic screen only gets the Manual Entry / Event Type
 				// enhancements (see the classic bootstrap in mpwem_event_edit.js),
@@ -1311,6 +1317,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit_classic.css',
 					['mpwem_admin'],
 					$this->get_asset_version('assets/admin/mpwem_event_edit_classic.css')
+				);
+				wp_enqueue_style(
+					'mpwem-post-list-modern',
+					MPWEM_PLUGIN_URL . '/assets/admin/css/mpwem-post-list-modern.css',
+					[],
+					$this->get_asset_version('assets/admin/css/mpwem-post-list-modern.css')
 				);
 			}
 
@@ -1330,7 +1342,31 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					'admin_nonce'   => wp_create_nonce('mpwem_admin_nonce'),
 					'create_nonce'  => wp_create_nonce(self::NONCE_ACTION_CREATE),
 					'term_nonce'    => wp_create_nonce('mpwem_add_event_taxonomy_term'),
+					'speaker_nonce' => wp_create_nonce('mpwem_speaker_list'),
 					'page_url'      => admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=' . self::PAGE_SLUG),
+					'speaker'       => [
+						'modalTitle'      => __('Add New Speaker', 'mage-eventpress'),
+						'modalSubtitle'   => __('Create a speaker profile and assign it to this event.', 'mage-eventpress'),
+						'nameLabel'       => __('Speaker Name', 'mage-eventpress'),
+						'namePlaceholder' => __('e.g. Alex Rivera', 'mage-eventpress'),
+						'roleLabel'       => __('Role / Title', 'mage-eventpress'),
+						'rolePlaceholder' => __('e.g. Keynote Speaker · CEO, TechVision', 'mage-eventpress'),
+						'descLabel'       => __('Description', 'mage-eventpress'),
+						'descPlaceholder' => __('Short biography shown on event pages…', 'mage-eventpress'),
+						'imageLabel'      => __('Featured Image', 'mage-eventpress'),
+						'imageSelect'     => __('Select Image', 'mage-eventpress'),
+						'imageChange'     => __('Change Image', 'mage-eventpress'),
+						'imageRemove'     => __('Remove', 'mage-eventpress'),
+						'statusLabel'     => __('Status', 'mage-eventpress'),
+						'statusPublish'   => __('Publish', 'mage-eventpress'),
+						'statusDraft'     => __('Draft', 'mage-eventpress'),
+						'cancel'          => __('Cancel', 'mage-eventpress'),
+						'save'            => __('Create Speaker', 'mage-eventpress'),
+						'saving'          => __('Creating…', 'mage-eventpress'),
+						'nameRequired'    => __('Please enter a speaker name.', 'mage-eventpress'),
+						'createError'     => __('Could not create speaker. Please try again.', 'mage-eventpress'),
+						'createSuccess'   => __('Speaker created successfully.', 'mage-eventpress'),
+					],
 				]
 			);
 		}
@@ -1643,10 +1679,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page.', 'mage-eventpress'); ?></p>
 															</div>
-															<label class="mpwem-event-setting-card__switch">
-																<input type="checkbox" name="mep_event_enable_speaker" id="mpwem_enable_speaker_toggle" value="yes" data-no-mpwem-switch="1" <?php checked($speaker_is_enabled); ?> />
-																<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
-															</label>
+															<div class="mpwem-card__head-actions">
+																<label class="mpwem-event-setting-card__switch">
+																	<input type="checkbox" name="mep_event_enable_speaker" id="mpwem_enable_speaker_toggle" value="yes" data-no-mpwem-switch="1" <?php checked($speaker_is_enabled); ?> />
+																	<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
+																</label>
+															</div>
 														</div>
 														<div class="mpwem-card__body" id="mpwem_speaker_card_body"<?php echo $speaker_is_enabled ? '' : ' style="display:none;"'; ?>>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_speaker_mount"></div>

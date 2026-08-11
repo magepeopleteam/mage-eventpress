@@ -5228,27 +5228,40 @@ die();
 		<div class="mpwem-expired-card<?php echo $is_expired ? ' is-expired' : ' is-closed'; ?>" role="status" aria-live="polite">
 			<div class="mpwem-expired-card__inner">
 				<span class="mpwem-expired-card__icon" aria-hidden="true">
-					<i class="<?php echo $is_expired ? 'far fa-calendar-times' : 'fas fa-lock'; ?>"></i>
+					<?php if ( $is_expired ) : ?>
+						<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="3" y="4" width="18" height="18" rx="2"></rect>
+							<path d="M16 2v4M8 2v4M3 10h18"></path>
+							<path d="M10 14l4 4M14 14l-4 4"></path>
+						</svg>
+					<?php else : ?>
+						<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="5" y="11" width="14" height="10" rx="2"></rect>
+							<path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+						</svg>
+					<?php endif; ?>
 				</span>
 				<div class="mpwem-expired-card__body">
+					<span class="mpwem-expired-status">
+						<?php echo $is_expired ? esc_html__( 'Expired', 'mage-eventpress' ) : esc_html__( 'Closed', 'mage-eventpress' ); ?>
+					</span>
 					<div class="mpwem-expired-title">
 						<?php if ( $is_expired ) : ?>
-							<?php esc_html_e( 'Event expired', 'mage-eventpress' ); ?>
+							<?php esc_html_e( 'This event has ended', 'mage-eventpress' ); ?>
 						<?php else : ?>
-							<?php esc_html_e( 'Registration closed', 'mage-eventpress' ); ?>
+							<?php esc_html_e( 'Registration is closed', 'mage-eventpress' ); ?>
 						<?php endif; ?>
 					</div>
 					<div class="mpwem-expired-date">
 						<?php if ( $is_expired ) : ?>
-							<?php esc_html_e( 'This event expired on', 'mage-eventpress' ); ?>
+							<?php esc_html_e( 'Ended on', 'mage-eventpress' ); ?>
 							<span class="mpwem-date-highlight"><?php echo esc_html( $formatted ); ?></span>
 						<?php else : ?>
-							<?php esc_html_e( 'Registration for this event closed', 'mage-eventpress' ); ?>
+							<?php esc_html_e( 'Ticket sales are no longer available for this event.', 'mage-eventpress' ); ?>
 						<?php endif; ?>
 					</div>
 					<div class="mpwem-total-sold-badge">
-						<i class="fas fa-ticket-alt" aria-hidden="true"></i>
-						<?php esc_html_e( 'Total tickets sold', 'mage-eventpress' ); ?>:
+						<?php esc_html_e( 'Tickets sold', 'mage-eventpress' ); ?>
 						<strong><?php echo esc_html( $total_sold ); ?></strong>
 					</div>
 				</div>

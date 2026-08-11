@@ -6980,105 +6980,174 @@
 }
 
 #mage-container.mage .mpwem-expired-card {
-  --mep-notice-accent: #b45309;
-  --mep-notice-ink: #1c1917;
-  --mep-notice-muted: #57534e;
-  --mep-notice-border: #e7e5e4;
-  --mep-notice-soft: #fffbeb;
+  --mep-ex-ink: #111827;
+  --mep-ex-muted: #6b7280;
+  --mep-ex-line: #e5e7eb;
+  --mep-ex-bg: #fafafa;
+  --mep-ex-accent: #0f766e;
+  --mep-ex-accent-soft: #ecfdf5;
   margin: 16px 0 0;
   padding: 0;
   border: 0;
-  border-radius: 0;
   background: transparent;
-  color: var(--mep-notice-ink);
-  box-shadow: none;
+  color: var(--mep-ex-ink);
   text-align: left;
 }
 
+#mage-container.mage .mpwem-expired-card.is-expired {
+  --mep-ex-accent: #9f1239;
+  --mep-ex-accent-soft: #fff1f2;
+  --mep-ex-bg: #fffafa;
+}
+
 #mage-container.mage .mpwem-expired-card.is-closed {
-  --mep-notice-accent: #c2410c;
-  --mep-notice-soft: #fff7ed;
+  --mep-ex-accent: #c2410c;
+  --mep-ex-accent-soft: #fff7ed;
+  --mep-ex-bg: #fffaf5;
 }
 
 #mage-container.mage .mpwem-expired-card__inner {
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  padding: 18px 18px 18px 16px;
-  border: 1px solid var(--mep-notice-border);
-  border-radius: 16px;
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--mep-notice-accent) 18%, transparent) 0 4px, transparent 4px),
-    linear-gradient(165deg, var(--mep-notice-soft), #ffffff 55%);
-  box-shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+  padding: 16px 18px;
+  border: 1px solid var(--mep-ex-line);
+  border-radius: 12px;
+  background: var(--mep-ex-bg);
 }
 
 #mage-container.mage .mpwem-expired-card__icon {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  flex: 0 0 44px;
   width: 44px;
   height: 44px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--mep-notice-accent) 12%, #fff);
-  color: var(--mep-notice-accent);
-  font-size: 18px;
-  line-height: 1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--mep-ex-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--mep-ex-accent);
+  line-height: 0 !important;
+  font-size: 0 !important;
+  box-shadow: none;
+  animation: none;
+}
+
+#mage-container.mage .mpwem-expired-card__icon svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+#mage-container.mage .mpwem-expired-card__icon i,
+#mage-container.mage .mpwem-expired-card__icon i::before {
+  display: none !important;
 }
 
 #mage-container.mage .mpwem-expired-card__body {
   min-width: 0;
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding-top: 1px;
+}
+
+#mage-container.mage .mpwem-expired-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--mep-ex-accent-soft);
+  color: var(--mep-ex-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 #mage-container.mage .mpwem-expired-title {
-  margin: 0 0 4px;
+  margin: 2px 0 0;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.35;
-  color: var(--mep-notice-ink);
+  color: var(--mep-ex-ink);
 }
 
 #mage-container.mage .mpwem-expired-date {
-  margin-top: 0;
-  font-size: 14px;
+  margin: 0;
+  font-size: 13px;
   font-weight: 500;
-  line-height: 1.6;
-  color: var(--mep-notice-muted);
+  line-height: 1.5;
+  color: var(--mep-ex-muted);
 }
 
 #mage-container.mage .mpwem-date-highlight {
   display: inline;
-  margin-left: 4px;
-  font-weight: 700;
-  color: var(--mep-notice-ink);
+  margin-left: 3px;
+  font-weight: 650;
+  color: var(--mep-ex-ink);
 }
 
 #mage-container.mage .mpwem-total-sold-badge {
   display: inline-flex !important;
   align-items: center;
-  gap: 8px;
-  margin-top: 12px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid color-mix(in srgb, var(--mep-notice-accent) 22%, var(--mep-notice-border));
-  color: var(--mep-notice-ink);
+  gap: 6px;
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--mep-ex-muted);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.3;
+  backdrop-filter: none;
 }
 
-#mage-container.mage .mpwem-total-sold-badge i {
-  color: var(--mep-notice-accent);
+#mage-container.mage .mpwem-total-sold-badge__icon,
+#mage-container.mage .mpwem-total-sold-badge__label {
+  display: none;
 }
 
-#mage-container.mage .mpwem-total-sold-badge strong {
-  font-weight: 800;
+#mage-container.mage .mpwem-total-sold-badge strong,
+#mage-container.mage .mpwem-total-sold-badge__count {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--mep-ex-ink);
+  font-variant-numeric: tabular-nums;
 }
 
+@media (max-width: 640px) {
+  #mage-container.mage .mpwem-expired-card__inner {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  #mage-container.mage .mpwem-expired-card__icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  #mage-container.mage .mpwem-expired-card__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  #mage-container.mage .mpwem-expired-title {
+    font-size: 15px;
+  }
+}
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
   #mage-container.mage .mep-default-content {

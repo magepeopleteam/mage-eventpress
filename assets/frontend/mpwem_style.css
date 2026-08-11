@@ -410,6 +410,57 @@ div.default_theme .mpwem_tile {
 	font-size: 36px;
 }
 
+/* ========== Default Theme — Event title ========== */
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block {
+	--mep-title-ink: #111827;
+	--mep-title-muted: #6b7280;
+	--mep-title-line: #e5e7eb;
+	--mep-title-accent: var(--color_theme, #2563eb);
+	display: block;
+	margin: 0 0 0px;
+	padding: 0 0 18px;
+	border-bottom: 1px solid var(--mep-title-line);
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) h1.mpwem_tile {
+	margin: 0;
+	padding: 0;
+	color: var(--mep-title-ink);
+	font-size: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.15;
+	text-wrap: balance;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile::after {
+	content: "";
+	display: block;
+	width: 40px;
+	height: 3px;
+	margin-top: 14px;
+	border-radius: 999px;
+	background: var(--mep-title-accent);
+}
+
+@media (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block {
+		margin-bottom: 0;
+		padding-bottom: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) h1.mpwem_tile {
+		font-size: clamp(1.5rem, 5.5vw, 1.9rem);
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile::after {
+		width: 32px;
+		margin-top: 12px;
+	}
+}
+
 div.mpwem_details {
 	margin: var(--dmp) 0 0 0;
 }
@@ -2922,6 +2973,19 @@ div.default_theme a.mep-default-speaker,
 	transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, background 0.18s ease;
 }
 
+div.default_theme .mep-default-speaker__link,
+#mage-container.mage div.default_theme .mep-default-speaker__link {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	gap: 10px !important;
+	width: 100% !important;
+	text-decoration: none !important;
+	color: inherit !important;
+}
+
+div.default_theme .mep-default-speaker:hover,
+div.default_theme .mep-default-speaker:focus-within,
 div.default_theme a.mep-default-speaker:hover,
 div.default_theme a.mep-default-speaker:focus,
 #mage-container.mage div.default_theme a.mep-default-speaker:hover,
@@ -3002,7 +3066,9 @@ div.default_theme .mep-default-speaker__name,
 }
 
 div.default_theme a.mep-default-speaker:hover .mep-default-speaker__name,
-div.default_theme a.mep-default-speaker:focus .mep-default-speaker__name {
+div.default_theme a.mep-default-speaker:focus .mep-default-speaker__name,
+div.default_theme .mep-default-speaker:hover .mep-default-speaker__name,
+div.default_theme .mep-default-speaker:focus-within .mep-default-speaker__name {
 	color: #1d4ed8 !important;
 }
 
@@ -3020,7 +3086,46 @@ div.default_theme .mep-default-speaker__role,
 	text-overflow: clip !important;
 	word-break: normal !important;
 	overflow-wrap: anywhere;
-	text-align: center;
+	text-align: left !important;
+}
+
+div.default_theme .mep-default-speaker__role-more,
+#mage-container.mage div.default_theme .mep-default-speaker__role-more {
+	appearance: none;
+	display: inline;
+	margin: 0 0 0 4px;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: #2563eb;
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+div.default_theme .mep-default-speaker__role-more:hover,
+div.default_theme .mep-default-speaker__role-more:focus {
+	color: #1d4ed8;
+	text-decoration: underline;
+}
+
+div.default_theme .mep-default-speaker__role-more [data-label-more],
+div.default_theme .mep-default-speaker__role-more [data-label-less] {
+	display: none !important;
+}
+
+div.default_theme .mep-default-speaker__role.is-collapsed .mep-default-speaker__role-more [data-label-more],
+div.default_theme .mep-default-speaker__role:not(.is-expanded) .mep-default-speaker__role-more [data-label-more] {
+	display: inline !important;
+}
+
+div.default_theme .mep-default-speaker__role.is-expanded .mep-default-speaker__role-more [data-label-less] {
+	display: inline !important;
+}
+
+div.default_theme .mep-default-speaker__role.is-expanded .mep-default-speaker__role-more [data-label-more] {
+	display: none !important;
 }
 
 @media screen and (max-width: 640px) {

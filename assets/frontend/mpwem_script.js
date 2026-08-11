@@ -1994,8 +1994,37 @@ jQuery(function ($) {
         });
     }
 
+    function mpwemInitSpeakerRoleReadMore() {
+        $(document).on('click', '[data-mep-speaker-role-toggle]', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $button = $(this);
+            var $wrap = $button.closest('[data-mep-speaker-role]');
+            var $text = $wrap.find('.mep-default-speaker__role-text').first();
+            if (!$wrap.length || !$text.length) {
+                return;
+            }
+
+            var expanded = $wrap.hasClass('is-expanded');
+            var shortText = $text.attr('data-short') || '';
+            var fullText = $text.attr('data-full') || '';
+
+            if (expanded) {
+                $text.text(shortText + '…');
+                $wrap.removeClass('is-expanded').addClass('is-collapsed');
+                $button.attr('aria-expanded', 'false');
+            } else {
+                $text.text(fullText);
+                $wrap.addClass('is-expanded').removeClass('is-collapsed');
+                $button.attr('aria-expanded', 'true');
+            }
+        });
+    }
+
     $(document).ready(function () {
         mpwemInitDetailsReadMore();
+        mpwemInitSpeakerRoleReadMore();
     });
 
     $(document).on('click', '.mpwem_details_readmore', function (e) {

@@ -124,8 +124,16 @@
 		$expire_on = function_exists( 'mep_get_option' )
 			? mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' )
 			: 'event_start_datetime';
+		// Normalize the legacy option value to the current one - the settings UI
+		// has saved 'event_expire_datetime' for "Event End Time" for a long time
+		// (MPWEM_General_Settings_UI.php, MPWEM_Quick_Setup.php, admin_setting_panel.php),
+		// same as every other reader of this option (MPWEM_Query.php, MPWEM_Calendar.php,
+		// mep_functions.php...). Comparing against 'event_end_datetime' here never
+		// matched, so "Expire on: Event End Time" was silently ignored on this page -
+		// it always expired at event start instead.
+		$expire_on    = $expire_on === 'event_end_datetime' ? 'event_expire_datetime' : $expire_on;
 		$reference_dt = $user_date;
-		if ( $expire_on === 'event_end_datetime' ) {
+		if ( $expire_on === 'event_expire_datetime' ) {
 			$end_ref = $event_type === 'no' ? get_post_meta( $event_id, 'event_end_datetime', true ) : '';
 			if ( empty( $end_ref ) ) {
 				$end_time = get_post_meta( $event_id, 'event_end_time', true );

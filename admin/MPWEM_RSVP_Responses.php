@@ -20,7 +20,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 				'edit.php?post_type=mep_events',
 				__( 'RSVP Responses', 'mage-eventpress' ),
 				__( 'RSVP Responses', 'mage-eventpress' ),
-				'manage_options',
+				MPWEM_Global_Function::get_shop_manager_capability(),
 				'event-rsvp-responses',
 				array( $this, 'render_page' )
 			);
@@ -362,7 +362,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 
 		public function ajax_checkin_rsvp() {
 			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
-			if ( ! current_user_can( 'manage_options' ) ) {
+			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
 
@@ -378,7 +378,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 
 		public function ajax_bulk_action() {
 			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
-			if ( ! current_user_can( 'manage_options' ) ) {
+			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
 
@@ -403,7 +403,8 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function export_csv() {
-			if ( isset( $_GET['mep_export_rsvps'] ) && current_user_can( 'manage_options' ) ) {
+			if ( isset( $_GET['mep_export_rsvps'] ) && current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+
 
 				$args = array(
 					'post_type'      => 'mep_rsvp_responses',

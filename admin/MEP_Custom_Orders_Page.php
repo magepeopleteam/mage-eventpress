@@ -185,7 +185,7 @@ class MEP_Custom_Orders_Page {
 			'edit.php?post_type=mep_events',
 			__( 'Event Orders', 'mage-eventpress' ),
 			$menu_title,
-			'manage_options',
+			MPWEM_Global_Function::get_shop_manager_capability(),
 			'mep_event_orders',
 			array( __CLASS__, 'render_page' )
 		);
@@ -534,7 +534,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_filter() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -577,7 +577,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function export_csv() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_die( 'Unauthorized', 403 );
 		}
 
@@ -647,7 +647,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_update_status() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -727,7 +727,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_resend_pdf() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( array( 'message' => __( 'Unauthorized', 'mage-eventpress' ) ), 403 );
 		}
 
@@ -770,7 +770,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_bulk_status() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -817,7 +817,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_add_note() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -884,7 +884,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_delete_note() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 

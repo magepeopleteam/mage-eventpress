@@ -304,6 +304,17 @@
 			public static function get_admin_capability(): string {
 				return self::has_woocommerce() ? 'manage_woocommerce' : 'edit_posts';
 			}
+			/**
+			 * For pages that should open up to WooCommerce's Shop Manager role
+			 * (Attendee List, Event Orders, Analytics, RSVP Responses, Booking
+			 * Calendar, the Attendee hub) without going as low as edit_posts.
+			 * Shop Manager only exists because of WooCommerce, so falling back
+			 * to manage_options when WooCommerce is inactive keeps these
+			 * Administrator-only rather than accidentally locking everyone out.
+			 */
+			public static function get_shop_manager_capability(): string {
+				return self::has_woocommerce() ? 'manage_woocommerce' : 'manage_options';
+			}
 			public static function price_convert_raw( $price ) {
 				if ( ! self::has_woocommerce() ) {
 					$price = wp_strip_all_tags( $price );

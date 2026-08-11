@@ -845,6 +845,15 @@
 
         // Only rendered by the legacy hook when WooCommerce "Enable taxes" is on.
         mountPanel($root, '#mp_event_tax_settings', 'mpwem_wizard_tax_mount');
+        const $taxMount = $('#mpwem_wizard_tax_mount');
+        if ($taxMount.children().length) {
+            const $taxPanel = $taxMount.children('.mp_tab_item').first();
+            // Our card head already shows "Tax Settings" - hide the legacy
+            // tab title/description and the inner banner that repeat it.
+            $taxPanel.children('h3, p').hide();
+            $taxPanel.find('section.bg-light').first().hide();
+            $('#mpwem_wizard_tax_card').show();
+        }
 
         const $ticketPricingPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
         decorateMinMaxSettings($root);

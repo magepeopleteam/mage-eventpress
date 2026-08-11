@@ -1855,7 +1855,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															</div>
 														</div>
 														<?php $this->render_seat_plan_panel($post_id); ?>
-														<div class="mpwem-panel-mount" id="mpwem_wizard_tax_mount"></div>
+														<div class="mpwem-card" id="mpwem_wizard_tax_card" style="display:none;">
+															<div class="mpwem-card__head">
+																<h2><?php esc_html_e('Tax Settings', 'mage-eventpress'); ?></h2>
+																<p><?php esc_html_e('Configure how tax applies to this event\'s tickets.', 'mage-eventpress'); ?></p>
+															</div>
+															<div class="mpwem-card__body">
+																<div class="mpwem-panel-mount" id="mpwem_wizard_tax_mount"></div>
+															</div>
+														</div>
 														<div class="mpwem-ticket-modal" id="mpwem_ticket_editor_modal" aria-hidden="true">
 															<div class="mpwem-ticket-modal__backdrop" data-mpwem-ticket-modal-close></div>
 															<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_ticket_modal_title">

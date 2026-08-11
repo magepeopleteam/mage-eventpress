@@ -190,19 +190,42 @@
             load_bg_img();
         });
     });
+    function reveal_event_list_section($section) {
+        if (!$section.length || $section.hasClass('mep-list-is-ready')) {
+            return;
+        }
+        mpwem_loader_spin_remove($section);
+        let $items = $section.find('.all_filter_item');
+        $items.css({'height': 'auto', 'overflow': 'inherit', 'display': 'block', 'opacity': 0});
+        $section.find('.mep_event_list_skeleton').fadeOut(180, function () {
+            $(this).remove();
+        });
+        $items.animate({opacity: 1}, 280);
+        $section.removeClass('mep-list-is-loading').addClass('mep-list-is-ready');
+    }
+
     function load_pagination_initial_item() {
         $('.list_with_filter_section').each(function () {
-            mpwem_loader_spin($(this));
-            $(this).find('[data-bg-image]').each(function () {
+            let $section = $(this);
+            // Prefer the card skeleton over the old full-section spinner.
+            if (!$section.find('.mep_event_list_skeleton').length) {
+                mpwem_loader_spin($section);
+            }
+            $section.find('[data-bg-image]').each(function () {
                 mpwem_loader_spin($(this));
             });
-            load_pagination($(this), 0);
+            load_pagination($section, 0);
         }).promise().done(function () {
             $('.list_with_filter_section').each(function () {
-                mpwem_loader_spin_remove($(this));
-                $(this).find('.all_filter_item').css({'height': 'auto', 'overflow': 'inherit'}).slideDown('slow');
+                reveal_event_list_section($(this));
             });
         });
+        // Safety: never leave the skeleton stuck if init is delayed.
+        setTimeout(function () {
+            $('.list_with_filter_section.mep-list-is-loading').each(function () {
+                reveal_event_list_section($(this));
+            });
+        }, 4000);
     }
     function load_pagination(parent, pagination_page) {
         let style = parent.find('.mep_event_list_sec').data('pagination-style');

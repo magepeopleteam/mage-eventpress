@@ -45,6 +45,10 @@ class MEPEventCityListWidget extends Widget_Base {
 				'label' => __( 'Icon Before Title', 'mage-eventpress' ),
 				'type' => Controls_Manager::ICON,
 				'include' => [
+					'fas fa-map-marker-alt',
+					'fas fa-map-marker',
+					'fas fa-map',
+					'fas fa-location-arrow',
 					'fas fa-check-circle',
 					'fas fa-check',
 					'fas fa-check-square',
@@ -53,7 +57,7 @@ class MEPEventCityListWidget extends Widget_Base {
 					'fas fa-check-double',
 					'fas fa-calendar-check'
 				],
-				'default' => 'fas fa-check-circle',
+				'default' => 'fas fa-map-marker-alt',
 			]
 		);
 
@@ -75,6 +79,7 @@ class MEPEventCityListWidget extends Widget_Base {
 					'label' => __( 'Event City Title Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
+						'{{WRAPPER}} .mep-elementor-event-city-list-widget .mep-city-list .mep-city-list__name' => 'color: {{VALUE}};',
 						'{{WRAPPER}} .mep-elementor-event-city-list-widget .mep-city-list ul li a' => 'color: {{VALUE}};',
 					],
 				]
@@ -86,7 +91,9 @@ class MEPEventCityListWidget extends Widget_Base {
 					'label' => __( 'Event City Icon Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-city-list-widget .mep-city-list ul li a i' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-event-city-list-widget .mep-city-list .mep-city-list__pin' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-event-city-list-widget .mep-city-list .mep-city-list__initial' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-event-city-list-widget .mep-city-list .mep-city-list__pin i' => 'color: {{VALUE}};',
 					],
 				]
 	    );
@@ -105,7 +112,7 @@ class MEPEventCityListWidget extends Widget_Base {
 	</div>
 	<script type="text/javascript">
 		 jQuery(document).ready(function(){
-		 	jQuery('.mep-city-list li a').prepend('<?php echo wp_kses_post($mep_event_city_list_icon_html); ?>');
+		 	jQuery('.mep-elementor-event-city-list-widget .mep-city-list__pin').html('<?php echo wp_kses_post($mep_event_city_list_icon_html); ?>');
 		});
 	</script>
 	<?php

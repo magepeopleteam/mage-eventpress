@@ -6,7 +6,11 @@
 	$all_dates                 = is_array($event_infos) && array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times                 = is_array($event_infos) && array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$upcoming_date             = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-	$speaker_title             = is_array($event_infos) && array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : __( "Speaker", "mage-eventpress" );
+	$speaker_title             = is_array($event_infos) && array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : '';
+	$speaker_title             = is_string( $speaker_title ) ? trim( $speaker_title ) : '';
+	if ( '' === $speaker_title ) {
+		$speaker_title = __( 'Speaker', 'mage-eventpress' );
+	}
 	$speaker_icon              = is_array($event_infos) && array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
 	$speaker_lists             = is_array($event_infos) && array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
 	$speaker_lists             = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
@@ -23,26 +27,23 @@
 	$event_location_icon       = is_array($icon_setting_sec) && array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
 ?>
 <div class="default_theme mep_smart_theme">
-	<?php do_action( 'mpwem_title', $event_id ); ?>
-	<div class="smart_theme_metainfo">
-		<?php do_action( 'mpwem_organizer', $event_id,$event_infos ); ?>
-		<?php do_action( 'mpwem_location', $event_id,$event_infos,'sort' ); ?>
-		<?php
-			if ( $hide_time == 'no' ): ?>
-				<?php do_action( 'mpwem_time', $event_id, $all_dates, $all_times ); ?>
-			<?php endif; ?>
+	<div class="smart_theme_hero">
+		<?php do_action( 'mpwem_custom_slider', $event_id,$event_infos ); ?>
+		<div class="smart_theme_header">
+			<?php do_action( 'mpwem_title', $event_id ); ?>
+			<div class="smart_theme_metainfo">
+				<?php do_action( 'mpwem_organizer', $event_id,$event_infos ); ?>
+				<?php do_action( 'mpwem_location', $event_id,$event_infos,'sort' ); ?>
+				<?php
+					if ( $hide_time == 'no' ): ?>
+						<?php do_action( 'mpwem_time', $event_id, $all_dates, $all_times ); ?>
+					<?php endif; ?>
+			</div>
 		</div>
-	<?php do_action( 'mpwem_custom_slider', $event_id,$event_infos ); ?>
+	</div>
     <div class="mpwem_content_area">
         <div class="mpwem_left_content">
 	        <?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
-	        <?php
-		        $reg_status=get_post_meta($event_id,'mep_timeline_status',true)?get_post_meta($event_id,'mep_timeline_status',true):'on';
-		        if($reg_status=='on') {
-			        do_action( 'mpwem_timeline', $event_id );
-		        }
-
-	        ?>
 			<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
 	        <?php
 		        $reg_status=get_post_meta($event_id,'mep_faq_status',true)?get_post_meta($event_id,'mep_faq_status',true):'on';
@@ -50,6 +51,10 @@
 			        do_action( 'mpwem_faq', $event_id, $event_infos );
 		        }
 
+		        $reg_status=get_post_meta($event_id,'mep_timeline_status',true)?get_post_meta($event_id,'mep_timeline_status',true):'on';
+		        if($reg_status=='on') {
+			        do_action( 'mpwem_timeline', $event_id );
+		        }
 	        ?>
         </div>
         <div class="mpwem_right_content">
@@ -59,16 +64,11 @@
             <div class="mpwem_sidebar_content">
 				<?php if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
-                        <h5 class="_mb_xs"><span class="<?php echo esc_attr( $event_location_icon ); ?> _mr_xs"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+                        <h5 class="_mb_xs"><span class="far fa-calendar-alt _mr_xs" aria-hidden="true"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>
 				<?php do_action( 'mpwem_location', $event_id,$event_infos, 'sidebar' ); ?>
-				<?php if ( has_term( '', 'mep_tag', $event_id ) ): ?>
-                    <div class="mep-default-sidebar-tags">
-						<?php do_action( 'mep_event_tags', $event_id ); ?>
-                    </div>
-				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id ,$event_infos); ?>
 				<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
             </div>
@@ -76,7 +76,7 @@
                 <div class="mpwem_sidebar_content _mt">
                     <div class="event_speaker_list_area">
                         <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
-						<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
+						<?php require MPWEM_Functions::template_path( 'layout/smart/speakers.php' ); ?>
                     </div>
                 </div>
 			<?php } ?>

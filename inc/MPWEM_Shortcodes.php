@@ -88,7 +88,7 @@
                 ob_start();
                 //echo $total_item;
                 ?>
-                <div class='mage list_with_filter_section mep_event_list' id='mage-container'>
+                <div class='mage list_with_filter_section mep_event_list mep-list-is-loading' id='mage-container'>
                     <?php if ( $total_item > 0 ) {
                         if ( $cat_f == 'yes' && $cat < 1 ) {
                             do_action( 'mpwem_taxonomy_filter', 'mep_cat', $unq_id );
@@ -104,17 +104,31 @@
                         }
                         ?>
                         <div class="mep_event_list_doc_area">
-                            <div class="mep_event_list_doc">
-                                <button type="button" class="mep_event_list_all active"><?php esc_attr_e('All','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_today" data-today="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>"><?php esc_attr_e('Today','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_this_week" data-week="<?php echo esc_attr(date('Y-m-d', strtotime('+7 days', time()))); ?>"><?php esc_attr_e('This Week','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_this_month"><?php esc_attr_e('This Month','mage-eventpress'); ?></button>
+                            <div class="mep_event_list_doc mep_event_list_doc--range" role="group" aria-label="<?php echo esc_attr__( 'Event date range', 'mage-eventpress' ); ?>">
+                                <button type="button" class="mep_event_list_all active"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button>
+                                <button type="button" class="mep_event_list_today" data-today="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>"><?php esc_html_e( 'Today', 'mage-eventpress' ); ?></button>
+                                <button type="button" class="mep_event_list_this_week" data-week="<?php echo esc_attr( date( 'Y-m-d', strtotime( '+7 days', time() ) ) ); ?>"><?php esc_html_e( 'This Week', 'mage-eventpress' ); ?></button>
+                                <button type="button" class="mep_event_list_this_month"><?php esc_html_e( 'This Month', 'mage-eventpress' ); ?></button>
                             </div>
-                            <div class="mep_event_list_doc">
-                                <button type="button" class="mep_event_list_filter_toggle"><i class="fas fa-filter"></i><?php esc_attr_e('Filter','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_grid active"><i class="fa-solid fa-border-all"></i><?php esc_attr_e('Grid','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_list"><i class="fa-solid fa-list"></i><?php esc_attr_e('List','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_calender"><i class="fa-regular fa-calendar-days"></i><?php esc_attr_e('Calender','mage-eventpress'); ?></button>
+                            <div class="mep_event_list_doc mep_event_list_doc--tools" role="group" aria-label="<?php echo esc_attr__( 'Event list tools', 'mage-eventpress' ); ?>">
+                                <button type="button" class="mep_event_list_filter_toggle">
+                                    <i class="fas fa-filter" aria-hidden="true"></i>
+                                    <span><?php esc_html_e( 'Filter', 'mage-eventpress' ); ?></span>
+                                </button>
+                                <div class="mep_event_list_view_switch" role="group" aria-label="<?php echo esc_attr__( 'Layout', 'mage-eventpress' ); ?>">
+                                    <button type="button" class="mep_event_list_grid active" aria-pressed="true">
+                                        <i class="fa-solid fa-border-all" aria-hidden="true"></i>
+                                        <span><?php esc_html_e( 'Grid', 'mage-eventpress' ); ?></span>
+                                    </button>
+                                    <button type="button" class="mep_event_list_list" aria-pressed="false">
+                                        <i class="fa-solid fa-list" aria-hidden="true"></i>
+                                        <span><?php esc_html_e( 'List', 'mage-eventpress' ); ?></span>
+                                    </button>
+                                    <button type="button" class="mep_event_list_calender" aria-pressed="false">
+                                        <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+                                        <span><?php esc_html_e( 'Calender', 'mage-eventpress' ); ?></span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <?php
@@ -232,6 +246,8 @@
                                 <strong class="total_filter_qty"><?php echo esc_html( $total_item ); ?></strong>
                             </p>
                         </div>
+
+					<?php $this->render_event_list_skeleton( $column, $style, ( $style === 'list' ? 4 : max( 3, (int) $column * 2 ) ) ); ?>
 
                     <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
                                  data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
@@ -532,7 +548,7 @@
 				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, $state, $year, 0, $tag );
 				$total_item = $loop->found_posts;
 				?>
-                <div class='mage list_with_filter_section mep_event_list' id='mage-container'>
+                <div class='mage list_with_filter_section mep_event_list mep-list-is-loading' id='mage-container'>
 					<?php
 						if ( $total_item > 0 ) {
 							if ( $cat_f == 'yes' && $cat < 1 ) {
@@ -547,6 +563,7 @@
 							if ( $filter == 'yes' && $style != 'timeline' ) {
 								do_action( 'mpwem_list_with_filter_section', $loop, $params );
 							}
+							$this->render_event_list_skeleton( $column, $style, ( $style === 'list' ? 4 : max( 3, (int) $column * 2 ) ) );
 							?>
                             <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
                                  data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
@@ -854,11 +871,30 @@
 				ob_start();
 				$city_lists = MPWEM_Query::get_all_post_meta_value( 'mep_city' );
 				if ( is_array( $city_lists ) && sizeof( $city_lists ) > 0 ) {
+					$city_count = count( $city_lists );
 					?>
-                    <div class='mep-city-list'>
-                        <ul>
-							<?php foreach ( $city_lists as $city_name ) { ?>
-                                <li><a href='<?php echo esc_url( get_site_url() ); ?>/event-by-city-name/<?php echo esc_attr( $city_name ); ?>/'><?php echo esc_html( $city_name ); ?></a></li>
+                    <div class="mep-city-list" data-count="<?php echo esc_attr( $city_count ); ?>">
+                        <ul class="mep-city-list__grid">
+							<?php foreach ( $city_lists as $city_name ) {
+								$city_url = trailingslashit( get_site_url() ) . 'event-by-city-name/' . rawurlencode( $city_name ) . '/';
+								$initial  = function_exists( 'mb_substr' ) ? mb_strtoupper( mb_substr( $city_name, 0, 1 ) ) : strtoupper( substr( $city_name, 0, 1 ) );
+								?>
+                                <li class="mep-city-list__cell">
+                                    <a class="mep-city-list__item" href="<?php echo esc_url( $city_url ); ?>">
+                                        <span class="mep-city-list__media" aria-hidden="true">
+                                            <span class="mep-city-list__initial"><?php echo esc_html( $initial ); ?></span>
+                                            <span class="mep-city-list__pin"><i class="fas fa-map-marker-alt"></i></span>
+                                        </span>
+                                        <span class="mep-city-list__body">
+                                            <span class="mep-city-list__name"><?php echo esc_html( $city_name ); ?></span>
+                                            <span class="mep-city-list__hint"><?php esc_html_e( 'Explore events', 'mage-eventpress' ); ?></span>
+                                        </span>
+                                        <span class="mep-city-list__cta">
+                                            <span class="mep-city-list__cta-text"><?php esc_html_e( 'Browse', 'mage-eventpress' ); ?></span>
+                                            <span class="mep-city-list__chevron" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                                        </span>
+                                    </a>
+                                </li>
 							<?php } ?>
                         </ul>
                     </div>
@@ -913,6 +949,62 @@
 			}
 			public function calender( $atts = array() ) {
 				return do_shortcode( '[mep-event-calendar]' );
+			}
+
+			/**
+			 * Skeleton placeholders shown while pagination/mixitup initializes.
+			 *
+			 * @param int    $column Grid column count.
+			 * @param string $style  List style (grid|list|…).
+			 * @param int    $count  Number of skeleton cards.
+			 */
+			private function render_event_list_skeleton( $column = 3, $style = 'grid', $count = 6 ) {
+				$column  = max( 1, min( 4, absint( $column ) ) );
+				$count   = max( 3, min( 9, absint( $count ) ) );
+				$is_list = ( $style === 'list' );
+				?>
+				<div class="mep_event_list_skeleton<?php echo $is_list ? ' mep_event_list_skeleton--list' : ' mep_event_list_skeleton--grid'; ?>" aria-hidden="true" aria-busy="true">
+					<div class="mep_event_list_skeleton__grid" style="--mep-skel-cols: <?php echo esc_attr( (string) $column ); ?>;">
+						<?php for ( $i = 0; $i < $count; $i++ ) : ?>
+							<article class="mep_event_list_skeleton__card">
+								<div class="mep_event_list_skeleton__media">
+									<div class="mep_event_list_skeleton__thumb mep_event_list_skeleton__shimmer"></div>
+									<span class="mep_event_list_skeleton__date">
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__date-month"></span>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__date-day"></span>
+									</span>
+									<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__category"></span>
+								</div>
+								<div class="mep_event_list_skeleton__body">
+									<div class="mep_event_list_skeleton__meta">
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--date"></span>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--title"></span>
+										<?php if ( $is_list ) : ?>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--excerpt"></span>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--excerpt-2"></span>
+										<?php endif; ?>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--loc"></span>
+										<?php if ( $is_list ) : ?>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--org"></span>
+										<?php endif; ?>
+									</div>
+									<div class="mep_event_list_skeleton__foot">
+										<div class="mep_event_list_skeleton__price">
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--price-label"></span>
+											<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__line mep_event_list_skeleton__line--price-value"></span>
+										</div>
+										<span class="mep_event_list_skeleton__shimmer mep_event_list_skeleton__book"></span>
+									</div>
+								</div>
+							</article>
+						<?php endfor; ?>
+					</div>
+					<p class="mep_event_list_skeleton__status">
+						<span class="mep_event_list_skeleton__spinner" aria-hidden="true"></span>
+						<?php esc_html_e( 'Loading events…', 'mage-eventpress' ); ?>
+					</p>
+				</div>
+				<?php
 			}
 		}
 		new MPWEM_Shortcodes();

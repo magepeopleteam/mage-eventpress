@@ -11,7 +11,11 @@
 	$upcoming_date             = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$event_type                = is_array($event_infos) && array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
 	$mep_enable_recurring      = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
-	$speaker_title             = is_array($event_infos) && array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : __( "Speaker", "mage-eventpress" );
+	$speaker_title             = is_array($event_infos) && array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : '';
+	$speaker_title             = is_string( $speaker_title ) ? trim( $speaker_title ) : '';
+	if ( '' === $speaker_title ) {
+		$speaker_title = __( 'Speaker', 'mage-eventpress' );
+	}
 	$speaker_icon              = is_array($event_infos) && array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
 	$speaker_lists             = is_array($event_infos) && array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
 	$speaker_lists             = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
@@ -36,22 +40,19 @@
 				<?php do_action( 'mpwem_location', $event_id, $event_infos,'only' ); ?>
             </div>
 			<?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
-			<?php //do_action( 'mpwem_timeline', $event_id ); ?>
-	        <?php
-		        $reg_status=get_post_meta($event_id,'mep_timeline_status',true)?get_post_meta($event_id,'mep_timeline_status',true):'on';
-		        if($reg_status=='on') {
-			        do_action( 'mpwem_timeline', $event_id );
-		        }
-
-	        ?>
 			<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
 			<?php
-				$reg_status=get_post_meta($event_id,'mep_faq_status',true)?get_post_meta($event_id,'mep_faq_status',true):'on';
-                if($reg_status=='on') {
-	                do_action( 'mpwem_faq', $event_id, $event_infos );
-                }
-
-                ?>
+				$reg_status = get_post_meta( $event_id, 'mep_faq_status', true ) ? get_post_meta( $event_id, 'mep_faq_status', true ) : 'on';
+				if ( $reg_status == 'on' ) {
+					do_action( 'mpwem_faq', $event_id, $event_infos );
+				}
+			?>
+			<?php
+				$reg_status = get_post_meta( $event_id, 'mep_timeline_status', true ) ? get_post_meta( $event_id, 'mep_timeline_status', true ) : 'on';
+				if ( $reg_status == 'on' ) {
+					do_action( 'mpwem_timeline', $event_id );
+				}
+			?>
 			<?php do_action( 'mpwem_template_footer', $event_id ); ?>
         </div>
         <div class="mep-default-sidebar">
@@ -60,7 +61,7 @@
 				<?php do_action( 'mpwem_seat_status', $event_id, $event_infos ); ?>
 				<?php if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
-                        <h5 class="_mb_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+                        <h5 class="_mb_xs"><span class="far fa-calendar-alt _mr_xs" aria-hidden="true"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>
@@ -74,7 +75,7 @@
 				<?php if ( $event_speaker_enabled == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
                     <div class="event_speaker_list_area">
                         <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
-						<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
+						<?php require MPWEM_Functions::template_path( 'layout/default/speakers.php' ); ?>
                     </div>
 				<?php } ?>
 				<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>

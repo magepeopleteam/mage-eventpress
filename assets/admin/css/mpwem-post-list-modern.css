@@ -151,6 +151,185 @@ body.mpwem-post-list-ready.post-type-mep_events_review.edit-php .wrap::after {
 	color: #64748B;
 }
 
+/* ---------- Hero header + stats bar (Speakers & Reviews only) ----------
+   Rendered server-side (all_admin_notices) by MPWEM_Post_List_Modern::
+   render_hero_header(), before .wrap, so it is never affected by the
+   JS-driven loading placeholder above and needs no JS to display.
+   The native h1 + JS-inserted subtitle would otherwise duplicate this
+   hero's title/subtitle, so they're hidden here — only for these two
+   post types; the Waitlist Email / Reg Form screens keep the plain
+   heading treatment untouched. */
+
+body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap h1.wp-heading-inline,
+body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap .mpwem-post-list-subtitle,
+body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap h1.wp-heading-inline,
+body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-list-subtitle {
+	display: none;
+}
+
+.mpwem-post-list-hero-wrap {
+	max-width: 1340px;
+	margin: 20px 20px 0;
+	box-sizing: border-box;
+}
+
+.mpwem-post-list-hero-wrap * {
+	box-sizing: border-box;
+}
+
+.mpwem-post-list-hero-wrap .bde-hero {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+	padding: 22px 24px;
+	margin: 0 0 16px;
+	background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 55%);
+	border: 1px solid #E4E9F0;
+	border-radius: 12px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+}
+
+.mpwem-post-list-hero-wrap .bde-hero-copy {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-width: 0;
+	flex: 1 1 280px;
+}
+
+.mpwem-post-list-hero-wrap .bde-eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	color: #2563EB;
+	margin: 0 0 8px;
+	line-height: 1.3;
+}
+
+.mpwem-post-list-hero-wrap .bde-eyebrow .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+}
+
+.mpwem-post-list-hero-wrap .bde-title {
+	font-size: 23px;
+	font-weight: 700;
+	color: #0F172A;
+	margin: 0 0 6px;
+	line-height: 1.25;
+}
+
+.mpwem-post-list-hero-wrap .bde-subtitle {
+	font-size: 14px;
+	color: #64748B;
+	max-width: 560px;
+	margin: 0;
+	line-height: 1.5;
+}
+
+.mpwem-post-list-hero-wrap .bde-hero-badge {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: #fff;
+	border: 1px solid #E4E9F0;
+	border-radius: 10px;
+	padding: 8px 14px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #0F172A;
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+.mpwem-post-list-hero-wrap .bde-hero-badge .dashicons {
+	color: #2563EB;
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+}
+
+.mpwem-post-list-hero-wrap .mep-stats-bar {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 16px;
+	flex-wrap: wrap;
+}
+
+.mpwem-post-list-hero-wrap .mep-stat-card {
+	flex: 1;
+	min-width: 160px;
+	background: #fff;
+	border: 1px solid #E4E9F0;
+	border-radius: 10px;
+	padding: 14px 16px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.mpwem-post-list-hero-wrap .mep-stat-icon {
+	flex: 0 0 44px;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #EFF6FF;
+	color: #2563EB;
+	font-size: 20px;
+}
+
+.mpwem-post-list-hero-wrap .mep-stat-card:nth-child(2) .mep-stat-icon {
+	background: #ECFDF5;
+	color: #059669;
+}
+
+.mpwem-post-list-hero-wrap .mep-stat-card:nth-child(3) .mep-stat-icon {
+	background: #FFF7ED;
+	color: #ea580c;
+}
+
+.mpwem-post-list-hero-wrap .mep-stat-value {
+	font-size: 22px;
+	font-weight: 700;
+	color: #0F172A;
+	line-height: 1.2;
+}
+
+.mpwem-post-list-hero-wrap .mep-stat-label {
+	font-size: 12px;
+	color: #64748B;
+}
+
+@media screen and (max-width: 782px) {
+	.mpwem-post-list-hero-wrap {
+		margin: 12px 12px 0;
+	}
+
+	.mpwem-post-list-hero-wrap .bde-hero {
+		padding: 18px 16px;
+	}
+
+	.mpwem-post-list-hero-wrap .bde-title {
+		font-size: 20px;
+	}
+
+	.mpwem-post-list-hero-wrap .bde-hero-badge {
+		align-self: flex-start;
+	}
+}
+
 /* ---------- Layout: main + promo ---------- */
 
 .wrap.mpwem-post-list-modern-wrap .mpwem-post-list-layout {
@@ -614,7 +793,7 @@ body.mpwem-post-list-ready.post-type-mep_events_review.edit-php .wrap::after {
 	white-space: normal;
 }
 
-/* ---------- Speakers: image + description ---------- */
+/* ---------- Speakers: image + event ---------- */
 
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap th.column-mep_speaker_image,
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-mep_speaker_image {
@@ -626,19 +805,19 @@ body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-mep
 
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap th.column-mep_speaker_desc,
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-mep_speaker_desc {
-	width: 34%;
-	vertical-align: middle;
+	display: none;
 }
 
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap th.column-mep_speaker_event,
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-mep_speaker_event {
-	width: 24%;
+	width: auto;
+	min-width: 45%;
 	vertical-align: middle;
 }
 
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap th.column-title,
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-title {
-	width: 20%;
+	width: 30%;
 }
 
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap .column-date {
@@ -697,31 +876,90 @@ body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap .column-date 
 
 .mpwem-speaker-list-events {
 	display: flex;
-	flex-direction: column;
-	gap: 4px;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	max-width: 100%;
 }
 
 .mpwem-speaker-list-event {
 	display: inline-flex;
 	align-items: center;
-	max-width: 100%;
-	font-size: 12.5px;
+	gap: 6px;
+	max-width: min(100%, 220px);
+	padding: 5px 10px 5px 6px;
+	background: #F1F5F9;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	font-size: 12px;
 	font-weight: 600;
-	line-height: 1.35;
-	color: #2563EB;
+	line-height: 1.25;
+	color: #334155;
 	text-decoration: none;
-	overflow-wrap: anywhere;
+	transition: background-color .12s ease, border-color .12s ease, color .12s ease, box-shadow .12s ease;
+}
+
+.mpwem-speaker-list-event-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	min-width: 0;
+}
+
+.mpwem-speaker-list-event-icon {
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #DBEAFE;
+	color: #2563EB;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 11px;
+	line-height: 1;
 }
 
 a.mpwem-speaker-list-event:hover {
+	background: #EFF6FF;
+	border-color: #BFDBFE;
 	color: #1D4ED8;
-	text-decoration: underline;
+	text-decoration: none;
+	box-shadow: 0 1px 2px rgba(37, 99, 235, .08);
+}
+
+a.mpwem-speaker-list-event:hover .mpwem-speaker-list-event-icon {
+	background: #BFDBFE;
+}
+
+.mpwem-speaker-list-event-more {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: #EEF2FF;
+	border: 1px solid #E0E7FF;
+	color: #4338CA;
+	font-size: 11.5px;
+	font-weight: 700;
+	line-height: 1.25;
+	white-space: nowrap;
 }
 
 .mpwem-speaker-list-event-empty {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: #F8FAFC;
+	border: 1px dashed #E2E8F0;
 	font-size: 12px;
+	font-weight: 500;
+	font-style: normal;
 	color: #94A3B8;
-	font-style: italic;
+	line-height: 1.25;
 }
 
 /* ---------- Speakers AJAX pagination ---------- */
@@ -932,6 +1170,7 @@ body.mpwem-speaker-modal-open {
 }
 
 .mpwem-speaker-modal__field input[type="text"],
+.mpwem-speaker-modal__field input[type="email"],
 .mpwem-speaker-modal__field select,
 .mpwem-speaker-modal__field textarea {
 	width: 100%;
@@ -957,6 +1196,52 @@ body.mpwem-speaker-modal-open {
 	border-color: #2563EB;
 	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 	outline: none;
+}
+
+/* Review modal star rating */
+.mpwem-review-rating {
+	display: inline-flex;
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+	gap: 2px;
+	padding: 4px 0;
+}
+
+.mpwem-review-rating__star {
+	display: inline-flex;
+	cursor: pointer;
+	margin: 0;
+	padding: 2px;
+}
+
+.mpwem-review-rating__star input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.mpwem-review-rating__star .dashicons {
+	width: 28px;
+	height: 28px;
+	font-size: 28px;
+	color: #E2E8F0;
+	transition: color .12s ease, transform .12s ease;
+}
+
+.mpwem-review-rating__star:hover .dashicons,
+.mpwem-review-rating__star:hover ~ .mpwem-review-rating__star .dashicons,
+.mpwem-review-rating__star:has(input:checked) .dashicons,
+.mpwem-review-rating__star:has(input:checked) ~ .mpwem-review-rating__star .dashicons {
+	color: #F59E0B;
+}
+
+.mpwem-review-rating__star:hover .dashicons {
+	transform: scale(1.08);
+}
+
+.mpwem-review-modal .mpwem-speaker-modal__icon {
+	background: #FFFBEB;
+	color: #D97706;
 }
 
 .mpwem-speaker-modal__image {

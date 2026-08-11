@@ -69,21 +69,26 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			?>
 			<div class="wrap mep-rsvp-admin-wrap">
 
-				<div class="mep-rsvp-header">
-					<div class="mep-rsvp-title-group">
-						<h1 class="mep-rsvp-title">
+				<header class="bde-hero">
+					<div class="bde-hero-copy">
+						<span class="bde-eyebrow">
 							<span class="dashicons dashicons-groups"></span>
-							<?php esc_html_e( 'RSVP Responses', 'mage-eventpress' ); ?>
-						</h1>
-						<p class="mep-rsvp-subtitle"><?php esc_html_e( 'Track attendees, manage check-ins, and export RSVP data.', 'mage-eventpress' ); ?></p>
+							<?php esc_html_e( 'Attendee tools', 'mage-eventpress' ); ?>
+						</span>
+						<h1 class="bde-title"><?php esc_html_e( 'RSVP Responses', 'mage-eventpress' ); ?></h1>
+						<p class="bde-subtitle"><?php esc_html_e( 'Track attendees, manage check-ins, and export RSVP data.', 'mage-eventpress' ); ?></p>
 					</div>
-					<div class="mep-rsvp-header-actions">
+					<div class="bde-hero-actions">
+						<div class="bde-hero-badge">
+							<span class="dashicons dashicons-yes-alt"></span>
+							<span><?php esc_html_e( 'RSVP tracking', 'mage-eventpress' ); ?></span>
+						</div>
 						<a href="#" class="mep-rsvp-btn mep-rsvp-btn-outline mep-export-rsvp-csv">
 							<span class="dashicons dashicons-download"></span>
 							<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
 						</a>
 					</div>
-				</div>
+				</header>
 
 				<div class="mep-rsvp-stats">
 					<div class="mep-rsvp-stat-card mep-rsvp-stat-total">

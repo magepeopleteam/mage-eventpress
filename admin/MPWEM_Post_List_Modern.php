@@ -2,8 +2,7 @@
 	/*
 	 * Modern reskin of secondary Event CPT list screens (edit.php):
 	 * Speakers, Waitlist Email Templates, Global Reg Forms, Reviews.
-	 * Presentation-only — Add/Edit still go to post-new.php / post.php
-	 * because those screens have rich editors and meta boxes.
+	 * Speakers and Reviews support modal + AJAX create from the list screen.
 	 *
 	 * @Author MagePeople Team
 	 */
@@ -26,6 +25,7 @@
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_editor' ] );
 				add_action( 'all_admin_notices', [ $this, 'render_editor_back_button' ] );
+				add_action( 'all_admin_notices', [ $this, 'render_hero_header' ] );
 				add_filter( 'manage_mep_event_speaker_posts_columns', [ $this, 'speaker_columns' ] );
 				add_action( 'manage_mep_event_speaker_posts_custom_column', [ $this, 'speaker_column_content' ], 10, 2 );
 				add_filter( 'edit_posts_per_page', [ $this, 'force_speaker_per_page' ], 10, 2 );
@@ -36,6 +36,7 @@
 				add_action( 'wp_ajax_mpwem_speaker_update', [ $this, 'ajax_speaker_update' ] );
 				add_action( 'wp_ajax_mpwem_speaker_delete', [ $this, 'ajax_speaker_delete' ] );
 				add_action( 'wp_ajax_mpwem_waitlist_email_preview', [ $this, 'ajax_waitlist_email_preview' ] );
+				add_action( 'wp_ajax_mpwem_review_create', [ $this, 'ajax_review_create' ] );
 			}
 
 			private function current_target_post_type() {
@@ -114,6 +115,171 @@
 				<?php
 			}
 
+			/**
+			 * Server-rendered hero header + stats bar for the Speakers Management
+			 * and Review & Rating Management list screens only. Fires on
+			 * `all_admin_notices`, which runs inside #wpbody-content before the
+			 * native list table markup, so this never depends on JS and never
+			 * flashes unstyled content.
+			 */
+			public function render_hero_header() {
+				$post_type = $this->current_target_post_type();
+				if ( 'mep_event_speaker' === $post_type ) {
+					$this->render_speaker_hero();
+				} elseif ( 'mep_events_review' === $post_type ) {
+					$this->render_review_hero();
+				}
+			}
+
+			/**
+			 * Hero + stats bar for Speakers Management.
+			 */
+			private function render_speaker_hero() {
+				global $wpdb;
+
+				$total = (int) wp_count_posts( 'mep_event_speaker' )->publish;
+
+				$this->build_speaker_event_map();
+				$assigned = count( $this->speaker_event_map );
+
+				$first_of_month = current_time( 'Y-m-01 00:00:00' );
+				$new_this_month  = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish' AND post_date >= %s",
+						'mep_event_speaker',
+						$first_of_month
+					)
+				);
+				?>
+				<div class="mpwem-post-list-hero-wrap">
+					<header class="bde-hero">
+						<div class="bde-hero-copy">
+							<span class="bde-eyebrow">
+								<span class="dashicons dashicons-microphone" aria-hidden="true"></span>
+								<?php esc_html_e( 'Speaker tools', 'mage-eventpress' ); ?>
+							</span>
+							<h1 class="bde-title"><?php esc_html_e( 'Speakers Management', 'mage-eventpress' ); ?></h1>
+							<p class="bde-subtitle"><?php esc_html_e( 'Add, edit and organize the speakers featured across your events.', 'mage-eventpress' ); ?></p>
+						</div>
+						<div class="bde-hero-badge">
+							<span class="dashicons dashicons-groups" aria-hidden="true"></span>
+							<span>
+								<?php
+								printf(
+									/* translators: %s: number of speakers, formatted. */
+									esc_html( _n( '%s speaker', '%s speakers', $total, 'mage-eventpress' ) ),
+									esc_html( number_format_i18n( $total ) )
+								);
+								?>
+							</span>
+						</div>
+					</header>
+					<div class="mep-stats-bar">
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-microphone" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $total ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Total Speakers', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $assigned ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Assigned to Events', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-plus-alt" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $new_this_month ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Added This Month', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php
+			}
+
+			/**
+			 * Hero + stats bar for Review & Rating Management.
+			 */
+			private function render_review_hero() {
+				global $wpdb;
+
+				$total = (int) wp_count_posts( 'mep_events_review' )->publish;
+
+				$avg_rating = (float) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT AVG(CAST(pm.meta_value AS DECIMAL(10,2)))
+						FROM {$wpdb->postmeta} pm
+						INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+						WHERE pm.meta_key = %s AND p.post_type = %s AND p.post_status = 'publish'",
+						'mep_event_rating',
+						'mep_events_review'
+					)
+				);
+				$avg_display = $total ? number_format_i18n( $avg_rating, 1 ) : '—';
+
+				$first_of_month = current_time( 'Y-m-01 00:00:00' );
+				$new_this_month = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish' AND post_date >= %s",
+						'mep_events_review',
+						$first_of_month
+					)
+				);
+				?>
+				<div class="mpwem-post-list-hero-wrap">
+					<header class="bde-hero">
+						<div class="bde-hero-copy">
+							<span class="bde-eyebrow">
+								<span class="dashicons dashicons-star-filled" aria-hidden="true"></span>
+								<?php esc_html_e( 'Feedback tools', 'mage-eventpress' ); ?>
+							</span>
+							<h1 class="bde-title"><?php esc_html_e( 'Review & Rating Management', 'mage-eventpress' ); ?></h1>
+							<p class="bde-subtitle"><?php esc_html_e( 'Moderate attendee reviews and ratings submitted for your events.', 'mage-eventpress' ); ?></p>
+						</div>
+						<div class="bde-hero-badge">
+							<span class="dashicons dashicons-testimonial" aria-hidden="true"></span>
+							<span>
+								<?php
+								printf(
+									/* translators: %s: number of reviews, formatted. */
+									esc_html( _n( '%s review', '%s reviews', $total, 'mage-eventpress' ) ),
+									esc_html( number_format_i18n( $total ) )
+								);
+								?>
+							</span>
+						</div>
+					</header>
+					<div class="mep-stats-bar">
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-testimonial" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $total ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Total Reviews', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-star-filled" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( $avg_display ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Average Rating', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $new_this_month ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Reviews This Month', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php
+			}
+
 			public function maybe_hide_screen_options( $show_screen, $screen ) {
 				if ( isset( $screen->post_type, $screen->base )
 					&& 'edit' === $screen->base
@@ -151,7 +317,7 @@
 			}
 
 			/**
-			 * Speakers list: Image + Description + Event columns (no Date).
+			 * Speakers list: Image + Event columns (no Date / Description).
 			 *
 			 * @param array $columns Existing columns.
 			 * @return array
@@ -169,7 +335,6 @@
 					if ( 'title' === $key ) {
 						$new['mep_speaker_image'] = __( 'Image', 'mage-eventpress' );
 						$new[ $key ]             = $label;
-						$new['mep_speaker_desc']  = __( 'Description', 'mage-eventpress' );
 						$new['mep_speaker_event'] = __( 'Event', 'mage-eventpress' );
 						continue;
 					}
@@ -181,13 +346,10 @@
 						$new
 					);
 				}
-				if ( ! isset( $new['mep_speaker_desc'] ) ) {
-					$new['mep_speaker_desc'] = __( 'Description', 'mage-eventpress' );
-				}
 				if ( ! isset( $new['mep_speaker_event'] ) ) {
 					$new['mep_speaker_event'] = __( 'Event', 'mage-eventpress' );
 				}
-				unset( $new['date'] );
+				unset( $new['date'], $new['mep_speaker_desc'] );
 
 				return $new;
 			}
@@ -330,21 +492,42 @@
 					echo '<span class="mpwem-speaker-list-event-empty">' . esc_html__( 'Not assigned', 'mage-eventpress' ) . '</span>';
 					return;
 				}
+
+				$visible = 3;
+				$total   = count( $events );
+				$show    = array_slice( $events, 0, $visible );
+				$extra   = max( 0, $total - count( $show ) );
+
 				echo '<div class="mpwem-speaker-list-events">';
-				foreach ( $events as $event ) {
+				foreach ( $show as $event ) {
+					$title     = $event['title'];
 					$edit_link = get_edit_post_link( $event['id'], 'raw' );
 					if ( $edit_link ) {
 						printf(
-							'<a class="mpwem-speaker-list-event" href="%s">%s</a>',
+							'<a class="mpwem-speaker-list-event" href="%s" title="%s"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span><span class="mpwem-speaker-list-event-label">%s</span></a>',
 							esc_url( $edit_link ),
-							esc_html( $event['title'] )
+							esc_attr( $title ),
+							esc_html( $title )
 						);
 					} else {
 						printf(
-							'<span class="mpwem-speaker-list-event">%s</span>',
-							esc_html( $event['title'] )
+							'<span class="mpwem-speaker-list-event" title="%s"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span><span class="mpwem-speaker-list-event-label">%s</span></span>',
+							esc_attr( $title ),
+							esc_html( $title )
 						);
 					}
+				}
+				if ( $extra > 0 ) {
+					printf(
+						'<span class="mpwem-speaker-list-event-more">%s</span>',
+						esc_html(
+							sprintf(
+								/* translators: %d: number of additional events */
+								_n( '+%d more', '+%d more', $extra, 'mage-eventpress' ),
+								$extra
+							)
+						)
+					);
 				}
 				echo '</div>';
 			}
@@ -495,9 +678,6 @@
 							<?php endif; ?>
 						</div>
 					</td>
-					<td class="mep_speaker_desc column-mep_speaker_desc" data-colname="<?php esc_attr_e( 'Description', 'mage-eventpress' ); ?>">
-						<?php $this->speaker_column_content( 'mep_speaker_desc', $post_id ); ?>
-					</td>
 					<td class="mep_speaker_event column-mep_speaker_event" data-colname="<?php esc_attr_e( 'Event', 'mage-eventpress' ); ?>">
 						<?php $this->speaker_column_content( 'mep_speaker_event', $post_id ); ?>
 					</td>
@@ -611,9 +791,12 @@
 
 				wp_send_json_success(
 					[
-						'id'      => (int) $post_id,
-						'message' => __( 'Speaker created successfully.', 'mage-eventpress' ),
-						'editUrl' => get_edit_post_link( $post_id, 'raw' ),
+						'id'        => (int) $post_id,
+						'name'      => get_the_title( $post_id ),
+						'role'      => $excerpt,
+						'image_url' => $image_id ? (string) wp_get_attachment_image_url( $image_id, [ 80, 80 ] ) : '',
+						'message'   => __( 'Speaker created successfully.', 'mage-eventpress' ),
+						'editUrl'   => get_edit_post_link( $post_id, 'raw' ),
 					]
 				);
 			}
@@ -777,6 +960,107 @@
 				);
 			}
 
+			/**
+			 * AJAX: create a review from the Reviews Management modal.
+			 */
+			public function ajax_review_create() {
+				check_ajax_referer( 'mpwem_review_list', 'nonce' );
+
+				$pto = get_post_type_object( 'mep_events_review' );
+				if ( ! $pto || ! current_user_can( $pto->cap->create_posts ) ) {
+					wp_send_json_error( __( 'You do not have permission to create reviews.', 'mage-eventpress' ), 403 );
+				}
+
+				$title     = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
+				$content   = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+				$cust_name = isset( $_POST['cust_name'] ) ? sanitize_text_field( wp_unslash( $_POST['cust_name'] ) ) : '';
+				$cust_email = isset( $_POST['cust_email'] ) ? sanitize_email( wp_unslash( $_POST['cust_email'] ) ) : '';
+				$event_id  = isset( $_POST['event_id'] ) ? absint( wp_unslash( $_POST['event_id'] ) ) : 0;
+				$rating    = isset( $_POST['rating'] ) ? absint( wp_unslash( $_POST['rating'] ) ) : 0;
+				$status    = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : 'publish';
+
+				if ( '' === $title ) {
+					wp_send_json_error( __( 'Review title is required.', 'mage-eventpress' ) );
+				}
+				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
+					wp_send_json_error( __( 'Please select a valid event.', 'mage-eventpress' ) );
+				}
+				if ( $rating < 1 || $rating > 5 ) {
+					wp_send_json_error( __( 'Please choose a rating from 1 to 5.', 'mage-eventpress' ) );
+				}
+				if ( '' === $cust_name ) {
+					wp_send_json_error( __( 'Reviewer name is required.', 'mage-eventpress' ) );
+				}
+				if ( $cust_email && ! is_email( $cust_email ) ) {
+					wp_send_json_error( __( 'Please enter a valid email address.', 'mage-eventpress' ) );
+				}
+				if ( ! in_array( $status, [ 'publish', 'draft', 'pending' ], true ) ) {
+					$status = 'publish';
+				}
+
+				$post_id = wp_insert_post(
+					[
+						'post_type'    => 'mep_events_review',
+						'post_status'  => $status,
+						'post_title'   => $title,
+						'post_content' => $content,
+					],
+					true
+				);
+
+				if ( is_wp_error( $post_id ) ) {
+					wp_send_json_error( $post_id->get_error_message() );
+				}
+
+				update_post_meta( $post_id, 'mep_event_id', $event_id );
+				update_post_meta( $post_id, 'mep_event_rating', (string) $rating );
+				update_post_meta( $post_id, 'mep_event_review_cust_name', $cust_name );
+				update_post_meta( $post_id, 'mep_event_review_cust_email', $cust_email );
+				update_post_meta( $post_id, 'mep_event_review_cust_ID', 0 );
+
+				wp_send_json_success(
+					[
+						'id'      => (int) $post_id,
+						'message' => __( 'Review created successfully.', 'mage-eventpress' ),
+						'editUrl' => get_edit_post_link( $post_id, 'raw' ),
+					]
+				);
+			}
+
+			/**
+			 * @return array<int,array{id:int,title:string}>
+			 */
+			private function get_events_for_select() {
+				$event_ids = get_posts(
+					[
+						'post_type'              => 'mep_events',
+						'post_status'            => [ 'publish', 'draft', 'pending', 'private', 'future' ],
+						'posts_per_page'         => 200,
+						'orderby'                => 'title',
+						'order'                  => 'ASC',
+						'fields'                 => 'ids',
+						'no_found_rows'          => true,
+						'update_post_meta_cache' => false,
+						'update_post_term_cache' => false,
+					]
+				);
+				if ( empty( $event_ids ) ) {
+					return [];
+				}
+
+				$events = [];
+				foreach ( $event_ids as $event_id ) {
+					$event_id = absint( $event_id );
+					$title    = wp_specialchars_decode( get_the_title( $event_id ), ENT_QUOTES );
+					$events[] = [
+						'id'    => $event_id,
+						'title' => $title ? $title : sprintf( __( 'Event #%d', 'mage-eventpress' ), $event_id ),
+					];
+				}
+
+				return $events;
+			}
+
 			private function bundle_for( $post_type ) {
 				$pto = get_post_type_object( $post_type );
 				if ( ! $pto ) {
@@ -870,6 +1154,7 @@
 
 				$is_speaker = ( 'mep_event_speaker' === $post_type );
 				$is_email   = ( 'mep_waitlist_email' === $post_type );
+				$is_review  = ( 'mep_events_review' === $post_type );
 				$script_deps = [];
 				if ( $is_speaker ) {
 					wp_enqueue_media();
@@ -884,6 +1169,111 @@
 					true
 				);
 
+				$strings = [
+					'actionsColumn'      => esc_html__( 'Actions', 'mage-eventpress' ),
+					'promoEyebrow'       => esc_html__( 'EVENT PRO', 'mage-eventpress' ),
+					'promoTitle'         => esc_html__( 'Get more out of your events', 'mage-eventpress' ),
+					'promoBody'          => esc_html__( 'Unlock advanced attendee tools, PDF tickets, and reporting with Event Manager Pro and addons.', 'mage-eventpress' ),
+					'promoCta'           => esc_html__( 'Explore Pro & Addons', 'mage-eventpress' ),
+					'loading'            => esc_html__( 'Loading…', 'mage-eventpress' ),
+					'error'              => esc_html__( 'Could not load speakers. Please try again.', 'mage-eventpress' ),
+					'modalTitle'         => esc_html__( 'Add New Speaker', 'mage-eventpress' ),
+					'modalSubtitle'      => esc_html__( 'Create a speaker profile to assign on event pages.', 'mage-eventpress' ),
+					'editModalTitle'     => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
+					'editModalSubtitle'  => esc_html__( 'Update this speaker profile.', 'mage-eventpress' ),
+					'nameLabel'          => esc_html__( 'Speaker Name', 'mage-eventpress' ),
+					'namePlaceholder'    => esc_html__( 'e.g. Alex Rivera', 'mage-eventpress' ),
+					'roleLabel'          => esc_html__( 'Role / Title', 'mage-eventpress' ),
+					'rolePlaceholder'    => esc_html__( 'e.g. Keynote Speaker · CEO, TechVision', 'mage-eventpress' ),
+					'descLabel'          => esc_html__( 'Description', 'mage-eventpress' ),
+					'descPlaceholder'    => esc_html__( 'Short biography shown on event pages…', 'mage-eventpress' ),
+					'imageLabel'         => esc_html__( 'Featured Image', 'mage-eventpress' ),
+					'imageSelect'        => esc_html__( 'Select Image', 'mage-eventpress' ),
+					'imageChange'        => esc_html__( 'Change Image', 'mage-eventpress' ),
+					'imageRemove'        => esc_html__( 'Remove', 'mage-eventpress' ),
+					'statusLabel'        => esc_html__( 'Status', 'mage-eventpress' ),
+					'statusPublish'      => esc_html__( 'Publish', 'mage-eventpress' ),
+					'statusDraft'        => esc_html__( 'Draft', 'mage-eventpress' ),
+					'cancel'             => esc_html__( 'Cancel', 'mage-eventpress' ),
+					'save'               => esc_html__( 'Create Speaker', 'mage-eventpress' ),
+					'update'             => esc_html__( 'Update Speaker', 'mage-eventpress' ),
+					'saving'             => esc_html__( 'Creating…', 'mage-eventpress' ),
+					'updating'           => esc_html__( 'Updating…', 'mage-eventpress' ),
+					'nameRequired'       => esc_html__( 'Please enter a speaker name.', 'mage-eventpress' ),
+					'createError'        => esc_html__( 'Could not create speaker. Please try again.', 'mage-eventpress' ),
+					'updateError'        => esc_html__( 'Could not update speaker. Please try again.', 'mage-eventpress' ),
+					'loadError'          => esc_html__( 'Could not load speaker details.', 'mage-eventpress' ),
+					'createSuccess'      => esc_html__( 'Speaker created successfully.', 'mage-eventpress' ),
+					'updateSuccess'      => esc_html__( 'Speaker updated successfully.', 'mage-eventpress' ),
+					'deleteTitle'        => esc_html__( 'Delete Speaker?', 'mage-eventpress' ),
+					'deleteText'         => esc_html__( 'This speaker will be moved to Trash. You can restore it later.', 'mage-eventpress' ),
+					'deleteForceText'    => esc_html__( 'This speaker will be permanently deleted. This cannot be undone.', 'mage-eventpress' ),
+					'deleteConfirm'      => esc_html__( 'Move to Trash', 'mage-eventpress' ),
+					'deleteForceConfirm' => esc_html__( 'Delete Permanently', 'mage-eventpress' ),
+					'deleting'           => esc_html__( 'Deleting…', 'mage-eventpress' ),
+					'deleteError'        => esc_html__( 'Could not delete speaker. Please try again.', 'mage-eventpress' ),
+					'edit'               => esc_html__( 'Edit', 'mage-eventpress' ),
+					'delete'             => esc_html__( 'Delete', 'mage-eventpress' ),
+					'view'               => esc_html__( 'View', 'mage-eventpress' ),
+					'preview'            => esc_html__( 'Preview', 'mage-eventpress' ),
+					'previewTitle'       => esc_html__( 'Email Template Preview', 'mage-eventpress' ),
+					'previewEmpty'       => esc_html__( 'This template has no content yet.', 'mage-eventpress' ),
+					'previewError'       => esc_html__( 'Could not load email preview. Please try again.', 'mage-eventpress' ),
+					'previewEdit'        => esc_html__( 'Edit Template', 'mage-eventpress' ),
+					'previewClose'       => esc_html__( 'Close', 'mage-eventpress' ),
+					'viewTitle'          => esc_html__( 'Speaker Details', 'mage-eventpress' ),
+					'viewRole'           => esc_html__( 'Role / Title', 'mage-eventpress' ),
+					'viewDesc'           => esc_html__( 'Description', 'mage-eventpress' ),
+					'viewEvents'         => esc_html__( 'Assigned Events', 'mage-eventpress' ),
+					'viewStatus'         => esc_html__( 'Status', 'mage-eventpress' ),
+					'viewDate'           => esc_html__( 'Created', 'mage-eventpress' ),
+					'viewEmpty'          => esc_html__( '—', 'mage-eventpress' ),
+					'viewNoEvents'       => esc_html__( 'Not assigned to any event.', 'mage-eventpress' ),
+					'viewEdit'           => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
+					'viewClose'          => esc_html__( 'Close', 'mage-eventpress' ),
+					'at'                 => esc_html__( 'at', 'mage-eventpress' ),
+				];
+
+				if ( $is_review ) {
+					$strings = array_merge(
+						$strings,
+						[
+							'modalTitle'        => esc_html__( 'Add New Review & Rating', 'mage-eventpress' ),
+							'modalSubtitle'     => esc_html__( 'Create a review for an event. Ratings appear on the event page.', 'mage-eventpress' ),
+							'titleLabel'        => esc_html__( 'Review Title', 'mage-eventpress' ),
+							'titlePlaceholder'  => esc_html__( 'e.g. Amazing experience', 'mage-eventpress' ),
+							'eventLabel'        => esc_html__( 'Event', 'mage-eventpress' ),
+							'eventPlaceholder'  => esc_html__( 'Select an event…', 'mage-eventpress' ),
+							'ratingLabel'       => esc_html__( 'Rating', 'mage-eventpress' ),
+							'nameLabel'         => esc_html__( 'Full Name', 'mage-eventpress' ),
+							'namePlaceholder'   => esc_html__( 'e.g. Jane Doe', 'mage-eventpress' ),
+							'emailLabel'        => esc_html__( 'Email', 'mage-eventpress' ),
+							'emailPlaceholder'  => esc_html__( 'name@example.com', 'mage-eventpress' ),
+							'reviewLabel'       => esc_html__( 'Review', 'mage-eventpress' ),
+							'reviewPlaceholder' => esc_html__( 'Write the review text…', 'mage-eventpress' ),
+							'statusPending'     => esc_html__( 'Pending', 'mage-eventpress' ),
+							'save'              => esc_html__( 'Create Review', 'mage-eventpress' ),
+							'saving'            => esc_html__( 'Creating…', 'mage-eventpress' ),
+							'titleRequired'     => esc_html__( 'Please enter a review title.', 'mage-eventpress' ),
+							'eventRequired'     => esc_html__( 'Please select an event.', 'mage-eventpress' ),
+							'ratingRequired'    => esc_html__( 'Please choose a rating.', 'mage-eventpress' ),
+							'nameRequired'      => esc_html__( 'Please enter the reviewer name.', 'mage-eventpress' ),
+							'createError'       => esc_html__( 'Could not create review. Please try again.', 'mage-eventpress' ),
+							'createSuccess'     => esc_html__( 'Review created successfully.', 'mage-eventpress' ),
+							'noEvents'          => esc_html__( 'No events found. Create an event first.', 'mage-eventpress' ),
+						]
+					);
+				}
+
+				$nonce = '';
+				if ( $is_speaker ) {
+					$nonce = wp_create_nonce( 'mpwem_speaker_list' );
+				} elseif ( $is_review ) {
+					$nonce = wp_create_nonce( 'mpwem_review_list' );
+				} elseif ( $is_email ) {
+					$nonce = wp_create_nonce( 'mpwem_email_preview' );
+				}
+
 				wp_localize_script(
 					'mpwem-post-list-modern',
 					'mpwemPostListModern',
@@ -896,74 +1286,12 @@
 						'proUrl'         => 'https://mage-people.com/product/mage-woo-event-booking-manager-pro/',
 						'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 						'ajaxPagination' => $is_speaker,
-						'ajaxCreate'     => $is_speaker,
+						'ajaxCreate'     => $is_speaker || $is_review,
 						'emailPreview'   => $is_email,
 						'perPage'        => $is_speaker ? self::SPEAKER_PER_PAGE : 0,
-						'nonce'          => $is_speaker ? wp_create_nonce( 'mpwem_speaker_list' ) : ( $is_email ? wp_create_nonce( 'mpwem_email_preview' ) : '' ),
-						'strings'        => [
-							'actionsColumn'   => esc_html__( 'Actions', 'mage-eventpress' ),
-							'promoEyebrow'    => esc_html__( 'EVENT PRO', 'mage-eventpress' ),
-							'promoTitle'      => esc_html__( 'Get more out of your events', 'mage-eventpress' ),
-							'promoBody'       => esc_html__( 'Unlock advanced attendee tools, PDF tickets, and reporting with Event Manager Pro and addons.', 'mage-eventpress' ),
-							'promoCta'        => esc_html__( 'Explore Pro & Addons', 'mage-eventpress' ),
-							'loading'         => esc_html__( 'Loading…', 'mage-eventpress' ),
-							'error'           => esc_html__( 'Could not load speakers. Please try again.', 'mage-eventpress' ),
-							'modalTitle'      => esc_html__( 'Add New Speaker', 'mage-eventpress' ),
-							'modalSubtitle'   => esc_html__( 'Create a speaker profile to assign on event pages.', 'mage-eventpress' ),
-							'editModalTitle'  => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
-							'editModalSubtitle' => esc_html__( 'Update this speaker profile.', 'mage-eventpress' ),
-							'nameLabel'       => esc_html__( 'Speaker Name', 'mage-eventpress' ),
-							'namePlaceholder' => esc_html__( 'e.g. Alex Rivera', 'mage-eventpress' ),
-							'roleLabel'       => esc_html__( 'Role / Title', 'mage-eventpress' ),
-							'rolePlaceholder' => esc_html__( 'e.g. Keynote Speaker · CEO, TechVision', 'mage-eventpress' ),
-							'descLabel'       => esc_html__( 'Description', 'mage-eventpress' ),
-							'descPlaceholder' => esc_html__( 'Short biography shown on event pages…', 'mage-eventpress' ),
-							'imageLabel'      => esc_html__( 'Featured Image', 'mage-eventpress' ),
-							'imageSelect'     => esc_html__( 'Select Image', 'mage-eventpress' ),
-							'imageChange'     => esc_html__( 'Change Image', 'mage-eventpress' ),
-							'imageRemove'     => esc_html__( 'Remove', 'mage-eventpress' ),
-							'statusLabel'     => esc_html__( 'Status', 'mage-eventpress' ),
-							'statusPublish'   => esc_html__( 'Publish', 'mage-eventpress' ),
-							'statusDraft'     => esc_html__( 'Draft', 'mage-eventpress' ),
-							'cancel'          => esc_html__( 'Cancel', 'mage-eventpress' ),
-							'save'            => esc_html__( 'Create Speaker', 'mage-eventpress' ),
-							'update'          => esc_html__( 'Update Speaker', 'mage-eventpress' ),
-							'saving'          => esc_html__( 'Creating…', 'mage-eventpress' ),
-							'updating'        => esc_html__( 'Updating…', 'mage-eventpress' ),
-							'nameRequired'    => esc_html__( 'Please enter a speaker name.', 'mage-eventpress' ),
-							'createError'     => esc_html__( 'Could not create speaker. Please try again.', 'mage-eventpress' ),
-							'updateError'     => esc_html__( 'Could not update speaker. Please try again.', 'mage-eventpress' ),
-							'loadError'       => esc_html__( 'Could not load speaker details.', 'mage-eventpress' ),
-							'createSuccess'   => esc_html__( 'Speaker created successfully.', 'mage-eventpress' ),
-							'updateSuccess'   => esc_html__( 'Speaker updated successfully.', 'mage-eventpress' ),
-							'deleteTitle'     => esc_html__( 'Delete Speaker?', 'mage-eventpress' ),
-							'deleteText'      => esc_html__( 'This speaker will be moved to Trash. You can restore it later.', 'mage-eventpress' ),
-							'deleteForceText' => esc_html__( 'This speaker will be permanently deleted. This cannot be undone.', 'mage-eventpress' ),
-							'deleteConfirm'   => esc_html__( 'Move to Trash', 'mage-eventpress' ),
-							'deleteForceConfirm' => esc_html__( 'Delete Permanently', 'mage-eventpress' ),
-							'deleting'        => esc_html__( 'Deleting…', 'mage-eventpress' ),
-							'deleteError'     => esc_html__( 'Could not delete speaker. Please try again.', 'mage-eventpress' ),
-							'edit'            => esc_html__( 'Edit', 'mage-eventpress' ),
-							'delete'          => esc_html__( 'Delete', 'mage-eventpress' ),
-							'view'            => esc_html__( 'View', 'mage-eventpress' ),
-							'preview'         => esc_html__( 'Preview', 'mage-eventpress' ),
-							'previewTitle'    => esc_html__( 'Email Template Preview', 'mage-eventpress' ),
-							'previewEmpty'    => esc_html__( 'This template has no content yet.', 'mage-eventpress' ),
-							'previewError'    => esc_html__( 'Could not load email preview. Please try again.', 'mage-eventpress' ),
-							'previewEdit'     => esc_html__( 'Edit Template', 'mage-eventpress' ),
-							'previewClose'    => esc_html__( 'Close', 'mage-eventpress' ),
-							'viewTitle'       => esc_html__( 'Speaker Details', 'mage-eventpress' ),
-							'viewRole'        => esc_html__( 'Role / Title', 'mage-eventpress' ),
-							'viewDesc'        => esc_html__( 'Description', 'mage-eventpress' ),
-							'viewEvents'      => esc_html__( 'Assigned Events', 'mage-eventpress' ),
-							'viewStatus'      => esc_html__( 'Status', 'mage-eventpress' ),
-							'viewDate'        => esc_html__( 'Created', 'mage-eventpress' ),
-							'viewEmpty'       => esc_html__( '—', 'mage-eventpress' ),
-							'viewNoEvents'    => esc_html__( 'Not assigned to any event.', 'mage-eventpress' ),
-							'viewEdit'        => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
-							'viewClose'       => esc_html__( 'Close', 'mage-eventpress' ),
-							'at'              => esc_html__( 'at', 'mage-eventpress' ),
-						],
+						'nonce'          => $nonce,
+						'events'         => $is_review ? $this->get_events_for_select() : [],
+						'strings'        => $strings,
 						'proFeatures'    => [
 							esc_html__( 'Attendee management & custom forms', 'mage-eventpress' ),
 							esc_html__( 'PDF ticketing & custom emailing', 'mage-eventpress' ),

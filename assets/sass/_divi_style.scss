@@ -671,10 +671,81 @@
 }
 /* *********************************************************Short code city list******************** */
 #mage-container.mage {
-	.mep-city-list { display: block; overflow: hidden; width: 100%; }
-	.mep-city-list ul { margin: 0; padding: 0; list-style: none; }
-	.mep-city-list ul li a { display: block; width: 100%; border-bottom: 1px dashed #DDD; font-size: 18px; color: #333; padding: 5px 0; }
-	.mep-city-list li i { margin-right: 5px; }
+	.mep-city-list {
+		--mep-city-accent: var(--color_theme, #2563eb);
+		--mep-city-text: #1a1a1f;
+		--mep-city-muted: #6b6b76;
+		--mep-city-border: #e6e8ee;
+		--mep-city-bg: #ffffff;
+		--mep-city-soft: color-mix(in srgb, var(--mep-city-accent) 10%, #fff);
+		display: block;
+		width: 100%;
+	}
+	.mep-city-list ul,
+	.mep-city-list .mep-city-list__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 14px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.mep-city-list .mep-city-list__cell { margin: 0; padding: 0; list-style: none; }
+	.mep-city-list ul li a,
+	.mep-city-list .mep-city-list__item {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 16px 18px;
+		border: 1px solid var(--mep-city-border);
+		border-radius: 14px;
+		background: var(--mep-city-bg);
+		color: var(--mep-city-text);
+		text-decoration: none;
+		box-shadow: 0 2px 8px rgba(26, 26, 31, 0.05);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+	}
+	.mep-city-list ul li a:hover,
+	.mep-city-list .mep-city-list__item:hover {
+		border-color: color-mix(in srgb, var(--mep-city-accent) 32%, var(--mep-city-border));
+		background: color-mix(in srgb, var(--mep-city-accent) 4%, #fff);
+		box-shadow: 0 10px 24px rgba(26, 26, 31, 0.08);
+		transform: translateY(-2px);
+		color: var(--mep-city-text);
+	}
+	.mep-city-list .mep-city-list__icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		min-width: 44px;
+		border-radius: 12px;
+		border: 1px solid color-mix(in srgb, var(--mep-city-accent) 22%, var(--mep-city-border));
+		background: var(--mep-city-soft);
+		color: var(--mep-city-accent);
+		font-size: 17px;
+		line-height: 1;
+	}
+	.mep-city-list .mep-city-list__icon i,
+	.mep-city-list li i { margin: 0; color: inherit; }
+	.mep-city-list .mep-city-list__body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+	.mep-city-list .mep-city-list__name { display: block; font-size: 16px; font-weight: 650; line-height: 1.3; color: var(--mep-city-text); }
+	.mep-city-list .mep-city-list__hint { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mep-city-muted); }
+	.mep-city-list .mep-city-list__chevron {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		min-width: 28px;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--mep-city-accent) 8%, #fff);
+		color: var(--mep-city-accent);
+		font-size: 12px;
+	}
 }
 /* *********************************************************Helper******************** */
 #mage-container.mage {
@@ -787,8 +858,27 @@
 	.pagination-sec span.page-numbers.current { padding: 15px 20px; background: #DDD;}
 	span#hide_event_schdule { position: relative; left: 0; bottom: 0; display: block; width: 100%; text-align: center; margin: 0 auto;}
 	.mep-event-list-loop { position: relative;}
-	button.mep-cat-control { border: 1px solid var(--color_theme); background-color: var(--color_7); padding: 10px 20px; font-size: 16px; margin-right: 5px; margin-bottom: 10px; cursor: pointer; color: var(--color_theme); outline-width: 0;}
-	button.mep-cat-control.mixitup-control-active { background: var(--color_theme); color: var(--color_7);}
+	.mep-events-cats-list {
+		--mep-tax-accent: var(--color_theme, #2563eb);
+		--mep-tax-text: #1a1a1f;
+		--mep-tax-muted: #6b6b76;
+		--mep-tax-border: #e6e8ee;
+		--mep-tax-bg: #ffffff;
+		--mep-tax-soft: color-mix(in srgb, var(--mep-tax-accent) 8%, #fff);
+		display: block; width: 100%; margin: 0 0 22px; padding: 16px 18px; box-sizing: border-box;
+		border: 1px solid var(--mep-tax-border); border-radius: 16px;
+		background: linear-gradient(180deg, color-mix(in srgb, var(--mep-tax-accent) 5%, #fff), #fff);
+		box-shadow: 0 2px 8px rgba(26, 26, 31, 0.04);
+	}
+	.mep-event-cat-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+	button.mep-cat-control {
+		appearance: none; display: inline-flex; align-items: center; justify-content: center; margin: 0; padding: 10px 16px;
+		border: 1px solid var(--mep-tax-border); border-radius: 999px; background: var(--mep-tax-bg); color: var(--mep-tax-text);
+		font-size: 14px; font-weight: 600; cursor: pointer; outline-width: 0;
+		box-shadow: 0 1px 2px rgba(26, 26, 31, 0.04); transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+	}
+	button.mep-cat-control:hover { border-color: color-mix(in srgb, var(--mep-tax-accent) 40%, var(--mep-tax-border)); background: color-mix(in srgb, var(--mep-tax-accent) 6%, #fff); transform: translateY(-1px); }
+	button.mep-cat-control.mixitup-control-active { border-color: transparent; background: var(--mep-tax-accent); color: #fff; box-shadow: 0 10px 22px color-mix(in srgb, var(--mep-tax-accent) 28%, transparent); }
 	.mep_view_all_date { overflow: scroll !important;}
 	.ui-accordion .ui-accordion-header { background-image: none; margin: 10px 0 0 0;}
 	.ui-accordion .ui-accordion-header.ui-state-active { background-image: none; background-color: #1D4A68; color: #FFF; font-size: 18px;}

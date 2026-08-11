@@ -126,7 +126,11 @@
 			button.setAttribute('role', 'button');
 			button.addEventListener('click', function (event) {
 				event.preventDefault();
-				openSpeakerModal();
+				if (cfg.postType === 'mep_events_review') {
+					openReviewModal();
+				} else {
+					openSpeakerModal();
+				}
 			});
 		}
 
@@ -1214,7 +1218,252 @@
 			}
 			event.preventDefault();
 			loadEmailPreview(btn.getAttribute('data-email-preview'));
+			});
+	}
+
+	/* ===== Review create modal ===== */
+
+	var reviewModalSaving = false;
+
+	function getReviewModal() {
+		return document.getElementById('mpwem-review-modal');
+	}
+
+	function buildEventOptionsHtml() {
+		var events = cfg.events || [];
+		var html = '<option value="">' + escapeHtml(strings.eventPlaceholder || 'Select an event…') + '</option>';
+		if (!events.length) {
+			return html;
+		}
+		events.forEach(function (event) {
+			html += '<option value="' + escapeHtml(String(event.id)) + '">' + escapeHtml(event.title || '') + '</option>';
 		});
+		return html;
+	}
+
+	function ensureReviewModal() {
+		var existing = getReviewModal();
+		if (existing) {
+			return existing;
+		}
+
+		var modal = el('div', {
+			id: 'mpwem-review-modal',
+			class: 'mpwem-speaker-modal mpwem-review-modal',
+			hidden: 'hidden',
+			'aria-hidden': 'true'
+		});
+		modal.innerHTML =
+			'<div class="mpwem-speaker-modal__backdrop" data-review-modal-close="1"></div>' +
+			'<div class="mpwem-speaker-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem-review-modal-title">' +
+				'<button type="button" class="mpwem-speaker-modal__close" data-review-modal-close="1" aria-label="' + escapeHtml(strings.cancel || 'Cancel') + '">' +
+					'<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>' +
+				'</button>' +
+				'<div class="mpwem-speaker-modal__header">' +
+					'<span class="mpwem-speaker-modal__icon dashicons dashicons-star-filled" aria-hidden="true"></span>' +
+					'<div>' +
+						'<h2 id="mpwem-review-modal-title">' + escapeHtml(strings.modalTitle || 'Add New Review & Rating') + '</h2>' +
+						'<p id="mpwem-review-modal-subtitle">' + escapeHtml(strings.modalSubtitle || '') + '</p>' +
+					'</div>' +
+				'</div>' +
+				'<form id="mpwem-review-create-form" class="mpwem-speaker-modal__form" novalidate>' +
+					'<div class="mpwem-speaker-modal__grid">' +
+						'<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+							'<label for="mpwem-review-title">' + escapeHtml(strings.titleLabel || 'Review Title') + ' <span>*</span></label>' +
+							'<input type="text" id="mpwem-review-title" name="title" required maxlength="200" placeholder="' + escapeHtml(strings.titlePlaceholder || '') + '" />' +
+						'</div>' +
+						'<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+							'<label for="mpwem-review-event">' + escapeHtml(strings.eventLabel || 'Event') + ' <span>*</span></label>' +
+							'<select id="mpwem-review-event" name="event_id" required>' + buildEventOptionsHtml() + '</select>' +
+						'</div>' +
+						'<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+							'<label>' + escapeHtml(strings.ratingLabel || 'Rating') + ' <span>*</span></label>' +
+							'<div class="mpwem-review-rating" id="mpwem-review-rating" role="radiogroup" aria-label="' + escapeHtml(strings.ratingLabel || 'Rating') + '">' +
+								[5, 4, 3, 2, 1].map(function (n) {
+									return '<label class="mpwem-review-rating__star">' +
+										'<input type="radio" name="rating" value="' + n + '" />' +
+										'<span class="dashicons dashicons-star-filled" aria-hidden="true"></span>' +
+										'<span class="screen-reader-text">' + n + '</span>' +
+									'</label>';
+								}).join('') +
+							'</div>' +
+						'</div>' +
+						'<div class="mpwem-speaker-modal__field">' +
+							'<label for="mpwem-review-name">' + escapeHtml(strings.nameLabel || 'Full Name') + ' <span>*</span></label>' +
+							'<input type="text" id="mpwem-review-name" name="cust_name" required maxlength="200" placeholder="' + escapeHtml(strings.namePlaceholder || '') + '" />' +
+						'</div>' +
+						'<div class="mpwem-speaker-modal__field">' +
+							'<label for="mpwem-review-email">' + escapeHtml(strings.emailLabel || 'Email') + '</label>' +
+							'<input type="email" id="mpwem-review-email" name="cust_email" maxlength="200" placeholder="' + escapeHtml(strings.emailPlaceholder || '') + '" />' +
+						'</div>' +
+						'<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+							'<label for="mpwem-review-content">' + escapeHtml(strings.reviewLabel || 'Review') + '</label>' +
+							'<textarea id="mpwem-review-content" name="content" rows="4" placeholder="' + escapeHtml(strings.reviewPlaceholder || '') + '"></textarea>' +
+						'</div>' +
+						'<div class="mpwem-speaker-modal__field">' +
+							'<label for="mpwem-review-status">' + escapeHtml(strings.statusLabel || 'Status') + '</label>' +
+							'<select id="mpwem-review-status" name="status">' +
+								'<option value="publish">' + escapeHtml(strings.statusPublish || 'Publish') + '</option>' +
+								'<option value="pending">' + escapeHtml(strings.statusPending || 'Pending') + '</option>' +
+								'<option value="draft">' + escapeHtml(strings.statusDraft || 'Draft') + '</option>' +
+							'</select>' +
+						'</div>' +
+					'</div>' +
+					'<div class="mpwem-speaker-modal__status" id="mpwem-review-modal-status" hidden></div>' +
+					'<div class="mpwem-speaker-modal__actions">' +
+						'<button type="button" class="button" data-review-modal-close="1">' + escapeHtml(strings.cancel || 'Cancel') + '</button>' +
+						'<button type="submit" class="button button-primary" id="mpwem-review-save-btn">' + escapeHtml(strings.save || 'Create Review') + '</button>' +
+					'</div>' +
+				'</form>' +
+			'</div>';
+
+		document.body.appendChild(modal);
+
+		modal.addEventListener('click', function (event) {
+			if (event.target.closest('[data-review-modal-close]')) {
+				closeReviewModal();
+			}
+		});
+		document.getElementById('mpwem-review-create-form').addEventListener('submit', submitReviewForm);
+
+		return modal;
+	}
+
+	function setReviewModalStatus(message, type) {
+		var status = document.getElementById('mpwem-review-modal-status');
+		if (!status) {
+			return;
+		}
+		if (!message) {
+			status.hidden = true;
+			status.textContent = '';
+			status.className = 'mpwem-speaker-modal__status';
+			return;
+		}
+		status.hidden = false;
+		status.textContent = message;
+		status.className = 'mpwem-speaker-modal__status is-' + (type || 'error');
+	}
+
+	function resetReviewModal() {
+		var form = document.getElementById('mpwem-review-create-form');
+		if (form) {
+			form.reset();
+		}
+		setReviewModalStatus('', '');
+		var saveBtn = document.getElementById('mpwem-review-save-btn');
+		if (saveBtn) {
+			saveBtn.disabled = false;
+			saveBtn.textContent = strings.save || 'Create Review';
+		}
+		reviewModalSaving = false;
+	}
+
+	function openReviewModal() {
+		var modal = ensureReviewModal();
+		resetReviewModal();
+		if (!(cfg.events || []).length) {
+			setReviewModalStatus(strings.noEvents || 'No events found. Create an event first.', 'error');
+		}
+		modal.hidden = false;
+		modal.classList.add('is-open');
+		modal.setAttribute('aria-hidden', 'false');
+		document.body.classList.add('mpwem-speaker-modal-open');
+		var titleInput = document.getElementById('mpwem-review-title');
+		if (titleInput) {
+			setTimeout(function () { titleInput.focus(); }, 40);
+		}
+	}
+
+	function closeReviewModal() {
+		var modal = getReviewModal();
+		if (!modal) {
+			return;
+		}
+		modal.classList.remove('is-open');
+		modal.hidden = true;
+		modal.setAttribute('aria-hidden', 'true');
+		document.body.classList.remove('mpwem-speaker-modal-open');
+		reviewModalSaving = false;
+	}
+
+	function submitReviewForm(event) {
+		event.preventDefault();
+		if (reviewModalSaving) {
+			return;
+		}
+
+		var titleInput = document.getElementById('mpwem-review-title');
+		var eventInput = document.getElementById('mpwem-review-event');
+		var nameInput = document.getElementById('mpwem-review-name');
+		var ratingInput = document.querySelector('#mpwem-review-rating input[name="rating"]:checked');
+
+		var title = titleInput ? titleInput.value.trim() : '';
+		var eventId = eventInput ? eventInput.value : '';
+		var name = nameInput ? nameInput.value.trim() : '';
+		var rating = ratingInput ? ratingInput.value : '';
+
+		if (!title) {
+			setReviewModalStatus(strings.titleRequired || 'Please enter a review title.', 'error');
+			if (titleInput) { titleInput.focus(); }
+			return;
+		}
+		if (!eventId) {
+			setReviewModalStatus(strings.eventRequired || 'Please select an event.', 'error');
+			if (eventInput) { eventInput.focus(); }
+			return;
+		}
+		if (!rating) {
+			setReviewModalStatus(strings.ratingRequired || 'Please choose a rating.', 'error');
+			return;
+		}
+		if (!name) {
+			setReviewModalStatus(strings.nameRequired || 'Please enter the reviewer name.', 'error');
+			if (nameInput) { nameInput.focus(); }
+			return;
+		}
+
+		reviewModalSaving = true;
+		setReviewModalStatus('', '');
+		var saveBtn = document.getElementById('mpwem-review-save-btn');
+		if (saveBtn) {
+			saveBtn.disabled = true;
+			saveBtn.textContent = strings.saving || 'Creating…';
+		}
+
+		var body = new FormData();
+		body.append('action', 'mpwem_review_create');
+		body.append('nonce', cfg.nonce || '');
+		body.append('title', title);
+		body.append('event_id', eventId);
+		body.append('rating', rating);
+		body.append('cust_name', name);
+		body.append('cust_email', (document.getElementById('mpwem-review-email') || {}).value || '');
+		body.append('content', (document.getElementById('mpwem-review-content') || {}).value || '');
+		body.append('status', (document.getElementById('mpwem-review-status') || {}).value || 'publish');
+
+		fetch(cfg.ajaxUrl || (window.ajaxurl || ''), {
+			method: 'POST',
+			credentials: 'same-origin',
+			body: body
+		})
+			.then(function (res) { return res.json(); })
+			.then(function (json) {
+				if (!json || !json.success) {
+					var msg = (json && json.data) ? json.data : strings.createError;
+					throw new Error(typeof msg === 'string' ? msg : (strings.createError || 'Could not create review.'));
+				}
+				closeReviewModal();
+				window.location.reload();
+			})
+			.catch(function (err) {
+				setReviewModalStatus(err.message || strings.createError || 'Could not create review.', 'error');
+				reviewModalSaving = false;
+				if (saveBtn) {
+					saveBtn.disabled = false;
+					saveBtn.textContent = strings.save || 'Create Review';
+				}
+			});
 	}
 
 	function loadEmailPreview(postId) {
@@ -1316,10 +1565,14 @@
 			buildActionsColumn(wrap);
 			initSpeakerAjaxPagination(wrap);
 			if (cfg.ajaxCreate) {
-				ensureSpeakerModal();
-				ensureSpeakerDeleteModal();
-				ensureSpeakerViewModal();
-				initSpeakerRowActions(wrap);
+				if (cfg.postType === 'mep_events_review') {
+					ensureReviewModal();
+				} else {
+					ensureSpeakerModal();
+					ensureSpeakerDeleteModal();
+					ensureSpeakerViewModal();
+					initSpeakerRowActions(wrap);
+				}
 			}
 			if (cfg.emailPreview) {
 				ensureEmailPreviewModal();

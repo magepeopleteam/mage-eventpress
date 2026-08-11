@@ -22,7 +22,7 @@
 		define('MPWEM_PLUGIN_URL', plugins_url() . '/' . plugin_basename(dirname(__FILE__)));
 	}
 	if (!defined('MPWEM_PLUGIN_VERSION')) {
-		define('MPWEM_PLUGIN_VERSION', '5.4.0');
+		define('MPWEM_PLUGIN_VERSION', '5.5.0');
 	}
 
 	// WooCommerce Fallback Stub Functions to prevent Fatal Errors when WooCommerce is inactive.

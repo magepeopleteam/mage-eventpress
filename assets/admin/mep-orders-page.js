@@ -7,7 +7,22 @@
 	var activeFilters  = {};
 
 	/* ---- Collect current filter values ---- */
+	function filtersEnabled() {
+		return !! ( window.mepOrders && mepOrders.filtersEnabled );
+	}
+
 	function getFilters() {
+		if ( ! filtersEnabled() ) {
+			return {
+				mep_search    : '',
+				mep_event_id  : '',
+				mep_status    : '',
+				mep_gateway   : '',
+				mep_source    : 'all',
+				mep_date_from : '',
+				mep_date_to   : '',
+			};
+		}
 		return {
 			mep_search    : $( '#mep-search'    ).val() || '',
 			mep_event_id  : $( '#mep-event-id'  ).val() || '',
@@ -208,6 +223,9 @@
 
 	/* ---- Debounced filter trigger ---- */
 	function triggerFilter( delay ) {
+		if ( ! filtersEnabled() ) {
+			return;
+		}
 		clearTimeout( filterTimeout );
 		filterTimeout = setTimeout( function () {
 			fetchOrders( 1 );
@@ -229,26 +247,28 @@
 	/* ---- Init ---- */
 	$( document ).ready( function () {
 
-		// Filter inputs — live update
-		$( '#mep-search' ).on( 'input', function () {
-			triggerFilter( 400 );
-		} );
+		// Filter inputs — live update (PRO only)
+		if ( filtersEnabled() ) {
+			$( '#mep-search' ).on( 'input', function () {
+				triggerFilter( 400 );
+			} );
 
-		$( '#mep-event-id, #mep-status, #mep-gateway, #mep-source, #mep-date-from, #mep-date-to' ).on( 'change', function () {
-			triggerFilter( 50 );
-		} );
+			$( '#mep-event-id, #mep-status, #mep-gateway, #mep-source, #mep-date-from, #mep-date-to' ).on( 'change', function () {
+				triggerFilter( 50 );
+			} );
 
-		// Reset filters
-		$( '#mep-reset-filters' ).on( 'click', function () {
-			$( '#mep-search'    ).val( '' );
-			$( '#mep-event-id'  ).val( '' );
-			$( '#mep-status'    ).val( '' );
-			$( '#mep-gateway'   ).val( '' );
-			$( '#mep-source'    ).val( 'all' );
-			$( '#mep-date-from' ).val( '' );
-			$( '#mep-date-to'   ).val( '' );
-			fetchOrders( 1 );
-		} );
+			// Reset filters
+			$( '#mep-reset-filters' ).on( 'click', function () {
+				$( '#mep-search'    ).val( '' );
+				$( '#mep-event-id'  ).val( '' );
+				$( '#mep-status'    ).val( '' );
+				$( '#mep-gateway'   ).val( '' );
+				$( '#mep-source'    ).val( 'all' );
+				$( '#mep-date-from' ).val( '' );
+				$( '#mep-date-to'   ).val( '' );
+				fetchOrders( 1 );
+			} );
+		}
 
 		// Pagination — page buttons (delegated)
 		$( document ).on( 'click', '.mep-page-btn:not([disabled])', function () {

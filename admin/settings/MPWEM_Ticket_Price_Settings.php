@@ -826,6 +826,10 @@
 					.mpwem-pm-confirm-row__text .mpwem-pm-card__sub { margin: 4px 0 0; }
 					.mpwem-pm-confirm-row__control { flex-shrink: 0; width: 240px; }
 					.mpwem-pm-confirm-row__control .mpwem-pm-control { max-width: 100%; }
+					select#mep_confirmation_page_id {
+						border: 1px solid #ddd;
+						border-radius: 5px;
+					}
 
 					/* Accordions (WooCommerce tab) */
 					.mpwem-pm-acc {
@@ -856,7 +860,6 @@
 					#mep-payment-settings-modal .button,
 					#mep-payment-settings-modal .button-secondary,
 					#mep-payment-settings-modal .button-primary,
-					#mep-payment-settings-modal button.mep-gw-configure-btn,
 					#mep-payment-settings-modal button.mep-gw-save-btn {
 						display: inline-flex; align-items: center; justify-content: center; gap: 6px;
 						height: auto; min-height: 34px; margin: 0;
@@ -871,8 +874,7 @@
 						font-size: 16px; width: 16px; height: 16px; line-height: 1;
 					}
 					#mep-payment-settings-modal .button:hover,
-					#mep-payment-settings-modal .button-secondary:hover,
-					#mep-payment-settings-modal button.mep-gw-configure-btn:hover {
+					#mep-payment-settings-modal .button-secondary:hover {
 						background: #f3f4f6; border-color: #9ca3af; color: #111827; transform: translateY(-1px);
 					}
 					/* Primary / call-to-action buttons */
@@ -892,7 +894,6 @@
 					#mep-payment-settings-modal .button:focus,
 					#mep-payment-settings-modal .button-secondary:focus,
 					#mep-payment-settings-modal .button-primary:focus,
-					#mep-payment-settings-modal button.mep-gw-configure-btn:focus,
 					#mep-payment-settings-modal button.mep-gw-save-btn:focus {
 						outline: none; box-shadow: 0 0 0 3px rgba(34,113,177,0.18);
 					}
@@ -901,9 +902,29 @@
 					#mep-payment-settings-modal button.mep-gw-save-btn:disabled {
 						opacity: .6; cursor: not-allowed; transform: none; box-shadow: none;
 					}
-					/* "Open in WooCommerce" small link-button inside the methods accordion */
-					#mep-payment-settings-modal .mep-wc-pm-wc-link.button-small {
-						min-height: 0; padding: 5px 12px; font-size: 12px; font-weight: 600;
+					/* Configure + Open in WooCommerce — light purple outline */
+					#mep-payment-settings-modal button.mep-gw-configure-btn,
+					#mep-payment-settings-modal a.mep-wc-pm-wc-link {
+						display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+						height: auto; min-height: 0; margin: 0;
+						padding: 8px 14px; border-radius: 10px;
+						font-size: 13px; font-weight: 600; line-height: 1.3; text-decoration: none;
+						border: 1px solid #c7d2fe; background: #f5f7ff; color: #4f46e5;
+						box-shadow: none; cursor: pointer;
+						transition: background .15s ease, border-color .15s ease, color .15s ease;
+					}
+					#mep-payment-settings-modal a.mep-wc-pm-wc-link {
+						font-size: 12px; margin-left: auto;
+					}
+					#mep-payment-settings-modal button.mep-gw-configure-btn:hover,
+					#mep-payment-settings-modal button.mep-gw-configure-btn:focus,
+					#mep-payment-settings-modal a.mep-wc-pm-wc-link:hover,
+					#mep-payment-settings-modal a.mep-wc-pm-wc-link:focus {
+						background: #eef2ff; border-color: #a5b4fc; color: #4338ca;
+						outline: none; box-shadow: none; text-decoration: none;
+					}
+					#mep-payment-settings-modal a.mep-wc-pm-wc-link .dashicons {
+						font-size: 14px; width: 14px; height: 14px; line-height: 1;
 					}
 
 					/* Footer */

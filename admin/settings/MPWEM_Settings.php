@@ -786,13 +786,13 @@
                     'mep_eb_settings' => array(
                         array(
                             'name' => 'mp_event_eb_type',
-                            'label' => __('Early bird ticket visible option', 'mage-eventpress'),
-                            'desc' => __('select Early bird ticket visible option', 'mage-eventpress'),
+                            'label' => __('Early Bird Ticket Display', 'mage-eventpress'),
+                            'desc' => __('Choose whether early bird tickets end by time or by number of orders.', 'mage-eventpress'),
                             'type' => 'select',
                             'default' => '0',
                             'options' => array(
-                                '0' => __('Depend on time', 'mage-eventpress'),
-                                '1' => __('Depend on order', 'mage-eventpress')
+                                '0' => __('Based on time', 'mage-eventpress'),
+                                '1' => __('Based on orders', 'mage-eventpress')
                             )
                         ),
                     )

@@ -29,6 +29,20 @@
 				require_once( dirname( __DIR__ ) . '/lib/classes/class-icon-popup.php' );
 				//****************Global settings************************//
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MAGE_Setting_API.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Email_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_General_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Event_List_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Single_Event_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Payment_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Currency_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Modern_Section_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_AI_Assistant_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Social_Card_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Google_Sheets_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_PDF_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_License_Status_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Style_Icon_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Slider_Carousel_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/admin_setting_panel.php';
 				require_once MPWEM_PLUGIN_DIR . '/includes/admin/class-wc-payment-manager.php';
 				//************************************//
@@ -45,6 +59,8 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Admin_Menu_Group.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/Mage_people_news_update.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Event_Edit_Page.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Taxonomy_Modern.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Post_List_Modern.php';
 				//****************Meta Settings File Include************************//
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Venue_Settings.php';

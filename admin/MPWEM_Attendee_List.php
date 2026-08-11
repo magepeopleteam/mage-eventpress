@@ -3,10 +3,10 @@
 	 * @Author 		a.a.mahin@gmail.com
 	 * Copyright: 	mage-people.com
 	 *
-	 * Free-tier Attendee List: deliberately limited to an Event filter, a fixed
-	 * set of columns, and read-only rows — every privileged action (view/edit/
-	 * sync/delete, CSV export, extra filters, column settings) is rendered
-	 * disabled with a "PRO" upsell and has no server-side handler behind it here.
+	 * Free-tier Attendee List: read-only rows with a fixed column set. Filtering,
+	 * CSV export, and every privileged action (view/edit/sync/delete) are locked
+	 * behind a "PRO" upsell — there is no server-side filter/action handler here
+	 * that unlocks PRO behaviour without PRO actually being installed.
 	 *
 	 * This class must never grow the code that performs those actions — that
 	 * lives only in PRO's own MPWEM_Passenger_List, which registers the exact
@@ -69,7 +69,7 @@
 					'mep-orders-page',
 					MPWEM_PLUGIN_URL . '/assets/admin/mep-orders-page.css',
 					array(),
-					'1.3.6'
+					'1.4.0'
 				);
 			}
 
@@ -87,7 +87,7 @@
 			}
 
 			public function render_page() {
-				$label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				$upgrade_url = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/product/mage-woo-event-booking-manager-pro/', 0 );
 				?>
 				<div class="wrap">
 					<div class="mep-orders-wrap mep-free-attlist">
@@ -110,46 +110,39 @@
 							</div>
 						</div>
 
-						<!-- Filter Panel -->
-						<div class="mep-filter-panel">
+						<!-- Filter Panel (locked — PRO feature) -->
+						<div class="mep-filter-panel mep-filter-panel--pro-locked">
 							<div class="mep-filter-panel-header">
 								<span class="dashicons dashicons-filter"></span>
 								<strong><?php esc_html_e( 'Filter Attendees', 'mage-eventpress' ); ?></strong>
+								<span class="mep-pro-badge" title="<?php esc_attr_e( 'Available in PRO version', 'mage-eventpress' ); ?>">
+									<span class="dashicons dashicons-lock"></span>
+									<?php esc_html_e( 'PRO', 'mage-eventpress' ); ?>
+								</span>
 								<button type="button" id="mep-attlist-filter-toggle" class="mep-filter-toggle" aria-expanded="true">
 									<span class="dashicons dashicons-arrow-up-alt2"></span>
 								</button>
 							</div>
-							<div class="mep-filter-body" id="mep-attlist-filter-body">
-								<div class="mep-filter-grid">
-									<div class="mep-filter-field">
-										<label for="mep_free_attlist_event">
-											<?php
-												/* translators: %s: the configured "Events" label */
-												printf( esc_html__( 'Filter by %s', 'mage-eventpress' ), esc_html( $label ) );
-											?>
-										</label>
-										<select id="mep_free_attlist_event">
-											<option value="0"><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></option>
-											<?php
-												$post_ids = MPWEM_Query::get_all_post_ids( 'mep_events' );
-												if ( is_array( $post_ids ) ) {
-													foreach ( $post_ids as $post_id ) {
-														?>
-														<option value="<?php echo esc_attr( $post_id ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></option>
-														<?php
-													}
-												}
-											?>
-										</select>
+							<div class="mep-filter-body mep-filter-body--disabled" id="mep-attlist-filter-body">
+								<div class="mep-filter-pro-card">
+									<div class="mep-filter-pro-icon" aria-hidden="true">
+										<span class="dashicons dashicons-lock"></span>
 									</div>
-								</div><!-- .mep-filter-grid -->
-								<div class="mep-filter-actions">
-									<button type="button" class="mep-btn mep-btn-primary" id="mep_free_attlist_filter_btn">
-										<span class="dashicons dashicons-search"></span> <?php esc_html_e( 'Filter', 'mage-eventpress' ); ?>
-									</button>
-									<?php $upgrade_url = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/', 0 ); ?>
-									<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-free-attlist-upgrade">
-										<?php esc_html_e( 'More filters, columns & actions in PRO', 'mage-eventpress' ); ?> &rarr;
+									<div class="mep-filter-pro-content">
+										<span class="mep-filter-pro-eyebrow"><?php esc_html_e( 'PRO Feature', 'mage-eventpress' ); ?></span>
+										<strong class="mep-filter-pro-title"><?php esc_html_e( 'Attendee filters are available in PRO', 'mage-eventpress' ); ?></strong>
+										<p class="mep-filter-pro-text"><?php esc_html_e( 'Filter attendees by event, ticket type, order status, check-in, and more with Event Manager Pro.', 'mage-eventpress' ); ?></p>
+										<ul class="mep-filter-pro-chips">
+											<li><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></li>
+											<li><?php esc_html_e( 'Ticket', 'mage-eventpress' ); ?></li>
+											<li><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></li>
+											<li><?php esc_html_e( 'Check-in', 'mage-eventpress' ); ?></li>
+											<li><?php esc_html_e( 'Search', 'mage-eventpress' ); ?></li>
+										</ul>
+									</div>
+									<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-filter-pro-cta">
+										<?php esc_html_e( 'Upgrade to PRO', 'mage-eventpress' ); ?>
+										<span class="dashicons dashicons-arrow-right-alt2" aria-hidden="true"></span>
 									</a>
 								</div>
 							</div><!-- .mep-filter-body -->
@@ -395,8 +388,9 @@
 				if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 					wp_send_json_error( 'Permission denied' );
 				}
+				// Filtering is a PRO feature — free AJAX only supports pagination of the full list.
 				$args = array(
-					'post_id'       => isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0,
+					'post_id'       => 0,
 					'page'          => isset( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 1,
 					'post_per_page' => self::PER_PAGE,
 				);
@@ -418,9 +412,6 @@
 					}
 					.mep-free-attlist-pro-flag .dashicons { font-size: 10.5px; width: 10.5px; height: 10.5px; }
 					.mep-orders-header-actions .mep-btn[disabled] { cursor: not-allowed; opacity: .85; }
-
-					.mep-free-attlist-upgrade { font-size: 12.5px; color: #4f46e5; text-decoration: none; font-weight: 500; margin-left: auto; }
-					.mep-free-attlist-upgrade:hover { text-decoration: underline; }
 
 					/* ---- Extra order-status colour not present on the Orders page ------- */
 					.mep-status-partially-paid { background: #e0e7ff; color: #3730a3; }
@@ -453,16 +444,13 @@
 				</style>
 				<script>
 					(function ($) {
-						function currentPostId() {
-							return $('#mep_free_attlist_event').val() || 0;
-						}
 						function loadPage(page) {
 							var $result = $('#mep_free_attlist_result');
 							$result.css('opacity', 0.5);
 							$.post(ajaxurl, {
 								action: 'mep_free_attendee_list_filter',
 								nonce: $('#mep_free_attlist_nonce').val(),
-								post_id: currentPostId(),
+								post_id: 0,
 								page: page || 1
 							}).done(function (response) {
 								if (response && response.success) {
@@ -473,9 +461,6 @@
 								$('html, body').animate({ scrollTop: $('#mep_free_attlist_result').offset().top - 40 }, 200);
 							});
 						}
-						$(document).on('click', '#mep_free_attlist_filter_btn', function () {
-							loadPage(1);
-						});
 						$(document).on('click', '#mep_free_attlist_result .mep-page-btn:not([disabled])', function () {
 							var page = parseInt($(this).data('page'), 10);
 							if (page) {

@@ -45,6 +45,47 @@
     };
 
     const $body = $('#mpwem_event_list_body');
+    const $tableWrap = $('#mpwem_event_table_wrap');
+
+    function setTableLoading(isLoading) {
+        if (!$tableWrap.length) {
+            return;
+        }
+        if (isLoading) {
+            const currentHeight = $tableWrap.outerHeight();
+            if (currentHeight && currentHeight > 120) {
+                $tableWrap.css('min-height', currentHeight + 'px');
+            }
+            $tableWrap.addClass('is-loading');
+            $tableWrap.find('.mpwem-table-loading-overlay').attr('aria-busy', 'true');
+        } else {
+            $tableWrap.removeClass('is-loading');
+            $tableWrap.find('.mpwem-table-loading-overlay').attr('aria-busy', 'false');
+            // Release locked height after content paints so layout can shrink/grow naturally
+            window.setTimeout(function () {
+                if (!$tableWrap.hasClass('is-loading')) {
+                    $tableWrap.css('min-height', '');
+                }
+            }, 80);
+        }
+    }
+
+    function getEmptyStateHtml() {
+        const addUrl = (mep_ajax && mep_ajax.url)
+            ? String(mep_ajax.url).replace(/admin-ajax\.php.*$/, 'post-new.php?post_type=mep_events')
+            : 'post-new.php?post_type=mep_events';
+        return '' +
+            '<tr class="mpwem-empty-state-row">' +
+                '<td colspan="9">' +
+                    '<div class="mpwem-empty-state">' +
+                        '<div class="mpwem-empty-state-icon" aria-hidden="true"><span class="dashicons dashicons-calendar-alt"></span></div>' +
+                        '<h3 class="mpwem-empty-state-title">No events found</h3>' +
+                        '<p class="mpwem-empty-state-text">There are no events to show right now. Try adjusting your filters, or create your first event to get started.</p>' +
+                        '<a class="mpwem-empty-state-btn" href="' + addUrl + '"><span>+</span> Add New Event</a>' +
+                    '</div>' +
+                '</td>' +
+            '</tr>';
+    }
 
     function debounce(fn, wait) {
         let t;
@@ -97,8 +138,9 @@
         state.loading = true;
         $('#loadMoreBtn').prop('disabled', true);
 
+        // Keep existing rows visible under a dimmed overlay (no height collapse).
         if (!append) {
-            $body.html('<tr class="mpwem_event_list_loading_row"><td colspan="9" style="text-align:center;padding:30px;">Loading events…</td></tr>');
+            setTableLoading(true);
         }
 
         $.ajax({
@@ -120,7 +162,9 @@
             },
             success: function (response) {
                 if (!response || !response.success) {
-                    $body.html('<tr><td colspan="9" style="text-align:center;padding:30px;">Unable to load events.</td></tr>');
+                    if (!append) {
+                        $body.html('<tr><td colspan="9" style="text-align:center;padding:30px;">Unable to load events.</td></tr>');
+                    }
                     return;
                 }
                 const data = response.data;
@@ -139,7 +183,7 @@
                 if (append) {
                     $body.append(data.html || '');
                 } else if (!data.html || $.trim(data.html) === '') {
-                    $body.html('<tr><td colspan="9" style="text-align:center;padding:30px;">No events found.</td></tr>');
+                    $body.html(getEmptyStateHtml());
                 } else {
                     $body.html(data.html);
                 }
@@ -155,6 +199,9 @@
             complete: function () {
                 state.loading = false;
                 $('#loadMoreBtn').prop('disabled', false);
+                if (!append) {
+                    setTableLoading(false);
+                }
             }
         });
     }
@@ -278,15 +325,109 @@
         reloadEvents();
     });
 
-    $('#mpwem_date_from, #mpwem_date_to').on('change', function () {
+    /* Custom modern datepicker (replaces native browser calendar) */
+    function applyDateFilter() {
         state.dateFrom = $('#mpwem_date_from').val();
         state.dateTo = $('#mpwem_date_to').val();
         reloadEvents();
-    });
+    }
+
+    function positionMpwemDatepicker(input) {
+        var $dp = $('#ui-datepicker-div');
+        if (!$dp.length || !$dp.is(':visible')) {
+            return;
+        }
+        $dp.addClass('mpwem-datepicker-modern').attr('data-mpwem-picker', '1');
+
+        var $input = $(input);
+        var offset = $input.offset();
+        var inputH = $input.outerHeight();
+        var inputW = $input.outerWidth();
+        var dpW = $dp.outerWidth();
+        var dpH = $dp.outerHeight();
+        var winW = $(window).width();
+        var winH = $(window).height();
+        var scrollTop = $(window).scrollTop();
+        var scrollLeft = $(window).scrollLeft();
+        var margin = 16;
+        // Keep clear of WP admin bar / possible right side panels
+        var rightSafe = 48;
+
+        var top = offset.top + inputH + 4;
+        if (top + dpH > scrollTop + winH - margin) {
+            top = Math.max(scrollTop + margin, offset.top - dpH - 4);
+        }
+
+        // Prefer aligning to the input's right edge so the popup opens leftward
+        // (avoids sliding under a right toolbar / viewport edge).
+        var left = offset.left + inputW - dpW;
+        if (left < scrollLeft + margin) {
+            left = offset.left;
+        }
+        if (left + dpW > scrollLeft + winW - rightSafe) {
+            left = scrollLeft + winW - dpW - rightSafe;
+        }
+        left = Math.max(scrollLeft + margin, left);
+
+        $dp.css({
+            position: 'absolute',
+            top: top + 'px',
+            left: left + 'px',
+            width: '300px',
+            maxWidth: '300px',
+            zIndex: 999999
+        });
+    }
+
+    const datepickerOpts = {
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: false,
+        beforeShow: function (input) {
+            // Reposition after jQuery UI applies its default offset
+            setTimeout(function () {
+                positionMpwemDatepicker(input);
+            }, 0);
+            setTimeout(function () {
+                positionMpwemDatepicker(input);
+            }, 50);
+        },
+        onClose: function () {
+            $('#ui-datepicker-div').removeClass('mpwem-datepicker-modern').removeAttr('data-mpwem-picker');
+        }
+    };
+
+    if ($.fn.datepicker) {
+        $('#mpwem_date_from').datepicker($.extend({}, datepickerOpts, {
+            onSelect: function (dateText) {
+                $('#mpwem_date_to').datepicker('option', 'minDate', dateText || null);
+                applyDateFilter();
+            }
+        }));
+
+        $('#mpwem_date_to').datepicker($.extend({}, datepickerOpts, {
+            onSelect: function (dateText) {
+                $('#mpwem_date_from').datepicker('option', 'maxDate', dateText || null);
+                applyDateFilter();
+            }
+        }));
+
+        // Open picker when calendar icon is clicked
+        $('.date-filter-input-wrap .date-filter-icon').on('click', function () {
+            $(this).siblings('.date-filter').datepicker('show');
+        });
+    } else {
+        $('#mpwem_date_from, #mpwem_date_to').on('change', applyDateFilter);
+    }
 
     $('#mpwem_clear_date_filter').on('click', function () {
-        $('#mpwem_date_from').val('');
-        $('#mpwem_date_to').val('');
+        if ($.fn.datepicker) {
+            $('#mpwem_date_from').datepicker('setDate', null).datepicker('option', 'maxDate', null);
+            $('#mpwem_date_to').datepicker('setDate', null).datepicker('option', 'minDate', null);
+        } else {
+            $('#mpwem_date_from, #mpwem_date_to').val('');
+        }
         state.dateFrom = '';
         state.dateTo = '';
         reloadEvents();
@@ -701,6 +842,14 @@
             state.perPage = DEFAULT_PER_PAGE;
             $pp.val(String(DEFAULT_PER_PAGE));
         }
+        // Default filter: All Events active on first load
+        $('.mpwem_filter_by_status, .mpwem_filter_by_active_status')
+            .removeClass('mpwem_filter_btn_active_bg_color');
+        $('.mpwem_filter_by_status[data-by-filter="all"]')
+            .addClass('mpwem_filter_btn_active_bg_color');
+        state.status = 'all';
+        state.activeStatus = 'all';
+
         syncPaginationSwitch();
         loadDashboardStats();
         reloadEvents();

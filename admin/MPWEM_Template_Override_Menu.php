@@ -31,6 +31,29 @@ if (!class_exists('MPWEM_Template_Override_Menu')) {
 		 */
 		public function __construct() {
 			add_action('admin_menu', array($this, 'add_template_override_menu'));
+			add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
+		}
+
+		/**
+		 * Enqueue modern styles on the Template Override screen only.
+		 *
+		 * @param string $hook Current admin page hook.
+		 */
+		public function enqueue_assets( $hook ) {
+			$is_page = ( 'mep_events_page_mep_template_override' === $hook )
+				|| ( isset( $_GET['page'] ) && 'mep_template_override' === sanitize_key( wp_unslash( $_GET['page'] ) ) );
+
+			if ( ! $is_page ) {
+				return;
+			}
+
+			$css = MPWEM_PLUGIN_DIR . '/assets/admin/css/mpwem-template-override.css';
+			wp_enqueue_style(
+				'mpwem-template-override',
+				MPWEM_PLUGIN_URL . '/assets/admin/css/mpwem-template-override.css',
+				array( 'dashicons' ),
+				file_exists( $css ) ? (string) filemtime( $css ) : MPWEM_PLUGIN_VERSION
+			);
 		}
 
 		/**
@@ -72,8 +95,10 @@ if (!class_exists('MPWEM_Template_Override_Menu')) {
 				wp_die(esc_html__('Security check failed.', 'mage-eventpress'));
 			}
 			
-			echo '<div class="wrap">';
-			echo '<h1>' . esc_html__('Template Override System', 'mage-eventpress') . '</h1>';
+			echo '<div class="wrap mpwem-template-override-page">';
+			echo '<h1 class="wp-heading-inline">' . esc_html__( 'Template Override', 'mage-eventpress' ) . '</h1>';
+			echo '<p class="mpwem-to-page-subtitle">' . esc_html__( 'Manage which event templates are customized in your active theme.', 'mage-eventpress' ) . '</p>';
+			echo '<hr class="wp-header-end" />';
 			
 			// Check if required class exists
 			if (class_exists('MPWEM_Template_Override_Settings')) {

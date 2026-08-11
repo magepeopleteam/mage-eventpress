@@ -9252,19 +9252,80 @@ div.mpwem_style [data-bg-image] {
 
 /* ========== Smart Theme — Title + Meta (over slider bottom) ========== */
 .mep_smart_theme .smart_theme_hero {
+	--smart-hero-h: clamp(220px, 34vw, 380px);
 	position: relative;
 	margin: 0 0 24px;
 	border-radius: 18px;
 	overflow: hidden;
+	max-height: var(--smart-hero-h);
 }
 
 .mep_smart_theme .smart_theme_hero .mpwem_slider_area {
 	position: relative;
 	margin: 0 !important;
+	height: var(--smart-hero-h);
+	min-height: var(--smart-hero-h);
+	max-height: var(--smart-hero-h);
+	overflow: hidden;
 }
 
 .mep_smart_theme .smart_theme_hero .mpwem_slider_area.is-loading {
-	min-height: clamp(260px, 42vw, 480px);
+	min-height: var(--smart-hero-h);
+	max-height: var(--smart-hero-h);
+	height: var(--smart-hero-h);
+}
+
+/* Feature / gallery image: keep a designed hero height (not full photo height) */
+.mep_smart_theme .smart_theme_hero .post_thumb,
+.mep_smart_theme .smart_theme_hero .post_thumb.is-style-2,
+.mep_smart_theme .smart_theme_hero .mpwem_slider_style2_feature {
+	display: block;
+	width: 100%;
+	height: var(--smart-hero-h) !important;
+	min-height: var(--smart-hero-h) !important;
+	max-height: var(--smart-hero-h) !important;
+	overflow: hidden;
+}
+
+.mep_smart_theme .smart_theme_hero .post_thumb img,
+.mep_smart_theme .smart_theme_hero .mpwem_slider_style2_feature img {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+	max-height: none !important;
+	object-fit: cover !important;
+	object-position: center center !important;
+}
+
+.mep_smart_theme .smart_theme_hero .mpwem_slider_area > .superSlider,
+.mep_smart_theme .smart_theme_hero .mpwem_slider_area > .superSlider > .dFlex,
+.mep_smart_theme .smart_theme_hero .sliderAllItem,
+.mep_smart_theme .smart_theme_hero .sliderItem,
+.mep_smart_theme .smart_theme_hero .sliderShowcase {
+	height: var(--smart-hero-h) !important;
+	min-height: var(--smart-hero-h) !important;
+	max-height: var(--smart-hero-h) !important;
+}
+
+/* Keep Style Two popup shell out of hero layout sizing */
+.mep_smart_theme .smart_theme_hero .post_thumb.is-style-2 > .superSlider {
+	position: absolute !important;
+	width: 0 !important;
+	height: 0 !important;
+	min-height: 0 !important;
+	max-height: none !important;
+	overflow: visible !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.mep_smart_theme .smart_theme_hero .sliderItem [data-bg-image],
+.mep_smart_theme .smart_theme_hero .sliderItem .bg_image_area {
+	height: 100% !important;
+	min-height: 100% !important;
+	max-height: none !important;
+	background-size: cover !important;
+	background-position: center center !important;
 }
 
 /* Hide real slider chrome until placeholder finishes */
@@ -9425,8 +9486,14 @@ div.mpwem_style [data-bg-image] {
 		display: none;
 	}
 
+	.mep_smart_theme .smart_theme_hero {
+		--smart-hero-h: clamp(200px, 52vw, 280px);
+	}
+
 	.mep_smart_theme .smart_theme_hero .mpwem_slider_area.is-loading {
-		min-height: clamp(220px, 56vw, 340px);
+		min-height: var(--smart-hero-h);
+		max-height: var(--smart-hero-h);
+		height: var(--smart-hero-h);
 	}
 
 	.mep_smart_theme .mpwem_slider_skeleton__nav {
@@ -9590,12 +9657,13 @@ div.mpwem_style [data-bg-image] {
 
 @media (max-width: 640px) {
 	.mep_smart_theme .smart_theme_hero {
+		--smart-hero-h: clamp(200px, 52vw, 280px);
 		border-radius: 14px;
 		margin-bottom: 18px;
 	}
 
 	.mep_smart_theme .smart_theme_header {
-		padding: 56px 14px 14px;
+		padding: 48px 14px 14px;
 	}
 
 	.mep_smart_theme .smart_theme_header .mpwem_tile,

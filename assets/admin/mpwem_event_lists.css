@@ -2,6 +2,7 @@
     display: none;
 }
 .mpwem_event_list .container {
+    width: 100%;
     margin: 0 auto;
     background: #f4f6fb;
     min-height: 100vh;

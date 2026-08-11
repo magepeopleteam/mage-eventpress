@@ -16,7 +16,7 @@
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
                     <div class="mp_tab_item" data-tab-item="#mp_event_tax_settings">
-                        <h3><?php echo esc_html( $event_label );
+                        <h3><?php echo esc_html( $event_label ) . ' ';
 								esc_html_e( 'Tax Settings', 'mage-eventpress' ); ?></h3>
                         <p><?php esc_html_e( 'Configure Your Settings Here', 'mage-eventpress' ) ?></p>
 						<?php $this->mp_event_tax( $event_id ); ?>

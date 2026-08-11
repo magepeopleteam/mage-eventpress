@@ -144,7 +144,30 @@
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
 		if ( $reg_status == 'on' && $selected_date_expired ) {
-			MPWEM_Layout::msg( esc_html__( 'Sorry, this date has expired and is no longer available for booking.', 'mage-eventpress' ), 'mpwem_date_expired_msg' );
+			$expired_date_label = '';
+			$expired_date_src   = ! empty( $user_date ) ? $user_date : $date;
+			if ( ! empty( $expired_date_src ) && strtotime( $expired_date_src ) ) {
+				$expired_date_label = MPWEM_Global_Function::date_format( $expired_date_src, 'full', $event_id );
+			}
+			?>
+			<div class="mpwem_date_expired_msg" role="status" aria-live="polite">
+				<div class="mpwem_date_expired_msg__inner">
+					<span class="mpwem_date_expired_msg__icon" aria-hidden="true">
+						<i class="far fa-calendar-times"></i>
+					</span>
+					<div class="mpwem_date_expired_msg__body">
+						<strong class="mpwem_date_expired_msg__title"><?php esc_html_e( 'Date unavailable', 'mage-eventpress' ); ?></strong>
+						<p class="mpwem_date_expired_msg__text"><?php esc_html_e( 'Sorry, this date has expired and is no longer available for booking.', 'mage-eventpress' ); ?></p>
+						<?php if ( $expired_date_label ) : ?>
+							<span class="mpwem_date_expired_msg__meta">
+								<i class="far fa-clock" aria-hidden="true"></i>
+								<?php echo esc_html( $expired_date_label ); ?>
+							</span>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+			<?php
 		} elseif ( $reg_status == 'on' ) {
 			$full_location = MPWEM_Functions::get_location( $event_id );
 			$total_sold      = mep_ticket_type_sold( $event_id, '', $date );

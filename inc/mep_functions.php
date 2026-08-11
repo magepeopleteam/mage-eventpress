@@ -5225,27 +5225,33 @@ die();
 
 		$formatted = MPWEM_Global_Function::date_format( $expired_datetime, 'full', $event_id );
 		?>
-		<div class="mpwem-expired-card">
-			<div class="mpwem-expired-title">
-				<?php if ( $is_expired ) : ?>
-					❌ <?php _e( 'Event Expired', 'mage-eventpress' ); ?>
-				<?php else : ?>
-					🚫 <?php _e( 'Registration Closed', 'mage-eventpress' ); ?>
-				<?php endif; ?>
-			</div>        
-			<div class="mpwem-expired-date">
-				<?php if ( $is_expired ) : ?>
-					<?php _e( 'This event expired on', 'mage-eventpress' ); ?>
-				<span class="mpwem-date-highlight">
-					<?php echo esc_html( $formatted ); ?>
+		<div class="mpwem-expired-card<?php echo $is_expired ? ' is-expired' : ' is-closed'; ?>" role="status" aria-live="polite">
+			<div class="mpwem-expired-card__inner">
+				<span class="mpwem-expired-card__icon" aria-hidden="true">
+					<i class="<?php echo $is_expired ? 'far fa-calendar-times' : 'fas fa-lock'; ?>"></i>
 				</span>
-				<?php else : ?>
-					<?php _e( 'Registration for this event closed', 'mage-eventpress' ); ?>
-				<?php endif; ?>        
-			</div>
-			<div class="mpwem-total-sold-badge">
-				🎟 <?php _e( 'Total tickets sold', 'mage-eventpress' ); ?>:
-				<?php echo esc_html( $total_sold ); ?>
+				<div class="mpwem-expired-card__body">
+					<div class="mpwem-expired-title">
+						<?php if ( $is_expired ) : ?>
+							<?php esc_html_e( 'Event expired', 'mage-eventpress' ); ?>
+						<?php else : ?>
+							<?php esc_html_e( 'Registration closed', 'mage-eventpress' ); ?>
+						<?php endif; ?>
+					</div>
+					<div class="mpwem-expired-date">
+						<?php if ( $is_expired ) : ?>
+							<?php esc_html_e( 'This event expired on', 'mage-eventpress' ); ?>
+							<span class="mpwem-date-highlight"><?php echo esc_html( $formatted ); ?></span>
+						<?php else : ?>
+							<?php esc_html_e( 'Registration for this event closed', 'mage-eventpress' ); ?>
+						<?php endif; ?>
+					</div>
+					<div class="mpwem-total-sold-badge">
+						<i class="fas fa-ticket-alt" aria-hidden="true"></i>
+						<?php esc_html_e( 'Total tickets sold', 'mage-eventpress' ); ?>:
+						<strong><?php echo esc_html( $total_sold ); ?></strong>
+					</div>
+				</div>
 			</div>
 		</div>
 		<?php

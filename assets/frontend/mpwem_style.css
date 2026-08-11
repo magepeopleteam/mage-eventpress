@@ -8,51 +8,152 @@
 }
 
 .reg_close_msg {
-	background-color: #fffaec;
-	color: #d32f2f;
-	border-left: 5px solid #d32f2f;
-	padding: 15px 20px;
-	margin: 20px 0;
-	border-radius: 4px;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	font-size: 16px;
-	font-weight: 500;
+	--mep-notice-accent: #c2410c;
+	--mep-notice-ink: #1c1917;
+	--mep-notice-muted: #57534e;
+	--mep-notice-border: #e7e5e4;
 	display: flex;
 	align-items: center;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+	gap: 12px;
+	margin: 16px 0;
+	padding: 16px 18px;
+	border: 1px solid var(--mep-notice-border);
+	border-radius: 14px;
+	background:
+		linear-gradient(90deg, color-mix(in srgb, var(--mep-notice-accent) 14%, transparent) 0 4px, transparent 4px),
+		linear-gradient(180deg, #fff7ed, #ffffff);
+	color: var(--mep-notice-ink);
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1.55;
+	box-shadow: 0 8px 22px rgba(28, 25, 23, 0.06);
+	animation: mpwemNoticeIn 0.45s ease;
 }
 
-.reg_close_msg {
-	animation: fadeIn 0.5s ease-in-out;
-}
-
+.mpwem_date_expired_msg,
 .mpwem_date_expired_msg._margin_zero_text_center {
-	background-color: #fffaec;
-	border-left: 5px solid #d32f2f;
-	padding: 18px 24px;
-	margin: 20px 0;
-	border-radius: 6px;
-	text-align: center;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-	animation: fadeIn 0.5s ease-in-out;
+	--mep-notice-accent: #b45309;
+	--mep-notice-ink: #1c1917;
+	--mep-notice-muted: #57534e;
+	--mep-notice-border: #e7e5e4;
+	--mep-notice-soft: #fffbeb;
+	display: block;
+	width: 100%;
+	margin: 16px 0 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	text-align: left;
+	animation: mpwemNoticeIn 0.45s ease;
 }
 
+.mpwem_date_expired_msg__inner {
+	display: flex;
+	align-items: flex-start;
+	gap: 14px;
+	padding: 18px 18px 18px 16px;
+	border: 1px solid var(--mep-notice-border);
+	border-radius: 16px;
+	background:
+		linear-gradient(90deg, color-mix(in srgb, var(--mep-notice-accent) 18%, transparent) 0 4px, transparent 4px),
+		linear-gradient(165deg, var(--mep-notice-soft), #ffffff 55%);
+	box-shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+}
+
+.mpwem_date_expired_msg__icon {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	background: color-mix(in srgb, var(--mep-notice-accent) 12%, #fff);
+	color: var(--mep-notice-accent);
+	font-size: 18px;
+	line-height: 1;
+}
+
+.mpwem_date_expired_msg__body {
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.mpwem_date_expired_msg__title,
 .mpwem_date_expired_msg ._text_theme {
-	color: #d32f2f;
+	display: block;
+	margin: 0 0 4px;
+	color: var(--mep-notice-ink);
 	font-size: 16px;
-	font-weight: 600;
+	font-weight: 700;
+	line-height: 1.35;
+	letter-spacing: -0.01em;
+}
+
+.mpwem_date_expired_msg__text {
+	margin: 0;
+	color: var(--mep-notice-muted);
+	font-size: 14px;
+	font-weight: 500;
 	line-height: 1.6;
 }
 
-@keyframes fadeIn {
+.mpwem_date_expired_msg__meta {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 12px;
+	padding: 7px 12px;
+	border-radius: 999px;
+	background: #ffffff;
+	border: 1px solid color-mix(in srgb, var(--mep-notice-accent) 22%, var(--mep-notice-border));
+	color: var(--mep-notice-ink);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.mpwem_date_expired_msg__meta i {
+	color: var(--mep-notice-accent);
+}
+
+.default_theme .mpwem_date_expired_msg,
+.mep_smart_theme .mpwem_date_expired_msg,
+.horizon_theme .mpwem_date_expired_msg,
+.mep_virtual_theme .mpwem_date_expired_msg,
+.virtual_theme .mpwem_date_expired_msg {
+	margin-top: 12px;
+}
+
+@keyframes mpwemNoticeIn {
 	from {
 		opacity: 0;
-		transform: translateY(-10px);
+		transform: translateY(8px);
 	}
 
 	to {
 		opacity: 1;
 		transform: translateY(0);
+	}
+}
+
+@media (max-width: 640px) {
+	.mpwem_date_expired_msg__inner {
+		gap: 12px;
+		padding: 16px;
+	}
+
+	.mpwem_date_expired_msg__icon {
+		width: 40px;
+		height: 40px;
+		border-radius: 10px;
+		font-size: 16px;
+	}
+
+	.mpwem_date_expired_msg__title,
+	.mpwem_date_expired_msg ._text_theme {
+		font-size: 15px;
 	}
 }
 
@@ -8392,12 +8493,13 @@ div.mpwem_related_area div.slick-track {
 }
 
 .default_theme .event-expire-btn {
-	border: 1px solid #F5F5F5;
-	padding: 20px;
-	overflow: hidden;
+	border: 0;
+	padding: 0;
+	overflow: visible;
 	display: block;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 12px;
+	margin-bottom: 0;
+	background: transparent;
 }
 
 .default_theme .mep_checkbox_item ._fs_label {
@@ -9024,38 +9126,117 @@ div.mpwem_style [data-bg-image] {
 
 
 .mpwem-expired-card {
-	margin-top: 15px;
-	padding: 18px 20px;
-	border-radius: 14px;
-	background: linear-gradient(135deg, #ff6b6b, #ff9f43);
-	color: #ffffff;
-	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-	text-align: center;
+	--mep-notice-accent: #b45309;
+	--mep-notice-ink: #1c1917;
+	--mep-notice-muted: #57534e;
+	--mep-notice-border: #e7e5e4;
+	--mep-notice-soft: #fffbeb;
+	margin: 16px 0 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: var(--mep-notice-ink);
+	box-shadow: none;
+	text-align: left;
+	animation: mpwemNoticeIn 0.45s ease;
+}
+
+.mpwem-expired-card.is-closed {
+	--mep-notice-accent: #c2410c;
+	--mep-notice-soft: #fff7ed;
+}
+
+.mpwem-expired-card__inner {
+	display: flex;
+	align-items: flex-start;
+	gap: 14px;
+	padding: 18px 18px 18px 16px;
+	border: 1px solid var(--mep-notice-border);
+	border-radius: 16px;
+	background:
+		linear-gradient(90deg, color-mix(in srgb, var(--mep-notice-accent) 18%, transparent) 0 4px, transparent 4px),
+		linear-gradient(165deg, var(--mep-notice-soft), #ffffff 55%);
+	box-shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+}
+
+.mpwem-expired-card__icon {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	background: color-mix(in srgb, var(--mep-notice-accent) 12%, #fff);
+	color: var(--mep-notice-accent);
+	font-size: 18px;
+	line-height: 1;
+}
+
+.mpwem-expired-card__body {
+	min-width: 0;
+	flex: 1 1 auto;
 }
 
 .mpwem-expired-title {
-	font-size: 18px;
+	margin: 0 0 4px;
+	font-size: 16px;
 	font-weight: 700;
-	letter-spacing: 0.3px;
+	letter-spacing: -0.01em;
+	line-height: 1.35;
+	color: var(--mep-notice-ink);
 }
 
 .mpwem-expired-date {
-	margin-top: 10px;
-	font-size: 15px;
+	margin-top: 0;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.6;
+	color: var(--mep-notice-muted);
 }
 
 .mpwem-date-highlight {
-	font-weight: 800;
+	display: inline;
+	margin-left: 4px;
+	font-weight: 700;
+	color: var(--mep-notice-ink);
 }
 
 .mpwem-total-sold-badge {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 8px;
 	margin-top: 12px;
-	display: inline-block !important;
-	padding: 6px 14px;
-	border-radius: 30px;
+	padding: 7px 12px;
+	border-radius: 999px;
 	background: #ffffff;
-	color: #ff3b3b;
+	border: 1px solid color-mix(in srgb, var(--mep-notice-accent) 22%, var(--mep-notice-border));
+	color: var(--mep-notice-ink);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.mpwem-total-sold-badge i {
+	color: var(--mep-notice-accent);
+}
+
+.mpwem-total-sold-badge strong {
 	font-weight: 800;
+}
+
+.default_theme .event-expire-btn,
+.mep_smart_theme .event-expire-btn,
+.horizon_theme .event-expire-btn,
+.mep_virtual_theme .event-expire-btn,
+.virtual_theme .event-expire-btn {
+	border: 0;
+	padding: 0;
+	overflow: visible;
+	display: block;
+	margin: 12px 0 0;
+	background: transparent;
 }
 
 .smart_theme_metainfo {
@@ -9071,19 +9252,80 @@ div.mpwem_style [data-bg-image] {
 
 /* ========== Smart Theme — Title + Meta (over slider bottom) ========== */
 .mep_smart_theme .smart_theme_hero {
+	--smart-hero-h: clamp(220px, 34vw, 380px);
 	position: relative;
 	margin: 0 0 24px;
 	border-radius: 18px;
 	overflow: hidden;
+	max-height: var(--smart-hero-h);
 }
 
 .mep_smart_theme .smart_theme_hero .mpwem_slider_area {
 	position: relative;
 	margin: 0 !important;
+	height: var(--smart-hero-h);
+	min-height: var(--smart-hero-h);
+	max-height: var(--smart-hero-h);
+	overflow: hidden;
 }
 
 .mep_smart_theme .smart_theme_hero .mpwem_slider_area.is-loading {
-	min-height: clamp(260px, 42vw, 480px);
+	min-height: var(--smart-hero-h);
+	max-height: var(--smart-hero-h);
+	height: var(--smart-hero-h);
+}
+
+/* Feature / gallery image: keep a designed hero height (not full photo height) */
+.mep_smart_theme .smart_theme_hero .post_thumb,
+.mep_smart_theme .smart_theme_hero .post_thumb.is-style-2,
+.mep_smart_theme .smart_theme_hero .mpwem_slider_style2_feature {
+	display: block;
+	width: 100%;
+	height: var(--smart-hero-h) !important;
+	min-height: var(--smart-hero-h) !important;
+	max-height: var(--smart-hero-h) !important;
+	overflow: hidden;
+}
+
+.mep_smart_theme .smart_theme_hero .post_thumb img,
+.mep_smart_theme .smart_theme_hero .mpwem_slider_style2_feature img {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+	max-height: none !important;
+	object-fit: cover !important;
+	object-position: center center !important;
+}
+
+.mep_smart_theme .smart_theme_hero .mpwem_slider_area > .superSlider,
+.mep_smart_theme .smart_theme_hero .mpwem_slider_area > .superSlider > .dFlex,
+.mep_smart_theme .smart_theme_hero .sliderAllItem,
+.mep_smart_theme .smart_theme_hero .sliderItem,
+.mep_smart_theme .smart_theme_hero .sliderShowcase {
+	height: var(--smart-hero-h) !important;
+	min-height: var(--smart-hero-h) !important;
+	max-height: var(--smart-hero-h) !important;
+}
+
+/* Keep Style Two popup shell out of hero layout sizing */
+.mep_smart_theme .smart_theme_hero .post_thumb.is-style-2 > .superSlider {
+	position: absolute !important;
+	width: 0 !important;
+	height: 0 !important;
+	min-height: 0 !important;
+	max-height: none !important;
+	overflow: visible !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.mep_smart_theme .smart_theme_hero .sliderItem [data-bg-image],
+.mep_smart_theme .smart_theme_hero .sliderItem .bg_image_area {
+	height: 100% !important;
+	min-height: 100% !important;
+	max-height: none !important;
+	background-size: cover !important;
+	background-position: center center !important;
 }
 
 /* Hide real slider chrome until placeholder finishes */
@@ -9244,8 +9486,14 @@ div.mpwem_style [data-bg-image] {
 		display: none;
 	}
 
+	.mep_smart_theme .smart_theme_hero {
+		--smart-hero-h: clamp(200px, 52vw, 280px);
+	}
+
 	.mep_smart_theme .smart_theme_hero .mpwem_slider_area.is-loading {
-		min-height: clamp(220px, 56vw, 340px);
+		min-height: var(--smart-hero-h);
+		max-height: var(--smart-hero-h);
+		height: var(--smart-hero-h);
 	}
 
 	.mep_smart_theme .mpwem_slider_skeleton__nav {
@@ -9409,12 +9657,13 @@ div.mpwem_style [data-bg-image] {
 
 @media (max-width: 640px) {
 	.mep_smart_theme .smart_theme_hero {
+		--smart-hero-h: clamp(200px, 52vw, 280px);
 		border-radius: 14px;
 		margin-bottom: 18px;
 	}
 
 	.mep_smart_theme .smart_theme_header {
-		padding: 56px 14px 14px;
+		padding: 48px 14px 14px;
 	}
 
 	.mep_smart_theme .smart_theme_header .mpwem_tile,

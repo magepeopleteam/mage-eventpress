@@ -815,7 +815,7 @@
 	.default_theme .mep-more-date { display: flex; flex-direction: column; align-items: start; justify-content: start;}
 	.default_theme .mep-more-date .mep-more-date { margin: 2px 5px; position: relative; padding-left: 14px;}
 	.default_theme .mep-more-date .mep-more-date::before { content: ""; width: 5px; height: 5px; border-radius: 50px; margin-right: 5px; background-color: var(--color_theme); position: absolute; left: 0; top: 50%; transform: translateY(-50%);}
-	.default_theme .event-expire-btn { border: 1px solid #F5F5F5; padding: 20px; overflow: hidden; display: block; margin-top: 10px; margin-bottom: 10px;}
+	.default_theme .event-expire-btn { border: 0; padding: 0; overflow: visible; display: block; margin-top: 12px; margin-bottom: 0; background: transparent;}
 	.default_theme .mep_checkbox_item ._fs_label { margin-bottom: 15px; display: block;}
 	.default_theme .groupRadioCheck { margin-top: 5px;}
 }
@@ -926,37 +926,102 @@
 
 
 	.mpwem-expired-card {
-		margin-top: 15px;
-		padding: 18px 20px;
-		border-radius: 14px;
-		background: linear-gradient(135deg, #ff6b6b, #ff9f43);
-		color: #ffffff;
-		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-	text-align: center;
+		--mep-notice-accent: #b45309;
+		--mep-notice-ink: #1c1917;
+		--mep-notice-muted: #57534e;
+		--mep-notice-border: #e7e5e4;
+		--mep-notice-soft: #fffbeb;
+		margin: 16px 0 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		color: var(--mep-notice-ink);
+		box-shadow: none;
+		text-align: left;
+	}
+
+	.mpwem-expired-card.is-closed {
+		--mep-notice-accent: #c2410c;
+		--mep-notice-soft: #fff7ed;
+	}
+
+	.mpwem-expired-card__inner {
+		display: flex;
+		align-items: flex-start;
+		gap: 14px;
+		padding: 18px 18px 18px 16px;
+		border: 1px solid var(--mep-notice-border);
+		border-radius: 16px;
+		background:
+			linear-gradient(90deg, color-mix(in srgb, var(--mep-notice-accent) 18%, transparent) 0 4px, transparent 4px),
+			linear-gradient(165deg, var(--mep-notice-soft), #ffffff 55%);
+		box-shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+	}
+
+	.mpwem-expired-card__icon {
+		flex: 0 0 auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+		background: color-mix(in srgb, var(--mep-notice-accent) 12%, #fff);
+		color: var(--mep-notice-accent);
+		font-size: 18px;
+		line-height: 1;
+	}
+
+	.mpwem-expired-card__body {
+		min-width: 0;
+		flex: 1 1 auto;
 	}
 
 	.mpwem-expired-title {
-		font-size: 18px;
+		margin: 0 0 4px;
+		font-size: 16px;
 		font-weight: 700;
-		letter-spacing: 0.3px;
+		letter-spacing: -0.01em;
+		line-height: 1.35;
+		color: var(--mep-notice-ink);
 	}
 
 	.mpwem-expired-date {
-		margin-top: 10px;
-		font-size: 15px;
+		margin-top: 0;
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 1.6;
+		color: var(--mep-notice-muted);
 	}
 
 	.mpwem-date-highlight {
-		font-weight: 800;
+		display: inline;
+		margin-left: 4px;
+		font-weight: 700;
+		color: var(--mep-notice-ink);
 	}
 
 	.mpwem-total-sold-badge {
+		display: inline-flex !important;
+		align-items: center;
+		gap: 8px;
 		margin-top: 12px;
-		display: inline-block !important;
-		padding: 6px 14px;
-		border-radius: 30px;
+		padding: 7px 12px;
+		border-radius: 999px;
 		background: #ffffff;
-		color: #ff3b3b;
+		border: 1px solid color-mix(in srgb, var(--mep-notice-accent) 22%, var(--mep-notice-border));
+		color: var(--mep-notice-ink);
+		font-size: 13px;
+		font-weight: 600;
+		line-height: 1.3;
+	}
+
+	.mpwem-total-sold-badge i {
+		color: var(--mep-notice-accent);
+	}
+
+	.mpwem-total-sold-badge strong {
 		font-weight: 800;
 	}
 }

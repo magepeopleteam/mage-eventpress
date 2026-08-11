@@ -16,14 +16,30 @@
 			public function event_expire_text() {
 				ob_start();
 				?>
-                <span class=event-expire-btn><?php echo mep_get_option( 'mep_event_expired_text', 'label_setting_sec', __( 'Sorry, this event is expired and no longer available.', 'mage-eventpress' ) ); ?></span>
+                <div class="mpwem_date_expired_msg event-expire-btn" role="status" aria-live="polite">
+                    <div class="mpwem_date_expired_msg__inner">
+                        <span class="mpwem_date_expired_msg__icon" aria-hidden="true"><i class="far fa-calendar-times"></i></span>
+                        <div class="mpwem_date_expired_msg__body">
+                            <strong class="mpwem_date_expired_msg__title"><?php esc_html_e( 'Event unavailable', 'mage-eventpress' ); ?></strong>
+                            <p class="mpwem_date_expired_msg__text"><?php echo esc_html( mep_get_option( 'mep_event_expired_text', 'label_setting_sec', __( 'Sorry, this event is expired and no longer available.', 'mage-eventpress' ) ) ); ?></p>
+                        </div>
+                    </div>
+                </div>
 				<?php
 				echo ob_get_clean();
 			}
 			public function event_no_seat_text() {
 				ob_start();
 				?>
-                <span class=event-expire-btn><?php echo mep_get_option( 'mep_no_seat_available_text', 'label_setting_sec', __( 'Sorry, There Are No Seats Available', 'mage-eventpress' ) ); ?></span>
+                <div class="mpwem_date_expired_msg event-expire-btn is-no-seat" role="status" aria-live="polite">
+                    <div class="mpwem_date_expired_msg__inner">
+                        <span class="mpwem_date_expired_msg__icon" aria-hidden="true"><i class="fas fa-users"></i></span>
+                        <div class="mpwem_date_expired_msg__body">
+                            <strong class="mpwem_date_expired_msg__title"><?php esc_html_e( 'No seats available', 'mage-eventpress' ); ?></strong>
+                            <p class="mpwem_date_expired_msg__text"><?php echo esc_html( mep_get_option( 'mep_no_seat_available_text', 'label_setting_sec', __( 'Sorry, There Are No Seats Available', 'mage-eventpress' ) ) ); ?></p>
+                        </div>
+                    </div>
+                </div>
 				<?php
 				echo ob_get_clean();
 			}

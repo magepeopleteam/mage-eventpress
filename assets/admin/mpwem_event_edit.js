@@ -843,6 +843,9 @@
         // Mount into Tickets Step
         mountPanel($root, '#mpwem_ticket_pricing_settings', 'mpwem_wizard_tickets_mount');
 
+        // Only rendered by the legacy hook when WooCommerce "Enable taxes" is on.
+        mountPanel($root, '#mp_event_tax_settings', 'mpwem_wizard_tax_mount');
+
         const $ticketPricingPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
         decorateMinMaxSettings($root);
 

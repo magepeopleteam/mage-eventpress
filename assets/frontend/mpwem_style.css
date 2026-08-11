@@ -410,6 +410,57 @@ div.default_theme .mpwem_tile {
 	font-size: 36px;
 }
 
+/* ========== Default Theme — Event title ========== */
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block {
+	--mep-title-ink: #111827;
+	--mep-title-muted: #6b7280;
+	--mep-title-line: #e5e7eb;
+	--mep-title-accent: var(--color_theme, #2563eb);
+	display: block;
+	margin: 0 0 0px;
+	padding: 0 0 18px;
+	border-bottom: 1px solid var(--mep-title-line);
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) h1.mpwem_tile {
+	margin: 0;
+	padding: 0;
+	color: var(--mep-title-ink);
+	font-size: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.15;
+	text-wrap: balance;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile::after {
+	content: "";
+	display: block;
+	width: 40px;
+	height: 3px;
+	margin-top: 14px;
+	border-radius: 999px;
+	background: var(--mep-title-accent);
+}
+
+@media (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block {
+		margin-bottom: 0;
+		padding-bottom: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) h1.mpwem_tile {
+		font-size: clamp(1.5rem, 5.5vw, 1.9rem);
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_title_block .mpwem_tile::after {
+		width: 32px;
+		margin-top: 12px;
+	}
+}
+
 div.mpwem_details {
 	margin: var(--dmp) 0 0 0;
 }

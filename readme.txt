@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.4.0
+Stable tag: 5.4.1
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,10 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.4.1 =
+* Fix: Corrected the event list card's date/time range for "Particular Date" recurring events — it paired the correctly-resolved upcoming occurrence's start time with the primary event's raw end date/time meta instead of that same occurrence's own end, showing mismatched dates (e.g. an upcoming date's start next to an unrelated past occurrence's end).
+* Fix: Global Quantity ("Full Event Base") never applied to Single Events — two seat-count filters compared postmeta against the wrong value (a copy-paste mistake), so enabling Global Quantity on a Single Event silently did nothing until the event was temporarily switched to "Particular Event."
 
 = 5.4.0 =
 * Fix: Scoped the global icon-picker modal (and its 1,100+ icon markup, printed in admin_footer) to this plugin's own admin pages only — it was previously rendering on every wp-admin screen (e.g. the Plugins list), where it showed as an empty, unstyled grid since the Font Awesome stylesheet it needs is only loaded on this plugin's own screens.

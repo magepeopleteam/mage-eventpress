@@ -1394,22 +1394,6 @@ document.querySelectorAll('li').forEach(function(li) {
 });
 
 
-jQuery(function ($) {
-    $('.mpwem_book_now').on('click', function (e) {
-        e.preventDefault();
-
-        const $wrap = $(this).closest('.mpwem_summery');
-        const alreadyInCart = $wrap.data('in-cart');
-
-        if (alreadyInCart === 1 || alreadyInCart === '1') {
-            alert('This product is already in your cart.');
-            return;
-        }
-
-        $wrap.find('.mpwem_add_to_cart').trigger('click');
-    });
-});
-
 (function ($) {
     "use strict";
     $(document).on('submit', '#mpwem_registration', function(e) {

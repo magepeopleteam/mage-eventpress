@@ -320,11 +320,33 @@ div.default_theme .content_area {
 	display: flex;
 	-webkit-flex-wrap: wrap;
 	flex-wrap: wrap;
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
 }
 
 .mep-default-content {
 	width: calc(100% - 300px);
 	padding: 0 20px 0 0;
+	min-width: 0;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .content_area {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	gap: 28px;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-content {
+	flex: 1 1 0%;
+	width: auto;
+	padding: 0;
+	min-width: 0;
+	max-width: 100%;
 }
 
 .mep-events-wrapper {
@@ -1464,6 +1486,18 @@ div.mpwem_organizer h5 {
 	margin: 0;
 	padding-left: calc(var(--mep-org-icon-size) + var(--mep-org-gap));
 	line-height: 1.35;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 8px;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+.default_theme:not(.mep_smart_theme) .mpwem_organizer_item a {
+	display: inline;
+	max-width: 100%;
 }
 
 div.mep_smart_theme .mpwem_organizer {
@@ -2145,6 +2179,14 @@ div.mpwem_timeline_area .timeline_content .mp_wp_editor {
 }
 
 .mep-default-sidebar {
+	width: 300px;
+	min-width: 0;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-sidebar {
+	flex: 0 0 300px;
 	width: 300px;
 }
 
@@ -4499,12 +4541,15 @@ div.faq_area .item .content {
 
 .default_theme:not(.mep_smart_theme) .faq_area .faq_items .item .title h3 {
 	flex: 1 1 auto;
+	min-width: 0;
 	margin: 0 !important;
 	padding: 0 !important;
 	font-size: 15px !important;
 	font-weight: 600 !important;
 	line-height: 1.4 !important;
 	color: var(--mep-faq-text) !important;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 .default_theme:not(.mep_smart_theme) .faq_area .faq_items .item:has(.content.mActive) .title h3 {
@@ -4924,6 +4969,39 @@ div.faq_area .item .content {
 	margin: 14px !important;
 	padding: 0;
 	line-height: 2;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-sidebar-tags {
+	padding: 18px 18px 16px;
+	border-top: 1px solid #e6e8ee;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-event-tags-widget {
+	margin: 0;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-event-tags-widget .location-title {
+	margin: 0 0 12px !important;
+	padding: 0;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-event-tags-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 !important;
+	padding: 0;
+	line-height: 1.3;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-event-tags-list a.mep-tag-link {
+	margin: 0;
+	max-width: 100%;
+	overflow-wrap: anywhere;
 }
 
 .mep-event-tags-list a.mep-tag-link {
@@ -7897,16 +7975,47 @@ div.mep_event_timeline_list {
 
 .default_theme .mep-default-sidrbar-price-seat .setas-info {
 	padding: 14px;
-	background-color: #F7F7F7;
-	border-radius: 10px;
-	display: flex;
-	justify-content: space-between;
+	background-color: transparent;
+	border-radius: 0;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
 }
 
 .default_theme .mep-default-sidrbar-price-seat .setas-info .total-seats,
 .default_theme .mep-default-sidrbar-price-seat .setas-info .available-seats {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-width: 0;
+	padding: 12px 10px;
+	border: 1px solid #e6e8ee;
+	border-radius: 12px;
+	background: #f5f6f8;
+}
+
+.default_theme .mep-default-sidrbar-price-seat .setas-info .total-seats > div,
+.default_theme .mep-default-sidrbar-price-seat .setas-info .available-seats > div {
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.3;
+	color: #6b6b76;
+	letter-spacing: 0.02em;
+}
+
+.default_theme .mep-default-sidrbar-price-seat .setas-info .total-seats strong,
+.default_theme .mep-default-sidrbar-price-seat .setas-info .available-seats strong {
+	font-size: 22px;
+	font-weight: 800;
+	line-height: 1.1;
+	color: #1a1a1f;
+	letter-spacing: -0.03em;
+}
+
+.default_theme .mep-default-sidrbar-price-seat .setas-info:not(:has(.available-seats)) {
+	grid-template-columns: 1fr;
 }
 
 .mep-default-sidrbar-price-seat {
@@ -11932,5 +12041,560 @@ div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .inputIncDec 
 @media (max-width: 600px) {
 	.mep-rsvp-fields {
 		grid-template-columns: 1fr;
+	}
+}
+
+/***************************************************************************
+ Default Theme — full template responsiveness
+***************************************************************************/
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) {
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) *,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) *::before,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) *::after {
+	box-sizing: border-box;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_details_content img,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mp_wp_editor img,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) video,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) canvas {
+	max-width: 100%;
+	height: auto;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) iframe,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) embed,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) object {
+	max-width: 100%;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) table {
+	width: 100%;
+	max-width: 100%;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_details_content,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mp_wp_editor {
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_details_content img,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mp_wp_editor img {
+	height: auto;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_details_content iframe,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mp_wp_editor iframe {
+	width: 100%;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .post_thumb {
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data {
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 16px;
+	min-width: 0;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info {
+	flex: 1 1 180px;
+	min-width: 0;
+	max-width: 100%;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
+	flex: 0 1 auto;
+	min-width: 0;
+	text-align: left;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .qtyIncDec {
+	flex: 0 0 auto;
+	max-width: 100%;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area .mpwem_summery {
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area button[type=submit],
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area [class*="_min_150"],
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area [class*="_min_200"] {
+	min-width: 0;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_related_area .mpwem-price-area,
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_related_area .mep_event_card__footer {
+	flex-wrap: wrap;
+}
+
+.default_theme:not(.mep_smart_theme):not(.virtual_theme) .df-sidebar-part {
+	max-width: 100%;
+}
+
+@media only screen and (max-width: 1199px) {
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-sidebar {
+		flex-basis: 280px;
+		width: 280px;
+	}
+}
+
+@media only screen and (max-width: 1024px) {
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .content_area {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		gap: 24px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-content,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-sidebar {
+		flex: 1 1 auto;
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider > .dFlex {
+		flex-direction: column !important;
+		flex-wrap: nowrap;
+		width: 100%;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .sliderAllItem {
+		width: 100% !important;
+		min-width: 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .sliderShowcase.left,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .sliderShowcase.right {
+		width: 100% !important;
+		min-width: 0 !important;
+		flex-direction: row !important;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		margin: 10px 0 0 !important;
+		gap: 8px;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .sliderShowcaseItem {
+		flex: 0 0 72px;
+		width: 72px;
+		height: 72px;
+		max-width: 72px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .iconIndicator {
+		font-size: 22px;
+		top: calc(50% - 12px);
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .iconIndicator.prevItem {
+		left: 10px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .iconIndicator.nextItem {
+		right: 10px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .date-time-header {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 12px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .date-time-area {
+		flex-direction: column !important;
+		align-items: stretch !important;
+		justify-content: flex-start !important;
+		width: 100% !important;
+		gap: 10px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .date-time-area label,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_time_area,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_time_area label {
+		width: 100% !important;
+		max-width: 100% !important;
+		flex: 1 1 auto !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area input#mpwem_date_time,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .date-time-area .formControl {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-width: 0 !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_related_area .related_title {
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .content_area {
+		gap: 20px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .section-title {
+		font-size: 20px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .date-time-header {
+		padding: 14px 16px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .date-time-header .ticket-title {
+		width: 100% !important;
+		text-align: left !important;
+		font-size: 16px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-header {
+		padding: 14px 16px;
+		font-size: 16px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service {
+		--mep-tix-radius: 14px;
+		--mep-tix-border: #e6e8ee;
+		--mep-tix-text: #1a1a1f;
+		--mep-tix-muted: #6b6b76;
+		--mep-tix-soft: #f5f6f8;
+		--mep-tix-accent: var(--color_theme, #2563eb);
+		overflow: visible;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body {
+		display: flex !important;
+		flex-direction: column;
+		gap: 12px;
+		padding: 12px 0 4px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .mep_ticket_item,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .mep_ticket_item {
+		margin: 0 !important;
+		padding: 0 !important;
+		border: 1px solid var(--mep-tix-border) !important;
+		border-radius: var(--mep-tix-radius);
+		background: #fff;
+		box-shadow: 0 2px 10px rgba(26, 26, 31, 0.05);
+		overflow: hidden;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data {
+		display: grid !important;
+		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-areas:
+			"info info"
+			"price qty";
+		align-items: center;
+		gap: 10px 12px;
+		padding: 14px 14px 12px !important;
+		margin: 0 !important;
+		border-bottom: 0 !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .ticket-info,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .ticket-info,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info {
+		grid-area: info;
+		flex: none !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		min-width: 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .ticket-name,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .ticket-name,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name {
+		margin: 0 0 4px !important;
+		font-size: 16px !important;
+		font-weight: 700 !important;
+		line-height: 1.3 !important;
+		color: var(--mep-tix-text) !important;
+		letter-spacing: -0.02em;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .ticket-description,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .ticket-description,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-description {
+		margin: 0 0 8px !important;
+		font-size: 13px !important;
+		line-height: 1.45 !important;
+		color: var(--mep-tix-muted) !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .ticket-remaining,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .ticket-remaining,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining {
+		margin: 0 !important;
+		padding: 4px 8px !important;
+		font-size: 11px !important;
+		font-weight: 700 !important;
+		line-height: 1.2 !important;
+		border-radius: 999px !important;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .ticket-price,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .ticket-price,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price {
+		grid-area: price;
+		flex: none !important;
+		width: auto !important;
+		max-width: 100%;
+		align-self: center;
+		text-align: left !important;
+		font-size: 18px !important;
+		font-weight: 800 !important;
+		line-height: 1.2 !important;
+		color: var(--mep-tix-accent) !important;
+		letter-spacing: -0.03em;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .ticket-price .mep-limited-availability-ribbon {
+		width: auto;
+		margin: 0 0 4px !important;
+		margin-left: 0;
+		text-align: left;
+		display: inline-block;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .quantity-control,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .quantity-control {
+		grid-area: qty;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		min-width: 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .qtyIncDec,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .qtyIncDec,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .qtyIncDec {
+		display: inline-flex !important;
+		align-items: center;
+		justify-content: space-between;
+		width: 132px;
+		max-width: 132px;
+		min-height: 44px;
+		margin: 0;
+		padding: 4px;
+		border: 1px solid var(--mep-tix-border);
+		border-radius: 12px;
+		background: var(--mep-tix-soft);
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .qtyIncDec .decQty,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .qtyIncDec .incQty,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .qtyIncDec .decQty,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .qtyIncDec .incQty,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .qtyIncDec .decQty,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .qtyIncDec .incQty {
+		width: 36px !important;
+		height: 36px !important;
+		min-width: 36px;
+		padding: 0 !important;
+		border-radius: 10px !important;
+		background: #fff !important;
+		color: var(--mep-tix-accent) !important;
+		box-shadow: 0 1px 2px rgba(26, 26, 31, 0.06);
+		flex: 0 0 36px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .qtyIncDec label,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .qtyIncDec label,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .qtyIncDec label {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1 1 auto;
+		margin: 0;
+		min-width: 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .inputIncDec,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .inputIncDec,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .inputIncDec {
+		width: 36px !important;
+		min-width: 0;
+		height: 36px !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		border: 0 !important;
+		background: transparent !important;
+		font-size: 16px !important;
+		font-weight: 700 !important;
+		color: var(--mep-tix-text) !important;
+		text-align: center;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area .mpwem_summery {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area .total {
+		width: 100%;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area button[type=submit],
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area .mpwem_book_now,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area [class*="_min_150"],
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_form_submit_area [class*="_min_200"] {
+		width: 100%;
+		min-width: 0 !important;
+		max-width: 100%;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label {
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) table {
+		display: block;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-events-wrapper table,
+	.mpwem_style.mep-events-wrapper .default_theme:not(.mep_smart_theme):not(.virtual_theme) table {
+		table-layout: auto;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpPopup .popupMainArea {
+		width: calc(100% - 24px) !important;
+		max-width: calc(100% - 24px) !important;
+		margin: 12px auto;
+		max-height: calc(100vh - 24px);
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpPopup .popup_close {
+		top: 10px;
+		right: 10px;
+		width: 36px;
+		height: 36px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_related_area .mep_event_card__book {
+		margin-left: 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) [class*="_min_150"],
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) [class*="_min_200"],
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) [class*="_min_250"] {
+		min-width: 0 !important;
+		max-width: 100%;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_calender_area > button,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_location_sidebar button {
+		white-space: normal;
+	}
+}
+
+@media only screen and (max-width: 640px) {
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-sidebar-tags {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_organizer {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_organizer h5 {
+		flex-wrap: wrap;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_organizer_item {
+		padding-left: 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mep-default-sidrbar-price-seat {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .event_speaker_list_area {
+		padding: 14px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_slider_area .superSlider .sliderShowcaseItem {
+		flex-basis: 56px;
+		width: 56px;
+		height: 56px;
+		max-width: 56px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area_show_msg {
+		margin: 20px 0;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area_show_msg ._margin_zero_text_center {
+		padding: 20px 16px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_details > h2,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_details > h2._mb {
+		font-size: 1.25rem !important;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .date_time_location_short .short_item {
+		padding: 12px 14px;
+		gap: 10px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .ticket-data,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ex_service .ticket-data {
+		padding: 12px !important;
+		gap: 8px 10px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_registration_area .qtyIncDec,
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .mpwem_ticket_type .qtyIncDec {
+		width: 124px;
+		max-width: 124px;
+	}
+
+	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .share_widgets .share_widgets_list a {
+		width: 40px;
+		height: 40px;
 	}
 }

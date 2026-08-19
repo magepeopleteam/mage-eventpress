@@ -464,13 +464,20 @@ if ( ! class_exists( 'MPWEM_Calendar_Shortcode' ) ) {
 		private function output_dynamic_css( $atts, $settings ) {
 			$event_color = ! empty( $atts['event_color'] ) ? $atts['event_color'] : $settings['mep_cal_event_color'];
 			$text_color  = ! empty( $atts['text_color'] ) ? $atts['text_color'] : $settings['mep_cal_event_text_color'];
+
+			// The stylesheet tints hover/highlight states from the configured colours. Those
+			// tints need the raw channels, because rgba() cannot take a hex value.
+			$event_rgb  = $this->hex_to_rgb_channels( $event_color, '58, 135, 173' );
+			$header_rgb = $this->hex_to_rgb_channels( $settings['mep_cal_header_bg'], '44, 62, 80' );
 			?>
 			<style>
 				#<?php echo esc_attr( $atts['id'] ); ?>-wrapper {
 					--mep-cal-event-color: <?php echo esc_attr( $event_color ); ?>;
 					--mep-cal-event-text: <?php echo esc_attr( $text_color ); ?>;
+					--mep-cal-event-color-rgb: <?php echo esc_attr( $event_rgb ); ?>;
 					--mep-cal-today: <?php echo esc_attr( $settings['mep_cal_today_color'] ); ?>;
 					--mep-cal-header-bg: <?php echo esc_attr( $settings['mep_cal_header_bg'] ); ?>;
+					--mep-cal-header-bg-rgb: <?php echo esc_attr( $header_rgb ); ?>;
 					--mep-cal-header-text: <?php echo esc_attr( $settings['mep_cal_header_text'] ); ?>;
 					--mep-cal-border: <?php echo esc_attr( $settings['mep_cal_border_color'] ); ?>;
 					--mep-cal-sold-out: <?php echo esc_attr( $settings['mep_cal_sold_out_color'] ); ?>;
@@ -478,6 +485,27 @@ if ( ! class_exists( 'MPWEM_Calendar_Shortcode' ) ) {
 				}
 			</style>
 			<?php
+		}
+
+		/**
+		 * Convert a hex colour to the "r, g, b" channel list rgba() expects.
+		 *
+		 * @param string $hex      Colour such as #3a87ad or #abc.
+		 * @param string $fallback Channel list to use when $hex is not a valid hex colour.
+		 * @return string
+		 */
+		private function hex_to_rgb_channels( $hex, $fallback ) {
+			$hex = ltrim( trim( (string) $hex ), '#' );
+
+			if ( 3 === strlen( $hex ) ) {
+				$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+			}
+
+			if ( ! preg_match( '/^[0-9a-fA-F]{6}$/', $hex ) ) {
+				return $fallback;
+			}
+
+			return hexdec( substr( $hex, 0, 2 ) ) . ', ' . hexdec( substr( $hex, 2, 2 ) ) . ', ' . hexdec( substr( $hex, 4, 2 ) );
 		}
 
 		private function normalize_toggle( $value, $default = 'no' ) {
@@ -761,18 +789,30 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					// calendar. So only single events are pre-filtered by their one datetime;
 					// recurring events are always loaded and the per-instance loop below drops
 					// any past/expired occurrence (respecting hide_expired / show_expired_events).
+					$single_event_clause = array(
+						'relation' => 'OR',
+						array( 'key' => 'mep_enable_recurring', 'value' => 'no', 'compare' => '=' ),
+						array( 'key' => 'mep_enable_recurring', 'compare' => 'NOT EXISTS' ),
+					);
+
 					$meta_query[] = array(
 						'relation' => 'OR',
 						array(
 							'relation' => 'AND',
-							array(
-								'relation' => 'OR',
-								array( 'key' => 'mep_enable_recurring', 'value' => 'no', 'compare' => '=' ),
-								array( 'key' => 'mep_enable_recurring', 'compare' => 'NOT EXISTS' ),
-							),
+							$single_event_clause,
 							$datetime_filter,
 						),
 						array( 'key' => 'mep_enable_recurring', 'value' => array( 'yes', 'everyday' ), 'compare' => 'IN' ),
+						// A Single Event can also carry "Add More Date" rows. Its one stored
+						// datetime only describes the first occurrence, so filtering on it here
+						// dropped the whole event from the calendar as soon as that first date
+						// passed, hiding its remaining dates. Load those events and let the
+						// per-instance loop below decide which occurrences are expired.
+						array(
+							'relation' => 'AND',
+							$single_event_clause,
+							array( 'key' => 'mep_event_more_date', 'value' => 'a:0:{}', 'compare' => '!=' ),
+						),
 					);
 				} else {
 					$meta_query[] = $datetime_filter;
@@ -1335,10 +1375,17 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				);
 			}
 
-			if ( 'yes' === $event_type ) {
+			// "Add More Date" rows are saved for Single Events ("no") as well as Particular
+			// Events ("yes") — see MPWEM_Settings::save() and MPWEM_Functions::get_dates().
+			// Reading them only for "yes" made the calendar plot the first date of a
+			// multi-date single event and silently drop every later one.
+			if ( 'yes' === $event_type || 'no' === $event_type ) {
 				$more_dates = get_post_meta( $event_id, 'mep_event_more_date', true );
 				if ( is_array( $more_dates ) && ! empty( $more_dates ) ) {
 					foreach ( $more_dates as $more_date ) {
+						if ( ! is_array( $more_date ) ) {
+							continue;
+						}
 						$more_start_date      = isset( $more_date['event_more_start_date'] ) ? $more_date['event_more_start_date'] : '';
 						$more_start_time      = isset( $more_date['event_more_start_time'] ) ? $more_date['event_more_start_time'] : '';
 						$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
@@ -1346,11 +1393,14 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 						$more_end_time        = isset( $more_date['event_more_end_time'] ) ? $more_date['event_more_end_time'] : '';
 						$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
 
-						if ( ! $more_start_date_time || ! $more_end_date_time ) {
+						if ( ! $more_start_date_time || ! strtotime( $more_start_date_time ) ) {
 							continue;
 						}
-						if ( strtotime( $more_start_date_time ) >= strtotime( $more_end_date_time ) ) {
-							continue;
+						// A row saved without an end time resolves to that day's midnight, which
+						// is earlier than its own start. Treat those (and any inverted row) as a
+						// zero-length occurrence instead of discarding the date entirely.
+						if ( ! $more_end_date_time || strtotime( $more_end_date_time ) <= strtotime( $more_start_date_time ) ) {
+							$more_end_date_time = $more_start_date_time;
 						}
 						if ( ! $this->date_matches_range( $more_start_date_time, $more_end_date_time, $range_start, $range_end ) ) {
 							continue;
@@ -1379,10 +1429,22 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$repeated_after = max( 1, absint( get_post_meta( $event_id, 'mep_repeated_periods', true ) ) );
 
 			if ( $start_date && $end_date && strtotime( $end_date ) >= strtotime( $start_date ) ) {
-				$window_start = $range_start ? max( strtotime( $start_date ), strtotime( $range_start ) ) : strtotime( $start_date );
+				$series_start = strtotime( date( 'Y-m-d', strtotime( $start_date ) ) );
+				$window_start = $range_start ? max( $series_start, strtotime( $range_start ) ) : $series_start;
 				$window_end   = $range_end ? min( strtotime( $end_date ), strtotime( $range_end ) ) : strtotime( $end_date );
 
-				if ( $window_start <= $window_end ) {
+				// The repeat interval has to stay anchored to the event's own start date.
+				// Clamping the loop straight to the requested range re-phased the series onto
+				// whatever weekday that range happened to begin on, so a weekly Wednesday event
+				// rendered as Wednesday only in the month containing its start date and drifted
+				// to the calendar grid's first weekday (Monday) in every later month.
+				if ( $repeated_after > 1 && $window_start > $series_start ) {
+					$days_ahead   = (int) round( ( $window_start - $series_start ) / DAY_IN_SECONDS );
+					$steps        = (int) ceil( $days_ahead / $repeated_after );
+					$window_start = strtotime( '+' . ( $steps * $repeated_after ) . ' day', $series_start );
+				}
+
+				if ( false !== $window_start && $window_start <= $window_end ) {
 					$all_off_dates_raw = get_post_meta( $event_id, 'mep_ticket_off_dates', true );
 					$all_off_days      = get_post_meta( $event_id, 'mep_ticket_offdays', true );
 					$off_dates         = array();

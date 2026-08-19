@@ -273,9 +273,9 @@
 .mep-calendar-container .fc .fc-timeGridDay-view .fc-h-event,
 .mep-calendar-container .fc .fc-timeGridDay-view .fc-daygrid-event,
 .mep-calendar-container .fc .fc-timeGridDay-view .fc-timegrid-event {
-	background: var(--mep-cal-event-soft-bg, rgba(58, 135, 173, 0.16));
-	border: 1px solid var(--mep-cal-event-soft-border, rgba(58, 135, 173, 0.52)) !important;
-	border-left: 4px solid var(--mep-cal-event-accent, #3a87ad) !important;
+	background: var(--mep-cal-event-soft-bg, rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.16));
+	border: 1px solid var(--mep-cal-event-soft-border, rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.52)) !important;
+	border-left: 4px solid var(--mep-cal-event-accent, var(--mep-cal-event-color, #3a87ad)) !important;
 	color: var(--mep-cal-event-soft-text, #23435b);
 }
 
@@ -302,8 +302,8 @@
 	border-radius: 8px;
 	box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 	margin: 0 4px;
-	background: var(--mep-cal-event-soft-bg, rgba(58, 135, 173, 0.16));
-	border-color: var(--mep-cal-event-soft-border, rgba(58, 135, 173, 0.52)) !important;
+	background: var(--mep-cal-event-soft-bg, rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.16));
+	border-color: var(--mep-cal-event-soft-border, rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.52)) !important;
 	color: var(--mep-cal-event-soft-text, #23435b);
 }
 
@@ -528,9 +528,9 @@
 	justify-content: center;
 	gap: 4px;
 	padding: 5px 10px;
-	border: 1px solid rgba(44, 62, 80, 0.22);
+	border: 1px solid rgba(var(--mep-cal-header-bg-rgb, 44, 62, 80), 0.22);
 	border-radius: 999px;
-	background: #34495e;
+	background: var(--mep-cal-header-bg, #2c3e50);
 	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
 	text-decoration: none !important;
 	transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
@@ -538,7 +538,7 @@
 
 .mep-calendar-container .fc .fc-more-link:hover,
 .mep-calendar-container .fc .fc-daygrid-more-link:hover {
-	background: #2c3e50 !important;
+	background: var(--mep-cal-header-bg, #2c3e50) !important;
 	box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
 	transform: translateY(-1px);
 }
@@ -658,7 +658,7 @@
 }
 
 .mep-cal-day-popover-item:hover {
-	background: rgba(58, 135, 173, 0.04);
+	background: rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.04);
 }
 
 .mep-cal-day-popover-dot {
@@ -1175,7 +1175,7 @@
 
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-dot-event:hover {
 	transform: none !important;
-	background: rgba(58, 135, 173, 0.06) !important;
+	background: rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.06) !important;
 }
 
 /* Fixed by Shahnur — 2026-04-22 11:43 AM (Asia/Dhaka) */
@@ -1185,8 +1185,8 @@
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-event.mep-cal-event-hovered,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-dot-event:focus-visible,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-event:focus-visible {
-	background: rgba(58, 135, 173, 0.18) !important;
-	box-shadow: inset 0 0 0 1px rgba(58, 135, 173, 0.38) !important;
+	background: rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.18) !important;
+	box-shadow: inset 0 0 0 1px rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.38) !important;
 	border-radius: 6px !important;
 }
 
@@ -1198,16 +1198,16 @@
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-dot-event.mep-cal-event-hovered .mep-cal-event-title,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-event.mep-cal-event-hovered .mep-cal-event-time,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-event.mep-cal-event-hovered .mep-cal-event-title {
-	color: #b71c1c !important;
+	color: var(--mep-cal-event-color, #3a87ad) !important;
 	font-weight: 600 !important;
 }
 
 .mep-calendar-container .fc .fc-dayGridMonth-view .mep-cal-event-hovered-inner,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-dot-event:hover .mep-cal-event-inner-month,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-event:hover .mep-cal-event-inner-month {
-	background: rgba(58, 135, 173, 0.12) !important;
+	background: rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.12) !important;
 	border-radius: 6px !important;
-	box-shadow: inset 0 0 0 1px rgba(58, 135, 173, 0.28) !important;
+	box-shadow: inset 0 0 0 1px rgba(var(--mep-cal-event-color-rgb, 58, 135, 173), 0.28) !important;
 	padding: 2px 4px !important;
 }
 
@@ -1310,9 +1310,9 @@
 	width: auto !important;
 	max-width: 100% !important;
 	padding: 5px 10px !important;
-	border: 1px solid rgba(44, 62, 80, 0.22) !important;
+	border: 1px solid rgba(var(--mep-cal-header-bg-rgb, 44, 62, 80), 0.22) !important;
 	border-radius: 999px !important;
-	background: #34495e !important;
+	background: var(--mep-cal-header-bg, #2c3e50) !important;
 	color: #ffffff !important;
 	font-size: 12px !important;
 	font-weight: 600 !important;
@@ -1325,7 +1325,7 @@
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-day-bottom .fc-more-link:hover,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-day-bottom .fc-daygrid-more-link:focus-visible,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-day-bottom .fc-more-link:focus-visible {
-	background: #2c3e50 !important;
+	background: var(--mep-cal-header-bg, #2c3e50) !important;
 	color: #ffffff !important;
 	box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18) !important;
 }

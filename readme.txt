@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.4.1
+Stable tag: 5.5.0
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,15 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.5.0 =
+* Fix: Corrected a critical performance issue where the event list's expiry filtering built a database query WordPress could not optimize, causing full-table scans against post meta on sites with a large postmeta table. Rewrote it as a targeted, indexed lookup.
+* Improvement: Enhanced the default theme's responsiveness and overall layout consistency.
+* Improvement: Enhanced the expired-event card's styling and messaging.
+* Improvement: Enhanced the title block styling for the default theme.
+* Improvement: Enhanced speaker role display and interaction.
+* Improvement: Enhanced the Smart theme's hero section styling and responsiveness.
+  18 August 2026*
 
 = 5.4.1 =
 * Fix: Corrected the event list card's date/time range for "Particular Date" recurring events — it paired the correctly-resolved upcoming occurrence's start time with the primary event's raw end date/time meta instead of that same occurrence's own end, showing mismatched dates (e.g. an upcoming date's start next to an unrelated past occurrence's end).

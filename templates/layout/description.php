@@ -16,23 +16,14 @@
 	$description_title         = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_description_title', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_description_title'] : 'no';
 	$post_content              = get_post_field( 'post_content', $event_id );
 	if ( $post_content ) {
-		$word_count   = str_word_count( wp_strip_all_tags( $post_content ) );
-		$has_readmore = $word_count > 200;
-		$details_class = 'mpwem_details' . ( $has_readmore ? ' mpwem_details--has-readmore' : '' );
 		?>
-        <div class="<?php echo esc_attr( $details_class ); ?>"<?php echo $has_readmore ? ' data-readmore-words="200"' : ''; ?>>
+        <div class="mpwem_details">
 			<?php if ( $description_title == 'no' ): ?>
                 <h2 class="_mb"><?php esc_html_e( 'Event  Description', 'mage-eventpress' ); ?></h2>
 			<?php endif; ?>
-            <div class="mpwem_details_content mp_wp_editor<?php echo $has_readmore ? ' is-collapsed' : ''; ?>">
+            <div class="mpwem_details_content mp_wp_editor">
 				<?php the_content(); ?>
             </div>
-			<?php if ( $has_readmore ) : ?>
-                <button type="button" class="mpwem_details_readmore" aria-expanded="false">
-                    <span class="mpwem_details_readmore__more"><?php esc_html_e( 'Read More', 'mage-eventpress' ); ?></span>
-                    <span class="mpwem_details_readmore__less"><?php esc_html_e( 'Read Less', 'mage-eventpress' ); ?></span>
-                </button>
-			<?php endif; ?>
         </div>
 		<?php
 	}

@@ -69,6 +69,25 @@
 				require_once( dirname( __DIR__ ) . "/inc/mep_low_stock_display.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep-expired-event-noindex.php" );
 			}
+			/**
+			 * Registers the shared "mpwem_global" handles without printing them.
+			 *
+			 * The bundles in global_enqueue() are gated to this plugin's own screens,
+			 * which used to mean the handle did not exist anywhere else at all. Add-ons
+			 * (PRO) list it as a dependency, so WordPress dropped their scripts on those
+			 * pages - silently before, and with a "dependencies that are not registered"
+			 * notice since WordPress 6.9.1. Registering costs nothing and keeps the gate
+			 * intact: the files are only downloaded when a handle that depends on them
+			 * is actually enqueued.
+			 */
+			public function register_global_assets(): void {
+				if ( ! wp_style_is( 'mpwem_global', 'registered' ) ) {
+					wp_register_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), MPWEM_PLUGIN_VERSION );
+				}
+				if ( ! wp_script_is( 'mpwem_global', 'registered' ) ) {
+					wp_register_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
+				}
+			}
 			public function global_enqueue() {
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'jquery-ui-core' );
@@ -156,6 +175,9 @@
 			}
 
 			public function admin_enqueue( $hook ) {
+				// Keep the shared handle resolvable on every admin screen; the bail below
+				// still stops this plugin's own bundles from loading outside MEP pages.
+				$this->register_global_assets();
 				$is_mep_page = self::is_mep_admin_page( $hook );
 
 				// Everything below (editor assets, jQuery UI, select2, Font Awesome,
@@ -286,6 +308,7 @@
 				return false;
 			}
 			public function frontend_enqueue() {
+				$this->register_global_assets();
 				if ( ! $this->should_load_frontend_assets() ) {
 					return;
 				}

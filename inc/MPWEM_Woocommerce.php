@@ -271,6 +271,28 @@
 				return $wc_get_cart_url;
 			}
 			public function checkout_create_order_line_item( $item, $cart_item_key, $values, $order ) {
+				self::add_event_line_item_meta( $item, $values );
+			}
+			/**
+			 * Attach the event booking details to a WooCommerce order line item.
+			 *
+			 * Everything a customer sees about a booking in the order emails, the order
+			 * screen and the PDF ticket comes from this meta: the visible rows (Date,
+			 * each ticket type with its price, every registration-form field, extra
+			 * services, Location) plus the hidden `_event_*` payloads the PDF/CSV/attendee
+			 * modules read back.
+			 *
+			 * It used to live inline in checkout_create_order_line_item(), which meant only
+			 * a frontend checkout produced it — orders created from the admin "Book an Event"
+			 * screen wrote just the hidden payloads, so their emails showed no attendee
+			 * details at all. Both paths now share this one builder, so an admin-created
+			 * order carries exactly the same information as a customer-placed one.
+			 *
+			 * @param WC_Order_Item_Product $item   Line item being built (not yet saved).
+			 * @param array                 $values Cart-item shaped data for the booking.
+			 * @return void
+			 */
+			public static function add_event_line_item_meta( $item, $values ) {
 				$eid           = is_array($values) && array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; //$values['event_id'];
 				$location_text = mep_get_option( 'mep_location_text_x', 'label_setting_sec', esc_html__( 'Location', 'mage-eventpress' ) );
 				$date_text     = mep_get_option( 'mep_event_date_text_x', 'label_setting_sec', esc_html__( 'Date', 'mage-eventpress' ) );
@@ -282,7 +304,7 @@
 					$ticket_type_arr         = is_array($values) && array_key_exists( 'event_ticket_info', $values ) ? $values['event_ticket_info'] : '';
 					$event_cart_date_raw     = is_array($values) && array_key_exists( 'event_cart_date', $values ) ? $values['event_cart_date'] : '';
 					$cart_date               = ! empty( $event_cart_date_raw ) ? $event_cart_date_raw : '';
-					$event_user_info         = $values['event_user_info'];
+					$event_user_info         = is_array($values) && array_key_exists( 'event_user_info', $values ) && is_array( $values['event_user_info'] ) ? $values['event_user_info'] : [];
 					$recurring               = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
 					$time_status             = get_post_meta( $eid, 'mep_disable_ticket_time', true ) ? get_post_meta( $eid, 'mep_disable_ticket_time', true ) : 'no';
 					if ( $recurring == 'everyday' && $time_status == 'no' ) {
@@ -353,7 +375,11 @@
 						}
 						if ( is_array( $custom_forms_id ) && sizeof( $custom_forms_id ) > 0 ) {
 							foreach ( $custom_forms_id as $key => $value ) {
-								$item->add_meta_data( $key, $userinf[ $value ] );
+								// A form-builder field the attendee left blank (or one added to the
+								// form after this booking was configured) has no key in $userinf.
+								if ( is_array( $userinf ) && array_key_exists( $value, $userinf ) ) {
+									$item->add_meta_data( $key, $userinf[ $value ] );
+								}
 							}
 						}
 					}
@@ -377,7 +403,7 @@
 			public function order_status_changed( $order_id, $from_status, $to_status, $order ) {
 				// Getting an instance of the order object
 				$order                = wc_get_order( $order_id );
-				$order_meta           = get_post_meta( $order_id );
+				$order_meta           = mep_get_order_meta_map( $order_id );
 				$email                = isset( $order_meta['_billing_email'][0] ) ? $order_meta['_billing_email'][0] : $order->get_billing_email();
 				$email_send_status    = mep_get_option( 'mep_email_sending_order_status', 'email_setting_sec', array( 'disable_email' => 'disable_email' ) );
 				$email_send_status    = ! empty( $email_send_status ) ? $email_send_status : array( 'disable_email' => 'disable_email' );
@@ -682,7 +708,10 @@
 														$attendee_info[ $count ] = apply_filters( 'mpwem_upload_attendee_file', $attendee_info[ $count ], $input_name, $count );
 													} else {
 														$data                                    = is_array($submit_infos) && array_key_exists( $input_name, $submit_infos ) ? $submit_infos[ $input_name ] : [];
-														$attendee_info[ $count ] [ $input_name ] = $data[ $count ];
+														// A field the browser never submitted (unchecked checkbox, a field
+														// hidden by conditional logic, or one the admin left out on the
+														// backend-order screen) has no row for this attendee index.
+														$attendee_info[ $count ] [ $input_name ] = is_array( $data ) && array_key_exists( $count, $data ) ? $data[ $count ] : '';
 													}
 												}
 											}

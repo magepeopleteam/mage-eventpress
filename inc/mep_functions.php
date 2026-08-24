@@ -929,6 +929,69 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
+	if ( ! function_exists( 'mep_get_order_meta_map' ) ) {
+		/**
+		 * Billing/payment meta for an order, in the legacy get_post_meta( $order_id ) shape.
+		 *
+		 * Several modules (PDF tickets, PDF invoices, the attendee list, CSV export) were
+		 * written against get_post_meta( $order_id ), which returns [ key => [ 0 => value ] ].
+		 * That only reaches an order while WooCommerce keeps orders in wp_posts. With
+		 * High-Performance Order Storage the order lives in wp_wc_orders and the very same
+		 * call returns an empty array, blanking every billing line those modules print.
+		 *
+		 * Rebuilding the identical array shape from the order object keeps all of those call
+		 * sites — and their array_key_exists() guards — working under either storage engine.
+		 * Native (non-WooCommerce) orders are real posts, so they still fall through to
+		 * get_post_meta().
+		 *
+		 * @param int|string $order_id Order id.
+		 * @return array Meta keyed exactly like get_post_meta( $order_id ).
+		 */
+		function mep_get_order_meta_map( $order_id ) {
+			$order = $order_id && function_exists( 'wc_get_order' ) ? wc_get_order( $order_id ) : false;
+			if ( ! $order instanceof WC_Abstract_Order ) {
+				$meta = $order_id ? get_post_meta( $order_id ) : array();
+				return is_array( $meta ) ? $meta : array();
+			}
+			$fields = array(
+				'_billing_first_name'   => $order->get_billing_first_name(),
+				'_billing_last_name'    => $order->get_billing_last_name(),
+				'_billing_company'      => $order->get_billing_company(),
+				'_billing_address_1'    => $order->get_billing_address_1(),
+				'_billing_address_2'    => $order->get_billing_address_2(),
+				'_billing_city'         => $order->get_billing_city(),
+				'_billing_state'        => $order->get_billing_state(),
+				'_billing_postcode'     => $order->get_billing_postcode(),
+				'_billing_country'      => $order->get_billing_country(),
+				'_billing_email'        => $order->get_billing_email(),
+				'_billing_phone'        => $order->get_billing_phone(),
+				'_payment_method'       => $order->get_payment_method(),
+				'_payment_method_title' => $order->get_payment_method_title(),
+				'_customer_user'        => $order->get_customer_id(),
+				'_order_total'          => $order->get_total(),
+				'_order_currency'       => $order->get_currency(),
+			);
+			$order_meta = array();
+			foreach ( $fields as $key => $value ) {
+				// A field the order does not carry gets no key at all, which is exactly what
+				// the array_key_exists() guards at the call sites test before printing a row.
+				if ( $value !== '' && $value !== null ) {
+					$order_meta[ $key ] = array( (string) $value );
+				}
+			}
+			// Custom meta the order carries as well (billing_vat and friends), serialized the
+			// same way get_post_meta() hands back non-scalar values.
+			foreach ( $order->get_meta_data() as $meta ) {
+				$data = $meta->get_data();
+				$key  = isset( $data['key'] ) ? $data['key'] : '';
+				if ( $key === '' || isset( $order_meta[ $key ] ) ) {
+					continue;
+				}
+				$order_meta[ $key ] = array( is_scalar( $data['value'] ) ? (string) $data['value'] : maybe_serialize( $data['value'] ) );
+			}
+			return $order_meta;
+		}
+	}
 	if ( ! function_exists( 'mep_attendee_create' ) ) {
 		function mep_attendee_create( $type, $order_id, $event_id, $_user_info = array(), $force_order_status = 'no' ) {
 			// Getting an instance of the order object
@@ -1011,24 +1074,31 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty );
 			update_post_meta( $pid, 'ea_ticket_price', mep_get_ticket_price_by_event( $event_id, $ticket_type, 0 ) );
 			update_post_meta( $pid, 'ea_ticket_order_amount', $ticket_total_price );
-			update_post_meta( $order_id, 'ea_ticket_qty', $ticket_qty );
-			update_post_meta( $order_id, 'ea_ticket_type', $ticket_type );
-			update_post_meta( $order_id, 'ea_event_id', $event_id );
 			update_post_meta( $pid, 'ea_payment_method', $payment_method );
 			update_post_meta( $pid, 'ea_event_name', get_the_title( $event_id ) );
 			update_post_meta( $pid, 'ea_event_id', $event_id );
 			update_post_meta( $pid, 'ea_order_id', $order_id );
 			update_post_meta( $pid, 'ea_user_id', $user_id );
 			update_post_meta( $pid, 'mep_checkin', 'No' );
-			update_post_meta( $order_id, 'ea_user_id', $user_id );
-			update_post_meta( $order_id, 'order_type_name', 'mep_events' );
 			update_post_meta( $pid, 'ea_ticket_no', $pin );
 			update_post_meta( $pid, 'ea_event_date', mep_normalize_event_date_value( $event_date ) );
 			if ( $force_order_status == 'yes' ) {
 				update_post_meta( $pid, 'ea_order_status', $order_status );
 			}
 			update_post_meta( $pid, 'ea_flag', 'checkout_processed' );
-			update_post_meta( $order_id, 'ea_order_status', $order_status );
+			// Order-level markers, written through the order object rather than
+			// update_post_meta( $order_id, ... ). Once High-Performance Order Storage is on
+			// the order lives in wp_wc_orders, so a post-meta write lands on the hidden
+			// shop_order_placehold post and can never be read back — which is why the
+			// Google Sheets sync, whose wc_get_orders() meta_query filters on
+			// order_type_name, silently found no orders to sync on HPOS sites.
+			$order->update_meta_data( 'ea_ticket_qty', $ticket_qty );
+			$order->update_meta_data( 'ea_ticket_type', $ticket_type );
+			$order->update_meta_data( 'ea_event_id', $event_id );
+			$order->update_meta_data( 'ea_user_id', $user_id );
+			$order->update_meta_data( 'order_type_name', 'mep_events' );
+			$order->update_meta_data( 'ea_order_status', $order_status );
+			$order->save_meta_data();
 			$hooking_data = apply_filters( 'mep_event_attendee_dynamic_data', array(), $pid, $type, $order_id, $event_id, $_user_info );
 			if ( is_array( $hooking_data ) && sizeof( $hooking_data ) > 0 ) {
 				foreach ( $hooking_data as $_data ) {

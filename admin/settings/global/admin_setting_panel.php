@@ -213,6 +213,12 @@
 		}
 
 		function render_gateway_modals() {
+			// These modals expose live gateway credentials and a save nonce, so
+			// they are limited to the capability that owns the Payment settings
+			// page. The event screens only require edit_posts.
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
 			$screen = get_current_screen();
 			if ( ! $screen || ! in_array( $screen->id, array( 'mep_events_page_mep_event_settings_page', 'mep_events', 'mep_events_page_mpwem_event_edit' ), true ) ) {
 				return;
@@ -595,15 +601,15 @@
 
 		function ajax_save_gateway_settings() {
 			check_ajax_referer( 'mep_save_gateway', 'nonce' );
-			// The PayPal/Stripe Configure modals are reachable from both the Global
-			// Payment Settings page (manage_options) and the Event Edit → Payment
-			// Configuration modal (edit_posts). Allow either so the real-time save
-			// works in both contexts.
-			if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'edit_posts' ) ) {
+			// This writes the site-wide payment_setting_sec option (gateway
+			// credentials and enable flags), so it requires the same capability as
+			// the Payment settings page that owns those values. The Configure
+			// modals are only rendered for that capability as well.
+			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
 			}
 			$gateway  = sanitize_key( $_POST['gateway'] ?? '' );
-			$fields   = $_POST['fields'] ?? array();
+			$fields   = isset( $_POST['fields'] ) && is_array( $_POST['fields'] ) ? wp_unslash( $_POST['fields'] ) : array();
 			$existing = get_option( 'payment_setting_sec', array() );
 			if ( ! is_array( $existing ) ) {
 				$existing = array();

@@ -34,7 +34,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			wp_enqueue_script( 'mpwem-rsvp-admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_rsvp_admin.js', array( 'jquery' ), time(), true );
 			wp_localize_script( 'mpwem-rsvp-admin', 'mep_rsvp_ajax', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'mep_rsvp_nonce' ),
+				'nonce'    => wp_create_nonce( 'mpwem_rsvp_admin_nonce' ),
 				'i18n'     => array(
 					'loading'          => __( 'Loading responses…', 'mage-eventpress' ),
 					'updating'         => __( 'Updating…', 'mage-eventpress' ),
@@ -219,7 +219,10 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function ajax_fetch_rsvps() {
-			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
+			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
+			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+				wp_send_json_error( 'Permission denied.' );
+			}
 
 			$paged    = isset( $_POST['paged'] ) ? intval( $_POST['paged'] ) : 1;
 			$search   = isset( $_POST['search'] ) ? sanitize_text_field( $_POST['search'] ) : '';
@@ -366,7 +369,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function ajax_checkin_rsvp() {
-			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
+			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
 			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
@@ -382,7 +385,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function ajax_bulk_action() {
-			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
+			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
 			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}

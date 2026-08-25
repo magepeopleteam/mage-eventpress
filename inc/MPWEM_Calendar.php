@@ -80,6 +80,8 @@ if ( ! function_exists( 'mep_cal_enqueue_assets' ) ) {
 		// Fixed by Shahnur — 2026-04-22 11:37 AM (Asia/Dhaka)
 		$fullcalendar_url = MPWEM_PLUGIN_URL . '/assets/helper/calendar/fullcalendar.index.global.min.js';
 
+		$settings = mep_cal_get_all_settings();
+
 		wp_register_script(
 			'fullcalendar-js',
 			$fullcalendar_url,
@@ -87,6 +89,21 @@ if ( ! function_exists( 'mep_cal_enqueue_assets' ) ) {
 			'6.1.17',
 			true
 		);
+
+		// The FullCalendar global bundle ships without locale data. Without this
+		// file the "Language" calendar setting is silently ignored on the frontend.
+		$mep_cal_js_deps = array( 'jquery', 'fullcalendar-js' );
+		$locale_setting  = trim( (string) ( isset( $settings['mep_cal_locale'] ) ? $settings['mep_cal_locale'] : '' ) );
+		if ( '' !== $locale_setting && 'auto' !== strtolower( $locale_setting ) ) {
+			wp_register_script(
+				'fullcalendar-locales-js',
+				MPWEM_PLUGIN_URL . '/assets/helper/calendar/fullcalendar-locales-all.global.min.js',
+				array( 'fullcalendar-js' ),
+				'6.1.17',
+				true
+			);
+			$mep_cal_js_deps[] = 'fullcalendar-locales-js';
+		}
 
 		wp_register_style(
 			'mep-calendar-css',
@@ -98,12 +115,10 @@ if ( ! function_exists( 'mep_cal_enqueue_assets' ) ) {
 		wp_register_script(
 			'mep-calendar-js',
 			MPWEM_PLUGIN_URL . '/assets/helper/calendar/calendar.js',
-			array( 'jquery', 'fullcalendar-js' ),
+			$mep_cal_js_deps,
 			time(),
 			true
 		);
-
-		$settings = mep_cal_get_all_settings();
 		wp_localize_script( 'mep-calendar-js', 'mepCalendar', array(
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'mep_calendar_nonce' ),

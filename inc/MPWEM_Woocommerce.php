@@ -256,7 +256,13 @@
 						}
 						
 						if (!$passed ) {
-							wc_add_notice( "This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error' );
+							wc_add_notice( __( "This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'mage-eventpress' ), 'error' );
+							// Event single pages never call wc_print_notices(), so without this
+							// redirect the error stays invisible while the page silently reloads.
+							if ( ! wp_doing_ajax() && ! is_admin() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+								wp_safe_redirect( wc_get_cart_url() );
+								exit;
+							}
 						}
 
 					}

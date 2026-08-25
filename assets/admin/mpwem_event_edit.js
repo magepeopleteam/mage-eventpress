@@ -3043,20 +3043,10 @@
                 });
 
                 syncAttendeeFormToggle(isInitiallyEnabled, false);
-                // If a saved/custom form is already selected, keep the section open so the
-                // canvas can paint on first Advanced visit (status checkbox can be off).
-                const $formSelect = $body.find('#mep_event_reg_form_list').first();
-                const selectVal = $formSelect.length ? String($formSelect.val() || '') : '';
-                const cfgSource = (window.mepFbEventBuilder && window.mepFbEventBuilder.formSource)
-                    ? String(window.mepFbEventBuilder.formSource)
-                    : '';
-                const hasFormChoice = selectVal === 'custom_form'
-                    || (/^\d+$/.test(selectVal) && parseInt(selectVal, 10) > 0)
-                    || (cfgSource && cfgSource !== 'custom_form');
-                if (!isInitiallyEnabled && hasFormChoice) {
-                    syncAttendeeFormToggle(true, false);
-                }
-                if ((isInitiallyEnabled || hasFormChoice) && $root.find('.mpwem-step[data-step-key="display"]').hasClass('is-active')) {
+                // A selected/saved form is configuration, not the enabled state. Keep
+                // disabled sections closed and initialize the builder only when the
+                // persisted status checkbox is on.
+                if (isInitiallyEnabled && $root.find('.mpwem-step[data-step-key="display"]').hasClass('is-active')) {
                     window.setTimeout(function() {
                         if (typeof window.mepFbEventBuilderInit === 'function') {
                             window.mepFbEventBuilderInit(true);
@@ -5638,25 +5628,14 @@
             // Attendee Form (PRO formBuilder) must init only when Advanced is painted —
             // building while the step is display:none leaves an empty canvas.
             if (stepKey === 'display') {
-                // Expand Attendee Form when a registration form is already selected/saved,
-                // then init formBuilder after the step has been painted.
+                // Initialize Attendee Form only when its persisted status is enabled.
+                // A saved form selection must not silently turn the feature back on.
                 window.requestAnimationFrame(function() {
                     window.setTimeout(function() {
                         const $attendeeMount = $root.find('#mpwem_wizard_attendee_form_mount').first();
-                        const hasSavedForm = !!(window.mepFbEventBuilder && window.mepFbEventBuilder.formSource && String(window.mepFbEventBuilder.formSource) !== 'custom_form');
-                        const $formSelect = $attendeeMount.find('#mep_event_reg_form_list').first();
-                        const selectVal = $formSelect.length ? String($formSelect.val() || '') : '';
-                        const hasFormChoice = hasSavedForm || selectVal === 'custom_form' || (/^\d+$/.test(selectVal) && parseInt(selectVal, 10) > 0);
-                        if ($attendeeMount.length && hasFormChoice && $attendeeMount.hasClass('is-collapsed')) {
-                            const $toggle = $attendeeMount.find('.mpwem-display-toggle').first();
-                            if ($toggle.length) {
-                                $toggle.prop('checked', true).trigger('change');
-                            } else {
-                                $attendeeMount.removeClass('is-collapsed').addClass('is-expanded');
-                                $attendeeMount.children('.mpwem-display-section__body').first().show();
-                            }
-                        }
-                        if (typeof window.mepFbEventBuilderInit === 'function') {
+                        const $status = $attendeeMount.find('input[name="mep_event_reg_form_status"]').first();
+                        const attendeeFormEnabled = !$status.length || $status.is(':checked');
+                        if (attendeeFormEnabled && typeof window.mepFbEventBuilderInit === 'function') {
                             window.mepFbEventBuilderInit(true);
                         }
                         $(document).trigger('mpwem:display-step-active', [$root, $panel]);

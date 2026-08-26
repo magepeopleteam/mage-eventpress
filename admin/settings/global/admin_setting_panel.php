@@ -1518,7 +1518,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Google Map Type', 'mage-eventpress' ),
 								'desc'    => __( 'Choose how maps appear on the site. API maps are more accurate and support drag-and-drop.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'yes',
+								'default' => 'iframe',
 								'options' => array(
 									''       => 'Please Select a Map Type',
 									'api'    => 'API',
@@ -1537,7 +1537,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Event Expiry Time', 'mage-eventpress' ),
 								'desc'    => __( 'When the event should stop accepting bookings.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'mep_event_start_date',
+								'default' => 'event_start_datetime',
 								'options' => array(
 									'event_start_datetime'  => 'Event Start Time',
 									'event_expire_datetime' => 'Event End Time'
@@ -1857,7 +1857,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Date Picker Format', 'mage-eventpress' ),
 								'desc'    => __( 'Date format for the date picker. Avoid text-based formats on non-English sites.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'no',
+								'default' => 'yy-mm-dd',
 								'options' => array(
 									'yy-mm-dd'   => $current_date,
 									'yy/mm/dd'   => date( 'Y/m/d', strtotime( $current_date ) ),
@@ -2305,7 +2305,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Auto Play', 'mage-eventpress' ),
 								'desc'    => __( 'Automatically advance carousel slides.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'yes',
+								'default' => 'true',
 								'options' => array(
 									'true'  => 'Yes',
 									'false' => 'No'
@@ -2316,7 +2316,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Infinite Loop', 'mage-eventpress' ),
 								'desc'    => __( 'Restart the carousel after the last slide.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'yes',
+								'default' => 'true',
 								'options' => array(
 									'true'  => 'Yes',
 									'false' => 'No'

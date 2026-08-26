@@ -14,6 +14,12 @@
 			}
 
 			public function email_text_tab_content( $post_id ) {
+				$content    = get_post_meta( $post_id, 'mep_event_cc_email_text', true );
+				$has_status = metadata_exists( 'post', $post_id, 'mep_event_cc_email_status' );
+				$status     = $has_status
+					? get_post_meta( $post_id, 'mep_event_cc_email_status', true )
+					: ( '' !== trim( (string) $content ) ? 'on' : 'off' );
+				$status     = 'on' === $status ? 'on' : 'off';
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_email_text_settings" data-tab-item="#mpwem_email_text_settings">
                     <div class="_layout_default_xs_mp_zero">
@@ -22,6 +28,17 @@
                             <span class="_mp_zero"><?php esc_html_e( 'Configure email template text', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="_padding_bB">
+							<div class="_justify_between_align_center_wrap mpwem-email-status-row">
+								<div>
+									<h5><?php esc_html_e( 'Use Event-Specific Email Message', 'mage-eventpress' ); ?></h5>
+									<span class="label-text"><?php esc_html_e( 'Use this event message instead of the global confirmation email body.', 'mage-eventpress' ); ?></span>
+								</div>
+								<label class="mpev-switch">
+									<input type="hidden" name="mep_event_cc_email_status" value="off" />
+									<input type="checkbox" name="mep_event_cc_email_status" value="on" <?php checked( $status, 'on' ); ?> data-toggle-values="on,off" />
+									<span class="mpev-slider"></span>
+								</label>
+							</div>
                             <h5><?php esc_html_e( 'Email Text', 'mage-eventpress' ); ?></h5>
                             <span class="_mp_zero"><?php esc_html_e( 'Usable Dynamic tags', 'mage-eventpress' ) ?></span>
                             <ul class="mp_list">
@@ -36,8 +53,6 @@
                             </ul>
                             <div class="_mt">
 								<?php
-									$content   = get_post_meta( $post_id, 'mep_event_cc_email_text', true ) ?: '';
-									//echo '<pre>';print_r($content);echo '</pre>';
 									wp_editor($content, 'mep_event_cc_email_text', array(
 										'editor_height' => 150,
 										'media_buttons' => true,

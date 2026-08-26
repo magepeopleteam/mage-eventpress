@@ -1654,6 +1654,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<input type="hidden" name="mpwem_post_status_action" id="mpwem_post_status_action" value="" />
 								<input type="hidden" name="mpwem_active_step" id="mpwem_active_step" value="basic" />
 								<input type="hidden" name="mpwem_quiet_save" id="mpwem_quiet_save" value="" />
+								<input type="hidden" name="mpwem_modern_editor_save" value="1" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>
 								<?php wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce'); ?>
 								<?php wp_nonce_field('mep_fw_nonce', 'mep_fw_nonce'); ?>
@@ -2047,7 +2048,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	$reg_form_status = 'on';
 																}
 																?>
-																<input type="checkbox" data-no-mpwem-switch="1" name="mep_event_reg_form_status" value="on" style="display:none;" <?php checked($reg_form_status, 'on'); ?> />
+														<?php if ($attendee_pro_active) : ?>
+														<input type="checkbox" data-no-mpwem-switch="1" name="mep_event_reg_form_status" value="on" style="display:none;" <?php checked($reg_form_status, 'on'); ?> />
+														<?php endif; ?>
 																<?php if (! $attendee_pro_active) : ?>
 																<div class="mpwem-pro-locked">
 																	<span class="dashicons dashicons-lock" aria-hidden="true"></span>
@@ -2487,11 +2490,19 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$this->save_taxonomies($post_id);
 
-			$show_mm = isset($_POST['mpwem_show_mm']) ? 'on' : 'off';
-			update_post_meta($post_id, 'mpwem_show_mm', $show_mm);
+			if (class_exists('MPWEM_MM_Function')) {
+				update_post_meta($post_id, 'mpwem_show_mm', isset($_POST['mpwem_show_mm']) ? 'on' : 'off');
+			}
 
-			$reg_form_status = isset($_POST['mep_event_reg_form_status']) ? 'on' : 'off';
-			update_post_meta($post_id, 'mep_event_reg_form_status', $reg_form_status);
+			if (class_exists('MPWEM_Form_Settings')) {
+				$reg_form_status = isset($_POST['mep_event_reg_form_status']) ? 'on' : 'off';
+				update_post_meta($post_id, 'mep_event_reg_form_status', $reg_form_status);
+			}
+
+			if ($this->is_waitlist_addon_active()) {
+				$waitlist_status = isset($_POST['mep_show_waitlist']) ? 'on' : 'off';
+				update_post_meta($post_id, 'mep_show_waitlist', $waitlist_status);
+			}
 
 			do_action('mpwem_after_event_edit_save', $post_id);
 			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');

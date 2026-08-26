@@ -35,7 +35,7 @@
                                 <span class="label-text"><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
                             </div>
                             <select id="mep_rich_text_status" name="mep_rich_text_status">
-                                <option value="enable" <?php echo $rt_status == 'eanble' ? 'selected' : ''; ?>> <?php  esc_html_e( 'Enable', 'mage-eventpress' ); ?></option>
+								<option value="enable" <?php selected( $rt_status, 'enable' ); ?>> <?php  esc_html_e( 'Enable', 'mage-eventpress' ); ?></option>
                                 <option value="disable" <?php echo $rt_status == 'disable' ? 'selected' : ''; ?>> <?php esc_html_e( 'Disable', 'mage-eventpress' ); ?></option>
                             </select>
                         </label>
@@ -48,7 +48,7 @@
                             </tr>
                             <tr>
                                 <td><span><?php esc_html_e( 'Name :', 'mage-eventpress' ); ?></span></td>
-                                <td colspan="3"><?php echo get_the_title( $event_id ); ?></td>
+                                <td colspan="3"><?php echo esc_html( get_the_title( $event_id ) ); ?></td>
                             </tr>
                             <tr>
                                 <td><span><?php esc_html_e( 'Start Date :', 'mage-eventpress' ); ?></span></td>
@@ -63,7 +63,7 @@
                                 <td colspan="3">
                                     <label>
                                         <select class="mp_formControl" name="mep_rt_event_status">
-                                            <option value="EventRescheduled" <?php echo ( $event_rt_status == 'EventMovedOnline' ) ? esc_attr( 'selected' ) : ''; ?>><?php esc_html_e( 'Event Rescheduled', 'mage-eventpress' ); ?></option>
+										<option value="EventRescheduled" <?php selected( $event_rt_status, 'EventRescheduled' ); ?>><?php esc_html_e( 'Event Rescheduled', 'mage-eventpress' ); ?></option>
                                             <option value="EventMovedOnline" <?php echo ( $event_rt_status == 'EventMovedOnline' ) ? esc_attr( 'selected' ) : ''; ?>><?php esc_html_e( 'Event Moved Online', 'mage-eventpress' ); ?></option>
                                             <option value="EventPostponed" <?php echo ( $event_rt_status == 'EventPostponed' ) ? esc_attr( 'selected' ) : ''; ?>><?php esc_html_e( 'Event Postponed', 'mage-eventpress' ); ?></option>
                                             <option value="EventCancelled" <?php echo ( $event_rt_status == 'EventCancelled' ) ? esc_attr( 'selected' ) : ''; ?>><?php esc_html_e( 'Event Cancelled', 'mage-eventpress' ); ?></option>
@@ -97,7 +97,7 @@
 										if ( $event_id ) {
 											?>
                                             <p class="event_meta_help_txt">
-                                                <a href='https://search.google.com/test/rich-results?utm_campaign=devsite&utm_medium=jsonld&utm_source=event&url=<?php echo get_the_permalink( $event_id ); ?>&user_agent=2' target="_blank"><?php esc_html_e( 'Check Rich Text Status', 'mage-eventpress' ); ?></a>
+                                                <a href="<?php echo esc_url( add_query_arg( array( 'utm_campaign' => 'devsite', 'utm_medium' => 'jsonld', 'utm_source' => 'event', 'url' => get_permalink( $event_id ), 'user_agent' => 2 ), 'https://search.google.com/test/rich-results' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Check Rich Text Status', 'mage-eventpress' ); ?></a>
                                             </p>
 											<?php
 										}

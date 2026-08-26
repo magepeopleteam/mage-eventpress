@@ -3055,13 +3055,7 @@
                 }
             }
 
-            if (
-                section.className === 'mpwem-display-section--seo' ||
-                section.className === 'mpwem-display-section--email' ||
-                section.className === 'mpwem-display-section--email-reminder' ||
-                section.className === 'mpwem-display-section--pdf-custom-text' ||
-                section.className === 'mpwem-display-section--settings'
-            ) {
+            if (section.className === 'mpwem-display-section--email') {
                 const $head = $mount.children('.mpwem-display-section__head').first();
                 let $body = $mount.children('.mpwem-display-section__body').first();
 
@@ -3072,20 +3066,99 @@
                     $mount.append($body);
                 }
 
-                if ($head.length && !$head.find('.mpwem-display-toggle-wrap').length) {
+                const $status = $body.find('input[type="checkbox"][name="mep_event_cc_email_status"]').first();
+                const $statusSwitch = $status.closest('.mpev-switch');
+                if ($head.length && $statusSwitch.length && !$head.find('input[name="mep_event_cc_email_status"]').length) {
+                    $statusSwitch.addClass('mpwem-display-toggle-wrap').attr('aria-label', 'Use event-specific email message');
+                    $head.append($statusSwitch);
+                    $body.find('.mpwem-email-status-row').hide();
+                }
+
+                const syncEmailToggle = function(isEnabled, useAnimation) {
+                    $mount.toggleClass('is-collapsed', !isEnabled);
+                    $mount.toggleClass('is-expanded', isEnabled);
+                    $status.prop('checked', isEnabled).val(isEnabled ? 'on' : 'off').attr('aria-expanded', isEnabled ? 'true' : 'false');
+
+                    if (useAnimation) {
+                        $body.stop(true, true)[isEnabled ? 'slideDown' : 'slideUp'](220);
+                    } else {
+                        $body.toggle(isEnabled);
+                    }
+                };
+
+                $status.off('change.mpwemEmailToggle').on('change.mpwemEmailToggle', function() {
+                    syncEmailToggle($(this).is(':checked'), true);
+                });
+
+                syncEmailToggle($status.is(':checked'), false);
+            }
+
+            if (section.className === 'mpwem-display-section--seo') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>').append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                const $status = $body.find('select[name="mep_rich_text_status"]').first();
+                if ($head.length && $status.length && !$head.find('.mpwem-display-toggle-wrap').length) {
                     $head.append(
-                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap" aria-label="Toggle section"></label>')
+                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap" aria-label="Enable SEO and schema settings"></label>')
                             .append('<input type="checkbox" class="mpwem-switch-input mpwem-display-toggle" />')
                             .append('<span class="mpwem-switch-slider"></span>')
                     );
                 }
 
                 const $toggle = $head.find('.mpwem-display-toggle').first();
-                const syncSimpleToggle = function(isExpanded, useAnimation) {
-                    $mount.toggleClass('is-collapsed', !isExpanded);
-                    $mount.toggleClass('is-expanded', isExpanded);
-                    $toggle.prop('checked', isExpanded).attr('aria-expanded', isExpanded ? 'true' : 'false');
+                const syncSeoToggle = function(isEnabled, useAnimation) {
+                    $status.val(isEnabled ? 'enable' : 'disable').trigger('change.mpwemCanonicalStatus');
+                    $toggle.prop('checked', isEnabled).attr('aria-expanded', isEnabled ? 'true' : 'false');
+                    $mount.toggleClass('is-collapsed', !isEnabled).toggleClass('is-expanded', isEnabled);
+                    if (useAnimation) {
+                        $body.stop(true, true)[isEnabled ? 'slideDown' : 'slideUp'](220);
+                    } else {
+                        $body.toggle(isEnabled);
+                    }
+                };
 
+                $toggle.off('change.mpwemSeoToggle').on('change.mpwemSeoToggle', function() {
+                    syncSeoToggle($(this).is(':checked'), true);
+                });
+                syncSeoToggle($status.val() !== 'disable', false);
+            }
+
+            if (
+                section.className === 'mpwem-display-section--email-reminder' ||
+                section.className === 'mpwem-display-section--pdf-custom-text' ||
+                section.className === 'mpwem-display-section--settings'
+            ) {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>').append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                const bodyId = ($mount.attr('id') || section.className) + '-body';
+                $body.attr('id', bodyId);
+                if ($head.length && !$head.find('.mpwem-display-disclosure').length) {
+                    $head.append(
+                        $('<button type="button" class="mpwem-display-disclosure" aria-expanded="false"></button>')
+                            .attr('aria-controls', bodyId)
+                            .attr('aria-label', 'Expand ' + section.title)
+                            .append('<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>')
+                    );
+                }
+
+                const $button = $head.find('.mpwem-display-disclosure').first();
+                const syncDisclosure = function(isExpanded, useAnimation) {
+                    $button.attr('aria-expanded', isExpanded ? 'true' : 'false')
+                        .attr('aria-label', (isExpanded ? 'Collapse ' : 'Expand ') + section.title);
+                    $mount.toggleClass('is-collapsed', !isExpanded).toggleClass('is-expanded', isExpanded);
                     if (useAnimation) {
                         $body.stop(true, true)[isExpanded ? 'slideDown' : 'slideUp'](220);
                     } else {
@@ -3093,11 +3166,10 @@
                     }
                 };
 
-                $toggle.off('change.mpwemSectionToggle').on('change.mpwemSectionToggle', function() {
-                    syncSimpleToggle($(this).is(':checked'), true);
+                $button.off('click.mpwemDisclosure').on('click.mpwemDisclosure', function() {
+                    syncDisclosure($(this).attr('aria-expanded') !== 'true', true);
                 });
-
-                syncSimpleToggle(false, false);
+                syncDisclosure(false, false);
             }
 
             if (section.className === 'mpwem-display-section--settings') {
@@ -6624,6 +6696,14 @@
         const $form = $('#mpwem-event-edit-form');
         if (!$form.length) {
             return;
+        }
+
+        // WordPress does not guarantee that dynamically mounted wp_editor
+        // instances copy their current Visual value back to the textarea when
+        // the form is submitted through jQuery. Synchronize every editor before
+        // validation and before both full and quiet saves.
+        if (window.tinymce && typeof window.tinymce.triggerSave === 'function') {
+            window.tinymce.triggerSave();
         }
 
         if ((action || '') !== 'trash') {

@@ -378,7 +378,13 @@
 									</div>
 
 									<div id="mep-modal-tab-custom" class="mep-modal-tab-content" style="display:none;">
-										<?php $is_pro = mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ); ?>
+										<?php
+										$is_pro = mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' );
+										// The Configure modals carry live gateway credentials and are only
+										// rendered for administrators, so the buttons that open them follow
+										// the same capability.
+										$can_manage_gateways = current_user_can( 'manage_options' );
+										?>
 										<div class="mpwem-pm-card">
 											<h4 class="mpwem-pm-card__title"><?php esc_html_e( 'Custom Payment Gateways', 'mage-eventpress' ); ?></h4>
 											<p class="mpwem-pm-card__sub"><?php esc_html_e( 'Accept payments without WooCommerce through the native checkout.', 'mage-eventpress' ); ?></p>
@@ -396,10 +402,10 @@
 														<strong class="mpwem-pm-gateway__name"><?php esc_html_e( 'PayPal', 'mage-eventpress' ); ?></strong>
 													</div>
 												</div>
-												<?php if ( $is_pro ) : ?>
-													<button type="button" id="mep-paypal-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
-												<?php else : ?>
+												<?php if ( ! $is_pro ) : ?>
 													<span class="mpwem-pm-pro-badge" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
+												<?php elseif ( $can_manage_gateways ) : ?>
+													<button type="button" id="mep-paypal-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
 												<?php endif; ?>
 											</div>
 
@@ -414,10 +420,10 @@
 														<strong class="mpwem-pm-gateway__name"><?php esc_html_e( 'Stripe', 'mage-eventpress' ); ?></strong>
 													</div>
 												</div>
-												<?php if ( $is_pro ) : ?>
-													<button type="button" id="mep-stripe-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
-												<?php else : ?>
+												<?php if ( ! $is_pro ) : ?>
 													<span class="mpwem-pm-pro-badge" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
+												<?php elseif ( $can_manage_gateways ) : ?>
+													<button type="button" id="mep-stripe-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
 												<?php endif; ?>
 											</div>
 
@@ -433,7 +439,9 @@
 														<strong class="mpwem-pm-gateway__name"><?php esc_html_e( 'Offline Payment', 'mage-eventpress' ); ?></strong>
 													</div>
 												</div>
-												<button type="button" id="mep-offline-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php if ( $can_manage_gateways ) : ?>
+													<button type="button" id="mep-offline-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php endif; ?>
 											</div>
 										</div>
 

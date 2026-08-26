@@ -4637,6 +4637,37 @@ body.mpwem-ticket-modal-open {
     flex: 0 0 auto;
 }
 
+.mpwem-display-disclosure {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin-left: auto;
+    padding: 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: #fff;
+    color: #475569;
+    cursor: pointer;
+}
+
+.mpwem-display-disclosure:hover,
+.mpwem-display-disclosure:focus-visible {
+    border-color: #2563eb;
+    color: #2563eb;
+    outline: 2px solid rgba(37, 99, 235, 0.18);
+    outline-offset: 2px;
+}
+
+.mpwem-display-disclosure .dashicons {
+    transition: transform 0.2s ease;
+}
+
+.mpwem-display-disclosure[aria-expanded="true"] .dashicons {
+    transform: rotate(180deg);
+}
+
 .mpwem-display-section__body {
     background: #fff;
 }

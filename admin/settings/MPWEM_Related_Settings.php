@@ -11,9 +11,13 @@
 
 			public function ajax_search_events() {
 				check_ajax_referer( 'mpwem_admin_nonce', 'nonce' );
+				$post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+				if ( ! $post_id || 'mep_events' !== get_post_type( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => esc_html__( 'You cannot edit this event.', 'mage-eventpress' ) ], 403 );
+				}
 				$search = isset( $_POST['search'] ) ? sanitize_text_field( wp_unslash( $_POST['search'] ) ) : '';
-				$exclude = isset( $_POST['exclude'] ) ? array_map( 'intval', (array) $_POST['exclude'] ) : [];
-				$exclude[] = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+				$exclude = isset( $_POST['exclude'] ) ? array_map( 'absint', (array) wp_unslash( $_POST['exclude'] ) ) : [];
+				$exclude[] = $post_id;
 
 			$args = [
 				'post_type'      => 'mep_events',

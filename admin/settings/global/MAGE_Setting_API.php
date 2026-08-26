@@ -154,7 +154,12 @@
 				
 				// creates our settings in the options table
 				foreach ( $this->settings_sections as $section ) {
-					register_setting( $section['id'], $section['id'], array( $this, 'sanitize_options' ) );
+					$section_id = $section['id'];
+					register_setting( $section_id, $section_id, array(
+						'sanitize_callback' => function ( $options ) use ( $section_id ) {
+							return $this->sanitize_options( $options, $section_id );
+						},
+					) );
 				}
 			}
 			
@@ -475,23 +480,105 @@
 			 *
 			 * @return mixed
 			 */
-			function sanitize_options( $options ) {
-				
-				if ( !$options ) {
-					return $options;
-				}
-				
-				foreach( $options as $option_slug => $option_value ) {
-					$sanitize_callback = $this->get_sanitize_callback( $option_slug );
-					
-					// If callback is set, call it
-					if ( $sanitize_callback ) {
-						$options[ $option_slug ] = call_user_func( $sanitize_callback, $option_value );
+			function sanitize_options( $options, $section = '' ) {
+				$old_options = get_option( $section, array() );
+				$sanitized   = is_array( $old_options ) ? $old_options : array();
+				$options     = is_array( $options ) ? wp_unslash( $options ) : array();
+				$fields      = isset( $this->settings_fields[ $section ] ) && is_array( $this->settings_fields[ $section ] )
+					? $this->settings_fields[ $section ]
+					: array();
+				$allowed = array();
+
+				foreach ( $fields as $field ) {
+					if ( empty( $field['name'] ) ) {
 						continue;
 					}
+					$allowed[ $field['name'] ] = $field;
 				}
-				
-				return $options;
+
+				foreach ( $options as $option_slug => $option_value ) {
+					if ( ! isset( $allowed[ $option_slug ] ) ) {
+						// Ignore unregistered submitted keys while preserving any older value.
+						continue;
+					}
+
+					$field = $allowed[ $option_slug ];
+					if ( isset( $field['sanitize_callback'] ) && is_callable( $field['sanitize_callback'] ) ) {
+						$sanitized[ $option_slug ] = call_user_func( $field['sanitize_callback'], $option_value );
+						continue;
+					}
+
+					$sanitized[ $option_slug ] = $this->sanitize_field_value( $option_value, $field );
+				}
+
+				return $sanitized;
+			}
+
+			/**
+			 * Sanitize a registered setting from its declared field contract.
+			 *
+			 * @param mixed $value Raw submitted value.
+			 * @param array $field Registered field definition.
+			 * @return mixed
+			 */
+			private function sanitize_field_value( $value, $field ) {
+				$type    = isset( $field['type'] ) ? sanitize_key( $field['type'] ) : 'text';
+				$options = isset( $field['options'] ) && is_array( $field['options'] ) ? $field['options'] : array();
+
+				if ( 'multicheck' === $type ) {
+					if ( ! is_array( $value ) ) {
+						return array();
+					}
+					$result = array();
+					foreach ( $value as $key => $selected ) {
+						$key = sanitize_key( $key );
+						if ( array_key_exists( $key, $options ) && (string) $selected === (string) $key ) {
+							$result[ $key ] = $key;
+						}
+					}
+					return $result;
+				}
+
+				if ( is_array( $value ) ) {
+					return array_map( 'sanitize_text_field', $value );
+				}
+
+				$value = (string) $value;
+				switch ( $type ) {
+					case 'select':
+					case 'radio':
+						return array_key_exists( $value, $options ) ? $value : ( isset( $field['default'] ) ? $field['default'] : '' );
+					case 'checkbox':
+						return 'on' === $value ? 'on' : 'off';
+					case 'number':
+						$number = is_numeric( $value ) ? (float) $value : (float) ( $field['default'] ?? 0 );
+						if ( isset( $field['min'] ) && '' !== (string) $field['min'] ) {
+							$number = max( (float) $field['min'], $number );
+						}
+						if ( isset( $field['max'] ) && '' !== (string) $field['max'] ) {
+							$number = min( (float) $field['max'], $number );
+						}
+						return false === strpos( $value, '.' ) ? (int) $number : $number;
+					case 'wysiwyg':
+					case 'textarea':
+						return wp_kses_post( $value );
+					case 'url':
+					case 'file':
+						return esc_url_raw( $value );
+					case 'color':
+						$color = sanitize_hex_color( $value );
+						return $color ? $color : ( isset( $field['default'] ) ? sanitize_hex_color( $field['default'] ) : '' );
+					case 'html':
+					case 'title':
+						return '';
+					case 'iconlib':
+					case 'text':
+					default:
+						if ( isset( $field['name'] ) && preg_match( '/(?:^|_)email$/', (string) $field['name'] ) ) {
+							return sanitize_email( $value );
+						}
+						return sanitize_text_field( $value );
+				}
 			}
 			
 			/**

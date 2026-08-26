@@ -812,6 +812,57 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 
 	
+	if ( ! function_exists( 'mep_resolve_confirmation_email_body' ) ) {
+		/**
+		 * Resolve the confirmation body without changing delivery eligibility.
+		 *
+		 * Existing events created before the status meta was introduced keep using
+		 * their non-empty event body. An explicit off always falls back to global.
+		 *
+		 * @param int    $event_id         Event post ID.
+		 * @param string $global_email_text Global confirmation body.
+		 * @return string
+		 */
+		function mep_resolve_confirmation_email_body( $event_id, $global_email_text = '' ) {
+			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
+			$event_email_text = is_string( $event_email_text ) ? $event_email_text : '';
+			$has_status       = metadata_exists( 'post', $event_id, 'mep_event_cc_email_status' );
+			$status           = $has_status ? get_post_meta( $event_id, 'mep_event_cc_email_status', true ) : '';
+			$use_event_body   = $has_status ? 'on' === $status : '' !== trim( $event_email_text );
+
+			if ( $use_event_body && '' !== trim( $event_email_text ) ) {
+				return $event_email_text;
+			}
+
+			if ( '' !== trim( (string) $global_email_text ) ) {
+				return (string) $global_email_text;
+			}
+
+			return class_exists( 'MPWEM_Email_Settings_UI' )
+				? MPWEM_Email_Settings_UI::get_preset_template( 'confirmation' )
+				: '';
+		}
+	}
+
+	if ( ! function_exists( 'mep_should_send_billing_confirmation' ) ) {
+		/**
+		 * Whether the global confirmation settings allow a billing email now.
+		 *
+		 * @param string $order_status WooCommerce/native order status.
+		 * @return bool
+		 */
+		function mep_should_send_billing_confirmation( $order_status ) {
+			if ( 'enable' !== mep_get_option( 'mep_send_confirmation_to_billing_email', 'email_setting_sec', 'enable' ) ) {
+				return false;
+			}
+
+			$statuses = mep_get_option( 'mep_email_sending_order_status', 'email_setting_sec', array( 'disable_email' => 'disable_email' ) );
+			$statuses = is_array( $statuses ) ? $statuses : array();
+
+			return in_array( sanitize_key( $order_status ), array_map( 'sanitize_key', $statuses ), true );
+		}
+	}
+
 	// Send Confirmation email to customer
 	if ( ! function_exists( 'mep_event_confirmation_email_sent' ) ) {
 		function mep_event_confirmation_email_sent( $event_id, $sent_email, $order_id, $attendee_id = 0, $event_ticket_info_arr = array() ) {
@@ -826,12 +877,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$form_email  = ! empty( $global_email_form_email ) ? $global_email_form_email : $admin_email;
 			$form_name   = ! empty( $global_email_form_name ) ? $global_email_form_name : $site_name;
 			$email_sub   = ! empty( $global_email_subject ) ? $global_email_subject : 'Confirmation Email';
-			// Event Specific Text
-			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
-			$email_body       = ! empty( $event_email_text ) ? $event_email_text : $global_email_text;
-			if ( empty( $email_body ) && class_exists( 'MPWEM_Email_Settings_UI' ) ) {
-				$email_body = MPWEM_Email_Settings_UI::get_preset_template( 'confirmation' );
-			}
+			$email_body = mep_resolve_confirmation_email_body( $event_id, $global_email_text );
 			// Dynamic Content Replace
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter

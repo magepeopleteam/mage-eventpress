@@ -423,7 +423,7 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			}
 
 			// Confirmation email for completed orders
-			if ( $order_status === 'completed' && ! empty( $attendee_ids ) && function_exists( 'mep_event_confirmation_email_sent' ) ) {
+			if ( $order_status === 'completed' && ! empty( $attendee_ids ) && function_exists( 'mep_event_confirmation_email_sent' ) && function_exists( 'mep_should_send_billing_confirmation' ) && mep_should_send_billing_confirmation( 'completed' ) ) {
 				mep_event_confirmation_email_sent( $event_id, $billing_email, $order_id, $attendee_ids[0] );
 			}
 
@@ -554,7 +554,7 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 
 						if ( ! empty( $attendee_ids ) ) {
 							update_post_meta( $order_id, '_mep_attendee_ids', $attendee_ids );
-							if ( function_exists( 'mep_event_confirmation_email_sent' ) ) {
+							if ( function_exists( 'mep_event_confirmation_email_sent' ) && function_exists( 'mep_should_send_billing_confirmation' ) && mep_should_send_billing_confirmation( 'completed' ) ) {
 								mep_event_confirmation_email_sent( $event_id, $customer_email, $order_id, $attendee_ids[0] );
 							}
 							// Attendees now exist, so let the PDF Ticket addon send a

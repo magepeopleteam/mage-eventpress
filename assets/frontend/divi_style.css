@@ -1,4 +1,8 @@
 /* ******************************************** */
+#mage-container.mage .mpwem_details--has-readmore .mpwem_details_content.is-collapsed > .mpwem_details_readmore__overflow {
+  display: none !important;
+}
+
 #mage-container.mage .mp_wp_editor ul,
 #mage-container.mage .mp_wp_editor ol {
   list-style-type: inherit;
@@ -7803,4 +7807,3 @@
 	font-size: 1.2rem;
 	line-height: 1;
 }
-

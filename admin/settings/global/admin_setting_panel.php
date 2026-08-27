@@ -2116,6 +2116,27 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'    => 'mep_enable_description_read_more',
+								'label'   => __( 'Collapse Long Event Descriptions', 'mage-eventpress' ),
+								'desc'    => __( 'Show a Read More control for long event descriptions. Content is collapsed only between complete blocks so interactive blocks keep working.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
+								'name'    => 'mep_description_read_more_word_limit',
+								'label'   => __( 'Description Read More Word Limit', 'mage-eventpress' ),
+								'desc'    => __( 'Collapse descriptions longer than this many words. The visible excerpt may include a few extra words so HTML and interactive blocks are never split.', 'mage-eventpress' ),
+								'type'    => 'number',
+								'default' => 200,
+								'min'     => 1,
+								'max'     => 5000,
+								'step'    => 1,
+							),
+							array(
 								'name'    => 'mep_event_hide_description_title',
 								'label'   => __( 'Hide Description Title', 'mage-eventpress' ),
 								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),

@@ -32,6 +32,8 @@
 					'mep_event_hide_event_schedule_details',
 					'mep_event_hide_share_this_details',
 					'mep_event_hide_calendar_details',
+					'mep_enable_description_read_more',
+					'mep_description_read_more_word_limit',
 					'mep_event_hide_description_title',
 					'mep_event_hide_left_sidebar_title',
 					'mep_event_hide_time',
@@ -285,7 +287,16 @@
 							<p class="mep-el__row-desc"><?php echo esc_html( $hint ); ?></p>
 						<?php endif; ?>
 					</div>
-					<input type="text" class="mep-el__input" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( self::SECTION . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( is_scalar( $value ) ? $value : '' ); ?>" />
+					<input
+						type="<?php echo esc_attr( 'number' === $type ? 'number' : 'text' ); ?>"
+						class="mep-el__input"
+						id="<?php echo esc_attr( $id ); ?>"
+						name="<?php echo esc_attr( self::SECTION . '[' . $name . ']' ); ?>"
+						value="<?php echo esc_attr( is_scalar( $value ) ? $value : '' ); ?>"
+						<?php if ( 'number' === $type && isset( $field['min'] ) ) : ?>min="<?php echo esc_attr( $field['min'] ); ?>"<?php endif; ?>
+						<?php if ( 'number' === $type && isset( $field['max'] ) ) : ?>max="<?php echo esc_attr( $field['max'] ); ?>"<?php endif; ?>
+						<?php if ( 'number' === $type && isset( $field['step'] ) ) : ?>step="<?php echo esc_attr( $field['step'] ); ?>"<?php endif; ?>
+					/>
 				</div>
 				<?php
 			}

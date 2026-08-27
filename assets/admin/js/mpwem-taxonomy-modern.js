@@ -127,6 +127,13 @@
 		}
 
 		table.querySelectorAll('tbody tr').forEach(function (row) {
+			if (row.classList.contains('no-items')) {
+				var emptyCell = row.querySelector('td.colspanchange');
+				if (emptyCell) {
+					emptyCell.setAttribute('colspan', String(table.querySelectorAll('thead th, thead td').length));
+				}
+				return;
+			}
 			if (row.querySelector('td.column-mpwem-actions')) {
 				return;
 			}

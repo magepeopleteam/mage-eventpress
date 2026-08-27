@@ -702,6 +702,12 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	width: 28%;
 }
 
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th.column-mep_term_id,
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-mep_term_id {
+	width: 72px;
+	white-space: nowrap;
+}
+
 .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th.column-mep_term_events,
 .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-mep_term_events {
 	width: auto;

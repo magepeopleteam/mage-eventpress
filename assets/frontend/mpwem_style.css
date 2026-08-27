@@ -10075,8 +10075,8 @@ div.mpwem_style [data-bg-image] {
 	flex-direction: column;
 }
 
-.mpwem_details--has-readmore .mpwem_details_content.is-collapsed {
-	position: relative;
+.mpwem_details--has-readmore .mpwem_details_content.is-collapsed > .mpwem_details_readmore__overflow {
+	display: none !important;
 }
 
 .mpwem_details_readmore {

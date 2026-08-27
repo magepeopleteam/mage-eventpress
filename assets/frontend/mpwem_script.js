@@ -1890,56 +1890,26 @@ document.querySelectorAll('li').forEach(function(li) {
         return trimmed.split(' ').length;
     }
 
-    function mpwemTruncateNodeByWords(root, limit) {
-        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    function mpwemGetDescriptionOverflow(content, limit) {
         var count = 0;
-        var node;
         var reached = false;
+        var overflow = [];
 
-        while ((node = walker.nextNode())) {
-            var value = node.nodeValue;
-            if (!value || !value.replace(/\s+/g, '').length) {
-                if (reached) {
-                    node.nodeValue = '';
-                }
-                continue;
-            }
-
+        $(content).contents().each(function () {
             if (reached) {
-                node.nodeValue = '';
-                continue;
+                if (this.nodeType === 1) {
+                    overflow.push(this);
+                }
+                return;
             }
 
-            var parts = value.split(/(\s+)/);
-            var kept = '';
-            for (var i = 0; i < parts.length; i++) {
-                var part = parts[i];
-                if (part === '') {
-                    continue;
-                }
-                if (/^\s+$/.test(part)) {
-                    if (count > 0 && count < limit) {
-                        kept += part;
-                    }
-                    continue;
-                }
-                if (count >= limit) {
-                    reached = true;
-                    break;
-                }
-                count += 1;
-                kept += part;
-            }
-            node.nodeValue = kept;
-        }
-
-        // Remove emptied trailing elements for cleaner markup.
-        $(root).find('*').each(function () {
-            var $el = $(this);
-            if (!$el.text().trim() && !$el.is('img, br, hr, iframe, video, audio, svg, table')) {
-                $el.remove();
+            count += mpwemCountWords(this.textContent || '');
+            if (count >= limit) {
+                reached = true;
             }
         });
+
+        return overflow;
     }
 
     function mpwemInitDetailsReadMore() {
@@ -1956,7 +1926,6 @@ document.querySelectorAll('li').forEach(function(li) {
             }
 
             var limit = parseInt($wrap.attr('data-readmore-words'), 10) || 200;
-            var fullHtml = $content.html();
             var wordCount = mpwemCountWords($content.text());
 
             if (wordCount <= limit) {
@@ -1967,13 +1936,16 @@ document.querySelectorAll('li').forEach(function(li) {
                 return;
             }
 
-            var $clone = $('<div/>').html(fullHtml);
-            mpwemTruncateNodeByWords($clone.get(0), limit);
-            var shortHtml = $clone.html();
+            var overflow = mpwemGetDescriptionOverflow($content.get(0), limit);
+            if (!overflow.length) {
+                $button.remove();
+                $wrap.removeClass('mpwem_details--has-readmore');
+                $wrap.data('readmore-ready', true);
+                return;
+            }
 
-            $wrap.data('full-html', fullHtml);
-            $wrap.data('short-html', shortHtml);
-            $content.html(shortHtml).addClass('is-collapsed');
+            $(overflow).addClass('mpwem_details_readmore__overflow');
+            $content.addClass('is-collapsed');
             $wrap.addClass('is-collapsed').data('readmore-ready', true);
         });
     }
@@ -2022,11 +1994,11 @@ document.querySelectorAll('li').forEach(function(li) {
 
         var expanded = $wrap.hasClass('is-expanded');
         if (expanded) {
-            $content.html($wrap.data('short-html')).addClass('is-collapsed');
+            $content.addClass('is-collapsed');
             $wrap.removeClass('is-expanded').addClass('is-collapsed');
             $button.attr('aria-expanded', 'false');
         } else {
-            $content.html($wrap.data('full-html')).removeClass('is-collapsed');
+            $content.removeClass('is-collapsed');
             $wrap.addClass('is-expanded').removeClass('is-collapsed');
             $button.attr('aria-expanded', 'true');
         }

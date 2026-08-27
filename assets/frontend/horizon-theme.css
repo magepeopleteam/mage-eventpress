@@ -4459,6 +4459,16 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	background: #FFF8F8 !important;
 }
 
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_field_error {
+	display: block;
+	width: 100%;
+	margin-top: 7px;
+	color: #B91C1C;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
 .horizon_theme .horizon_attendee_drawer__body .mep_checkbox_item,
 .horizon_theme .horizon_attendee_drawer__body .mep_radio_item {
 	display: flex !important;

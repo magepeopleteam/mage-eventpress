@@ -317,7 +317,7 @@
 			}
 
 			/**
-			 * Speakers list: Image + Event columns (no Date / Description).
+			 * Speakers list: Image + ID + Event columns (no Date / Description).
 			 *
 			 * @param array $columns Existing columns.
 			 * @return array
@@ -335,6 +335,7 @@
 					if ( 'title' === $key ) {
 						$new['mep_speaker_image'] = __( 'Image', 'mage-eventpress' );
 						$new[ $key ]             = $label;
+						$new['mep_speaker_id']    = __( 'ID', 'mage-eventpress' );
 						$new['mep_speaker_event'] = __( 'Event', 'mage-eventpress' );
 						continue;
 					}
@@ -348,6 +349,9 @@
 				}
 				if ( ! isset( $new['mep_speaker_event'] ) ) {
 					$new['mep_speaker_event'] = __( 'Event', 'mage-eventpress' );
+				}
+				if ( ! isset( $new['mep_speaker_id'] ) ) {
+					$new['mep_speaker_id'] = __( 'ID', 'mage-eventpress' );
 				}
 				unset( $new['date'], $new['mep_speaker_desc'] );
 
@@ -380,6 +384,11 @@
 					} else {
 						echo '<span class="mpwem-speaker-list-thumb mpwem-speaker-list-thumb--empty" aria-hidden="true"><span class="dashicons dashicons-admin-users"></span></span>';
 					}
+					return;
+				}
+
+				if ( 'mep_speaker_id' === $column ) {
+					echo esc_html( (string) $post_id );
 					return;
 				}
 
@@ -583,7 +592,7 @@
 				if ( empty( $query->posts ) ) {
 					?>
 					<tr class="no-items">
-						<td class="colspanchange" colspan="5">
+						<td class="colspanchange" colspan="6">
 							<?php esc_html_e( 'No speakers found.', 'mage-eventpress' ); ?>
 						</td>
 					</tr>
@@ -677,6 +686,9 @@
 								</span>
 							<?php endif; ?>
 						</div>
+					</td>
+					<td class="mep_speaker_id column-mep_speaker_id" data-colname="<?php esc_attr_e( 'ID', 'mage-eventpress' ); ?>">
+						<?php echo esc_html( (string) $post_id ); ?>
 					</td>
 					<td class="mep_speaker_event column-mep_speaker_event" data-colname="<?php esc_attr_e( 'Event', 'mage-eventpress' ); ?>">
 						<?php $this->speaker_column_content( 'mep_speaker_event', $post_id ); ?>

@@ -172,8 +172,10 @@
 
 		table.querySelectorAll('tbody tr').forEach(function (row) {
 			if (row.classList.contains('no-items')) {
-				var emptyTd = el('td', { class: 'column-mpwem-actions' });
-				row.appendChild(emptyTd);
+				var emptyCell = row.querySelector('td.colspanchange');
+				if (emptyCell) {
+					emptyCell.setAttribute('colspan', String(table.querySelectorAll('thead th, thead td').length));
+				}
 				return;
 			}
 

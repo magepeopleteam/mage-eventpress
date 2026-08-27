@@ -803,6 +803,12 @@ body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-mep
 	vertical-align: middle;
 }
 
+body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap th.column-mep_speaker_id,
+body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-mep_speaker_id {
+	width: 72px;
+	white-space: nowrap;
+}
+
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap th.column-mep_speaker_desc,
 body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap td.column-mep_speaker_desc {
 	display: none;

@@ -108,6 +108,7 @@
 
 				$cols = [
 					'name'            => __( 'Name', 'mage-eventpress' ),
+					'mep_term_id'     => __( 'ID', 'mage-eventpress' ),
 					'mep_term_events' => __( 'Event', 'mage-eventpress' ),
 					'posts'           => __( 'Count', 'mage-eventpress' ),
 				];
@@ -115,6 +116,7 @@
 				if ( self::ORG_TAXONOMY === $taxonomy ) {
 					$cols = [
 						'name'            => __( 'Name', 'mage-eventpress' ),
+						'mep_term_id'     => __( 'ID', 'mage-eventpress' ),
 						'mep_term_events' => __( 'Event', 'mage-eventpress' ),
 						'posts'           => __( 'Count', 'mage-eventpress' ),
 					];
@@ -124,7 +126,7 @@
 			}
 
 			/**
-			 * Custom column content for Event + Email.
+			 * Custom column content for the modern taxonomy list.
 			 *
 			 * @param string $out         Existing output.
 			 * @param string $column_name Column key.
@@ -141,6 +143,10 @@
 					$email = get_term_meta( (int) $term_id, 'org_email', true );
 
 					return $email ? esc_html( $email ) : '&#8212;';
+				}
+
+				if ( 'mep_term_id' === $column_name ) {
+					return esc_html( (string) absint( $term_id ) );
 				}
 
 				if ( 'mep_term_events' === $column_name && in_array( $taxonomy, self::TAXONOMIES, true ) ) {
@@ -627,7 +633,7 @@
 				$bundle = $this->per_taxonomy_bundle( $taxonomy );
 				ob_start();
 				if ( empty( $query['terms'] ) ) {
-					$colspan = self::ORG_TAXONOMY === $taxonomy ? 4 : 5;
+					$colspan = 5;
 					?>
 					<tr class="no-items">
 						<td class="colspanchange" colspan="<?php echo esc_attr( $colspan ); ?>">
@@ -719,6 +725,9 @@
 								<span class="delete"><a class="delete-tag" href="#" data-term-delete="<?php echo esc_attr( $term_id ); ?>" data-term-name="<?php echo esc_attr( $term->name ); ?>"><?php esc_html_e( 'Delete', 'mage-eventpress' ); ?></a></span>
 							<?php endif; ?>
 						</div>
+					</td>
+					<td class="mep_term_id column-mep_term_id" data-colname="<?php esc_attr_e( 'ID', 'mage-eventpress' ); ?>">
+						<?php echo esc_html( (string) $term_id ); ?>
 					</td>
 					<td class="mep_term_events column-mep_term_events" data-colname="<?php esc_attr_e( 'Event', 'mage-eventpress' ); ?>">
 						<?php $this->render_term_event_cell( $term_id, $taxonomy ); ?>

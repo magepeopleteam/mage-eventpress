@@ -2976,6 +2976,7 @@ msgstr ""
 #: admin/MPWEM_Post_List_Modern.php:995
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:770
 #: inc/MPWEM_Hooks.php:819
+#: inc/MPWEM_Dependencies.php:458
 msgid "Please enter a valid email address."
 msgstr ""
 
@@ -10302,10 +10303,18 @@ msgid "Please complete attendee details before booking."
 msgstr ""
 
 #: inc/MPWEM_Dependencies.php:457
+msgid "Please complete this required field."
+msgstr ""
+
+#: inc/MPWEM_Dependencies.php:459
+msgid "Please enter a valid value."
+msgstr ""
+
+#: inc/MPWEM_Dependencies.php:460
 msgid "Attendee details added"
 msgstr ""
 
-#: inc/MPWEM_Dependencies.php:458
+#: inc/MPWEM_Dependencies.php:461
 #, php-format
 msgid "Attendees for %s"
 msgstr ""

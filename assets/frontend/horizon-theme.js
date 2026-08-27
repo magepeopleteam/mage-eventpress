@@ -635,37 +635,123 @@
 		});
 	}
 
-	function getRequiredAttendeeFields($root, ticketKey) {
-		return getAttendeeFields($root, ticketKey).filter(function () {
-			var $el = $(this);
-			return !!$el.prop('required') || $el.hasClass('mep-originally-required');
+	function isRequiredAttendeeField($el) {
+		return !!$el.prop('required') || $el.hasClass('mep-originally-required');
+	}
+
+	function isAttendeeFieldInvalid($el) {
+		var element = $el.get(0);
+		var type = ($el.attr('type') || '').toLowerCase();
+		var required = isRequiredAttendeeField($el);
+
+		if (element && typeof element.checkValidity === 'function' && !element.checkValidity()) {
+			return true;
+		}
+
+		if (!required) {
+			return false;
+		}
+
+		if (type === 'checkbox' || type === 'radio') {
+			var name = $el.attr('name');
+			var $group = $el.closest('.mp_form_item, .mep_checkbox_item, .groupCheckBox');
+			if ($group.length && name) {
+				return !$group.find('input').filter(function () {
+					return $(this).attr('name') === name && this.checked;
+				}).length && !$el.is(':checked');
+			}
+			return !$el.is(':checked');
+		}
+
+		return $.trim(String($el.val() || '')) === '';
+	}
+
+	function getAttendeeValidationMessage($el) {
+		var element = $el.get(0);
+		var validity = element && element.validity ? element.validity : null;
+		var type = ($el.attr('type') || '').toLowerCase();
+
+		if ((validity && validity.valueMissing) ||
+			(isRequiredAttendeeField($el) && $.trim(String($el.val() || '')) === '')) {
+			return i18n('attendeeRequiredField', 'Please complete this required field.');
+		}
+		if (validity && validity.typeMismatch && type === 'email') {
+			return i18n('attendeeInvalidEmail', 'Please enter a valid email address.');
+		}
+		if (element && element.validationMessage) {
+			return element.validationMessage;
+		}
+		return i18n('attendeeInvalidField', 'Please enter a valid value.');
+	}
+
+	function clearAttendeeFieldError($el) {
+		var errorId = $el.data('hz-validation-error-id');
+		$el.removeClass('is-hz-invalid').removeAttr('aria-invalid');
+
+		if (!errorId) {
+			return;
+		}
+
+		var describedBy = String($el.attr('aria-describedby') || '').split(/\s+/).filter(function (id) {
+			return id && id !== errorId;
 		});
+		if (describedBy.length) {
+			$el.attr('aria-describedby', describedBy.join(' '));
+		} else {
+			$el.removeAttr('aria-describedby');
+		}
+		$el.closest('.mp_form_item, .mep_checkbox_item, .groupCheckBox')
+			.find('.horizon_attendee_field_error')
+			.filter(function () {
+				return this.id === errorId;
+			})
+			.remove();
+		$el.removeData('hz-validation-error-id');
+	}
+
+	function showAttendeeFieldError($el) {
+		var $container = $el.closest('.mp_form_item, .mep_checkbox_item, .groupCheckBox').first();
+		var errorId = $el.data('hz-validation-error-id');
+		if (!errorId) {
+			errorId = 'horizon_attendee_error_' + Math.random().toString(36).slice(2, 10);
+			$el.data('hz-validation-error-id', errorId);
+		}
+
+		var $error = $container.find('.horizon_attendee_field_error').filter(function () {
+			return this.id === errorId;
+		}).first();
+		if (!$error.length) {
+			$error = $('<span class="horizon_attendee_field_error" role="alert"></span>')
+				.attr('id', errorId)
+				.appendTo($container);
+		}
+		$error.text(getAttendeeValidationMessage($el));
+
+		var describedBy = String($el.attr('aria-describedby') || '').split(/\s+/).filter(Boolean);
+		if (describedBy.indexOf(errorId) === -1) {
+			describedBy.push(errorId);
+		}
+		$el.addClass('is-hz-invalid')
+			.attr('aria-invalid', 'true')
+			.attr('aria-describedby', describedBy.join(' '));
+	}
+
+	function reportAttendeeFieldValidity($el) {
+		var element = $el && $el.get ? $el.get(0) : null;
+		if (element && typeof element.reportValidity === 'function') {
+			element.reportValidity();
+		}
 	}
 
 	function areAttendeeFieldsComplete($root, ticketKey) {
-		var $fields = getRequiredAttendeeFields($root, ticketKey);
+		var $fields = getAttendeeFields($root, ticketKey);
 		if (!$fields.length) {
 			return true;
 		}
 		var complete = true;
 		$fields.each(function () {
 			var $el = $(this);
-			var type = ($el.attr('type') || '').toLowerCase();
-			if (type === 'checkbox' || type === 'radio') {
-				var name = $el.attr('name');
-				var $group = $el.closest('.mp_form_item, .mep_checkbox_item, .groupCheckBox');
-				if ($group.length) {
-					if (!$group.find('input[name="' + name + '"]:checked').length && !$el.is(':checked')) {
-						complete = false;
-						return false;
-					}
-				} else if (!$el.is(':checked')) {
-					complete = false;
-					return false;
-				}
-				return;
-			}
-			if ($.trim(String($el.val() || '')) === '') {
+			if (isAttendeeFieldInvalid($el)) {
 				complete = false;
 				return false;
 			}
@@ -675,22 +761,14 @@
 
 	function markInvalidAttendeeFields($root, ticketKey) {
 		var $first = null;
-		getAttendeeFields($root, ticketKey).removeClass('is-hz-invalid');
-		getRequiredAttendeeFields($root, ticketKey).each(function () {
+		var $fields = getAttendeeFields($root, ticketKey);
+		$fields.each(function () {
+			clearAttendeeFieldError($(this));
+		});
+		$fields.each(function () {
 			var $el = $(this);
-			var type = ($el.attr('type') || '').toLowerCase();
-			var invalid = false;
-			if (type === 'checkbox' || type === 'radio') {
-				var name = $el.attr('name');
-				var $group = $el.closest('.mp_form_item, .mep_checkbox_item, .groupCheckBox');
-				invalid = $group.length
-					? !$group.find('input[name="' + name + '"]:checked').length && !$el.is(':checked')
-					: !$el.is(':checked');
-			} else {
-				invalid = $.trim(String($el.val() || '')) === '';
-			}
-			if (invalid) {
-				$el.addClass('is-hz-invalid');
+			if (isAttendeeFieldInvalid($el)) {
+				showAttendeeFieldError($el);
 				if (!$first) {
 					$first = $el;
 				}
@@ -1211,6 +1289,7 @@
 			if ($invalid && $invalid.length) {
 				openAttendeeDrawer($root, ticketKey);
 				$invalid.trigger('focus');
+				reportAttendeeFieldValidity($invalid);
 				return;
 			}
 			setTicketSaved($root, ticketKey, true);
@@ -1221,7 +1300,7 @@
 			'input.hzAttendeeChange change.hzAttendeeChange',
 			'.horizon_attendee_drawer__body input, .horizon_attendee_drawer__body select, .horizon_attendee_drawer__body textarea',
 			function () {
-				$(this).removeClass('is-hz-invalid');
+				clearAttendeeFieldError($(this));
 				var ticketKey = $(this).closest('.horizon_attendee_drawer').attr('data-hz-drawer-ticket') ||
 					$root.data('hz-active-ticket-key') || '';
 				if (ticketKey) {
@@ -1831,6 +1910,7 @@
 		var $invalid = markInvalidAttendeeFields($root, incompleteKey);
 		if ($invalid && $invalid.length) {
 			$invalid.trigger('focus');
+			reportAttendeeFieldValidity($invalid);
 		}
 		updateAttendeeStatusCards($root);
 	}, true);

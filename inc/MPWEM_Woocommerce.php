@@ -411,8 +411,8 @@
 				$order                = wc_get_order( $order_id );
 				$order_meta           = mep_get_order_meta_map( $order_id );
 				$email                = isset( $order_meta['_billing_email'][0] ) ? $order_meta['_billing_email'][0] : $order->get_billing_email();
-				$email_send_status    = mep_get_option( 'mep_email_sending_order_status', 'email_setting_sec', array( 'disable_email' => 'disable_email' ) );
-				$email_send_status    = ! empty( $email_send_status ) ? $email_send_status : array( 'disable_email' => 'disable_email' );
+				// Resolved centrally so the runtime agrees with the Email Settings screen.
+				$email_send_status    = mep_get_email_sending_order_statuses();
 				$enable_billing_email = mep_get_option( 'mep_send_confirmation_to_billing_email', 'email_setting_sec', 'enable' );
 				//  mep_email_sending_order_status
 				$order_status = $order->get_status();

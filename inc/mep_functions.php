@@ -844,6 +844,49 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 	}
 
+	if ( ! function_exists( 'mep_get_email_sending_order_statuses' ) ) {
+		/**
+		 * Order statuses that trigger the event confirmation email.
+		 *
+		 * The settings screen renders "Completed" ticked whenever the key has
+		 * never been saved, while every runtime caller defaulted to a
+		 * `disable_email` sentinel. A site that never opened that panel therefore
+		 * showed the trigger as on and sent nothing. Both sides now resolve from
+		 * here: a missing key means the default the screen displays, and a key
+		 * saved empty means the admin deliberately unticked every status.
+		 *
+		 * @return array List of sanitized order status keys.
+		 */
+		function mep_get_email_sending_order_statuses() {
+			$section  = get_option( 'email_setting_sec' );
+			$section  = is_array( $section ) ? $section : array();
+			$statuses = array_key_exists( 'mep_email_sending_order_status', $section )
+				? $section['mep_email_sending_order_status']
+				: array( 'completed' => 'completed' );
+			$statuses = is_array( $statuses ) ? $statuses : array();
+
+			// Legacy "off" sentinel from older defaults — never a real order status.
+			unset( $statuses['disable_email'] );
+
+			$statuses = array_filter( array_map( 'sanitize_key', array_values( $statuses ) ) );
+			$statuses = apply_filters( 'mep_email_sending_order_statuses', array_values( $statuses ) );
+
+			return is_array( $statuses ) ? array_values( $statuses ) : array();
+		}
+	}
+
+	if ( ! function_exists( 'mep_email_sends_on_order_status' ) ) {
+		/**
+		 * Whether the confirmation email is configured to fire on this status.
+		 *
+		 * @param string $order_status WooCommerce/native order status.
+		 * @return bool
+		 */
+		function mep_email_sends_on_order_status( $order_status ) {
+			return in_array( sanitize_key( $order_status ), mep_get_email_sending_order_statuses(), true );
+		}
+	}
+
 	if ( ! function_exists( 'mep_should_send_billing_confirmation' ) ) {
 		/**
 		 * Whether the global confirmation settings allow a billing email now.
@@ -856,10 +899,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				return false;
 			}
 
-			$statuses = mep_get_option( 'mep_email_sending_order_status', 'email_setting_sec', array( 'disable_email' => 'disable_email' ) );
-			$statuses = is_array( $statuses ) ? $statuses : array();
-
-			return in_array( sanitize_key( $order_status ), array_map( 'sanitize_key', $statuses ), true );
+			return mep_email_sends_on_order_status( $order_status );
 		}
 	}
 

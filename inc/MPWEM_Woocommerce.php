@@ -21,6 +21,8 @@
 				add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_changed' ), 10, 4 );
 				add_action( 'woocommerce_checkout_order_processed', array( $this, 'checkout_order_processed' ), 90 );
 				add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'checkout_order_processed' ), 90 );
+				add_action( 'woocommerce_paypal_payments_woocommerce_order_created_from_cart', array( $this, 'express_order_created_from_cart' ), 10, 2 );
+				add_action( 'woocommerce_order_status_changed', array( $this, 'repair_orphan_event_booking' ), 5, 4 );
 				/**********************************************/
 				// Old dashboard - Replaced by MPWEM_My_Account_Dashboard
 				// add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
@@ -278,6 +280,238 @@
 			}
 			public function checkout_create_order_line_item( $item, $cart_item_key, $values, $order ) {
 				self::add_event_line_item_meta( $item, $values );
+			}
+			/**
+			 * Rebuild the booking on an order that was created outside WooCommerce checkout.
+			 *
+			 * WooCommerce PayPal Payments' express buttons (the product, cart and express
+			 * checkout placements) never run WC_Checkout - they hand-build the order in
+			 * Button\Helper\WooCommerceOrderCreator, copying only the product, quantity and
+			 * totals onto each line item. So neither woocommerce_checkout_create_order_line_item
+			 * nor woocommerce_checkout_order_processed fires: the line item loses event_id,
+			 * _event_ticket_info and _event_user_info, no attendee is ever created, and the
+			 * order never appears on the event. The payment still succeeds, so the booking
+			 * disappears silently.
+			 *
+			 * PayPal does fire this action once it has built the order, handing over the cart
+			 * it used - WC_Cart::get_cart_for_session(), which keeps our custom cart keys - and
+			 * it stamps every line item with _bundle_cart_key, the cart item key, so each line
+			 * item maps back to the cart item it came from. That pairing is enough to run the
+			 * two skipped steps and leave the order identical to a checkout-placed one.
+			 *
+			 * @param WC_Order $order     Order PayPal has just created.
+			 * @param object   $cart_data CartData wrapper around the cart it was built from.
+			 * @return void
+			 */
+			public function express_order_created_from_cart( $order, $cart_data ) {
+				if ( ! is_a( $order, 'WC_Order' ) || ! is_object( $cart_data ) || ! method_exists( $cart_data, 'items' ) ) {
+					return;
+				}
+				$cart_items = $cart_data->items();
+				if ( ! is_array( $cart_items ) || sizeof( $cart_items ) == 0 ) {
+					return;
+				}
+				$rebuilt = false;
+				$claimed = [];
+				foreach ( $order->get_items() as $item ) {
+					if ( ! is_a( $item, 'WC_Order_Item_Product' ) || $item->get_meta( 'event_id' ) ) {
+						continue; // Already carries a booking, nothing to rebuild.
+					}
+					$cart_key = $item->get_meta( '_bundle_cart_key' );
+					if ( ! $cart_key || ! array_key_exists( $cart_key, $cart_items ) ) {
+						$cart_key = self::match_cart_item_by_product( $item, $cart_items, $claimed );
+					}
+					if ( ! $cart_key ) {
+						continue;
+					}
+					$values   = $cart_items[ $cart_key ];
+					$event_id = is_array( $values ) && array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0;
+					if ( get_post_type( $event_id ) != 'mep_events' ) {
+						continue;
+					}
+					$claimed[ $cart_key ] = true;
+					self::add_event_line_item_meta( $item, $values );
+					$item->save();
+					$rebuilt = true;
+				}
+				if ( $rebuilt ) {
+					$order->save();
+					$this->checkout_order_processed( $order->get_id() );
+				}
+			}
+			/**
+			 * Fall back to pairing a line item with its cart item on product id.
+			 *
+			 * Only used when _bundle_cart_key is absent - older and future PayPal releases
+			 * are not obliged to set it. Claimed keys are skipped so that two line items for
+			 * the same event (the same event booked twice on different dates) cannot both
+			 * resolve to the same cart item.
+			 *
+			 * @param WC_Order_Item_Product $item       Line item being matched.
+			 * @param array                 $cart_items Cart items keyed by cart item key.
+			 * @param array                 $claimed    Cart item keys already paired off.
+			 * @return string Matching cart item key, or '' when there is no unambiguous match.
+			 */
+			private static function match_cart_item_by_product( $item, $cart_items, $claimed ) {
+				foreach ( $cart_items as $key => $values ) {
+					if ( array_key_exists( $key, $claimed ) || ! is_array( $values ) ) {
+						continue;
+					}
+					$product_id   = array_key_exists( 'product_id', $values ) ? (int) $values['product_id'] : 0;
+					$variation_id = array_key_exists( 'variation_id', $values ) ? (int) $values['variation_id'] : 0;
+					if ( $product_id == (int) $item->get_product_id() && $variation_id == (int) $item->get_variation_id() ) {
+						return $key;
+					}
+				}
+				return '';
+			}
+			/**
+			 * Last-resort repair for a paid order whose event booking never got attached.
+			 *
+			 * express_order_created_from_cart() covers PayPal, but any gateway that builds the
+			 * order itself instead of running WC_Checkout has the same hole, and a booking lost
+			 * that way is invisible: the payment succeeds, the customer gets a normal order
+			 * email, and only the event organiser eventually notices the attendee is missing.
+			 * This runs on every status change and rebuilds anything still orphaned, so a
+			 * booking can never silently disappear again.
+			 *
+			 * What it can rebuild is limited by what survives on the order. The registration
+			 * form answers only ever existed in the cart session, so they are gone for good;
+			 * the event, ticket type, quantity, price and date are all recoverable. Leaving
+			 * event_user_info empty makes checkout_order_processed() fall back to EventPress's
+			 * own billing-details attendee, which is the same thing it does for an event that
+			 * collects no registration form. An order note records what happened so staff know
+			 * to collect the missing answers.
+			 *
+			 * Runs before order_status_changed() (priority 10) so that once an order is
+			 * repaired the normal status handling sees an ordinary booking.
+			 *
+			 * @param int      $order_id    Order being transitioned.
+			 * @param string   $from_status Previous status.
+			 * @param string   $to_status   New status.
+			 * @param WC_Order $order       Order object.
+			 * @return void
+			 */
+			public function repair_orphan_event_booking( $order_id, $from_status, $to_status, $order ) {
+				$skip_status = apply_filters( 'mep_skip_booking_repair_status', array( 'failed', 'cancelled', 'refunded', 'trash', 'draft', 'checkout-draft' ) );
+				if ( in_array( $to_status, $skip_status, true ) ) {
+					return;
+				}
+				if ( ! is_a( $order, 'WC_Order' ) ) {
+					$order = wc_get_order( $order_id );
+				}
+				if ( ! is_a( $order, 'WC_Order' ) || $order->get_meta( '_mep_booking_auto_repaired' ) ) {
+					return;
+				}
+				$repaired = [];
+				foreach ( $order->get_items() as $item ) {
+					if ( ! is_a( $item, 'WC_Order_Item_Product' ) || $item->get_meta( 'event_id' ) ) {
+						continue;
+					}
+					$event_id = self::resolve_event_for_product( $item->get_product_id() );
+					if ( ! $event_id ) {
+						continue; // Ordinary product, nothing to do.
+					}
+					$ticket_info = self::rebuild_ticket_info( $item, $event_id );
+					if ( sizeof( $ticket_info ) == 0 ) {
+						continue;
+					}
+					$event_date = array_key_exists( 'event_date', $ticket_info[0] ) ? $ticket_info[0]['event_date'] : '';
+					self::add_event_line_item_meta( $item, array(
+						'event_id'            => $event_id,
+						'event_ticket_info'   => $ticket_info,
+						'event_user_info'     => [],
+						'event_extra_service' => [],
+						'event_extra_option'  => [],
+						'event_cart_location' => '',
+						'event_cart_date'     => $event_date,
+					) );
+					$item->save();
+					$repaired[] = get_the_title( $event_id );
+				}
+				if ( sizeof( $repaired ) == 0 ) {
+					return;
+				}
+				$order->update_meta_data( '_mep_booking_auto_repaired', current_time( 'mysql' ) );
+				$order->save();
+				$order->add_order_note( sprintf(
+				/* translators: %s: comma separated list of event names. */
+					esc_html__( 'EventPress: this order reached the site without its booking details, so the booking has been rebuilt automatically for %s. The attendee was created from the billing details - the registration form answers were not recoverable and need to be collected from the customer.', 'mage-eventpress' ),
+					implode( ', ', $repaired )
+				) );
+				do_action( 'mep_event_booking_repaired', $order->get_id(), $repaired );
+				$this->checkout_order_processed( $order->get_id() );
+			}
+			/**
+			 * Resolve the event a purchased product belongs to.
+			 *
+			 * @param int $product_id Purchased product id.
+			 * @return int Event id, or 0 when the product is not an event product.
+			 */
+			private static function resolve_event_for_product( $product_id ) {
+				if ( ! $product_id ) {
+					return 0;
+				}
+				if ( get_post_type( $product_id ) == 'mep_events' ) {
+					return (int) $product_id;
+				}
+				$event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', 0 );
+				return get_post_type( $event_id ) == 'mep_events' ? (int) $event_id : 0;
+			}
+			/**
+			 * Reconstruct the ticket payload for a line item that lost it.
+			 *
+			 * The ticket type is identified by matching the price actually paid against the
+			 * event's ticket types, which is exact whenever the prices differ. When nothing
+			 * matches - a since-edited price, or a ticket type that has been removed - the
+			 * price paid is kept and the first ticket type lends its name, so the booking is
+			 * still recorded rather than dropped.
+			 *
+			 * @param WC_Order_Item_Product $item     Line item being rebuilt.
+			 * @param int                   $event_id Event the item belongs to.
+			 * @return array Ticket info payload, shaped as the cart would have built it.
+			 */
+			private static function rebuild_ticket_info( $item, $event_id ) {
+				$qty = (int) $item->get_quantity();
+				if ( $qty < 1 ) {
+					$qty = 1;
+				}
+				$unit_price   = round( (float) $item->get_subtotal() / $qty, 2 );
+				$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+				$ticket_name  = '';
+				$fallback     = '';
+				if ( is_array( $ticket_types ) ) {
+					foreach ( $ticket_types as $ticket_type ) {
+						if ( ! is_array( $ticket_type ) || ! array_key_exists( 'option_name_t', $ticket_type ) ) {
+							continue;
+						}
+						$name = html_entity_decode( urldecode( $ticket_type['option_name_t'] ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+						if ( ! $name ) {
+							continue;
+						}
+						$fallback = $fallback ? $fallback : $name;
+						$price    = array_key_exists( 'option_price_t', $ticket_type ) ? round( (float) $ticket_type['option_price_t'], 2 ) : 0;
+						if ( abs( $price - $unit_price ) < 0.01 ) {
+							$ticket_name = $name;
+							break;
+						}
+					}
+				}
+				$ticket_name = $ticket_name ? $ticket_name : $fallback;
+				if ( ! $ticket_name ) {
+					$ticket_name = $item->get_name();
+				}
+				$event_date = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_datetime', '' );
+				return array(
+					array(
+						'ticket_name'  => $ticket_name,
+						'ticket_price' => $unit_price,
+						'ticket_qty'   => $qty,
+						'max_qty'      => 0,
+						'event_date'   => $event_date,
+						'event_id'     => (string) $event_id,
+					),
+				);
 			}
 			/**
 			 * Attach the event booking details to a WooCommerce order line item.

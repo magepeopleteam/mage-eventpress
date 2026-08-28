@@ -307,14 +307,27 @@ class MEP_Custom_Orders_Page {
 			'source'    => 'all',
 		) );
 
-		$data = array();
+		$data  = array();
+		$batch = self::hydrate_batch_size();
 
 		/* ---- Custom (native) orders ---- */
 		if ( in_array( $filters['source'], array( 'all', 'mep_custom_order' ), true ) ) {
 			$query_args = array(
-				'post_type'      => 'mep_custom_order',
-				'post_status'    => 'any',
-				'posts_per_page' => -1,
+				'post_type'              => 'mep_custom_order',
+				'post_status'            => 'any',
+				// Walked in bounded batches. The previous posts_per_page => -1 query hydrated
+				// every order post plus its meta in one go, which exhausts PHP memory on a
+				// store with real order history and takes the screen down with "There has
+				// been a critical error on this website." Post objects are kept (rather than
+				// 'fields' => 'ids') so WP_Query still primes the post and meta caches for
+				// each batch in one query - an ID-only query would turn every get_post_meta()
+				// below into its own round trip.
+				'posts_per_page'         => $batch,
+				'orderby'                => 'ID',
+				'order'                  => 'DESC',
+				'no_found_rows'          => true,
+				'ignore_sticky_posts'    => true,
+				'update_post_term_cache' => false,
 			);
 
 			if ( $filters['status'] ) {
@@ -353,56 +366,67 @@ class MEP_Custom_Orders_Page {
 				$query_args['date_query']['inclusive'] = true;
 			}
 
-			$q = new WP_Query( $query_args );
-			while ( $q->have_posts() ) {
-				$q->the_post();
-				$id             = get_the_ID();
-				$event_id       = (int) get_post_meta( $id, '_mep_event_id', true );
-				$event_name     = $event_id ? get_the_title( $event_id ) : '-';
-				$gateway        = get_post_meta( $id, '_mep_payment_gateway', true );
-				$total_raw      = (float) get_post_meta( $id, '_mep_order_total', true );
-				$customer_phone = get_post_meta( $id, '_mep_customer_phone', true );
+			$date_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+			$offset      = 0;
 
-				// Always prefer WP user account data for the Customer column so it
-				// is clearly distinct from the attendee form field values.
-				$booker_id      = (int) get_post_meta( $id, '_mep_user_id', true );
-				$booker         = $booker_id ? get_userdata( $booker_id ) : false;
-				$customer_name  = $booker ? $booker->display_name : get_post_meta( $id, '_mep_customer_name', true );
-				$customer_email = $booker ? $booker->user_email   : get_post_meta( $id, '_mep_customer_email', true );
+			do {
+				$query_args['offset'] = $offset;
 
-				$raw_status   = get_post_status();
-				$order_status = self::payment_status_label( $raw_status );
-				$form_fields  = (array) get_post_meta( $id, '_mep_attendee_form_fields', true );
-				$timestamp    = get_post_time( 'U', true );
+				$q       = new WP_Query( $query_args );
+				$posts   = $q->posts;
+				$fetched = count( $posts );
 
-				// Free-text search
-				if ( $filters['search'] ) {
-					$s = strtolower( $filters['search'] );
-					$haystack = strtolower( $customer_name . ' ' . $customer_email . ' ' . $id );
-					if ( strpos( $haystack, $s ) === false ) {
-						continue;
+				foreach ( $posts as $order_post ) {
+					$id             = (int) $order_post->ID;
+					$event_id       = (int) get_post_meta( $id, '_mep_event_id', true );
+					$event_name     = $event_id ? get_the_title( $event_id ) : '-';
+					$gateway        = get_post_meta( $id, '_mep_payment_gateway', true );
+					$total_raw      = (float) get_post_meta( $id, '_mep_order_total', true );
+					$customer_phone = get_post_meta( $id, '_mep_customer_phone', true );
+
+					// Always prefer WP user account data for the Customer column so it
+					// is clearly distinct from the attendee form field values.
+					$booker_id      = (int) get_post_meta( $id, '_mep_user_id', true );
+					$booker         = $booker_id ? get_userdata( $booker_id ) : false;
+					$customer_name  = $booker ? $booker->display_name : get_post_meta( $id, '_mep_customer_name', true );
+					$customer_email = $booker ? $booker->user_email   : get_post_meta( $id, '_mep_customer_email', true );
+
+					$raw_status   = get_post_status( $id );
+					$order_status = self::payment_status_label( $raw_status );
+					$form_fields  = (array) get_post_meta( $id, '_mep_attendee_form_fields', true );
+					$timestamp    = get_post_time( 'U', true, $id );
+
+					// Free-text search
+					if ( $filters['search'] ) {
+						$s = strtolower( $filters['search'] );
+						$haystack = strtolower( $customer_name . ' ' . $customer_email . ' ' . $id );
+						if ( strpos( $haystack, $s ) === false ) {
+							continue;
+						}
 					}
+
+					$data[] = array(
+						'ID'              => $id,
+						'source'          => 'mep_custom_order',
+						'order_status'    => $order_status,
+						'raw_status'      => $raw_status,
+						'customer_name'   => $customer_name,
+						'customer_email'  => $customer_email,
+						'customer_phone'  => $customer_phone,
+						'event_id'        => $event_id,
+						'event'           => $event_name,
+						'total_raw'       => $total_raw,
+						'total'           => self::format_price( $total_raw ),
+						'gateway'         => $gateway ?: '-',
+						'date'            => get_the_date( $date_format, $id ),
+						'timestamp'       => $timestamp,
+						'attendee_info'   => $form_fields,
+					);
 				}
 
-				$data[] = array(
-					'ID'              => $id,
-					'source'          => 'mep_custom_order',
-					'order_status'    => $order_status,
-					'raw_status'      => $raw_status,
-					'customer_name'   => $customer_name,
-					'customer_email'  => $customer_email,
-					'customer_phone'  => $customer_phone,
-					'event_id'        => $event_id,
-					'event'           => $event_name,
-					'total_raw'       => $total_raw,
-					'total'           => self::format_price( $total_raw ),
-					'gateway'         => $gateway ?: '-',
-					'date'            => get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
-					'timestamp'       => $timestamp,
-					'attendee_info'   => $form_fields,
-				);
-			}
-			wp_reset_postdata();
+				unset( $q, $posts );
+				$offset += $batch;
+			} while ( $fetched === $batch );
 		}
 
 		/* ---- WooCommerce orders ---- */
@@ -413,10 +437,15 @@ class MEP_Custom_Orders_Page {
 			// live in wp_wc_orders instead of wp_posts. wc_get_orders() is the
 			// storage-agnostic API that works correctly either way.
 			$wc_args = array(
-				'limit'  => -1,
-				'status' => 'any',
-				'type'   => 'shop_order',
-				'return' => 'objects',
+				'limit'   => -1,
+				'status'  => 'any',
+				'type'    => 'shop_order',
+				// IDs only. Hydrating every WC_Order up front - each one pulling its own
+				// line items - is the single largest memory cost on this screen. Orders
+				// are hydrated one at a time in the batched loop below and released after.
+				'return'  => 'ids',
+				'orderby' => 'ID',
+				'order'   => 'DESC',
 			);
 
 			if ( $filters['status'] ) {
@@ -433,78 +462,85 @@ class MEP_Custom_Orders_Page {
 				$wc_args['date_created'] = '<=' . $filters['date_to'];
 			}
 
-			$wc_orders = wc_get_orders( $wc_args );
-			foreach ( $wc_orders as $order ) {
-				if ( ! $order instanceof WC_Order ) {
-					continue;
-				}
-				$id = $order->get_id();
+			$wc_ids = wc_get_orders( $wc_args );
 
-				$has_event   = false;
-				$event_names = array();
-				$matched_eid = 0;
-				foreach ( $order->get_items() as $item ) {
-					// Order-item meta lives in its own CRUD store (wp_woocommerce_order_itemmeta),
-					// never in wp_postmeta — $item->get_meta() is the correct read, not get_post_meta().
-					$eid = (int) $item->get_meta( 'event_id' );
-					if ( $eid ) {
-						$has_event     = true;
-						$matched_eid   = $eid;
-						$event_names[] = get_the_title( $eid );
-					}
-				}
-
-				if ( ! $has_event ) {
-					continue;
-				}
-
-				// Event filter
-				if ( $filters['event_id'] && (int) $filters['event_id'] !== $matched_eid ) {
-					continue;
-				}
-
-				$customer_name  = trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() );
-				$customer_email = $order->get_billing_email();
-				$customer_phone = $order->get_billing_phone();
-				$gateway        = $order->get_payment_method_title();
-				$total_raw      = (float) $order->get_total();
-				$order_status   = wc_get_order_status_name( $order->get_status() );
-				$timestamp      = $order->get_date_created() ? $order->get_date_created()->getTimestamp() : 0;
-
-				// Gateway filter
-				if ( $filters['gateway'] && strtolower( $gateway ) !== strtolower( $filters['gateway'] ) ) {
-					continue;
-				}
-
-				// Free-text search
-				if ( $filters['search'] ) {
-					$s        = strtolower( $filters['search'] );
-					$haystack = strtolower( $customer_name . ' ' . $customer_email . ' ' . $id );
-					if ( strpos( $haystack, $s ) === false ) {
+			foreach ( array_chunk( (array) $wc_ids, $batch ) as $chunk ) {
+				foreach ( $chunk as $wc_id ) {
+					$order = wc_get_order( $wc_id );
+					if ( ! $order instanceof WC_Order ) {
 						continue;
 					}
-				}
+					$id = $order->get_id();
 
-				$data[] = array(
-					'ID'              => $id,
-					'source'          => 'shop_order',
-					'order_status'    => $order_status,
-					'raw_status'      => $order->get_status(),
-					'customer_name'   => $customer_name,
-					'customer_email'  => $customer_email,
-					'customer_phone'  => $customer_phone,
-					'event_id'        => $matched_eid,
-					'event'           => implode( ', ', $event_names ),
-					'total_raw'       => $total_raw,
-					'total'           => $order->get_formatted_order_total(),
-					'gateway'         => $gateway ?: '-',
-					'date'            => $order->get_date_created()
-						? $order->get_date_created()->date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) )
-						: '-',
-					'timestamp'       => $timestamp,
-					'attendee_info'   => array(),
-				);
+					$has_event   = false;
+					$event_names = array();
+					$matched_eid = 0;
+					foreach ( $order->get_items() as $item ) {
+						// Order-item meta lives in its own CRUD store (wp_woocommerce_order_itemmeta),
+						// never in wp_postmeta — $item->get_meta() is the correct read, not get_post_meta().
+						$eid = (int) $item->get_meta( 'event_id' );
+						if ( $eid ) {
+							$has_event     = true;
+							$matched_eid   = $eid;
+							$event_names[] = get_the_title( $eid );
+						}
+					}
+
+					if ( ! $has_event ) {
+						continue;
+					}
+
+					// Event filter
+					if ( $filters['event_id'] && (int) $filters['event_id'] !== $matched_eid ) {
+						continue;
+					}
+
+					$customer_name  = trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() );
+					$customer_email = $order->get_billing_email();
+					$customer_phone = $order->get_billing_phone();
+					$gateway        = $order->get_payment_method_title();
+					$total_raw      = (float) $order->get_total();
+					$order_status   = wc_get_order_status_name( $order->get_status() );
+					$timestamp      = $order->get_date_created() ? $order->get_date_created()->getTimestamp() : 0;
+
+					// Gateway filter
+					if ( $filters['gateway'] && strtolower( $gateway ) !== strtolower( $filters['gateway'] ) ) {
+						continue;
+					}
+
+					// Free-text search
+					if ( $filters['search'] ) {
+						$s        = strtolower( $filters['search'] );
+						$haystack = strtolower( $customer_name . ' ' . $customer_email . ' ' . $id );
+						if ( strpos( $haystack, $s ) === false ) {
+							continue;
+						}
+					}
+
+					$data[] = array(
+						'ID'              => $id,
+						'source'          => 'shop_order',
+						'order_status'    => $order_status,
+						'raw_status'      => $order->get_status(),
+						'customer_name'   => $customer_name,
+						'customer_email'  => $customer_email,
+						'customer_phone'  => $customer_phone,
+						'event_id'        => $matched_eid,
+						'event'           => implode( ', ', $event_names ),
+						'total_raw'       => $total_raw,
+						'total'           => $order->get_formatted_order_total(),
+						'gateway'         => $gateway ?: '-',
+						'date'            => $order->get_date_created()
+							? $order->get_date_created()->date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) )
+							: '-',
+						'timestamp'       => $timestamp,
+						'attendee_info'   => array(),
+					);
+				}
+				self::release_order_cache();
 			}
+
+			unset( $wc_ids );
 		}
 
 		// Newest order first, by order ID (descending).
@@ -513,6 +549,32 @@ class MEP_Custom_Orders_Page {
 		} );
 
 		return $data;
+	}
+
+	/**
+	 * How many orders to hydrate per batch while walking the order list.
+	 *
+	 * Peak memory on this screen is driven by how many order objects are alive at
+	 * once, not by how many rows end up in the table. Sites with unusual memory
+	 * limits can tune this; the default suits the common 256M admin limit.
+	 */
+	private static function hydrate_batch_size() {
+		$size = (int) apply_filters( 'mep_orders_hydrate_batch_size', 200 );
+		return $size > 0 ? $size : 200;
+	}
+
+	/**
+	 * Drop WooCommerce's hydrated-order cache between batches.
+	 *
+	 * Releasing each WC_Order is not enough on its own: WooCommerce also keeps them
+	 * in the "orders" cache group, so a long walk keeps growing even though every
+	 * object has gone out of scope. Guarded because flush_group support depends on
+	 * the object-cache backend in use.
+	 */
+	private static function release_order_cache() {
+		if ( function_exists( 'wp_cache_supports' ) && wp_cache_supports( 'flush_group' ) ) {
+			wp_cache_flush_group( 'orders' );
+		}
 	}
 
 	private static function payment_status_label( $post_status ) {

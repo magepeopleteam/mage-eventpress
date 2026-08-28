@@ -2202,7 +2202,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Email Subject', 'mage-eventpress' ),
 								'desc'    => __( 'Subject line for the confirmation email.', 'mage-eventpress' ),
 								'type'    => 'text',
-								'default' => 'Event Notification'
+								'default' => 'Confirmation Email'
 							),
 							array(
 								'name'    => 'mep_confirmation_email_text',

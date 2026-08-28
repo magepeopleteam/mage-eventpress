@@ -844,6 +844,120 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 	}
 
+	if ( ! function_exists( 'mep_normalize_order_status_list' ) ) {
+		/**
+		 * Reduce a stored multicheck value to a plain list of status slugs.
+		 *
+		 * These settings are declared as multicheck, so a saved value is normally
+		 * a slug => slug map. Values written by the addon upgrade routines are
+		 * plain strings instead, which a naive is_array() check throws away. Take
+		 * both shapes, plus a comma separated string, and return one list.
+		 *
+		 * @param mixed $value Raw option value.
+		 * @return array List of sanitized status keys.
+		 */
+		function mep_normalize_order_status_list( $value ) {
+			if ( is_string( $value ) ) {
+				$value = '' === trim( $value ) ? array() : explode( ',', $value );
+			}
+
+			if ( ! is_array( $value ) ) {
+				return array();
+			}
+
+			// Legacy "off" sentinel from older defaults — never a real order status.
+			unset( $value['disable_email'] );
+
+			$statuses = array_map( 'sanitize_key', array_values( $value ) );
+			$statuses = array_filter( $statuses, function ( $status ) {
+				return '' !== $status && 'disable_email' !== $status;
+			} );
+
+			return array_values( array_unique( $statuses ) );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_email_sending_order_statuses' ) ) {
+		/**
+		 * Order statuses that trigger the event confirmation email.
+		 *
+		 * The settings screen renders "Completed" ticked whenever the key has
+		 * never been saved, while every runtime caller defaulted to a
+		 * `disable_email` sentinel. A site that never opened that panel therefore
+		 * showed the trigger as on and sent nothing. Both sides now resolve from
+		 * here: a missing key means the default the screen displays, and a key
+		 * saved empty means the admin deliberately unticked every status.
+		 *
+		 * @return array List of sanitized order status keys.
+		 */
+		function mep_get_email_sending_order_statuses() {
+			$section  = get_option( 'email_setting_sec' );
+			$section  = is_array( $section ) ? $section : array();
+			$statuses = array_key_exists( 'mep_email_sending_order_status', $section )
+				? mep_normalize_order_status_list( $section['mep_email_sending_order_status'] )
+				: array( 'completed' );
+
+			$statuses = apply_filters( 'mep_email_sending_order_statuses', $statuses );
+
+			return is_array( $statuses ) ? array_values( $statuses ) : array();
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_pdf_email_statuses' ) ) {
+		/**
+		 * Order statuses that send the PDF ticket email.
+		 *
+		 * The upgrade routine writes this key as a plain string, while the
+		 * settings screen reads it as a multicheck map and discarded anything
+		 * that was not already an array — so a migrated site saw every box
+		 * unticked while the sender was still bound to the migrated status, and
+		 * saving that panel wiped the binding for good. Normalize instead of
+		 * discarding. There is no invented default: an unset key means off, which
+		 * is what the screen has always shown.
+		 *
+		 * @return array List of sanitized status keys.
+		 */
+		function mep_get_pdf_email_statuses() {
+			$section = get_option( 'mep_pdf_email_settings' );
+			$section = is_array( $section ) ? $section : array();
+			$value   = array_key_exists( 'mep_pdf_email_status', $section ) ? $section['mep_pdf_email_status'] : array();
+
+			return mep_normalize_order_status_list( $value );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_confirmation_email_subject' ) ) {
+		/**
+		 * Subject line for the event confirmation email.
+		 *
+		 * The sender fell back to "Confirmation Email" while the settings screen
+		 * advertised "Event Notification", so an admin who never saved a subject
+		 * was shown a subject their customers never received. The sender's string
+		 * wins because that is what has actually been delivered; the screen now
+		 * resolves the same way instead of the default being written twice.
+		 *
+		 * @return string
+		 */
+		function mep_get_confirmation_email_subject() {
+			$subject = mep_get_option( 'mep_email_subject', 'email_setting_sec', '' );
+			$subject = is_string( $subject ) ? trim( $subject ) : '';
+
+			return '' !== $subject ? $subject : __( 'Confirmation Email', 'mage-eventpress' );
+		}
+	}
+
+	if ( ! function_exists( 'mep_email_sends_on_order_status' ) ) {
+		/**
+		 * Whether the confirmation email is configured to fire on this status.
+		 *
+		 * @param string $order_status WooCommerce/native order status.
+		 * @return bool
+		 */
+		function mep_email_sends_on_order_status( $order_status ) {
+			return in_array( sanitize_key( $order_status ), mep_get_email_sending_order_statuses(), true );
+		}
+	}
+
 	if ( ! function_exists( 'mep_should_send_billing_confirmation' ) ) {
 		/**
 		 * Whether the global confirmation settings allow a billing email now.
@@ -856,10 +970,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				return false;
 			}
 
-			$statuses = mep_get_option( 'mep_email_sending_order_status', 'email_setting_sec', array( 'disable_email' => 'disable_email' ) );
-			$statuses = is_array( $statuses ) ? $statuses : array();
-
-			return in_array( sanitize_key( $order_status ), array_map( 'sanitize_key', $statuses ), true );
+			return mep_email_sends_on_order_status( $order_status );
 		}
 	}
 
@@ -870,13 +981,12 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$global_email_text       = mep_get_option( 'mep_confirmation_email_text', 'email_setting_sec', '' );
 			$global_email_form_email = mep_get_option( 'mep_email_form_email', 'email_setting_sec', '' );
 			$global_email_form_name  = mep_get_option( 'mep_email_form_name', 'email_setting_sec', '' );
-			$global_email_subject    = mep_get_option( 'mep_email_subject', 'email_setting_sec', '' );
 			// Site Info
 			$admin_email = get_option( 'admin_email' );
 			$site_name   = get_option( 'blogname' );
 			$form_email  = ! empty( $global_email_form_email ) ? $global_email_form_email : $admin_email;
 			$form_name   = ! empty( $global_email_form_name ) ? $global_email_form_name : $site_name;
-			$email_sub   = ! empty( $global_email_subject ) ? $global_email_subject : 'Confirmation Email';
+			$email_sub   = mep_get_confirmation_email_subject();
 			$email_body = mep_resolve_confirmation_email_body( $event_id, $global_email_text );
 			// Dynamic Content Replace
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );

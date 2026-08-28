@@ -1487,7 +1487,7 @@ class MEP_Custom_Orders_Page {
 		global $meppdf;
 		if ( is_object( $meppdf ) && method_exists( $meppdf, 'get_invoice_ajax_url' ) ) {
 			$status_slug      = ( 'publish' === $status ) ? 'completed' : $status;
-			$pdf_email_status = function_exists( 'mep_get_option' ) ? mep_get_option( 'mep_pdf_email_status', 'mep_pdf_email_settings', array() ) : array();
+			$pdf_email_status = function_exists( 'mep_get_pdf_email_statuses' ) ? mep_get_pdf_email_statuses() : array();
 			$status_matched   = function_exists( 'mep_is_status_match_for_pdf_email' )
 				? mep_is_status_match_for_pdf_email( $status_slug, $pdf_email_status )
 				: in_array( $status_slug, (array) $pdf_email_status, true );

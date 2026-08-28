@@ -300,7 +300,9 @@
 				$sec     = 'email_setting_sec';
 				$from    = mep_get_option( 'mep_email_form_name', $sec, get_bloginfo( 'name' ) );
 				$email   = mep_get_option( 'mep_email_form_email', $sec, get_option( 'admin_email' ) );
-				$subject = mep_get_option( 'mep_email_subject', $sec, 'Event Notification' );
+				$subject = function_exists( 'mep_get_confirmation_email_subject' )
+					? mep_get_confirmation_email_subject()
+					: mep_get_option( 'mep_email_subject', $sec, 'Confirmation Email' );
 				$body    = self::get_email_body_or_preset( 'mep_confirmation_email_text', $sec, 'confirmation' );
 				$status  = mep_get_option( 'mep_email_sending_order_status', $sec, array( 'completed' => 'completed' ) );
 				$billing = mep_get_option( 'mep_send_confirmation_to_billing_email', $sec, 'enable' );
@@ -410,10 +412,11 @@
 					return mep_get_option( $key, $sec, $default );
 				};
 
-				$status = $get( 'mep_pdf_email_status', array() );
-				if ( ! is_array( $status ) ) {
-					$status = array();
-				}
+				// Normalized, not discarded: the upgrade routine stores this key as a
+				// plain string, which an is_array() check would drop and show unticked.
+				$status = function_exists( 'mep_get_pdf_email_statuses' )
+					? mep_get_pdf_email_statuses()
+					: (array) $get( 'mep_pdf_email_status', array() );
 
 				$vars = array( '{customer_name}', '{event_name}', '{event_venue}', '{event_date}', '{order_id}', '{payment_method}', '{amount_paid}' );
 				?>
@@ -504,7 +507,7 @@
 										foreach ( $opts as $key => $label ) :
 											?>
 											<label class="mep-em__check">
-												<input type="checkbox" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_email_status][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $key ); ?>" <?php checked( isset( $status[ $key ] ) && (string) $status[ $key ] === (string) $key ); ?> />
+												<input type="checkbox" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_email_status][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $key ); ?>" <?php checked( in_array( (string) $key, $status, true ) ); ?> />
 												<span><?php echo esc_html( $label ); ?></span>
 											</label>
 										<?php endforeach; ?>
@@ -513,8 +516,8 @@
 								<div class="mep-em__field">
 									<label class="mep-em__label"><?php esc_html_e( 'Add to Calendar Link', 'mage-eventpress' ); ?></label>
 									<select class="mep-em__select" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_add_to_calendar]">
-										<option value="yes" <?php selected( $get( 'mep_pdf_add_to_calendar', 'no' ), 'yes' ); ?>><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></option>
-										<option value="no" <?php selected( $get( 'mep_pdf_add_to_calendar', 'no' ), 'no' ); ?>><?php esc_html_e( 'No', 'mage-eventpress' ); ?></option>
+										<option value="yes" <?php selected( $get( 'mep_pdf_add_to_calendar', 'yes' ), 'yes' ); ?>><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></option>
+										<option value="no" <?php selected( $get( 'mep_pdf_add_to_calendar', 'yes' ), 'no' ); ?>><?php esc_html_e( 'No', 'mage-eventpress' ); ?></option>
 									</select>
 								</div>
 								<div class="mep-em__field">

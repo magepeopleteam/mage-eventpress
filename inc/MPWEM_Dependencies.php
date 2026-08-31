@@ -45,6 +45,11 @@
 				// available even while WooCommerce payment is in use.
 				require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Order_CPT.php';
 				MEP_Order_CPT::init();
+				// Helper indexes for the postmeta lookups this plugin counts with.
+				// Added once, in the background; see MEP_DB_Index for the opt-out.
+				require_once MPWEM_PLUGIN_DIR . '/inc/MEP_DB_Index.php';
+				MEP_DB_Index::init();
+				require_once MPWEM_PLUGIN_DIR . '/admin/MEP_Orders_Query.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MEP_Custom_Orders_Page.php';
 				MEP_Custom_Orders_Page::init();
 

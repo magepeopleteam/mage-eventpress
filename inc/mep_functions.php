@@ -1527,7 +1527,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					)
 				)
 			);
-			$loop                     = new WP_Query( $args );
+			$loop = new WP_Query( mep_as_count_query_args( $args ) );
 			return $loop->post_count;
 		}
 	}
@@ -2418,6 +2418,37 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
+	if ( ! function_exists( 'mep_as_count_query_args' ) ) {
+		/**
+		 * Turn a WP_Query argument set into a count-only query.
+		 *
+		 * Several places in this plugin build a full WP_Query — usually with
+		 * `posts_per_page => -1` — and then read nothing but `post_count`. That
+		 * hydrates every matching post object and primes its meta and terms just
+		 * to arrive at a number. On an event with thousands of attendees, and
+		 * called once per ticket type per event date, it is the single most
+		 * expensive thing the plugin does.
+		 *
+		 * Passing the arguments through here keeps the query — every meta_query
+		 * clause, every filter hook that extends it — and only stops the result
+		 * from being hydrated.
+		 *
+		 * @param array $args WP_Query arguments.
+		 * @return array
+		 */
+		function mep_as_count_query_args( $args ) {
+			$args = is_array( $args ) ? $args : array();
+
+			$args['fields']                 = 'ids';
+			$args['no_found_rows']          = true;
+			$args['update_post_meta_cache'] = false;
+			$args['update_post_term_cache'] = false;
+			$args['ignore_sticky_posts']    = true;
+			$args['cache_results']          = false;
+
+			return $args;
+		}
+	}
 	if ( ! function_exists( 'mep_ticket_type_sold' ) ) {
 		function mep_ticket_type_sold( $event_id, $type = '', $date = '' ) {
 			$type             = ! empty( $type ) ? $type : '';
@@ -2460,7 +2491,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$order_status_filter
 				)
 			);
-			$loop        = new WP_Query( $args );
+			$loop = new WP_Query( mep_as_count_query_args( $args ) );
 			return $loop->post_count;
 		}
 	}
@@ -6068,7 +6099,7 @@ function mep_change_date_status() {
                     )
                 );
             }
-            $loop = new WP_Query( $args );
+            $loop = new WP_Query( mep_as_count_query_args( $args ) );
             return $loop->post_count;
         }
     }

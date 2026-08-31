@@ -160,7 +160,9 @@
 						)
 					)
 				);
-				$loop = new WP_Query( $args );
+				$loop = new WP_Query(
+					function_exists( 'mep_as_count_query_args' ) ? mep_as_count_query_args( $args ) : $args
+				);
 
 				return $loop->post_count;
 			}

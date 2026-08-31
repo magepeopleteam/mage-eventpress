@@ -293,6 +293,8 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 					'compare' => '=',
 				);
 			}
+			// found_posts gives the total without fetching a row per match.
+			$checkin_count_args['posts_per_page'] = 1;
 			$checked_in_posts = new WP_Query( $checkin_count_args );
 			$total_checked_in = $checked_in_posts->found_posts;
 

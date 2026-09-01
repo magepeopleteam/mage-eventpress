@@ -12,7 +12,8 @@
  * Handles:
  *   - AJAX action 'mep_native_checkout' (frontend ticket booking when WooCommerce is absent)
  *   - GET ?mep_payment_return=1  (gateway callback after external payment e.g. PayPal)
- *   - GET ?mep_payment_cancel=1  (user cancelled payment at gateway)
+ *   - GET ?mep_payment_cancel=1  (user cancelled payment at gateway; requires the
+ *     single-use cancel token issued with that payment attempt)
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,6 +21,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 	class MEP_Pro_Native_Checkout {
+
+		/**
+		 * Single-use secret bound to one payment attempt and handed only to the
+		 * gateway's cancel URL, which is the only thing that may trash the order it
+		 * belongs to.
+		 *
+		 * Deliberately NOT _mep_booking_token: that one is the read-only key to the
+		 * confirmation page, it travels in a URL customers bookmark and forward, and
+		 * it has to keep working after the booking is over. A cancellation key must be
+		 * able to do neither - be reusable, nor survive being spent.
+		 */
+		const CANCEL_TOKEN_META = '_mep_cancel_token';
+		const CANCEL_TOKEN_ARG  = 'mep_cancel_token';
 
 		public function __construct() {
 			// Priority 5 ensures this runs before the basic plugin's handler (default priority 10).
@@ -251,10 +265,18 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 					'gateway'            => $gateway_id,
 				), home_url() );
 
+				// Mint the cancel key for THIS payment attempt. It exists only from here
+				// until the customer either pays or backs out, and only the gateway is
+				// ever handed it - so possession of it is what tells handle_payment_return()
+				// that a cancellation really came back from the checkout we started.
+				$cancel_token = wp_generate_password( 32, false );
+				update_post_meta( $order_id, self::CANCEL_TOKEN_META, $cancel_token );
+
 				$cancel_url = add_query_arg( array(
 					'mep_payment_cancel' => 1,
 					'order_id'           => $order_id,
 					'gateway'            => $gateway_id,
+					self::CANCEL_TOKEN_ARG => $cancel_token,
 				), home_url() );
 
 				$payment_url = $gateway->get_payment_url( array(
@@ -577,12 +599,43 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 				if ( get_post_type( $order_id ) !== 'mep_custom_order' ) {
 					return;
 				}
+
+				/*
+				 * SECURITY (IDOR): this runs on `init` for every front-end request and
+				 * trashes a real registration, so the order id alone must never be enough
+				 * to trigger it. mep_custom_order ids are global sequential post ids that
+				 * every booker learns from their own confirmation redirect, which makes a
+				 * neighbour's id guessable rather than secret.
+				 *
+				 * Three gates, all required: the caller must present the single-use key
+				 * issued to the gateway for this payment attempt, the order must still be
+				 * awaiting that payment, and the key is spent on use so the callback
+				 * cannot be replayed.
+				 */
+				$presented_token = isset( $_GET[ self::CANCEL_TOKEN_ARG ] )
+					? sanitize_text_field( wp_unslash( $_GET[ self::CANCEL_TOKEN_ARG ] ) )
+					: '';
+				$stored_token = (string) get_post_meta( $order_id, self::CANCEL_TOKEN_META, true );
+				if ( '' === $presented_token || '' === $stored_token || ! hash_equals( $stored_token, $presented_token ) ) {
+					return;
+				}
+
+				// Only an order still waiting on its payment may be cancelled this way. A
+				// completed registration is settled: it is the admin's to refund or trash,
+				// never a stray gateway redirect's.
+				if ( 'pending' !== get_post_status( $order_id ) ) {
+					return;
+				}
+
+				// One attempt, one cancellation.
+				delete_post_meta( $order_id, self::CANCEL_TOKEN_META );
+
 				wp_update_post( array(
 					'ID'          => $order_id,
 					'post_status' => 'trash',
 				) );
 				$event_id = get_post_meta( $order_id, '_mep_event_id', true );
-				wp_safe_redirect( add_query_arg( 'mep_booking=cancelled', '', get_permalink( $event_id ) ) );
+				wp_safe_redirect( add_query_arg( 'mep_booking', 'cancelled', get_permalink( $event_id ) ) );
 				exit;
 			}
 		}

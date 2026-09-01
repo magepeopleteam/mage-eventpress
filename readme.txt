@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.5.0
+Stable tag: 5.6.2
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,30 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.6.2 =
+* Security: Fixed an Insecure Direct Object Reference in the native (non-WooCommerce) checkout's payment-cancellation callback, reported by benzdeus via Patchstack. The callback checked only that the id it was handed belonged to an order, so a request to any front-end URL could move another visitor's registration to the Trash — pending or completed alike — with no login, nonce or booking token of any kind. Cancelling now requires the single-use key issued to the payment gateway for that specific payment attempt, applies only while the order is still awaiting payment, and spends the key on use so the callback cannot be replayed. An offline order never goes to a gateway, holds no such key, and cannot be cancelled through this route at all.
+* Fix: Corrected the redirect that follows a genuine cancellation — it assembled its query string incorrectly, so the "Registration Cancelled" notice never appeared on the event page.
+  1 September 2026*
+
+= 5.6.1 =
+* Security: Restricted the RSVP responses screen to shop managers, and the payment-gateway settings and credential modals to administrators; both were reachable by lower-privileged roles.
+* Performance: Rebuilt the Event Orders screen to page in SQL. It previously loaded every order on the site into memory to show twenty rows, which exhausted memory on stores with real order history.
+* Fix: Event bookings are no longer lost on orders created outside the WooCommerce checkout — PayPal Express and similar flows bypass it, and the booking meta and attendee record went with them.
+* Fix: The confirmation email is now sent when the trigger status was never explicitly saved, and the email settings screen no longer contradicts what is actually sent.
+* Fix: Event list layouts show every organizer instead of only the first.
+* Fix: Attendee form validation errors are shown on the front end instead of failing silently.
+* Fix: Calendar Settings saved in admin now reach the front end, and recurring weekday events no longer drift to the wrong day or lose their extra dates.
+* Fix: The full event description always renders, and interactive blocks inside it survive the "read more" treatment.
+* Fix: Modern admin event lists show event IDs again.
+* Fix: Advanced and global settings on the modern settings screens persist correctly.
+* Fix: The attendee form's disabled state is preserved when the event is edited.
+* Fix: Order meta is HPOS-safe, and event line-item meta is shared consistently between the order and the booking.
+* Fix: The duplicate-cart notice is translatable and now returns shoppers to the cart.
+* Fix: Registered the mpwem_global script handle so scripts depending on it load again.
+* Improvement: Settings flyout children can be filtered, so add-ons can nest their own pages under Settings.
+* Improvement: Refreshed the translation template and stopped exposing icon slugs as translatable strings.
+  31 August 2026*
 
 = 5.5.0 =
 * Fix: Corrected a critical performance issue where the event list's expiry filtering built a database query WordPress could not optimize, causing full-table scans against post meta on sites with a large postmeta table. Rewrote it as a targeted, indexed lookup.

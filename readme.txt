@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.6.2
+Stable tag: 5.6.3
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,10 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.6.3 =
+* Fix: Attendee answers are no longer recorded against the wrong attendee. The hidden block the attendee form is cloned from sits inside the registration form, so its empty fields were posted along with the real ones; on the Horizon layout, which moves the attendee blocks below the form, that blank arrived first and pushed every answer one attendee out of step — the last attendee's answers were dropped and one record was left with no custom-field data and the billing name in place of the name that was typed. A booking for a single ticket lost its attendee details entirely. The clone source is now excluded from the submitted booking.
+  2 September 2026*
 
 = 5.6.2 =
 * Security: Fixed an Insecure Direct Object Reference in the native (non-WooCommerce) checkout's payment-cancellation callback, reported by benzdeus via Patchstack. The callback checked only that the id it was handed belonged to an order, so a request to any front-end URL could move another visitor's registration to the Trash — pending or completed alike — with no login, nonce or booking token of any kind. Cancelling now requires the single-use key issued to the payment gateway for that specific payment attempt, applies only while the order is still awaiting payment, and spends the key on use so the callback cannot be replayed. An offline order never goes to a gateway, holds no such key, and cannot be cancelled through this route at all.

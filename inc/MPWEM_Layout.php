@@ -223,6 +223,27 @@
                     <?php
                 }
 			}
+			/**
+			 * Per-event master switch for the attendee (registration) form.
+			 *
+			 * Saved by the event editor as the `mep_event_reg_form_status` post meta
+			 * ('on'/'off'). Events created before the toggle existed have no meta at
+			 * all, so an empty value keeps the historical default of 'on'.
+			 *
+			 * This gates *collection* only — the frontend attendee form. Screens that
+			 * display attendee data already captured (order details, reports, the
+			 * attendee edit popup) must keep using get_form_array() directly, or
+			 * turning the toggle off would hide existing bookings' data.
+			 *
+			 * @param int|string $event_id
+			 * @return bool
+			 */
+			public static function is_attendee_form_enabled( $event_id ) {
+				$status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_status', 'on' );
+				$status = '' === $status ? 'on' : $status;
+
+				return apply_filters( 'mpwem_attendee_form_enabled', 'off' !== $status, $event_id );
+			}
 			public static function get_form_array( $event_id ) {
 				$form_id = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
 				$form_id = $form_id == 'custom_form' ? $event_id : $form_id;
@@ -334,11 +355,7 @@
 				// (admin shows virtual defaults; save previously wiped flags). Seed the
 				// same core fields so qty still opens the attendee form.
 				if ( empty( $form_array ) ) {
-					$reg_form_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_status', 'on' );
-					if ( '' === $reg_form_status ) {
-						$reg_form_status = 'on';
-					}
-					if ( 'on' === $reg_form_status ) {
+					if ( self::is_attendee_form_enabled( $event_id ) ) {
 						$form_array['user_name']  = [
 							'type'     => 'text',
 							'name'     => 'user_name',

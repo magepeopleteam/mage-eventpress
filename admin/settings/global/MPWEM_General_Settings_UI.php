@@ -57,7 +57,13 @@
 					'mep_show_low_stock_warning',
 					'mep_low_stock_threshold',
 					'mep_low_stock_text',
+					'mep_low_stock_percent',
 					'mep_enable_low_stock_email',
+					'mep_availability_indicator_mode',
+					'mep_availability_low_threshold',
+					'mep_availability_medium_threshold',
+					'mep_availability_low_percent',
+					'mep_availability_medium_percent',
 					'mep_show_hidden_wc_product',
 					'mep_show_event_sidebar',
 					'mep_clear_cart_after_checkout',
@@ -286,9 +292,34 @@
 					<p class="mep-gn__hint"><?php esc_html_e( 'How fully booked events appear in listings.', 'mage-eventpress' ); ?></p>
 				</div>
 				<?php
+				$indicator_mode = ( 'percentage' === $g( 'mep_availability_indicator_mode', 'fixed' ) ) ? 'percentage' : 'fixed';
+				self::select(
+					'mep_availability_indicator_mode',
+					__( 'Availability Indicator', 'mage-eventpress' ),
+					__( 'How the remaining seats badge picks its colour. Percentage of capacity keeps small and large events consistent.', 'mage-eventpress' ),
+					array(
+						'fixed'      => __( 'Fixed seat count', 'mage-eventpress' ),
+						'percentage' => __( 'Percentage of capacity', 'mage-eventpress' ),
+					),
+					$indicator_mode
+				);
+				echo '<div class="mep-gn__row-2 mep-gn__availability-fixed"' . ( 'fixed' === $indicator_mode ? '' : ' hidden' ) . '>';
+				self::text( 'mep_availability_low_threshold', __( 'Red At or Below (Seats)', 'mage-eventpress' ), '', $g( 'mep_availability_low_threshold', '10' ), 'number' );
+				self::text( 'mep_availability_medium_threshold', __( 'Amber At or Below (Seats)', 'mage-eventpress' ), __( '0 disables the amber step.', 'mage-eventpress' ), $g( 'mep_availability_medium_threshold', '0' ), 'number' );
+				echo '</div>';
+				echo '<div class="mep-gn__row-2 mep-gn__availability-percent"' . ( 'percentage' === $indicator_mode ? '' : ' hidden' ) . '>';
+				self::text( 'mep_availability_low_percent', __( 'Red Below (%)', 'mage-eventpress' ), '', $g( 'mep_availability_low_percent', '10' ), 'number' );
+				self::text( 'mep_availability_medium_percent', __( 'Amber Up To (%)', 'mage-eventpress' ), __( 'Green above this share of capacity.', 'mage-eventpress' ), $g( 'mep_availability_medium_percent', '30' ), 'number' );
+				echo '</div>';
+
 				self::toggle_yesno( 'mep_show_low_stock_warning', __( 'Low Stock Warnings', 'mage-eventpress' ), __( 'Show a warning when seats are running low.', 'mage-eventpress' ), $g( 'mep_show_low_stock_warning', 'yes' ) );
 				echo '<div class="mep-gn__row-2 mep-gn__low-stock-fields">';
+				echo '<div class="mep-gn__availability-fixed"' . ( 'fixed' === $indicator_mode ? '' : ' hidden' ) . '>';
 				self::text( 'mep_low_stock_threshold', __( 'Low Stock Threshold', 'mage-eventpress' ), '', $g( 'mep_low_stock_threshold', '0' ) );
+				echo '</div>';
+				echo '<div class="mep-gn__availability-percent"' . ( 'percentage' === $indicator_mode ? '' : ' hidden' ) . '>';
+				self::text( 'mep_low_stock_percent', __( 'Low Stock Percentage (%)', 'mage-eventpress' ), '', $g( 'mep_low_stock_percent', '10' ), 'number' );
+				echo '</div>';
 				self::text( 'mep_low_stock_text', __( 'Low Stock Text', 'mage-eventpress' ), __( 'Use %s for seats left.', 'mage-eventpress' ), $g( 'mep_low_stock_text', 'Hurry! Only %s seats left' ) );
 				echo '</div>';
 				self::toggle_yesno( 'mep_enable_low_stock_email', __( 'Low Stock Email Alerts', 'mage-eventpress' ), __( 'Email the admin when seats are running low.', 'mage-eventpress' ), $g( 'mep_enable_low_stock_email', 'yes' ) );

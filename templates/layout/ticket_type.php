@@ -101,14 +101,20 @@
 												<?php } ?>
 
 												<?php
+													// Total seats configured for this ticket. Used when the availability
+													// indicator is measured as a percentage of capacity.
+													$ticket_capacity = is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+													$remaining_class = function_exists( 'mep_get_availability_class' )
+														? mep_get_availability_class( $available, $ticket_capacity )
+														: ( $available <= 10 ? 'remaining-low' : 'remaining-high' );
 													// Check if low stock warning should be shown
 													$show_low_stock_warning = false;
 													if ( function_exists( 'mep_is_low_stock' ) ) {
-														$show_low_stock_warning = mep_is_low_stock( $event_id, $ticket_name, $available );
+														$show_low_stock_warning = mep_is_low_stock( $event_id, $ticket_name, $available, $ticket_capacity );
 													}
 													// Only show "Tickets remaining" if low stock warning is not shown
 													if ( $mep_available_seat == 'on' && ! $show_low_stock_warning ) { ?>
-                                                        <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+                                                        <div class="ticket-remaining xtra-item-left <?php echo esc_attr( $remaining_class ); ?>">
 															<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining', 'mage-eventpress' ); ?>
                                                         </div>
 													<?php } ?>
@@ -116,7 +122,7 @@
 												<?php
 													// Display low stock warning
 													if ( function_exists( 'mep_display_low_stock_warning' ) ) {
-														mep_display_low_stock_warning( $event_id, $ticket_name, $available );
+														mep_display_low_stock_warning( $event_id, $ticket_name, $available, $ticket_capacity );
 													}
 												?>
                                             </div>

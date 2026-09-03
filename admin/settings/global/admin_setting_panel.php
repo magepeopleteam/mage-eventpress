@@ -1774,6 +1774,65 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'    => 'mep_availability_indicator_mode',
+								'label'   => __( 'Availability Indicator Mode', 'mage-eventpress' ),
+								'desc'    => __( 'How the remaining seats badge decides between green, amber and red. "Fixed seat count" compares the seats left to a number; "Percentage of capacity" compares them to a share of the total seats configured for the ticket, so small and large events behave consistently.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'fixed',
+								'options' => array(
+									'fixed'      => __( 'Fixed seat count', 'mage-eventpress' ),
+									'percentage' => __( 'Percentage of capacity', 'mage-eventpress' )
+								)
+							),
+							array(
+								'name'        => 'mep_availability_low_threshold',
+								'label'       => __( 'Low Availability Seats (Red)', 'mage-eventpress' ),
+								'desc'        => __( 'Fixed seat count mode only. Show the badge in red when the seats left are at or below this number.', 'mage-eventpress' ),
+								'type'        => 'number',
+								'default'     => '10',
+								'min'         => '0',
+								'placeholder' => '10'
+							),
+						array(
+							'name'        => 'mep_availability_medium_threshold',
+							'label'       => __( 'Medium Availability Seats (Amber)', 'mage-eventpress' ),
+							'desc'        => __( 'Fixed seat count mode only. Show the badge in amber when the seats left are at or below this number but above the red threshold. Set to 0 to keep the badge green until it turns red.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '0',
+							'min'         => '0',
+							'placeholder' => '0'
+						),
+						array(
+							'name'        => 'mep_availability_low_percent',
+							'label'       => __( 'Low Availability Percentage (Red)', 'mage-eventpress' ),
+							'desc'        => __( 'Percentage mode only. Show the badge in red when less than this percentage of the total seats is left.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '10',
+							'min'         => '0',
+							'max'         => '100',
+							'placeholder' => '10'
+						),
+						array(
+							'name'        => 'mep_availability_medium_percent',
+							'label'       => __( 'Medium Availability Percentage (Amber)', 'mage-eventpress' ),
+							'desc'        => __( 'Percentage mode only. Show the badge in amber up to this percentage of the total seats, and in green above it.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '30',
+							'min'         => '0',
+							'max'         => '100',
+							'placeholder' => '30'
+						),
+						array(
+							'name'        => 'mep_low_stock_percent',
+							'label'       => __( 'Low Stock Percentage', 'mage-eventpress' ),
+							'desc'        => __( 'Percentage mode only. Show the low stock warning when the seats left are at or below this percentage of the total seats. The fixed "Low Stock Threshold" above is used in fixed seat count mode.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '10',
+							'min'         => '0',
+							'max'         => '100',
+							'placeholder' => '10'
+						),
+							array(
 								'name'    => 'mep_show_hidden_wc_product',
 								'label'   => __( 'Show Hidden WooCommerce Products', 'mage-eventpress' ),
 								'desc'    => __( 'Show the hidden WooCommerce products created for each event.', 'mage-eventpress' ),

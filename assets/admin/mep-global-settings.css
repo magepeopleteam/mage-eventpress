@@ -1834,6 +1834,10 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   margin-bottom: 14px;
 }
 .mep-gn__row-2 .mep-gn__field { margin-bottom: 0; }
+/* An author `display` declaration outranks the UA stylesheet's [hidden] rule, so
+   any grid row toggled through the hidden attribute has to restate it. */
+.mep-gn__row-2[hidden],
+.mep-gn__field[hidden] { display: none; }
 .mep-gn__toggle-row {
   display: flex;
   align-items: flex-start;

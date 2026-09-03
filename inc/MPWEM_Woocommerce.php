@@ -720,6 +720,73 @@
 					$cn ++;
 				} // End order item foreach
 			} // End Function
+			/**
+			 * Count how many attendees an order should end up with, per event and event date.
+			 *
+			 * One order can carry several line items for the same recurring event on different
+			 * dates - the customer books 3, 10 and 17 September of the same weekly class in one
+			 * go. The duplicate guard below therefore has to be counted per event date: counted
+			 * per event, the attendee created for the first date made the guard believe every
+			 * later line item had already been handled, so only the first date ever got an
+			 * attendee record and only the first date's seat count went down.
+			 *
+			 * Counting order wide, rather than per line item, also keeps two line items that
+			 * share one date (the same date bought as two different ticket types) from
+			 * cancelling each other out, while still stopping a second run of this method from
+			 * duplicating attendees that already exist.
+			 *
+			 * @param WC_Order $order Order being processed.
+			 * @return array Map of "<event id>|<event date>" => number of attendees expected.
+			 */
+			private static function count_expected_attendees_per_date( $order ) {
+				$expected = array();
+				if ( ! $order instanceof WC_Order ) {
+					return $expected;
+				}
+				foreach ( $order->get_items() as $item_id => $item_values ) {
+					$event_id = wc_get_order_item_meta( $item_id, 'event_id', true );
+					if ( get_post_type( $event_id ) != 'mep_events' ) {
+						continue;
+					}
+					$user_info_arr = wc_get_order_item_meta( $item_id, '_event_user_info', true );
+					if ( is_array( $user_info_arr ) && sizeof( $user_info_arr ) > 0 ) {
+						foreach ( $user_info_arr as $_user_info ) {
+							$date = is_array( $_user_info ) && array_key_exists( 'user_event_date', $_user_info ) ? $_user_info['user_event_date'] : '';
+							$key  = $event_id . '|' . $date;
+							$expected[ $key ] = ( array_key_exists( $key, $expected ) ? $expected[ $key ] : 0 ) + 1;
+						}
+						continue;
+					}
+					// No registration form on this event, so mep_attendee_create() is called once per
+					// ticket from the billing details instead - count the ticket quantities.
+					$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
+					if ( ! is_array( $event_ticket_info_arr ) ) {
+						continue;
+					}
+					foreach ( $event_ticket_info_arr as $tinfo ) {
+						$qty = is_array( $tinfo ) && array_key_exists( 'ticket_qty', $tinfo ) ? (int) $tinfo['ticket_qty'] : 0;
+						if ( $qty < 1 ) {
+							continue;
+						}
+						$date = is_array( $tinfo ) && array_key_exists( 'event_date', $tinfo ) ? $tinfo['event_date'] : '';
+						$key  = $event_id . '|' . $date;
+						$expected[ $key ] = ( array_key_exists( $key, $expected ) ? $expected[ $key ] : 0 ) + $qty;
+					}
+				}
+				return $expected;
+			}
+			/**
+			 * Read one entry out of the map built by count_expected_attendees_per_date().
+			 *
+			 * @param array  $expected   Map returned by count_expected_attendees_per_date().
+			 * @param int    $event_id   Event the line item belongs to.
+			 * @param string $event_date Event date on the line item.
+			 * @return int Attendees expected for that event date, at least one.
+			 */
+			private static function expected_attendee_count( $expected, $event_id, $event_date ) {
+				$key = $event_id . '|' . $event_date;
+				return is_array( $expected ) && array_key_exists( $key, $expected ) ? (int) $expected[ $key ] : 1;
+			}
 			public function checkout_order_processed( $order_id ) {
 				global $woocommerce;
 				$result   = ! is_numeric( $order_id ) ? json_decode( $order_id ) : [ 0 ];
@@ -731,6 +798,7 @@
 				$order        = wc_get_order( $order_id );
 				$order_status = $order->get_status();
 				if ( $order_status != 'failed' ) {
+					$expected_attendees = self::count_expected_attendees_per_date( $order );
 					foreach ( $order->get_items() as $item_id => $item_values ) {
 						$event_id = wc_get_order_item_meta( $item_id, 'event_id', true );
 						if ( get_post_type( $event_id ) == 'mep_events' ) {
@@ -738,7 +806,6 @@
 							$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
 							$_event_extra_service  = wc_get_order_item_meta( $item_id, '_event_extra_service', true );
 							$item_quantity         = 0;
-							$check_before_create   = mep_check_attendee_exist_before_create( $order_id, $event_id );
 							mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service );
 							mep_delete_attandee_of_an_order( $order_id, $event_id );
 							foreach ( $event_ticket_info_arr as $field ) {
@@ -748,23 +815,27 @@
 							}
 							if ( is_array( $user_info_arr ) && sizeof( $user_info_arr ) > 0 ) {
 								foreach ( $user_info_arr as $_user_info ) {
-									$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $_user_info['user_event_date'] );
+									$_event_date              = is_array( $_user_info ) && array_key_exists( 'user_event_date', $_user_info ) ? $_user_info['user_event_date'] : '';
+									$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $_event_date );
+									$expected_for_this_date   = self::expected_attendee_count( $expected_attendees, $event_id, $_event_date );
 									if ( function_exists( 'mep_re_language_load' ) ) {
 										mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
 									} else {
-										if ( $check_before_create < count( $user_info_arr ) ) {
+										if ( $check_before_create_date < $expected_for_this_date ) {
 											mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
 										}
 									}
 								}
 							} else {
 								foreach ( $event_ticket_info_arr as $tinfo ) {
+									$_event_date            = is_array( $tinfo ) && array_key_exists( 'event_date', $tinfo ) ? $tinfo['event_date'] : '';
+									$expected_for_this_date = self::expected_attendee_count( $expected_attendees, $event_id, $_event_date );
 									for ( $x = 1; $x <= $tinfo['ticket_qty']; $x ++ ) {
-										$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $tinfo['event_date'] );
+										$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $_event_date );
 										if ( function_exists( 'mep_re_language_load' ) ) {
 											mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
 										} else {
-											if ( $check_before_create < count( $event_ticket_info_arr ) ) {
+											if ( $check_before_create_date < $expected_for_this_date ) {
 												mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
 											}
 										}

@@ -12598,3 +12598,21 @@ div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .inputIncDec 
 		height: 40px;
 	}
 }
+
+/* Font Awesome 5.15.4 is what this plugin bundles, and the X mark only arrived in
+   Font Awesome 6.4.2 - so `fab fa-x-twitter`, which is the default share icon, had no
+   glyph to render and came out as an empty box. Draw it from an inline mask instead:
+   it inherits the surrounding colour and size like a font icon, works on the bundled
+   Font Awesome 5, and matches what Font Awesome 6 would draw if a theme loads its own. */
+.fa-x-twitter:before {
+	content: "";
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.125em;
+	background-color: currentColor;
+	-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>') no-repeat center;
+	mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>') no-repeat center;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+}

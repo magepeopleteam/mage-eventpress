@@ -489,6 +489,12 @@
   color: #C5221F;
 }
 
+#mage-container.mage .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-medium,
+#mage-container.mage .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-medium {
+  background-color: #FEF7E0;
+  color: #B06000;
+}
+
 #mage-container.mage .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
 #mage-container.mage .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
   font-size: 18px;

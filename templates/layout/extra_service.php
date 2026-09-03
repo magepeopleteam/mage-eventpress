@@ -50,8 +50,13 @@
 									<div class="ticket-info">
 										<div class="ticket-name"><?php echo esc_html($ticket_name); ?></div>
 										<input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
-										<?php if ( $mep_available_seat == 'on' ) { ?>
-											<div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+										<?php if ( $mep_available_seat == 'on' ) {
+											$ticket_capacity = is_array( $ticket_type ) && array_key_exists( 'option_qty', $ticket_type ) ? (int) $ticket_type['option_qty'] : 0;
+											$remaining_class = function_exists( 'mep_get_availability_class' )
+												? mep_get_availability_class( $available, $ticket_capacity )
+												: ( $available <= 10 ? 'remaining-low' : 'remaining-high' );
+											?>
+											<div class="ticket-remaining xtra-item-left <?php echo esc_attr( $remaining_class ); ?>">
 												<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining', 'mage-eventpress' ); ?>
 											</div>
 										<?php } ?>

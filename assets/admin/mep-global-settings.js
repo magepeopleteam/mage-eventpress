@@ -727,6 +727,19 @@
 		$(document).on('change', 'input[data-mep-fully-booked]', syncFullyBooked);
 		syncFullyBooked();
 
+		function syncAvailabilityMode() {
+			var $mode = $('#mep-gn-mep_availability_indicator_mode');
+			if (!$mode.length) {
+				return;
+			}
+			var percentage = $mode.val() === 'percentage';
+			// Both groups stay in the DOM so switching modes never discards stored values.
+			$('.mep-gn__availability-fixed').prop('hidden', percentage);
+			$('.mep-gn__availability-percent').prop('hidden', !percentage);
+		}
+		$(document).on('change', '#mep-gn-mep_availability_indicator_mode', syncAvailabilityMode);
+		syncAvailabilityMode();
+
 		$(document).on('input change', '#mep-gn-zoom', function () {
 			$('#mep-gn-zoom-val').text($(this).val());
 		});

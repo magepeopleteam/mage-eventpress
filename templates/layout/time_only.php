@@ -36,12 +36,7 @@
                     }
                 }
             }
-            $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
-            $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
-            $url_date=$url_date?:$url_date_2;
-            $url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
-            $date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
-            $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+            $url_date = MPWEM_Functions::get_requested_date();
             $all_dates   = MPWEM_Functions::get_dates( $event_id );
             $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
             $upcoming_date = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $date_type == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');

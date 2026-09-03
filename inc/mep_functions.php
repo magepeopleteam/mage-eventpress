@@ -253,30 +253,51 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $qty;
 		}
 	}
-	function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page' ) {
-		global $wpdb;
-		if ( is_array( $post_type ) ) {
-			$post_type           = esc_sql( $post_type );
-			$post_type_in_string = "'" . implode( "','", $post_type ) . "'";
-			$sql                 = $wpdb->prepare( "
-			SELECT ID
-			FROM $wpdb->posts
-			WHERE post_name = %s
-			AND post_type IN ($post_type_in_string)
-		", $page_slug );
-		} else {
-			$sql = $wpdb->prepare( "
-			SELECT ID
-			FROM $wpdb->posts
-			WHERE post_name = %s
-			AND post_type = %s
-		", $page_slug, $post_type );
+	/**
+	 * Look a page up by slug, optionally across several post types.
+	 *
+	 * The post types used to be interpolated into the statement and only $page_slug was
+	 * passed to prepare(), which left the SQL depending on esc_sql() rather than on the
+	 * placeholder machinery, and gave prepare() a single placeholder to fill. If a caller
+	 * ever passed an array of slugs, prepare() saw one placeholder against several
+	 * arguments, logged "The query only expected one placeholder, but an array of multiple
+	 * placeholders was sent" and returned null - so get_var() ran an empty query and the
+	 * lookup silently found nothing. Every value is a placeholder now, and the slug is
+	 * forced to a single scalar.
+	 *
+	 * Guarded with function_exists() as well: the name is generic and was declared
+	 * unconditionally here while a second, different implementation further down this
+	 * same file was already guarded, so anything else defining it first fatally clashed.
+	 *
+	 * @param string       $page_slug
+	 * @param string       $output
+	 * @param string|array $post_type
+	 * @return WP_Post|array|null
+	 */
+	if ( ! function_exists( 'mep_get_page_by_slug' ) ) {
+		function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page' ) {
+			global $wpdb;
+			if ( is_array( $page_slug ) ) {
+				$page_slug = reset( $page_slug );
+			}
+			if ( ! is_scalar( $page_slug ) || '' === (string) $page_slug ) {
+				return null;
+			}
+			$post_types = array_values( array_filter( array_map( 'strval', (array) $post_type ) ) );
+			if ( ! $post_types ) {
+				$post_types = array( 'page' );
+			}
+			$placeholders = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
+			$sql          = $wpdb->prepare(
+				"SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type IN ( $placeholders )", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders only
+				array_merge( array( (string) $page_slug ), $post_types )
+			);
+			$page = $wpdb->get_var( $sql );
+			if ( $page ) {
+				return get_post( $page, $output );
+			}
+			return null;
 		}
-		$page = $wpdb->get_var( $sql );
-		if ( $page ) {
-			return get_post( $page, $output );
-		}
-		return null;
 	}
 	function mep_add_event_into_feed_request( $qv ) {
 		if ( isset( $qv['feed'] ) ) {
@@ -375,7 +396,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_get_attendee_info_query( $event_id, $order_id ) {
 			$_user_set_status    = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status       = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-			$order_status        = array_values( $_order_status );
+			$order_status        = array_values( array_filter( (array) $_order_status ) ?: array( 'processing', 'completed' ) );
 			$order_status_filter = array(
 				'key'     => 'ea_order_status',
 				'value'   => $order_status,
@@ -2454,7 +2475,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$type             = ! empty( $type ) ? $type : '';
 			$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-			$order_status     = array_values( $_order_status );
+			$order_status     = array_values( array_filter( (array) $_order_status ) ?: array( 'processing', 'completed' ) );
 			if ( count( $order_status ) > 1 ) { // check if more then one tag
 				$order_status_filter['relation'] = 'OR';
 				foreach ( $order_status as $tag ) { // create a LIKE-comparison for every single tag
@@ -5746,12 +5767,7 @@ function mep_change_date_status() {
                         }
                     }
                 }
-                $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
-                $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
-                $url_date=$url_date?:$url_date_2;
-                $url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
-                $date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
-                $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+                $url_date = MPWEM_Functions::get_requested_date();
                 $all_dates   = MPWEM_Functions::get_dates( $event_id );
                 $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
                 $upcoming_date                           =isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';

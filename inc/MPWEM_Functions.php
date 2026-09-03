@@ -9,6 +9,38 @@
 	if ( ! class_exists( 'MPWEM_Functions' ) ) {
 		class MPWEM_Functions {
 			public function __construct() { }
+			/**
+			 * The event date the visitor asked for, as a normalised Y-m-d[ H:i] string.
+			 *
+			 * Every link this plugin builds puts a unix timestamp in ?date=, and this used to
+			 * be handed straight to date() as the timestamp. Anything else arriving in that
+			 * query var - a hand-edited or stale link, a crawler, another plugin that also
+			 * uses ?date= - was a string where an int was required, which on PHP 8 is a fatal
+			 * TypeError that takes the whole event page down rather than an ignored notice.
+			 *
+			 * A timestamp is read as a timestamp, anything else date-like is accepted on its
+			 * own terms rather than thrown away, and anything unparseable means "no date" and
+			 * leaves the caller on the event's upcoming date.
+			 *
+			 * @return string Empty when nothing usable was requested.
+			 */
+			public static function get_requested_date(): string {
+				$url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
+				$url_date = $url_date ?: ( isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null );
+				if ( ! $url_date || ! is_scalar( $url_date ) ) {
+					return '';
+				}
+				$url_date = (string) $url_date;
+				if ( is_numeric( $url_date ) ) {
+					$url_date = date( 'Y-m-d H:i', (int) $url_date );
+				}
+				$timestamp = strtotime( $url_date );
+				if ( ! $timestamp ) {
+					return '';
+				}
+				$date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
+				return date( $date_format, $timestamp );
+			}
 			public static function details_template_path( $file_name ): string {
 				$template_path       = get_stylesheet_directory() . '/mage-event/themes/';
 				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/themes/';
@@ -41,12 +73,7 @@
 				$event_infos = [];
 				$event_meta  = get_post_custom( $event_id );
 				if ( $event_meta ) {
-					$url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
-					$url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
-					$url_date=$url_date?:$url_date_2;
-					$url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
-					$date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
-					$url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+					$url_date = MPWEM_Functions::get_requested_date();
 					$all_dates   = MPWEM_Functions::get_dates( $event_id );
 					$all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
 					$upcoming_date                           = $url_date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );

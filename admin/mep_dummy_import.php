@@ -381,6 +381,40 @@
 			 *
 			 * @return int[] Created/existing speaker IDs.
 			 */
+			/**
+			 * Find an existing post by its exact title.
+			 *
+			 * Replaces get_page_by_title(), deprecated in WordPress 6.2. The importer
+			 * seeds speakers, forms and reviews in one request and then one event per
+			 * request, so each of those steps logged a deprecation notice on every run.
+			 *
+			 * 'any' is the closest match to the old behaviour: get_page_by_title() never
+			 * filtered by status, so a draft carrying the same title still counts as
+			 * already imported and is not seeded a second time.
+			 *
+			 * @param string $title     Exact post title to match.
+			 * @param string $post_type Post type to search.
+			 *
+			 * @return int Post ID, or 0 when nothing matches.
+			 */
+			private function get_post_id_by_title( $title, $post_type ) {
+				if ( '' === trim( (string) $title ) ) {
+					return 0;
+				}
+				$ids = get_posts(
+					array(
+						'post_type'      => $post_type,
+						'title'          => $title,
+						'post_status'    => 'any',
+						'posts_per_page' => 1,
+						'fields'         => 'ids',
+						'no_found_rows'  => true,
+					)
+				);
+
+				return empty( $ids ) ? 0 : (int) $ids[0];
+			}
+
 			public function dummy_import_speakers() {
 				$dummy_data = $this->dummy_data();
 				$speakers   = isset( $dummy_data['custom_post']['mep_event_speaker'] ) ? $dummy_data['custom_post']['mep_event_speaker'] : array();
@@ -392,9 +426,9 @@
 					if ( empty( $speaker['name'] ) ) {
 						continue;
 					}
-					$existing = get_page_by_title( $speaker['name'], OBJECT, 'mep_event_speaker' );
+					$existing = $this->get_post_id_by_title( $speaker['name'], 'mep_event_speaker' );
 					if ( $existing ) {
-						$ids[] = (int) $existing->ID;
+						$ids[] = $existing;
 						continue;
 					}
 					$post_id = wp_insert_post(
@@ -494,9 +528,9 @@
 					if ( empty( $form['name'] ) ) {
 						continue;
 					}
-					$existing = get_page_by_title( $form['name'], OBJECT, 'mep_events_reg_form' );
+					$existing = $this->get_post_id_by_title( $form['name'], 'mep_events_reg_form' );
 					if ( $existing ) {
-						$ids[] = (int) $existing->ID;
+						$ids[] = $existing;
 						continue;
 					}
 					$post_id = wp_insert_post(
@@ -1197,9 +1231,9 @@
 					if ( empty( $review['name'] ) ) {
 						continue;
 					}
-					$existing = get_page_by_title( $review['name'], OBJECT, 'mep_events_review' );
+					$existing = $this->get_post_id_by_title( $review['name'], 'mep_events_review' );
 					if ( $existing ) {
-						$ids[] = (int) $existing->ID;
+						$ids[] = $existing;
 						continue;
 					}
 					$event_id = (int) $events[ $i % $event_count ];
@@ -1239,7 +1273,7 @@
 				if (!isset($dummy_data['custom_post']['mep_events'][$index])) return;
 				
 				$dummy_event = $dummy_data['custom_post']['mep_events'][$index];
-				$existing = get_page_by_title($dummy_event['name'], OBJECT, 'mep_events');
+				$existing = $this->get_post_id_by_title($dummy_event['name'], 'mep_events');
 				if ($existing) return;
 
 				$post_id = wp_insert_post([

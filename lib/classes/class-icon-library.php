@@ -913,6 +913,7 @@ if ( ! class_exists( 'mep_icon_library' ) ) {
                 'fas fa-tv' => 'tv',
                 'fab fa-twitch' => 'twitch',
                 'fab fa-twitter' => 'twitter',
+                'fab fa-x-twitter' => 'x-twitter x',
                 'fab fa-twitter-square' => 'twitter-square',
                 'fab fa-typo3' => 'typo3',
                 'fab fa-uber' => 'uber',

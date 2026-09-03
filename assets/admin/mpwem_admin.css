@@ -923,6 +923,11 @@ table.wc_status_table.widefat { border: none;}
 #mep_global_icon_list_wrapper label:hover { background: #239108; color: var(--color_white);}
 #mep_global_icon_list_wrapper input[type=radio] { visibility: hidden; width: 0; height: 0; position: absolute; margin: 0;}
 #mep_global_icon_list_wrapper { top: 40px;}
+/* The global settings sidebar is sticky at z-index 99999 while jquery-modal's
+   backdrop defaults to 9999, so the icon library opened from that screen was
+   painted underneath it: the sidebar covered the search box and the Close link,
+   which is the only way out of a modal opened with escapeClose/clickClose off. */
+.mage_blocker { z-index: 100001;}
 #mep_global_icon_list_wrapper label.selected { background: #239108; color: var(--color_white);}
 .mep_global_icon_list_header { display: -webkit-flex; display: flex;}
 .mep_global_icon_list_header .mep_global_icon_list_header_group:first-child { margin-right: 20px;}
@@ -1369,4 +1374,20 @@ div#mep_event_gq_meta_boxes table td input#enable_global_qty {
 	background: #f8fafc;
 }
 
-
+/* Font Awesome 5.15.4 is what this plugin bundles, and the X mark only arrived in
+   Font Awesome 6.4.2 - so `fab fa-x-twitter`, which is the default share icon, had no
+   glyph to render and came out as an empty box. Draw it from an inline mask instead:
+   it inherits the surrounding colour and size like a font icon, works on the bundled
+   Font Awesome 5, and matches what Font Awesome 6 would draw if a theme loads its own. */
+.fa-x-twitter:before {
+	content: "";
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.125em;
+	background-color: currentColor;
+	-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>') no-repeat center;
+	mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>') no-repeat center;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+}

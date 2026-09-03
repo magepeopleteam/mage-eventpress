@@ -110,6 +110,40 @@ function mpwem_enable_attendee_clone(target) {
         .prop('disabled', false)
         .removeAttr('disabled');
 }
+/**
+ * Make the booking form validatable, immediately before the browser validates it.
+ *
+ * Constraint validation runs *before* the submit event, so the submit handler further
+ * down cannot help here: when a required control sits in a display:none block the
+ * browser has nowhere to show the error, so it refuses to submit and tells the visitor
+ * nothing at all. The booking button just goes dead and only the console says why
+ * ("An invalid form control with name='user_name[]' is not focusable").
+ *
+ * The two blocks that can hold such a control are both ones the plugin itself marks as
+ * inert - the clone source and a conditional field whose condition is not met - so only
+ * those are touched, and only when the control is still empty. A value the visitor
+ * typed is never disabled, because disabled controls are left out of the posted data.
+ * Anything that becomes visible later is re-enabled by the code that reveals it.
+ */
+function mpwem_prepare_form_for_validation(parent) {
+    if (!parent || !parent.length) {
+        return;
+    }
+    parent.find('.mep_attendee_info_hidden').find('input, select, textarea').each(function () {
+        if (!jQuery(this).prop('disabled')) {
+            jQuery(this).addClass('mep-template-disabled').prop('disabled', true);
+        }
+    });
+    parent.find('.dNone').find('input, select, textarea').each(function () {
+        if (!this.required || this.disabled || this.type === 'hidden') {
+            return;
+        }
+        if (jQuery.trim(this.value || '') !== '') {
+            return;
+        }
+        jQuery(this).prop('disabled', true);
+    });
+}
 function mpwem_attendee_management(parent, total_qty) {
     let form_target = parent.find('.mep_attendee_info');
     let same_attendee = parent.find('[name="mep_same_attendee"]').val();
@@ -461,9 +495,11 @@ function mpwem_attendee_management(parent, total_qty) {
                     if (total_qty < min_qty) {
                         alert('must buy minimum number of ticket : ' + min_qty);
                     } else {
+                        mpwem_prepare_form_for_validation(parent);
                         parent.find('.mpwem_add_to_cart').trigger('click');
                     }
                 } else {
+                    mpwem_prepare_form_for_validation(parent);
                     parent.find('.mpwem_add_to_cart').trigger('click');
                 }
             } else {

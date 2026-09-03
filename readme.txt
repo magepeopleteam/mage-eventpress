@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.6.3
+Stable tag: 5.6.4
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,15 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.6.4 =
+* Fix: Booking several dates of the same recurring event in one order now takes a seat from every one of them. The guard that stops an attendee record being written twice counted the records already made for the order and the event without looking at the date, so once the first date had its attendee every later date in the same order was treated as already handled and got no record at all — only the first date lost a seat, and the rest went on showing full availability.
+* Fix: "Add to cart" no longer does nothing on events that use a custom attendee form. The hidden block the attendee rows are cloned from sits inside the booking form and its fields were marked required; a browser will not submit a form holding a required field it cannot show an error on, and it tells the visitor nothing, so the button simply went dead and switching the attendee form off was the only way to take a booking. Fields nobody can see are now kept out of validation, while a required field the visitor can see still raises the normal error against it.
+* Fix: The X (Twitter) share icon renders again. It is the default for that button, but the mark only exists in Font Awesome 6 while the plugin ships Font Awesome 5, so the share row showed an empty box. It is now drawn directly and no longer depends on which version of the icon font is loaded.
+* Fix: The X mark can be chosen in the icon library as well, which previously offered only the old Twitter bird.
+* Fix: The icon library can be closed again. On the settings screen the sidebar was painted over the modal, hiding the search box and the Close link — the only way out, since neither Escape nor a click outside was accepted and picking an icon left the library standing, so the choice could never be saved. The library now sits above the sidebar, accepts Escape and a click outside, and closes once an icon is picked.
+* Performance: The icon library binds its selection handler once, instead of attaching another copy to all 1,100+ icons every time it is opened.
+  3 September 2026*
 
 = 5.6.3 =
 * Fix: Attendee answers are no longer recorded against the wrong attendee. The hidden block the attendee form is cloned from sits inside the registration form, so its empty fields were posted along with the real ones; on the Horizon layout, which moves the attendee blocks below the form, that blank arrived first and pushed every answer one attendee out of step — the last attendee's answers were dropped and one record was left with no custom-field data and the billing name in place of the name that was typed. A booking for a single ticket lost its attendee details entirely. The clone source is now excluded from the submitted booking.

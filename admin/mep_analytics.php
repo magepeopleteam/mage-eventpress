@@ -181,7 +181,7 @@ function mep_analytics_detect_source() {
 function mep_analytics_get_order_statuses() {
 	$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 	$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-	$order_status     = array_values( $_order_status );
+	$order_status     = array_values( array_filter( (array) $_order_status ) ?: array( 'processing', 'completed' ) );
 	return array_map( function( $s ) {
 		return strpos( $s, 'wc-' ) === 0 ? substr( $s, 3 ) : $s;
 	}, $order_status );

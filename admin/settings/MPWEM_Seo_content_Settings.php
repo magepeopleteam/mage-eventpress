@@ -16,9 +16,10 @@
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				$event_start_date     = get_post_meta( $event_id, 'event_start_datetime', true ) ? get_post_meta( $event_id, 'event_start_datetime', true ) : '';
 				$event_end_date       = get_post_meta( $event_id, 'event_end_datetime', true ) ? get_post_meta( $event_id, 'event_end_datetime', true ) : '';
-				$event_rt_status      = get_post_meta( $event_id, 'mep_rt_event_status', true ) ? get_post_meta( $event_id, 'mep_rt_event_status', true ) : '';
+				$event_rt_status      = get_post_meta( $event_id, 'mep_rt_event_status', true ) ? get_post_meta( $event_id, 'mep_rt_event_status', true ) : 'EventScheduled';
 				$event_rt_atdnce_mode = get_post_meta( $event_id, 'mep_rt_event_attandence_mode', true ) ? get_post_meta( $event_id, 'mep_rt_event_attandence_mode', true ) : '';
-				$event_rt_prv_date    = get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) ? get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) : $event_start_date;
+				// Left empty on purpose: previousStartDate only applies to a rescheduled or postponed event.
+				$event_rt_prv_date    = get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) ? get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) : '';
 				$rt_status            = get_post_meta( $event_id, 'mep_rich_text_status', true );
 				?>
                 <div class="mp_tab_item" data-tab-item="#mp_event_rich_text" style="padding:15px">
@@ -63,6 +64,7 @@
                                 <td colspan="3">
                                     <label>
                                         <select class="mp_formControl" name="mep_rt_event_status">
+                                            <option value="EventScheduled" <?php selected( $event_rt_status, 'EventScheduled' ); ?>><?php esc_html_e( 'Event Scheduled', 'mage-eventpress' ); ?></option>
 										<option value="EventRescheduled" <?php selected( $event_rt_status, 'EventRescheduled' ); ?>><?php esc_html_e( 'Event Rescheduled', 'mage-eventpress' ); ?></option>
                                             <option value="EventMovedOnline" <?php echo ( $event_rt_status == 'EventMovedOnline' ) ? esc_attr( 'selected' ) : ''; ?>><?php esc_html_e( 'Event Moved Online', 'mage-eventpress' ); ?></option>
                                             <option value="EventPostponed" <?php echo ( $event_rt_status == 'EventPostponed' ) ? esc_attr( 'selected' ) : ''; ?>><?php esc_html_e( 'Event Postponed', 'mage-eventpress' ); ?></option>
@@ -87,7 +89,8 @@
                                 <td><span><?php esc_html_e( 'Previous Start Date:', 'mage-eventpress' ); ?></span></td>
                                 <td colspan="3">
                                     <label>
-                                        <input type='text' class="mp_formControl" name="mep_rt_event_prvdate" value='<?php echo esc_attr( $event_rt_prv_date ); ?>'/>
+                                        <input type='text' class="mp_formControl" name="mep_rt_event_prvdate" placeholder="YYYY-MM-DD HH:MM:SS" value='<?php echo esc_attr( $event_rt_prv_date ); ?>'/>
+                                        <span class="label-text"><?php esc_html_e( 'Only used when the event status is Rescheduled or Postponed. Leave empty otherwise.', 'mage-eventpress' ); ?></span>
                                     </label>
                                 </td>
                             </tr>

@@ -445,7 +445,7 @@
 					$event_rt_status              = isset( $_POST['mep_rt_event_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_status'] ) ) : '';
 					$event_rt_atdnce_mode         = isset( $_POST['mep_rt_event_attandence_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_attandence_mode'] ) ) : '';
 					$event_rt_prv_date            = isset( $_POST['mep_rt_event_prvdate'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_prvdate'] ) ) : '';
-					$event_rt_status              = in_array( $event_rt_status, [ 'EventRescheduled', 'EventMovedOnline', 'EventPostponed', 'EventCancelled' ], true ) ? $event_rt_status : '';
+					$event_rt_status              = in_array( $event_rt_status, [ 'EventScheduled', 'EventRescheduled', 'EventMovedOnline', 'EventPostponed', 'EventCancelled' ], true ) ? $event_rt_status : 'EventScheduled';
 					$event_rt_atdnce_mode         = in_array( $event_rt_atdnce_mode, [ 'OfflineEventAttendanceMode', 'OnlineEventAttendanceMode', 'MixedEventAttendanceMode' ], true ) ? $event_rt_atdnce_mode : '';
 					$seat                         = 0;
 					$mep_event_template_file_name = isset( $_POST['mep_event_template'] ) && mep_isValidFilename( $_POST['mep_event_template'] ) ? sanitize_file_name( $_POST['mep_event_template'] ) : "default-theme.php";
@@ -455,7 +455,7 @@
 					update_post_meta( $post_id, 'mep_rich_text_status', $mep_rich_text_status );
 					update_post_meta( $post_id, 'mep_rt_event_status', $event_rt_status );
 					update_post_meta( $post_id, 'mep_rt_event_attandence_mode', $event_rt_atdnce_mode );
-					update_post_meta( $post_id, 'mep_rt_event_prvdate', $event_rt_prv_date );
+					update_post_meta( $post_id, 'mep_rt_event_prvdate', in_array( $event_rt_status, [ 'EventRescheduled', 'EventPostponed' ], true ) ? $event_rt_prv_date : '' );
 					update_post_meta( $post_id, 'mep_event_template', $mep_event_template );
 					update_post_meta( $post_id, '_stock', $seat );
 					$mp_event_virtual_type_des = isset( $_POST['mp_event_virtual_type_des'] ) ? wp_kses_post( wp_unslash( $_POST['mp_event_virtual_type_des'] ) ) : '';

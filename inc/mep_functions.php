@@ -1169,6 +1169,27 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $order_meta;
 		}
 	}
+	if ( ! function_exists( 'mep_attendee_create_last_error' ) ) {
+		/**
+		 * Reason the last attendee insert failed, for the caller to report or log.
+		 *
+		 * mep_attendee_create() returns a bare false when wp_insert_post() refuses the
+		 * post, which told nobody anything: at checkout the attendee was lost silently and
+		 * the seat was never counted, and the sync screen could only say "please reload and
+		 * try again". The WP_Error is kept here so the reason survives the boolean return.
+		 *
+		 * @param WP_Error|null $error Pass a WP_Error to record one, or nothing to read it.
+		 * @return string Empty when the last insert succeeded or nothing has run yet.
+		 */
+		function mep_attendee_create_last_error( $error = null ) {
+			static $last = '';
+			if ( ! is_null( $error ) ) {
+				$last = is_wp_error( $error ) ? $error->get_error_code() . ': ' . $error->get_error_message() : (string) $error;
+			}
+
+			return $last;
+		}
+	}
 	if ( ! function_exists( 'mep_attendee_create' ) ) {
 		function mep_attendee_create( $type, $order_id, $event_id, $_user_info = array(), $force_order_status = 'no' ) {
 			// Getting an instance of the order object
@@ -1232,10 +1253,22 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				'post_type'     => 'mep_events_attendees'  //'post',page' or use a custom post type if you want to
 			);
 			//SAVE THE POST
-			$pid = wp_insert_post( $new_post );
+			// $wp_error = true so a refused insert explains itself instead of returning 0.
+			$pid = wp_insert_post( $new_post, true );
 			if ( ! $pid || is_wp_error( $pid ) ) {
+				mep_attendee_create_last_error( is_wp_error( $pid ) ? $pid : new WP_Error( 'mep_attendee_not_created', __( 'WordPress did not create the attendee record.', 'mage-eventpress' ) ) );
+				// A lost attendee is also a lost seat: sold counts are read from these posts,
+				// so a silent failure here is what lets an event carry on overselling.
+				if ( function_exists( 'wc_get_logger' ) ) {
+					wc_get_logger()->error(
+						sprintf( 'Attendee not created for order %1$s, event %2$s: %3$s', $order_id, $event_id, mep_attendee_create_last_error() ),
+						array( 'source' => 'mage-eventpress' )
+					);
+				}
+
 				return false;
 			}
+			mep_attendee_create_last_error( '' );
 			$pin = $user_id . $order_id . $event_id . $pid;
 			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input( $uname ) );
 			update_post_meta( $pid, 'ea_address_1', mep_prevent_serialized_input( $address ) );

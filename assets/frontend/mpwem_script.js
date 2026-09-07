@@ -1509,6 +1509,65 @@ document.querySelectorAll('li').forEach(function(li) {
 }(jQuery));
 
 /* ============================================================
+ * Enquiry ("query") form — Announcement-mode events.
+ * Posts to wp_ajax_mep_submit_enquiry (MPWEM_Hooks::mep_submit_enquiry).
+ * Deliberately its own <form>, so it never collides with the RSVP handler
+ * bound to #mpwem_registration above.
+ * ============================================================ */
+(function ($) {
+    "use strict";
+    $(document).on('submit', '.mpwem_enquiry_form', function (e) {
+        e.preventDefault();
+
+        var $form = $(this);
+        if ($form.data('mpwemEnquirySubmitting')) {
+            return;
+        }
+
+        var $btn = $form.find('.mpwem_enquiry_submit_btn');
+        var $label = $btn.find('span');
+        var $msg = $form.find('.mpwem_enquiry_message');
+        var originalLabel = $label.text();
+
+        // Let the browser surface its own messages for required/typed fields first.
+        if (this.checkValidity && !this.checkValidity()) {
+            this.reportValidity && this.reportValidity();
+            return;
+        }
+
+        $form.data('mpwemEnquirySubmitting', true);
+        $btn.prop('disabled', true);
+        $label.text($btn.data('sending-text') || 'Sending...');
+        $msg.hide().removeClass('success error').text('');
+
+        $.ajax({
+            url: (typeof mpwem_script_var !== 'undefined' && mpwem_script_var.url) ? mpwem_script_var.url : (typeof mpwem_ajax_url !== 'undefined' ? mpwem_ajax_url : ''),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function (response) {
+                if (response && response.success) {
+                    $msg.text(response.data.message).addClass('success').show();
+                    $form.find('input[type="text"], input[type="email"], textarea').val('');
+                } else {
+                    var errorMsg = (response && response.data && response.data.message)
+                        ? response.data.message
+                        : 'An error occurred. Please try again.';
+                    $msg.text(errorMsg).addClass('error').show();
+                }
+            },
+            error: function () {
+                $msg.text('Connection error. Please try again.').addClass('error').show();
+            },
+            complete: function () {
+                $form.data('mpwemEnquirySubmitting', false);
+                $btn.prop('disabled', false);
+                $label.text(originalLabel);
+            }
+        });
+    });
+}(jQuery));
+
+/* ============================================================
  * Native Checkout — runs when WooCommerce is not active.
  * Intercepts mpwem_book_now clicks and shows the billing modal.
  * ============================================================ */

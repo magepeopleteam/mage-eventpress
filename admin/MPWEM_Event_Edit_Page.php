@@ -1806,7 +1806,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																?>
 																<input type="hidden" name="mep_reg_status" id="mep_reg_status" value="<?php echo esc_attr($current_mode); ?>" />
 																
-																<div class="mpwem-event-type-toggle" id="mpwem_event_mode_toggle" style="margin-top: 10px; grid-template-columns: repeat(3, 1fr);">
+																<div class="mpwem-event-type-toggle" id="mpwem_event_mode_toggle" style="margin-top: 10px; grid-template-columns: repeat(2, 1fr);">
 																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'on') ? 'is-active' : ''; ?>" data-value="on">
 																		<span class="dashicons dashicons-tickets-alt"></span>
 																		<div>
@@ -1834,6 +1834,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																		<div>
 																			<strong><?php esc_html_e('Listing-Only', 'mage-eventpress'); ?></strong>
 																			<small><?php esc_html_e('No Registration', 'mage-eventpress'); ?></small>
+																		</div>
+																	</div>
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'announcement') ? 'is-active' : ''; ?>" data-value="announcement">
+																		<span class="dashicons dashicons-megaphone"></span>
+																		<div>
+																			<strong><?php esc_html_e('Announcement', 'mage-eventpress'); ?></strong>
+																			<small><?php esc_html_e('Notice + Enquiry Form', 'mage-eventpress'); ?></small>
 																		</div>
 																	</div>
 																</div>
@@ -1945,13 +1952,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	<?php esc_html_e('Free attendee registration. No WooCommerce needed.', 'mage-eventpress'); ?>
 																</p>
 															</div>
-															<div class="mpwem-mode-manual-item">
+															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
 																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
 																	<span class="dashicons dashicons-tickets-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
 																	<?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?>
 																</h4>
 																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
 																	<?php esc_html_e('Sell tickets and accept payments. Requires WooCommerce or custom payment method.', 'mage-eventpress'); ?>
+																</p>
+															</div>
+															<div class="mpwem-mode-manual-item">
+																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
+																	<span class="dashicons dashicons-megaphone" style="font-size: 18px; width: 18px; height: 18px;"></span>
+																	<?php esc_html_e('Announcement', 'mage-eventpress'); ?>
+																</h4>
+																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
+																	<?php esc_html_e('Publish a notice with an enquiry form instead of a ticket box. Works with or without a date.', 'mage-eventpress'); ?>
 																</p>
 															</div>
 														</div>
@@ -2353,8 +2369,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					}
 				}
 
-				// Date & Time step (applies to every event regardless of mode).
-				if ('' === $validation_error) {
+				// Date & Time step (applies to every event regardless of mode) - unless the
+				// event is marked "Undated" in the Date & Time step, in which case there is
+				// deliberately no date to validate and the fields are hidden in both editors.
+				$is_undated = isset($_POST['mep_event_no_date']) && $_POST['mep_event_no_date'];
+				if ('' === $validation_error && ! $is_undated) {
 					$recurring = isset($_POST['mep_enable_recurring']) ? sanitize_text_field(wp_unslash($_POST['mep_enable_recurring'])) : 'no';
 
 					if ('yes' === $recurring) {

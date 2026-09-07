@@ -16,8 +16,15 @@
 		$reg_status = 'on'; // native checkout handles paid events when WooCommerce is not active
 	}
 
-	// Listing mode has no registration box at all
-	if ( $reg_status === 'off' ) {
+	// Listing and Announcement modes have no registration box at all. Announcement
+	// renders its own notice + enquiry form from templates/layout/announcement.php.
+	if ( $reg_status === 'off' || $reg_status === 'announcement' ) {
+		return;
+	}
+
+	// An undated event has no occurrence to book, so the ticket options are omitted
+	// while the rest of the details page renders normally.
+	if ( MPWEM_Global_Function::is_undated_event( $event_id ) ) {
 		return;
 	}
 

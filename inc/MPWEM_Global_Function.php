@@ -258,6 +258,107 @@
 				return $new_date . "T" . $new_time . "00";
 			}
 			//=================//
+			/**
+			 * The values 'mep_reg_status' (Event Mode) is allowed to hold.
+			 *
+			 * on           - Ticket-Selling. Sells tickets through WooCommerce / native checkout.
+			 * rsvp         - RSVP. Free registration, stored straight as an attendee.
+			 * off          - Listing-Only. Event details with no registration at all.
+			 * announcement - Announcement. Shows a notice plus an enquiry ("query") form
+			 *                instead of a ticket box; needs no date, no price, no product.
+			 */
+			public static function get_event_modes(): array {
+				return [ 'off', 'rsvp', 'on', 'announcement' ];
+			}
+			/**
+			 * Normalised Event Mode for an event. Unknown/blank values fall back the way
+			 * every reader already did: 'on' when a ticket flow is possible, else 'off'.
+			 */
+			public static function get_event_mode( $event_id ): string {
+				$mode = get_post_meta( $event_id, 'mep_reg_status', true );
+				if ( ! in_array( $mode, self::get_event_modes(), true ) ) {
+					$mode = self::has_woocommerce() ? 'on' : 'off';
+				}
+				return $mode;
+			}
+			/**
+			 * Whether this event was published without any date & time.
+			 *
+			 * Driven by the "Undated Event" switch in the Date & Time settings
+			 * (MPWEM_Date_Settings::no_date_switch). Undated events skip date validation
+			 * on publish, never render the ticket / registration box, and are listed in
+			 * both the upcoming and the past event lists.
+			 */
+			public static function is_undated_event( $event_id ): bool {
+				if ( get_post_meta( $event_id, 'mep_event_no_date', true ) === 'yes' ) {
+					return true;
+				}
+				// The switch is the explicit opt-in, but an event that simply has no
+				// start/upcoming datetime is dateless too - published with the date fields
+				// left blank, say. Treating only the flag as "undated" left those events
+				// matching neither the upcoming nor the expired list, i.e. invisible.
+				$start    = trim( (string) get_post_meta( $event_id, 'event_start_datetime', true ) );
+				$upcoming = trim( (string) get_post_meta( $event_id, 'event_upcoming_datetime', true ) );
+				return '' === $start && '' === $upcoming;
+			}
+			/**
+			 * Whether an event can actually be booked from a listing card.
+			 *
+			 * False for Listing-Only and Announcement modes (nothing to buy or reserve)
+			 * and for any undated event (no occurrence to book).
+			 */
+			public static function is_bookable_event( $event_id ): bool {
+				$mode = self::get_event_mode( $event_id );
+				if ( in_array( $mode, [ 'off', 'announcement' ], true ) ) {
+					return false;
+				}
+				return ! self::is_undated_event( $event_id );
+			}
+			/**
+			 * Call-to-action label for an event-list card. Bookable events keep the
+			 * existing "Book"; everything else invites the visitor to read on instead of
+			 * promising a booking that the details page cannot deliver.
+			 */
+			public static function get_list_button_label( $event_id ): string {
+				$label = self::is_bookable_event( $event_id )
+					? __( 'Book', 'mage-eventpress' )
+					: __( 'View More', 'mage-eventpress' );
+				return (string) apply_filters( 'mpwem_list_button_label', $label, $event_id );
+			}
+			/**
+			 * Enquiry ("query") form labels for an event, each falling back to a default
+			 * when the organiser left the per-event field blank.
+			 */
+			public static function get_enquiry_labels( $event_id ): array {
+				$defaults = [
+					'mep_enquiry_title'         => __( 'Send an Enquiry', 'mage-eventpress' ),
+					'mep_enquiry_name_label'    => __( 'Full Name', 'mage-eventpress' ),
+					'mep_enquiry_email_label'   => __( 'Email Address', 'mage-eventpress' ),
+					'mep_enquiry_phone_label'   => __( 'Phone Number', 'mage-eventpress' ),
+					'mep_enquiry_subject_label' => __( 'Subject', 'mage-eventpress' ),
+					'mep_enquiry_message_label' => __( 'Your Question', 'mage-eventpress' ),
+					'mep_enquiry_button_label'  => __( 'Send Enquiry', 'mage-eventpress' ),
+					'mep_enquiry_success_msg'   => __( 'Thank you! Your enquiry has been sent.', 'mage-eventpress' ),
+				];
+				$labels = [];
+				foreach ( $defaults as $key => $default ) {
+					$saved         = trim( (string) self::get_post_info( $event_id, $key, '' ) );
+					$labels[ $key ] = '' !== $saved ? $saved : $default;
+				}
+				return $labels;
+			}
+			/**
+			 * Where an enquiry notification is delivered: the per-event address when set,
+			 * otherwise the site admin address.
+			 */
+			public static function get_enquiry_recipient( $event_id ): string {
+				$email = trim( (string) get_post_meta( $event_id, 'mep_enquiry_email', true ) );
+				if ( '' === $email || ! is_email( $email ) ) {
+					$email = get_option( 'admin_email' );
+				}
+				return (string) $email;
+			}
+			//=================//
 			public static function get_post_info( $post_id, $key, $default = '' ) {
 				$data = get_post_meta( $post_id, $key, true ) ?: $default;
 				return self::data_sanitize( $data );

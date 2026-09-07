@@ -71,6 +71,23 @@
                 </script>
 				<?php
 			}
+			/**
+			 * Combine a date and a time field into 'Y-m-d H:i:s'.
+			 *
+			 * Returns '' when the pair cannot produce a real datetime. The previous
+			 * inline `date( 'Y-m-d H:i:s', strtotime( $date . ' ' . $time ) )` turned a
+			 * blank pair into 1970-01-01 00:00:00, which reads as a long-expired event
+			 * everywhere the expiry meta is compared against "now".
+			 */
+			private static function to_datetime( $date, $time ) {
+				$date = trim( (string) $date );
+				$time = trim( (string) $time );
+				if ( '' === $date ) {
+					return '';
+				}
+				$timestamp = strtotime( trim( $date . ' ' . $time ) );
+				return $timestamp ? date( 'Y-m-d H:i:s', $timestamp ) : '';
+			}
 			public function save_settings( $post_id ) {
 				if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mpwem_type_nonce'] ) ), 'mpwem_type_nonce' ) || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || ! current_user_can( 'edit_post', $post_id ) ) {
 					return;
@@ -127,7 +144,7 @@
 					update_post_meta( $post_id, 'location_name', $location_name );
 					
 					$mep_reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'off';
-					if ( ! in_array( $mep_reg_status, [ 'off', 'rsvp', 'on' ], true ) ) {
+					if ( ! in_array( $mep_reg_status, MPWEM_Global_Function::get_event_modes(), true ) ) {
 						$mep_reg_status = 'off';
 					}
 
@@ -150,6 +167,33 @@
 					update_post_meta( $post_id, 'mep_rsvp_email_label', $mep_rsvp_email_label );
 					update_post_meta( $post_id, 'mep_rsvp_phone_label', $mep_rsvp_phone_label );
 					update_post_meta( $post_id, 'mep_rsvp_qty_label', $mep_rsvp_qty_label );
+
+					// Announcement mode: the notice shown instead of a ticket box, plus the
+					// enquiry ("query") form that goes with it. Text fields only - the body
+					// runs through wp_kses_post so an organiser can keep basic formatting.
+					if ( isset( $_POST['mep_announcement_title'] ) ) {
+						update_post_meta( $post_id, 'mep_announcement_title', sanitize_text_field( wp_unslash( $_POST['mep_announcement_title'] ) ) );
+					}
+					if ( isset( $_POST['mep_announcement_text'] ) ) {
+						update_post_meta( $post_id, 'mep_announcement_text', wp_kses_post( wp_unslash( $_POST['mep_announcement_text'] ) ) );
+					}
+
+					// The enquiry form ships on by default so switching an event to
+					// Announcement mode gives visitors a way to respond straight away.
+					$mep_enquiry_status = isset( $_POST['mep_enquiry_form_present'] )
+						? ( isset( $_POST['mep_enquiry_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enquiry_status'] ) ) ? 'on' : 'off' )
+						: ( get_post_meta( $post_id, 'mep_enquiry_status', true ) ?: 'on' );
+					update_post_meta( $post_id, 'mep_enquiry_status', $mep_enquiry_status );
+
+					if ( isset( $_POST['mep_enquiry_email'] ) ) {
+						update_post_meta( $post_id, 'mep_enquiry_email', sanitize_email( wp_unslash( $_POST['mep_enquiry_email'] ) ) );
+					}
+
+					foreach ( [ 'mep_enquiry_title', 'mep_enquiry_name_label', 'mep_enquiry_email_label', 'mep_enquiry_phone_label', 'mep_enquiry_subject_label', 'mep_enquiry_message_label', 'mep_enquiry_button_label', 'mep_enquiry_success_msg' ] as $mpwem_enquiry_key ) {
+						if ( isset( $_POST[ $mpwem_enquiry_key ] ) ) {
+							update_post_meta( $post_id, $mpwem_enquiry_key, sanitize_text_field( wp_unslash( $_POST[ $mpwem_enquiry_key ] ) ) );
+						}
+					}
 					/********************************/
 					$new_ticket_type      = array();
 					$names                = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];
@@ -207,7 +251,19 @@
 					$date_type = isset( $_POST['mep_enable_recurring'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_enable_recurring'] ) ) : 'no';
 					update_post_meta( $post_id, 'mep_enable_recurring', $date_type );
 					//**********************//
-					if ( $date_type == 'no' ) {
+					// "Undated event" (MPWEM_Date_Settings::no_date_switch). When it is on the
+					// date fields are hidden in both editors, so whatever they still hold is
+					// stale - wipe every date meta instead of storing it. Writing empty strings
+					// (rather than deleting the rows) keeps the meta keys present for the
+					// existing readers, all of which already treat '' as "no date".
+					$mep_event_no_date = isset( $_POST['mep_event_no_date'] ) && sanitize_text_field( wp_unslash( $_POST['mep_event_no_date'] ) ) ? 'yes' : 'no';
+					update_post_meta( $post_id, 'mep_event_no_date', $mep_event_no_date );
+					if ( $mep_event_no_date == 'yes' ) {
+						foreach ( [ 'event_start_date', 'event_start_time', 'event_end_date', 'event_end_time', 'event_start_datetime', 'event_end_datetime', 'event_expire_datetime', 'event_upcoming_datetime' ] as $mpwem_date_meta_key ) {
+							update_post_meta( $post_id, $mpwem_date_meta_key, '' );
+						}
+						update_post_meta( $post_id, 'mep_event_more_date', [] );
+					} elseif ( $date_type == 'no' ) {
 						$start_date = isset( $_POST['event_start_date_normal'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date_normal'] ) ) : '';
 						$start_time = isset( $_POST['event_start_time_normal'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_time_normal'] ) ) : '';
 						$end_date   = isset( $_POST['event_end_date_normal'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_date_normal'] ) ) : '';
@@ -217,8 +273,8 @@
 						update_post_meta( $post_id, 'event_end_date', $end_date );
 						update_post_meta( $post_id, 'event_end_time', $end_time );
 						/********************/
-						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
-						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						$event_start_datetime = self::to_datetime( $start_date, $start_time );
+						$event_end_datetime   = self::to_datetime( $end_date, $end_time );
 						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
 						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
 						$start_date_more = isset( $_POST['event_more_start_date_normal'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_date_normal'] ) ) : [];
@@ -239,7 +295,7 @@
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
 						$md                    = is_array( $more_dates ) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
-						$event_expire_datetime = is_array( $md ) && sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
+						$event_expire_datetime = is_array( $md ) && sizeof( $md ) > 0 ? self::to_datetime( $md['event_more_end_date'], $md['event_more_end_time'] ) : $event_end_datetime;
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
 					} elseif ( $date_type == 'yes' ) {
 						$start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
@@ -251,8 +307,8 @@
 						update_post_meta( $post_id, 'event_end_date', $end_date );
 						update_post_meta( $post_id, 'event_end_time', $end_time );
 						/********************/
-						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
-						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						$event_start_datetime = self::to_datetime( $start_date, $start_time );
+						$event_end_datetime   = self::to_datetime( $end_date, $end_time );
 						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
 						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
 						$start_date_more = isset( $_POST['event_more_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_date'] ) ) : [];
@@ -273,7 +329,7 @@
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
 						$md                    = is_array( $more_dates ) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
-						$event_expire_datetime = ( is_array( $md ) && sizeof( $md ) > 0 ) ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
+						$event_expire_datetime = ( is_array( $md ) && sizeof( $md ) > 0 ) ? self::to_datetime( $md['event_more_end_date'], $md['event_more_end_time'] ) : $event_end_datetime;
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
 					} else {
 						$start_date = isset( $_POST['event_start_date_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date_everyday'] ) ) : '';
@@ -285,8 +341,8 @@
 						update_post_meta( $post_id, 'event_end_date', $end_date );
 						update_post_meta( $post_id, 'event_end_time', $end_time );
 						/********************/
-						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
-						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						$event_start_datetime = self::to_datetime( $start_date, $start_time );
+						$event_end_datetime   = self::to_datetime( $end_date, $end_time );
 						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
 						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
 						update_post_meta( $post_id, 'event_expire_datetime', $event_end_datetime );

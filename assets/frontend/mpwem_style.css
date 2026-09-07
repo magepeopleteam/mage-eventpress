@@ -12622,3 +12622,241 @@ div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .inputIncDec 
 	-webkit-mask-size: contain;
 	mask-size: contain;
 }
+
+/* ============================================================
+   Announcement mode — notice + enquiry ("query") form.
+   Matches the RSVP box above so the two non-ticket modes read
+   as the same component family.
+   ============================================================ */
+.mpwem_announcement_area {
+	margin-bottom: 20px;
+}
+
+.mpwem_announcement_notice {
+	display: flex;
+	align-items: flex-start;
+	gap: 20px;
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-left: 4px solid var(--color_theme, #0073aa);
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+	padding: 24px 28px;
+	margin-bottom: 24px;
+}
+
+.mpwem_announcement_notice__icon {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	/* Optical centring against the title's first line rather than the box top. */
+	margin-top: 2px;
+	border-radius: 50%;
+	background: rgba(0, 115, 170, 0.1);
+	color: var(--color_theme, #0073aa);
+	font-size: 17px;
+	line-height: 1;
+}
+
+.mpwem_announcement_area .mpwem_announcement_notice__body {
+	flex: 1 1 auto;
+	min-width: 0;
+	/* Block themes add a margin-block-start to flow children, which otherwise
+	   opens a large gap between the title and the first paragraph. */
+	margin-top: 0;
+}
+
+.mpwem_announcement_area .mpwem_announcement_notice__title {
+	margin: 0 0 10px;
+	padding: 0;
+	font-size: 18px;
+	line-height: 1.35;
+	color: #111827;
+}
+
+.mpwem_announcement_area .mpwem_announcement_notice__text {
+	margin: 0;
+	font-size: 15px;
+	line-height: 1.65;
+	color: #374151;
+}
+
+.mpwem_announcement_area .mpwem_announcement_notice__text > *:first-child {
+	margin-top: 0;
+}
+
+.mpwem_announcement_area .mpwem_announcement_notice__text > *:last-child {
+	margin-bottom: 0;
+}
+
+.mpwem_enquiry_area {
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+}
+
+.mpwem_announcement_area .mpwem_enquiry_title {
+	background: var(--color_theme, #0073aa);
+	color: var(--color_7, #ffffff);
+	margin: 0;
+	padding: 18px 28px;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 1.4;
+}
+
+/* Scoped to the announcement wrapper so a block theme's own form rules cannot
+   flatten the inner padding and push the fields against the card edge. */
+.mpwem_announcement_area .mpwem_enquiry_form {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 26px 28px 28px;
+	background: transparent;
+	border: none;
+}
+
+/* Honeypot: off-screen rather than display:none, so bots that skip hidden
+   fields still fill it in. Never focusable (tabindex="-1" on the input). */
+.mpwem_enquiry_hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.mpwem_announcement_area .mpwem_enquiry_fields {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 18px 20px;
+	margin: 0 0 24px;
+}
+
+.mpwem_enquiry_field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.mpwem_enquiry_field--full {
+	grid-column: 1 / -1;
+}
+
+.mpwem_announcement_area .mpwem_enquiry_field label {
+	display: block;
+	font-size: 13px;
+	font-weight: 600;
+	color: #374151;
+	margin: 0 0 2px;
+	padding: 0;
+	line-height: 1.4;
+}
+
+.mpwem_announcement_area .mpwem_enquiry_field > * {
+	margin-top: 0;
+}
+
+.mpwem_enquiry_field label span {
+	color: #e53e3e;
+	margin-left: 2px;
+}
+
+.mpwem_enquiry_field input[type="text"],
+.mpwem_enquiry_field input[type="email"],
+.mpwem_enquiry_field textarea {
+	width: 100%;
+	padding: 10px 14px;
+	border: 1px solid #d1d5db;
+	border-radius: 8px;
+	font-size: 14px;
+	color: #1f2937;
+	background: #f9fafb;
+	box-sizing: border-box;
+	transition: border-color 0.15s, box-shadow 0.15s;
+	outline: none;
+}
+
+.mpwem_enquiry_field textarea {
+	resize: vertical;
+	min-height: 96px;
+}
+
+.mpwem_enquiry_field input[type="text"]:focus,
+.mpwem_enquiry_field input[type="email"]:focus,
+.mpwem_enquiry_field textarea:focus {
+	border-color: var(--color_theme, #0073aa);
+	background: #ffffff;
+	box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.12);
+}
+
+.mpwem_enquiry_message {
+	display: none;
+	font-size: 14px;
+	border-radius: 8px;
+	padding: 12px 16px;
+	margin-bottom: 16px;
+	line-height: 1.5;
+}
+
+.mpwem_enquiry_message.success {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #a7f3d0;
+}
+
+.mpwem_enquiry_message.error {
+	background: #fef2f2;
+	color: #991b1b;
+	border: 1px solid #fca5a5;
+}
+
+.mpwem_enquiry_form .mpwem_enquiry_submit_btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px 26px;
+	border: none;
+	border-radius: 8px;
+	background: var(--color_theme, #0073aa);
+	color: var(--color_7, #ffffff);
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	transition: opacity 0.15s, transform 0.15s;
+}
+
+.mpwem_enquiry_form .mpwem_enquiry_submit_btn:hover {
+	opacity: 0.9;
+}
+
+.mpwem_enquiry_form .mpwem_enquiry_submit_btn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	transform: none;
+}
+
+@media (max-width: 767px) {
+	.mpwem_announcement_area .mpwem_enquiry_fields {
+		grid-template-columns: 1fr;
+	}
+
+	.mpwem_announcement_notice {
+		gap: 14px;
+		padding: 18px 20px;
+	}
+
+	.mpwem_announcement_area .mpwem_enquiry_title {
+		padding: 16px 20px;
+	}
+
+	.mpwem_announcement_area .mpwem_enquiry_form {
+		padding: 20px 20px 22px;
+	}
+}

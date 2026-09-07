@@ -515,104 +515,228 @@
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.
 			public function event_rich_text_data() {
 				global $post;
-				if ( is_single() ) {
-					$event_id = $post->ID;
-					if ( $event_id && get_post_type( $event_id ) == 'mep_events' ) {
-						$event_name           = get_the_title( $event_id );
-						$event_start_date     = get_post_meta( $post->ID, 'event_start_datetime', true ) ? wp_date( 'Y-m-d H:i:s T', strtotime( get_post_meta( $post->ID, 'event_start_datetime', true ) ) ) : '';
-						$event_end_date       = get_post_meta( $post->ID, 'event_end_datetime', true ) ? get_post_meta( $post->ID, 'event_end_datetime', true ) : '';
-						$event_rt_status      = get_post_meta( $post->ID, 'mep_rt_event_status', true ) ? get_post_meta( $post->ID, 'mep_rt_event_status', true ) : 'EventRescheduled';
-						$event_rt_atdnce_mode = get_post_meta( $post->ID, 'mep_rt_event_attandence_mode', true ) ? get_post_meta( $post->ID, 'mep_rt_event_attandence_mode', true ) : 'OfflineEventAttendanceMode';
-						$event_rt_prv_date    = get_post_meta( $post->ID, 'mep_rt_event_prvdate', true ) ? get_post_meta( $post->ID, 'mep_rt_event_prvdate', true ) : $event_start_date;
-						$terms                = get_the_terms( $event_id, 'mep_org' );
-						$org_name             = is_array( $terms ) && sizeof( $terms ) > 0 ? $terms[0]->name : 'No Performer';
-						$rt_status            = get_post_meta( $event_id, 'mep_rich_text_status', true ) ? get_post_meta( $event_id, 'mep_rich_text_status', true ) : 'enable';
-						if ( $rt_status == 'enable' ) {
-							ob_start();
-							?>
-                            <script type="application/ld+json">
-                                {
-								"@context"  : "https://schema.org",
-								"@type"     : "Event",
-								"name"      : "<?php echo esc_attr( $event_name ); ?>",
-                            "startDate" : "<?php echo esc_attr( $event_start_date ); ?>",
-                            "endDate"   : "<?php echo esc_attr( $event_end_date ); ?>",
-                            "offers": {
-                                "@type"         : "Offer",
-                                "url"           : "<?php echo get_the_permalink( $event_id ); ?>",
-                                "price"         : "<?php echo strip_tags( mep_event_list_number_price( $event_id ) ); ?>",
-                                "priceCurrency" : "<?php echo MPWEM_Global_Function::has_woocommerce() ? get_woocommerce_currency() : 'USD'; ?>",
-                                "availability"  : "https://schema.org/InStock",
-                                "validFrom"     : "<?php echo esc_attr( $event_end_date ); ?>"
-                            },
-                            "organizer": {
-                                "@type" : "Organization",
-                                "name"  : "<?php echo esc_attr( $org_name ); ?>",
-                                "url"   : "<?php echo get_the_permalink( $event_id ); ?>"
-                            },
-                            "eventStatus"           : "https://schema.org/<?php echo esc_attr( $event_rt_status ); ?>",
-                            "eventAttendanceMode"   : "https://schema.org/<?php echo esc_attr( $event_rt_atdnce_mode ); ?>",
-                            "previousStartDate"     : "<?php echo esc_attr( $event_rt_prv_date ); ?>",
+				if ( ! is_single() || ! ( $post instanceof WP_Post ) ) {
+					return;
+				}
+				$event_id = $post->ID;
+				if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' ) {
+					return;
+				}
+				$rt_status = get_post_meta( $event_id, 'mep_rich_text_status', true ) ? get_post_meta( $event_id, 'mep_rich_text_status', true ) : 'enable';
+				if ( $rt_status !== 'enable' ) {
+					return;
+				}
+				/**
+				 * Filters the schema.org/Event graph before it is printed into the document head.
+				 *
+				 * Return an empty array to suppress the JSON-LD output altogether.
+				 *
+				 * @param array $schema   The assembled Event schema.
+				 * @param int   $event_id The event post ID.
+				 */
+				$schema = apply_filters( 'mpwem_event_schema', $this->build_event_schema( $event_id ), $event_id );
+				if ( ! is_array( $schema ) || sizeof( $schema ) === 0 ) {
+					return;
+				}
+				// Slashes are left escaped on purpose so a "</script>" inside any value cannot break out of the tag.
+				$json = wp_json_encode( $schema, JSON_UNESCAPED_UNICODE );
+				if ( ! $json ) {
+					return;
+				}
+				echo '<script type="application/ld+json">' . $json . '</script>' . "\n";
+			}
 
-                            "location"  : <?php
-									// Determine if this is an online/virtual event
-									$location_data    = MPWEM_Functions::get_location( $event_id );
-									$location_display = '';
-									// Get location/venue first
-									if ( ! empty( $location_data['location'] ) ) {
-										$location_display = $location_data['location'];
-									} else {
-										// If no location/venue, build from street + city
-										$location_parts = array();
-										if ( ! empty( $location_data['street'] ) ) {
-											$location_parts[] = $location_data['street'];
-										}
-										if ( ! empty( $location_data['city'] ) ) {
-											$location_parts[] = $location_data['city'];
-										}
-										if ( ! empty( $location_parts ) ) {
-											$location_display = implode( ' ', $location_parts );
-										}
-									}
-									// Check if event is virtual/online
-									$is_online_event = ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false;
-									if ( $is_online_event || $event_rt_atdnce_mode === 'OnlineEventAttendanceMode' ) {
-										// Output VirtualLocation for online events
-										echo '{
-                                        "@type"         : "VirtualLocation",
-                                        "url"           : "' . esc_url( get_the_permalink( $event_id ) ) . '"
-                                    }';
-									} else {
-										// Output Place for physical events
-										echo '{
-                                        "@type"         : "Place",
-                                        "name"          : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'location' ) ) . '",
-                                        "address"       : {
-                                        "@type"         : "PostalAddress",
-                                        "streetAddress" : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'street' ) ) . '",
-                                        "addressLocality": "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'city' ) ) . '",
-                                        "postalCode"    : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'zip' ) ) . '",
-                                        "addressRegion" : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'state' ) ) . '",
-                                        "addressCountry": "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'country' ) ) . '"
-                                        }
-                                    }';
-									}
-								?>,
-                            "image": [
-                                "<?php echo get_the_post_thumbnail_url( $event_id, 'full' ); ?>"
-                            ],
-                            "description": "<?php echo strip_tags( mep_string_sanitize( get_the_excerpt( $event_id ) ) ); ?>",
-                            "performer": {
-                                "@type" : "PerformingGroup",
-                                "name"  : "<?php echo esc_attr( $org_name ); ?>"
-                            }
-                            }
-                            </script>
-							<?php
-							echo ob_get_clean();
+			/**
+			 * Assembles the schema.org/Event graph for a single event.
+			 *
+			 * @param int $event_id The event post ID.
+			 *
+			 * @return array
+			 */
+			protected function build_event_schema( $event_id ) {
+				$event_status = get_post_meta( $event_id, 'mep_rt_event_status', true );
+				if ( ! in_array( $event_status, array( 'EventScheduled', 'EventRescheduled', 'EventMovedOnline', 'EventPostponed', 'EventCancelled' ), true ) ) {
+					$event_status = 'EventScheduled';
+				}
+				$attendance_mode = get_post_meta( $event_id, 'mep_rt_event_attandence_mode', true );
+				if ( ! in_array( $attendance_mode, array( 'OfflineEventAttendanceMode', 'OnlineEventAttendanceMode', 'MixedEventAttendanceMode' ), true ) ) {
+					$attendance_mode = 'OfflineEventAttendanceMode';
+				}
+				$start_date = $this->schema_datetime( get_post_meta( $event_id, 'event_start_datetime', true ) );
+				$end_date   = $this->schema_datetime( get_post_meta( $event_id, 'event_end_datetime', true ) );
+				$terms      = get_the_terms( $event_id, 'mep_org' );
+				$org_name   = is_array( $terms ) && sizeof( $terms ) > 0 ? $terms[0]->name : 'No Performer';
+				$permalink  = get_the_permalink( $event_id );
+				$schema     = array(
+					'@context' => 'https://schema.org',
+					'@type'    => 'Event',
+					'name'     => get_the_title( $event_id ),
+				);
+				if ( $start_date ) {
+					$schema['startDate'] = $start_date;
+				}
+				if ( $end_date ) {
+					$schema['endDate'] = $end_date;
+				}
+				$schema['offers'] = array(
+					'@type'         => 'Offer',
+					'url'           => $permalink,
+					'price'         => $this->schema_price( $event_id ),
+					'priceCurrency' => MPWEM_Global_Function::has_woocommerce() ? get_woocommerce_currency() : 'USD',
+					'availability'  => 'https://schema.org/InStock',
+				);
+				$valid_from = $this->schema_offer_valid_from( $event_id );
+				if ( $valid_from ) {
+					$schema['offers']['validFrom'] = $valid_from;
+				}
+				$schema['organizer']           = array(
+					'@type' => 'Organization',
+					'name'  => $org_name,
+					'url'   => $permalink,
+				);
+				$schema['eventStatus']         = 'https://schema.org/' . $event_status;
+				$schema['eventAttendanceMode'] = 'https://schema.org/' . $attendance_mode;
+				// previousStartDate is only meaningful for an event that moved, and Google warns about it otherwise.
+				if ( in_array( $event_status, array( 'EventRescheduled', 'EventPostponed' ), true ) ) {
+					$previous_start = $this->schema_datetime( get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) );
+					if ( $previous_start ) {
+						$schema['previousStartDate'] = $previous_start;
+					}
+				}
+				$schema['location'] = $this->schema_location( $event_id, $attendance_mode );
+				$image              = get_the_post_thumbnail_url( $event_id, 'full' );
+				if ( $image ) {
+					$schema['image'] = array( $image );
+				}
+				$schema['description'] = wp_strip_all_tags( mep_string_sanitize( get_the_excerpt( $event_id ) ) );
+				$schema['performer']   = array(
+					'@type' => 'PerformingGroup',
+					'name'  => $org_name,
+				);
+
+				return $schema;
+			}
+
+			/**
+			 * Builds the location node, virtual or physical, for the event schema.
+			 *
+			 * @param int    $event_id        The event post ID.
+			 * @param string $attendance_mode The resolved schema.org attendance mode.
+			 *
+			 * @return array
+			 */
+			protected function schema_location( $event_id, $attendance_mode ) {
+				$location_data    = MPWEM_Functions::get_location( $event_id );
+				$location_display = '';
+				// Get location/venue first
+				if ( ! empty( $location_data['location'] ) ) {
+					$location_display = $location_data['location'];
+				} else {
+					// If no location/venue, build from street + city
+					$location_parts = array();
+					if ( ! empty( $location_data['street'] ) ) {
+						$location_parts[] = $location_data['street'];
+					}
+					if ( ! empty( $location_data['city'] ) ) {
+						$location_parts[] = $location_data['city'];
+					}
+					if ( ! empty( $location_parts ) ) {
+						$location_display = implode( ' ', $location_parts );
+					}
+				}
+				// Check if event is virtual/online
+				$is_online_event = ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false;
+				if ( $is_online_event || $attendance_mode === 'OnlineEventAttendanceMode' ) {
+					return array(
+						'@type' => 'VirtualLocation',
+						'url'   => get_the_permalink( $event_id ),
+					);
+				}
+
+				return array(
+					'@type'   => 'Place',
+					'name'    => MPWEM_Functions::get_location( $event_id, 'location' ),
+					'address' => array(
+						'@type'           => 'PostalAddress',
+						'streetAddress'   => MPWEM_Functions::get_location( $event_id, 'street' ),
+						'addressLocality' => MPWEM_Functions::get_location( $event_id, 'city' ),
+						'postalCode'      => MPWEM_Functions::get_location( $event_id, 'zip' ),
+						'addressRegion'   => MPWEM_Functions::get_location( $event_id, 'state' ),
+						'addressCountry'  => MPWEM_Functions::get_location( $event_id, 'country' ),
+					),
+				);
+			}
+
+			/**
+			 * Lowest ticket price for the event, as a plain decimal string.
+			 *
+			 * @param int $event_id The event post ID.
+			 *
+			 * @return string
+			 */
+			protected function schema_price( $event_id ) {
+				$has_woo  = MPWEM_Global_Function::has_woocommerce();
+				$price    = $has_woo && function_exists( 'mep_event_list_number_price' ) ? mep_event_list_number_price( $event_id ) : get_post_meta( $event_id, '_price', true );
+				$decimals = function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2;
+
+				return is_numeric( $price ) ? number_format( (float) $price, (int) $decimals, '.', '' ) : '0';
+			}
+
+			/**
+			 * Works out when the tickets went on sale, for offers.validFrom.
+			 *
+			 * Uses the earliest per ticket sale start date when one is set, otherwise the date the event
+			 * was published, since that is the point from which the tickets have been bookable.
+			 *
+			 * @param int $event_id The event post ID.
+			 *
+			 * @return string ISO 8601 date, or an empty string when nothing usable is stored.
+			 */
+			protected function schema_offer_valid_from( $event_id ) {
+				$tickets  = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+				$earliest = '';
+				if ( is_array( $tickets ) ) {
+					foreach ( $tickets as $ticket ) {
+						if ( ! is_array( $ticket ) || empty( $ticket['option_sale_start_date_t'] ) ) {
+							continue;
+						}
+						$sale_start = $this->schema_datetime( $ticket['option_sale_start_date_t'] );
+						if ( ! $sale_start ) {
+							continue;
+						}
+						if ( ! $earliest || strtotime( $sale_start ) < strtotime( $earliest ) ) {
+							$earliest = $sale_start;
 						}
 					}
 				}
+
+				return $earliest ? $earliest : $this->schema_datetime( get_post_field( 'post_date', $event_id ) );
+			}
+
+			/**
+			 * Converts a stored event date into an ISO 8601 string carrying the site UTC offset.
+			 *
+			 * Event date meta is saved as site local wall time, which is the same assumption
+			 * get_mep_datetime() makes when rendering it. Passing the value through strtotime() instead
+			 * would read it in the PHP default timezone, which WordPress pins to UTC, and shift the
+			 * published time by the site offset.
+			 *
+			 * @param string $value Raw date meta, e.g. "2026-09-28 20:00:00".
+			 *
+			 * @return string ISO 8601 date, or an empty string when the value is missing or unparsable.
+			 */
+			protected function schema_datetime( $value ) {
+				$value = is_string( $value ) ? trim( $value ) : '';
+				if ( $value === '' || strpos( $value, '0000-00-00' ) === 0 ) {
+					return '';
+				}
+				try {
+					$date = new DateTime( $value, wp_timezone() );
+				} catch ( Exception $e ) {
+					return '';
+				}
+
+				return $date->format( 'c' );
 			}
 			// Add Open Graph meta tags for better social sharing
 			public function add_open_graph_tags() {

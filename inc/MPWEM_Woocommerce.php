@@ -8,7 +8,25 @@
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Woocommerce' ) ) {
 		class MPWEM_Woocommerce {
+			/**
+			 * The single live instance, kept so background jobs can reach the very same
+			 * handler the checkout uses instead of constructing a second one - the
+			 * constructor registers every hook, so `new MPWEM_Woocommerce()` would
+			 * double-register all of them for the rest of the request.
+			 *
+			 * @var MPWEM_Woocommerce|null
+			 */
+			private static $instance = null;
+
+			/**
+			 * @return MPWEM_Woocommerce|null Null until the plugin has booted.
+			 */
+			public static function instance() {
+				return self::$instance;
+			}
+
 			public function __construct() {
+				self::$instance = $this;
 				add_filter( 'woocommerce_is_purchasable', array( $this, 'make_event_product_purchasable' ), 10, 2 );
 				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 90, 3 );
 				add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ) );

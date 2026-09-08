@@ -90,6 +90,20 @@
 				foreach ( $cart_object->cart_contents as $key => $value ) {
 					$event_id = is_array($value) && array_key_exists( 'event_id', $value ) ? $value['event_id'] : 0;
 					if ( get_post_type( $event_id ) == 'mep_events' ) {
+						/*
+						 * 'event_tp' is written alongside 'event_id' in add_cart_item_data(),
+						 * so the two normally travel together — but a cart item can reach here
+						 * with only the id (a cart persisted across an update, an "order again",
+						 * or a third-party plugin re-injecting stored item data). Reading it
+						 * blind emitted "Undefined array key event_tp" AND, far worse, passed
+						 * null into set_price() — which WooCommerce formats to '' and prices the
+						 * whole line at zero. Leave WooCommerce's own product price alone when we
+						 * have no stored event total to apply; a correct fallback price beats a
+						 * free ticket.
+						 */
+						if ( ! array_key_exists( 'event_tp', $value ) || '' === $value['event_tp'] || null === $value['event_tp'] ) {
+							continue;
+						}
 						$event_total_price = $value['event_tp'];
 						$value['data']->set_price( $event_total_price );
 						$value['data']->set_regular_price( $event_total_price );
@@ -1163,6 +1177,13 @@
 			}
 			public function cart_item_price( $price, $cart_item, $r ) {
 				if ( is_array($cart_item) && array_key_exists( 'event_id', $cart_item ) && get_post_type( $cart_item['event_id'] ) == 'mep_events' ) {
+					// Same pairing as before_calculate_totals(): only override the displayed
+					// price when the item actually carries an event total. Without the guard
+					// this warned on 'event_tp' and printed a fabricated 0.00 that contradicted
+					// the line total WooCommerce had already calculated.
+					if ( ! array_key_exists( 'event_tp', $cart_item ) || '' === $cart_item['event_tp'] || null === $cart_item['event_tp'] ) {
+						return $price;
+					}
 					$price = wc_price( $cart_item['event_tp']);
 				}
 				return $price;

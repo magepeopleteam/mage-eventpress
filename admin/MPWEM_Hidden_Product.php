@@ -30,7 +30,7 @@
 				if ( empty( $reg_status ) ) {
 					$reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'on';
 				}
-				if ( in_array( $reg_status, [ 'off', 'rsvp' ], true ) ) {
+				if ( in_array( $reg_status, [ 'off', 'rsvp', 'announcement' ], true ) ) {
 					return;
 				}
 				if ( $post->post_type == MPWEM_Functions::get_cpt() && $post->post_status == 'publish' && empty( MPWEM_Global_Function::get_post_info( $post_id, 'check_if_run_once' ) ) ) {
@@ -74,7 +74,7 @@
 					if ( empty( $reg_status ) ) {
 						$reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'on';
 					}
-					if ( in_array( $reg_status, [ 'off', 'rsvp' ], true ) ) {
+					if ( in_array( $reg_status, [ 'off', 'rsvp', 'announcement' ], true ) ) {
 						return;
 					}
 					if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mpwem_type_nonce'] ) ), 'mpwem_type_nonce' ) ) {

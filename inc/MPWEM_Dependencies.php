@@ -38,6 +38,12 @@
 				if ( MPWEM_Global_Function::has_woocommerce() ) {
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
+					// Rebuilds attendees for event orders that were taken while the
+					// block-checkout handler was failing, and keeps healing any order
+					// that reaches a paid status without them. One-time pass, in the
+					// background; see MEP_Attendee_Repair for the opt-out.
+					require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Attendee_Repair.php';
+					MEP_Attendee_Repair::init();
 				}
 				// The custom order CPT and the "Event Orders" admin list/detail page are
 				// always loaded — the list merges native orders with WooCommerce orders

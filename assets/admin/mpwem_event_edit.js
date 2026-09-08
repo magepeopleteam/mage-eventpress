@@ -5762,6 +5762,7 @@
             
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-cards-container, #mpwem_ticket_summary, .mpwem_settings_area, .mpwem-ticket-footer').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__item').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__divider').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
@@ -5783,6 +5784,7 @@
             $('#mpwem_wizard_ticket_details_section').find('#mpwem_ticket_summary').hide();
             
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area .mpwem-ticket-cards-container').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area .mpwem_settings_area').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area ._bg_light_padding').show();
@@ -5802,12 +5804,29 @@
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
             $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
+        } else if (mode === 'announcement') {
+            const $details = $('#mpwem_wizard_ticket_details_section');
+            $details.show();
+            // Everything that belongs to selling or RSVP is irrelevant here.
+            $details.find('.mpwem-ticket-settings-head').hide();
+            $details.find('.mpwem-ticket-warnings').hide();
+            $details.find('.mpwem-ticket-editor-section, .mpwem-extra-service-section').hide();
+            $details.find('#mpwem_ticket_summary').hide();
+            $details.find('.mpwem-ticket-action-bar__item, .mpwem-ticket-action-bar__divider').hide();
+            $details.find('.mpwem-ticket-global-card').hide();
+            $details.find('.mpwem-rsvp-settings-area').hide();
+            $('#mpwem_wizard_extra_services_card').hide();
+            $('#mpwem_wizard_pricing_help_card').hide();
+            $('#mpwem_wizard_tickets_sidebar').show();
+            // ...and the announcement + enquiry form settings take their place.
+            $details.find('.mpwem-announcement-settings-area').show();
         } else {
             $('#mpwem_wizard_ticket_details_section').hide();
             $('#mpwem_wizard_extra_services_card').hide();
             $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
         }
 
         // Show/hide legacy registration closed message setting card
@@ -6412,6 +6431,15 @@
     function validateDateStep($root, options) {
         options = options || {};
         const focus = options.focus !== false;
+
+        // "Undated Event": the whole date area is hidden and cleared on save, so there
+        // is nothing here to validate. Mirrors the server-side skip in
+        // MPWEM_Event_Edit_Page::handle_save().
+        const $noDate = $root.find('input[name="mep_event_no_date"]').first();
+        if ($noDate.length && $noDate.is(':checked')) {
+            $root.find('.mpwem-field-error').removeClass('mpwem-field-error');
+            return true;
+        }
 
         const type = ($root.find('select[name="mep_enable_recurring"]').first().val() || 'no').toString();
         const findByName = function(name) {

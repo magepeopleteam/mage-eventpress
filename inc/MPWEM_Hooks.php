@@ -23,6 +23,7 @@
 				add_action( 'mpwem_time', [ $this, 'time' ], 10, 5 );
 				add_action( 'mpwem_registration', [ $this, 'registration' ], 10, 4 );
 				add_action( 'mpwem_registration_content', [ $this, 'registration_content' ], 10, 4 );
+				add_action( 'mpwem_announcement', [ $this, 'announcement' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_date_list', [ $this, 'event_date_list' ], 10, 3 );
 				add_action( 'mpwem_date_only', [ $this, 'date_only' ], 10, 2 );
@@ -47,6 +48,8 @@
 				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
 				add_action( 'wp_ajax_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
 				add_action( 'wp_ajax_nopriv_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
+				add_action( 'wp_ajax_mep_submit_enquiry', array( $this, 'mep_submit_enquiry' ) );
+				add_action( 'wp_ajax_nopriv_mep_submit_enquiry', array( $this, 'mep_submit_enquiry' ) );
 				/***********************/
 				add_action( 'mpwem_seat_status', [ $this, 'seat_status' ], 10, 3 );
 				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
@@ -110,6 +113,7 @@
 			public function time( $event_id, $all_dates = [], $all_times = [], $date = '', $single = true ): void { require MPWEM_Functions::template_path( 'layout/time.php' ); }
 			public function registration( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/registration.php' ); }
 			public function registration_content( $event_id, $all_dates = [], $all_times = [], $date = '' ): void { require MPWEM_Functions::template_path( 'layout/registration_content.php' ); }
+			public function announcement( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/announcement.php' ); }
 			/*******************************/
 			public function event_date_list( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
 			public function date_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_only.php' ); }
@@ -449,8 +453,11 @@
 				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 				$show_price             = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
-				if ( $show_price == 'yes' ) {
-					$event_id         = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$event_id_for_mode = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$list_reg_status   = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+				// Announcement events sell nothing - printing "Price: 0.00" would be wrong.
+				if ( $show_price == 'yes' && 'announcement' !== $list_reg_status ) {
+					$event_id         = $event_id_for_mode;
 					$ticket_types     = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
 					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
 					?>
@@ -715,7 +722,7 @@
 				$mep_hide_event_hover_btn = is_array($event_list_setting_sec) && array_key_exists( 'mep_hide_event_hover_btn', $event_list_setting_sec ) ? $event_list_setting_sec['mep_hide_event_hover_btn'] : 'no';
 				if ( 'yes' == $mep_hide_event_hover_btn ) { ?>
                     <div class="item_hover_effect">
-                        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php esc_html_e( 'Book Now', 'mage-eventpress' ); ?></a>
+                        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php echo esc_html( MPWEM_Global_Function::is_bookable_event( $event_id ) ? __( 'Book Now', 'mage-eventpress' ) : __( 'View More', 'mage-eventpress' ) ); ?></a>
                     </div>
 				<?php }
 			}
@@ -772,10 +779,11 @@
 
                         //echo '<pre>';print_r($upcoming_date);echo '</pre>';
                         //echo '<pre>';print_r($available);echo '</pre>';
-						if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $available <= 0 ) {
+						$is_undated = MPWEM_Global_Function::is_undated_event( $event_id );
+						if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $available <= 0 && ! $is_undated ) {
 							?>
                             <div class="mepev-ribbon sold-out"><?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div><?php
-						} elseif ( $limited_availability_ribbon == 'yes' && $available > 0 && $available <= $limited_availability_threshold ) {
+						} elseif ( $limited_availability_ribbon == 'yes' && $available > 0 && $available <= $limited_availability_threshold && ! $is_undated ) {
 							?>
                             <div class="mepev-ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div><?php
 						}
@@ -931,6 +939,117 @@
 				} else {
 					wp_send_json_error( array( 'message' => esc_html__( 'Failed to submit RSVP. Please try again.', 'mage-eventpress' ) ) );
 				}
+			}
+			/**
+			 * Store an enquiry ("query") submitted from an Announcement-mode event.
+			 *
+			 * Saves a mep_event_enquiry post (listed under Events -> Enquiries) and emails
+			 * the per-event recipient, falling back to the site admin address.
+			 */
+			public function mep_submit_enquiry() {
+				check_ajax_referer( 'mep_enquiry_nonce', 'nonce' );
+
+				$event_id = isset( $_POST['event_id'] ) ? absint( $_POST['event_id'] ) : 0;
+				$name     = isset( $_POST['enquiry_name'] ) ? sanitize_text_field( wp_unslash( $_POST['enquiry_name'] ) ) : '';
+				$email    = isset( $_POST['enquiry_email'] ) ? sanitize_email( wp_unslash( $_POST['enquiry_email'] ) ) : '';
+				$phone    = isset( $_POST['enquiry_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['enquiry_phone'] ) ) : '';
+				$subject  = isset( $_POST['enquiry_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['enquiry_subject'] ) ) : '';
+				$message  = isset( $_POST['enquiry_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['enquiry_message'] ) ) : '';
+				// Honeypot - only a bot fills a field that is hidden from the page.
+				$honeypot = isset( $_POST['enquiry_website'] ) ? trim( (string) wp_unslash( $_POST['enquiry_website'] ) ) : '';
+
+				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event is no longer available.', 'mage-eventpress' ) ) );
+				}
+				if ( '' !== $honeypot ) {
+					// Answer as if it worked so the bot has nothing to tune against.
+					wp_send_json_success( array( 'message' => esc_html__( 'Thank you! Your enquiry has been sent.', 'mage-eventpress' ) ) );
+				}
+				if ( 'announcement' !== MPWEM_Global_Function::get_event_mode( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Enquiries are not accepted for this event.', 'mage-eventpress' ) ) );
+				}
+				$enquiry_status = get_post_meta( $event_id, 'mep_enquiry_status', true );
+				if ( '' !== $enquiry_status && 'on' !== $enquiry_status ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Enquiries are not accepted for this event.', 'mage-eventpress' ) ) );
+				}
+				if ( '' === $name || '' === $email || '' === $message ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please fill out all required fields.', 'mage-eventpress' ) ) );
+				}
+				if ( ! is_email( $email ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please enter a valid email address.', 'mage-eventpress' ) ) );
+				}
+
+				// Light flood control: one address may not spam the same event.
+				$recent = new WP_Query( array(
+					'post_type'      => 'mep_event_enquiry',
+					'post_status'    => 'publish',
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+					'date_query'     => array( array( 'after' => '1 minute ago' ) ),
+					'meta_query'     => array(
+						'relation' => 'AND',
+						array( 'key' => 'mep_enquiry_event_id', 'value' => $event_id, 'compare' => '=' ),
+						array( 'key' => 'mep_enquiry_email', 'value' => $email, 'compare' => '=' ),
+					),
+				) );
+				if ( $recent->have_posts() ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'You have just sent an enquiry for this event. Please wait a moment before sending another.', 'mage-eventpress' ) ) );
+				}
+
+				$event_title = get_the_title( $event_id );
+				if ( '' === $subject ) {
+					/* translators: %s: event name. */
+					$subject = sprintf( __( 'Enquiry about %s', 'mage-eventpress' ), $event_title );
+				}
+
+				$enquiry_id = wp_insert_post( array(
+					'post_type'    => 'mep_event_enquiry',
+					'post_status'  => 'publish',
+					/* translators: 1: sender name, 2: event name. */
+					'post_title'   => sprintf( __( '%1$s - %2$s', 'mage-eventpress' ), $name, $event_title ),
+					'post_content' => '',
+				), true );
+
+				if ( is_wp_error( $enquiry_id ) || ! $enquiry_id ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Your enquiry could not be sent. Please try again.', 'mage-eventpress' ) ) );
+				}
+
+				update_post_meta( $enquiry_id, 'mep_enquiry_event_id', $event_id );
+				update_post_meta( $enquiry_id, 'mep_enquiry_name', $name );
+				update_post_meta( $enquiry_id, 'mep_enquiry_email', $email );
+				update_post_meta( $enquiry_id, 'mep_enquiry_phone', $phone );
+				update_post_meta( $enquiry_id, 'mep_enquiry_subject', $subject );
+				update_post_meta( $enquiry_id, 'mep_enquiry_message', $message );
+				update_post_meta( $enquiry_id, 'mep_enquiry_status_flag', 'new' );
+
+				$recipient = MPWEM_Global_Function::get_enquiry_recipient( $event_id );
+				if ( $recipient ) {
+					$body_lines = array(
+						sprintf( __( 'Event: %s', 'mage-eventpress' ), $event_title ),
+						sprintf( __( 'Event link: %s', 'mage-eventpress' ), get_permalink( $event_id ) ),
+						'',
+						sprintf( __( 'Name: %s', 'mage-eventpress' ), $name ),
+						sprintf( __( 'Email: %s', 'mage-eventpress' ), $email ),
+						sprintf( __( 'Phone: %s', 'mage-eventpress' ), $phone !== '' ? $phone : __( '(not given)', 'mage-eventpress' ) ),
+						sprintf( __( 'Subject: %s', 'mage-eventpress' ), $subject ),
+						'',
+						__( 'Message:', 'mage-eventpress' ),
+						$message,
+					);
+					$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
+					wp_mail(
+						apply_filters( 'mpwem_enquiry_email_recipient', $recipient, $event_id, $enquiry_id ),
+						apply_filters( 'mpwem_enquiry_email_subject', $subject, $event_id, $enquiry_id ),
+						apply_filters( 'mpwem_enquiry_email_body', implode( "\n", $body_lines ), $event_id, $enquiry_id ),
+						$headers
+					);
+				}
+
+				do_action( 'mpwem_after_enquiry_submitted', $enquiry_id, $event_id );
+
+				$labels = MPWEM_Global_Function::get_enquiry_labels( $event_id );
+				wp_send_json_success( array( 'message' => esc_html( $labels['mep_enquiry_success_msg'] ) ) );
 			}
 			public function flush_meta_value_transients() {
 				MPWEM_Query::flush_post_meta_value_cache();

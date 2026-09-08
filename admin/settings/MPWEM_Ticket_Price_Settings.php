@@ -19,6 +19,7 @@
 				$reg_status        = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				$active_reg_status = $reg_status == 'on' ? 'mActive' : '';
 				$display_rsvp = $reg_status == 'rsvp' ? '' : 'display:none;';
+				$display_announcement = $reg_status == 'announcement' ? '' : 'display:none;';
 
 				// Currency symbol for the price inputs: WooCommerce currency when
 				// WooCommerce is active, otherwise Event Settings -> Currency Symbol
@@ -95,6 +96,10 @@
 					
 					<div class="mpwem-rsvp-settings-area" style="<?php echo esc_attr( $display_rsvp ); ?>">
 						<?php $this->rsvp_setting( $event_id, $event_infos ); ?>
+					</div>
+
+					<div class="mpwem-announcement-settings-area" style="<?php echo esc_attr( $display_announcement ); ?>">
+						<?php $this->announcement_setting( $event_id, $event_infos ); ?>
 					</div>
 
 					<?php $this->mep_event_pro_purchase_notice(); ?>
@@ -1270,17 +1275,31 @@
 					&& isset( $_GET['page'] )
 					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 
-				$checked    = $reg_status == 'on' ? 'checked' : '';
                 $reg_msg_checked    = $reg_status_msg_status == 'on' ? 'checked' : '';
 
 				if ( ! $is_custom_event_edit ) {
+					// Event Mode. This used to be a plain Off/On switch, which could only
+					// ever post 'on' or 'off' - RSVP (and now Announcement) events could not
+					// be configured from the Classic editor at all. A select posts the real
+					// value and keeps the same field name, so nothing downstream changes.
+					$mode_labels = [
+						'on'           => __( 'Ticket-Selling - sell tickets and take payments', 'mage-eventpress' ),
+						'rsvp'         => __( 'RSVP - free registration, no payment', 'mage-eventpress' ),
+						'off'          => __( 'Listing-Only - event details, no registration', 'mage-eventpress' ),
+						'announcement' => __( 'Announcement - notice with an enquiry form', 'mage-eventpress' ),
+					];
+					$current_mode = in_array( $reg_status, MPWEM_Global_Function::get_event_modes(), true ) ? $reg_status : 'off';
 					?>
 					<div class="mpwem-ticket-registration-block">
-						<div class=" _justify_between_align_center_wrap">
-							<label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
-							<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
-						</div>
-						<span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
+						<label class=" _justify_between_align_center_wrap">
+							<span class="_mr"><?php esc_html_e( 'Event Mode', 'mage-eventpress' ); ?></span>
+							<select class="formControl" name="mep_reg_status" id="mep_reg_status">
+								<?php foreach ( $mode_labels as $mode_value => $mode_label ) { ?>
+									<option value="<?php echo esc_attr( $mode_value ); ?>" <?php selected( $current_mode, $mode_value ); ?>><?php echo esc_html( $mode_label ); ?></option>
+								<?php } ?>
+							</select>
+						</label>
+						<span class="label-text"><?php esc_html_e( 'Choose how visitors respond to this event. Ticket & pricing options below apply to Ticket-Selling only.', 'mage-eventpress' ); ?></span>
 					</div>
 					<?php
 				}
@@ -1526,6 +1545,117 @@
                             <p class="mpwem-rsvp-note">
                                 <span class="dashicons dashicons-info-outline"></span>
                                 <?php esc_html_e( 'Leave blank to use the default labels.', 'mage-eventpress' ); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+				<?php
+			}
+			/**
+			 * Announcement mode settings: the notice shown in place of a ticket box, and
+			 * the enquiry ("query") form that goes with it.
+			 *
+			 * Rendered inside the shared Ticket & Pricing panel, so it appears in the
+			 * Classic editor's tab and in the Modern wizard's Tickets step (which moves
+			 * this panel into place). Reuses the .mpwem-rsvp-* styles already defined by
+			 * rsvp_setting() so the two mode panels look the same.
+			 */
+			public function announcement_setting( $event_id, $event_infos ) {
+				$get = static function ( $key ) use ( $event_infos ) {
+					return is_array( $event_infos ) && array_key_exists( $key, $event_infos ) ? $event_infos[ $key ] : '';
+				};
+				$event_label     = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				$title           = $get( 'mep_announcement_title' );
+				$text            = get_post_meta( $event_id, 'mep_announcement_text', true );
+				$enquiry_status  = $get( 'mep_enquiry_status' );
+				$enquiry_status  = '' === $enquiry_status ? 'on' : $enquiry_status;
+				$enquiry_email   = $get( 'mep_enquiry_email' );
+				$enquiry_title   = $get( 'mep_enquiry_title' );
+				$name_label      = $get( 'mep_enquiry_name_label' );
+				$email_label     = $get( 'mep_enquiry_email_label' );
+				$phone_label     = $get( 'mep_enquiry_phone_label' );
+				$subject_label   = $get( 'mep_enquiry_subject_label' );
+				$message_label   = $get( 'mep_enquiry_message_label' );
+				$button_label    = $get( 'mep_enquiry_button_label' );
+				$success_msg     = $get( 'mep_enquiry_success_msg' );
+				?>
+                <div class="mpwem-rsvp-settings-section mpwem-announcement-settings-section">
+                    <div class="mpwem-rsvp-card">
+                        <div class="mpwem-rsvp-card__header">
+                            <div class="mpwem-rsvp-card__header-icon">
+                                <span class="dashicons dashicons-megaphone"></span>
+                            </div>
+                            <div>
+                                <h4 class="mpwem-rsvp-card__header-title"><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Announcement Settings', 'mage-eventpress' ); ?></h4>
+                                <p class="mpwem-rsvp-card__header-sub"><?php esc_html_e( 'Shown on the event details page instead of the ticket box', 'mage-eventpress' ); ?></p>
+                            </div>
+                        </div>
+                        <div class="mpwem-rsvp-card__body">
+                            <p class="mpwem-rsvp-section-title"><?php esc_html_e( 'Announcement', 'mage-eventpress' ); ?></p>
+                            <div class="mpwem-rsvp-field">
+                                <label class="mpwem-rsvp-label"><?php esc_html_e( 'Announcement Title', 'mage-eventpress' ); ?></label>
+                                <input type="text" class="mpwem-rsvp-input" name="mep_announcement_title" placeholder="<?php esc_attr_e( 'Announcement', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
+                            </div>
+                            <div class="mpwem-rsvp-field">
+                                <label class="mpwem-rsvp-label"><?php esc_html_e( 'Announcement Text', 'mage-eventpress' ); ?></label>
+                                <textarea class="mpwem-rsvp-input" name="mep_announcement_text" rows="4" placeholder="<?php esc_attr_e( 'What do you want to announce about this event?', 'mage-eventpress' ); ?>"><?php echo esc_textarea( $text ); ?></textarea>
+                            </div>
+
+                            <p class="mpwem-rsvp-section-title"><?php esc_html_e( 'Enquiry Form', 'mage-eventpress' ); ?></p>
+                            <input type="hidden" name="mep_enquiry_form_present" value="1"/>
+                            <div class="mpwem-rsvp-field">
+                                <label class="mpwem-rsvp-label">
+                                    <input type="checkbox" name="mep_enquiry_status" value="on" data-no-mpwem-switch="1" <?php checked( $enquiry_status, 'on' ); ?>/>
+									<?php esc_html_e( 'Show the enquiry form under the announcement', 'mage-eventpress' ); ?>
+                                </label>
+                            </div>
+                            <div class="mpwem-rsvp-grid">
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Send Enquiries To', 'mage-eventpress' ); ?></label>
+                                    <input type="email" class="mpwem-rsvp-input" name="mep_enquiry_email" placeholder="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>" value="<?php echo esc_attr( $enquiry_email ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Form Title', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_title" placeholder="<?php esc_attr_e( 'Send an Enquiry', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $enquiry_title ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Full Name Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_name_label" placeholder="<?php esc_attr_e( 'Full Name', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $name_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Email Address Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_email_label" placeholder="<?php esc_attr_e( 'Email Address', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $email_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Phone Number Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_phone_label" placeholder="<?php esc_attr_e( 'Phone Number', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $phone_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Subject Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_subject_label" placeholder="<?php esc_attr_e( 'Subject', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $subject_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Question Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_message_label" placeholder="<?php esc_attr_e( 'Your Question', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $message_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Submit Button Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_button_label" placeholder="<?php esc_attr_e( 'Send Enquiry', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $button_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Success Message', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_enquiry_success_msg" placeholder="<?php esc_attr_e( 'Thank you! Your enquiry has been sent.', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $success_msg ); ?>"/>
+                                </div>
+                            </div>
+                            <p class="mpwem-rsvp-note">
+                                <span class="dashicons dashicons-info-outline"></span>
+								<?php
+									printf(
+										/* translators: %s: link to the Enquiries admin screen. */
+										esc_html__( 'Leave a field blank to use its default. Submitted enquiries are listed under %s.', 'mage-eventpress' ),
+										'<a href="' . esc_url( admin_url( 'edit.php?post_type=mep_events&page=event-enquiries' ) ) . '">' . esc_html__( 'Events -> Enquiries', 'mage-eventpress' ) . '</a>'
+									);
+								?>
                             </p>
                         </div>
                     </div>

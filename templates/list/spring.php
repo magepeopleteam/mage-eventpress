@@ -81,7 +81,7 @@
         <div class="spring_item_actions">
 			<?php do_action( 'mpwem_list_price', $event_infos ); ?>
             <a class="mep_event_card__book" href="<?php echo esc_url( $permalink ); ?>">
-				<?php esc_html_e( 'Book', 'mage-eventpress' ); ?>
+				<?php echo esc_html( MPWEM_Global_Function::get_list_button_label( $event_id ) ); ?>
                 <span aria-hidden="true">→</span>
             </a>
         </div>

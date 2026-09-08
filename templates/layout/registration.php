@@ -28,8 +28,18 @@
 		$reg_status_msg_status 	= is_array($event_infos) && array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : 'off';
 		$reg_status_msg_txt 		= is_array($event_infos) && array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
 		$reg_off_msg 				= $reg_status_msg_status == 'on' ? $reg_status_msg_txt : '';
-		if ( $reg_status == 'on' || $reg_status == 'rsvp' ) {
-			if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
+		$is_undated = MPWEM_Global_Function::is_undated_event( $event_id );
+		if ( $reg_status == 'announcement' ) {
+			// Announcement mode replaces the ticket/RSVP box entirely and needs no date,
+			// so it is handled before the date check below.
+			do_action( 'mpwem_announcement', $event_id, $event_infos );
+		} elseif ( $reg_status == 'on' || $reg_status == 'rsvp' ) {
+			if ( $is_undated ) {
+				// Undated event: there is no occurrence to book, so no ticket options are
+				// shown. Every other section of the details page still renders. Nothing is
+				// printed here - an undated event is not "expired", it simply has no date.
+				do_action( 'mpwem_undated_event_notice', $event_id, $event_infos );
+			} elseif ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 				$event_member_type = is_array($event_infos) && array_key_exists( 'mep_member_only_event', $event_infos ) ? $event_infos['mep_member_only_event'] : 'for_all';
 				$saved_user_role   = is_array($event_infos) && array_key_exists( 'mep_member_only_user_role', $event_infos ) ? $event_infos['mep_member_only_user_role'] : [];
 				// if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) ) || in_array( 'all', $saved_user_role ) ) ) {

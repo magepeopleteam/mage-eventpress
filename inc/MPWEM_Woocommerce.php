@@ -8,7 +8,25 @@
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Woocommerce' ) ) {
 		class MPWEM_Woocommerce {
+			/**
+			 * The single live instance, kept so background jobs can reach the very same
+			 * handler the checkout uses instead of constructing a second one - the
+			 * constructor registers every hook, so `new MPWEM_Woocommerce()` would
+			 * double-register all of them for the rest of the request.
+			 *
+			 * @var MPWEM_Woocommerce|null
+			 */
+			private static $instance = null;
+
+			/**
+			 * @return MPWEM_Woocommerce|null Null until the plugin has booted.
+			 */
+			public static function instance() {
+				return self::$instance;
+			}
+
 			public function __construct() {
+				self::$instance = $this;
 				add_filter( 'woocommerce_is_purchasable', array( $this, 'make_event_product_purchasable' ), 10, 2 );
 				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 90, 3 );
 				add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ) );
@@ -91,6 +109,20 @@
 				foreach ( $cart_object->cart_contents as $key => $value ) {
 					$event_id = is_array($value) && array_key_exists( 'event_id', $value ) ? $value['event_id'] : 0;
 					if ( get_post_type( $event_id ) == 'mep_events' ) {
+						/*
+						 * 'event_tp' is written alongside 'event_id' in add_cart_item_data(),
+						 * so the two normally travel together — but a cart item can reach here
+						 * with only the id (a cart persisted across an update, an "order again",
+						 * or a third-party plugin re-injecting stored item data). Reading it
+						 * blind emitted "Undefined array key event_tp" AND, far worse, passed
+						 * null into set_price() — which WooCommerce formats to '' and prices the
+						 * whole line at zero. Leave WooCommerce's own product price alone when we
+						 * have no stored event total to apply; a correct fallback price beats a
+						 * free ticket.
+						 */
+						if ( ! array_key_exists( 'event_tp', $value ) || '' === $value['event_tp'] || null === $value['event_tp'] ) {
+							continue;
+						}
 						$event_total_price = $value['event_tp'];
 						$value['data']->set_price( $event_total_price );
 						$value['data']->set_regular_price( $event_total_price );
@@ -966,15 +998,73 @@
 				$key = $event_id . '|' . $event_date;
 				return is_array( $expected ) && array_key_exists( $key, $expected ) ? (int) $expected[ $key ] : 1;
 			}
+			/**
+			 * Normalise whatever a caller passed into a plain numeric order id.
+			 *
+			 * checkout_order_processed() is reached from four places that do NOT agree on
+			 * what they pass:
+			 *   - woocommerce_checkout_order_processed          -> int order id
+			 *   - woocommerce_store_api_checkout_order_processed -> WC_Order OBJECT
+			 *   - repair_orphan_event_booking()/express_order_created_from_cart() -> int
+			 *   - a gateway handing over a JSON payload           -> string
+			 * The old inline `json_decode( $order_id )` handled only the last two. On
+			 * PHP 8 passing the Store API's WC_Order into json_decode() raises
+			 * "TypeError: json_decode(): Argument #1 ($json) must be of type string,
+			 * WC_Order given" — an uncaught fatal that killed the request before a single
+			 * attendee was created. Every block/express checkout order (_created_via =
+			 * store-api, which today is all of them on a Blocks checkout) therefore
+			 * booked and paid but produced no attendee posts, and since seats sold are
+			 * counted from attendee posts the event kept showing full availability and
+			 * the attendee report came back empty.
+			 *
+			 * @param mixed $order_id Order id, WC_Order, JSON string, or decoded payload.
+			 * @return int Order id, or 0 when it cannot be resolved.
+			 */
+			private static function resolve_order_id( $order_id ) {
+				if ( is_a( $order_id, 'WC_Order' ) ) {
+					return absint( $order_id->get_id() );
+				}
+				if ( is_numeric( $order_id ) ) {
+					return absint( $order_id );
+				}
+				if ( is_object( $order_id ) ) {
+					// Some gateways hand over an already-decoded payload object.
+					if ( method_exists( $order_id, 'get_id' ) ) {
+						return absint( $order_id->get_id() );
+					}
+					return isset( $order_id->id ) ? absint( $order_id->id ) : 0;
+				}
+				if ( is_array( $order_id ) ) {
+					return isset( $order_id['id'] ) ? absint( $order_id['id'] ) : 0;
+				}
+				if ( is_string( $order_id ) && '' !== trim( $order_id ) ) {
+					// Preserved from the original implementation: a JSON payload carrying
+					// the order id. json_decode() is only ever reached with a string now.
+					$decoded = json_decode( $order_id );
+					if ( is_object( $decoded ) && isset( $decoded->id ) ) {
+						return absint( $decoded->id );
+					}
+					if ( is_array( $decoded ) && isset( $decoded['id'] ) ) {
+						return absint( $decoded['id'] );
+					}
+				}
+
+				return 0;
+			}
+
 			public function checkout_order_processed( $order_id ) {
 				global $woocommerce;
-				$result   = ! is_numeric( $order_id ) ? json_decode( $order_id ) : [ 0 ];
-				$order_id = ! is_numeric( $order_id ) ? $result->id : $order_id;
+				$order_id = self::resolve_order_id( $order_id );
 				if ( ! $order_id ) {
 					return;
 				}
 				// Getting an instance of the order object
-				$order        = wc_get_order( $order_id );
+				$order = wc_get_order( $order_id );
+				// A deleted or non-order id would otherwise fatal on ->get_status() below,
+				// taking the whole checkout request down with it.
+				if ( ! is_a( $order, 'WC_Order' ) ) {
+					return;
+				}
 				$order_status = $order->get_status();
 				if ( $order_status != 'failed' ) {
 					$expected_attendees = self::count_expected_attendees_per_date( $order );
@@ -1342,6 +1432,13 @@
 			}
 			public function cart_item_price( $price, $cart_item, $r ) {
 				if ( is_array($cart_item) && array_key_exists( 'event_id', $cart_item ) && get_post_type( $cart_item['event_id'] ) == 'mep_events' ) {
+					// Same pairing as before_calculate_totals(): only override the displayed
+					// price when the item actually carries an event total. Without the guard
+					// this warned on 'event_tp' and printed a fabricated 0.00 that contradicted
+					// the line total WooCommerce had already calculated.
+					if ( ! array_key_exists( 'event_tp', $cart_item ) || '' === $cart_item['event_tp'] || null === $cart_item['event_tp'] ) {
+						return $price;
+					}
 					$price = wc_price( $cart_item['event_tp']);
 				}
 				return $price;

@@ -5510,6 +5510,12 @@ die();
 	/******************** Remove upper function after 2025********************** event_start_datetime*/
 	add_action( 'mpwem_expired_event_notice_after', 'mpwem_expired_event_notice_after' );
 	function mpwem_expired_event_notice_after( $event_id ) {
+		// An undated event has no start/end datetime by design. Without this guard the
+		// empty datetimes compare as long past and every undated event would advertise
+		// itself as "Expired".
+		if ( MPWEM_Global_Function::is_undated_event( $event_id ) ) {
+			return;
+		}
 		$start_datetime     = get_post_meta( $event_id, 'event_start_datetime', true );
 		$end_date           = get_post_meta( $event_id, 'event_expire_datetime', true );
 		$total_sold         = MPWEM_Functions::get_total_sold( $event_id );

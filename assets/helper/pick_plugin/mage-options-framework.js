@@ -2,7 +2,13 @@ jQuery(document).ready(function($) {
 
 
     $(".dependency-field").formFieldDependency({});
-    $(".sortable" ).sortable({ handle: ".sort" });
+    // Safety check for jQuery UI sortable, same reason as the wpColorPicker check
+    // below: when another plugin drops the jquery-ui-sortable handle this call
+    // throws, and an uncaught error here would take down every handler bound
+    // further down in this ready callback (switchers, image select, range...).
+    if ($.fn.sortable) {
+        $(".sortable" ).sortable({ handle: ".sort" });
+    }
     
     // Safety check for wpColorPicker to ensure compatibility with all themes
     if ($.fn.wpColorPicker) {

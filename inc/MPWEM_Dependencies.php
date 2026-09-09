@@ -222,8 +222,18 @@
 				}
 
 				//loading pick plugin
-				wp_enqueue_style( 'mage-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.css' );
-				wp_enqueue_script( 'magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', array( 'jquery', 'wp-color-picker' ) );
+				wp_enqueue_style( 'mage-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.css', array(), MPWEM_PLUGIN_VERSION );
+				// mage-options-framework.js initialises jQuery UI sortable, so the widget has
+				// to be loaded before it. It is enqueued above, but listing it here is what
+				// makes WordPress guarantee the order. The handle is only added when it is
+				// registered: on a site where something deregistered jquery-ui-sortable, a
+				// hard dependency would make WordPress drop this file altogether and take
+				// every other options-framework field down with it.
+				$options_framework_deps = array( 'jquery', 'wp-color-picker' );
+				if ( wp_script_is( 'jquery-ui-sortable', 'registered' ) ) {
+					$options_framework_deps[] = 'jquery-ui-sortable';
+				}
+				wp_enqueue_script( 'magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', $options_framework_deps, MPWEM_PLUGIN_VERSION );
 				wp_localize_script( 'PickpluginsOptionsFramework', 'PickpluginsOptionsFramework_ajax', array( 'PickpluginsOptionsFramework_ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 				wp_enqueue_script( 'form-field-dependency', MPWEM_PLUGIN_URL . '/assets/helper/form-field-dependency.js', array( 'jquery' ), null, false );
 				//******************/

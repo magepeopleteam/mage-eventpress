@@ -406,6 +406,29 @@
 
 			/* ───────────── PDF Email ───────────── */
 
+			/**
+			 * Reads a saved setting without mep_get_option()'s empty-value fallback.
+			 *
+			 * mep_get_option() returns the default whenever the stored value is empty,
+			 * which is wrong for a field where empty is a deliberate choice: the input
+			 * renders the default again after saving, and the next Save Changes posts
+			 * that default back, so the setting can never be cleared. Fall back only
+			 * when the key was never saved at all.
+			 *
+			 * @param string $section Option name the settings section is stored under.
+			 * @param string $key     Setting key inside that section.
+			 * @param string $default Value to use when the key has never been saved.
+			 * @return string
+			 */
+			private static function get_saved_value( $section, $key, $default = '' ) {
+				$options = get_option( $section );
+				if ( is_array( $options ) && array_key_exists( $key, $options ) ) {
+					return is_scalar( $options[ $key ] ) ? (string) $options[ $key ] : '';
+				}
+
+				return (string) $default;
+			}
+
 			private static function render_pdf() {
 				$sec = 'mep_pdf_email_settings';
 				$get = function( $key, $default = '' ) use ( $sec ) {
@@ -445,8 +468,8 @@
 								</div>
 								<div class="mep-em__field">
 									<label class="mep-em__label"><?php esc_html_e( 'Admin Copy Email', 'mage-eventpress' ); ?></label>
-									<input type="email" class="mep-em__input" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_admin_notification_email]" value="<?php echo esc_attr( $get( 'mep_pdf_admin_notification_email', get_option( 'admin_email' ) ) ); ?>" />
-									<p class="mep-em__hint"><?php esc_html_e( 'Email address that receives a copy of each PDF ticket.', 'mage-eventpress' ); ?></p>
+									<input type="email" class="mep-em__input" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_admin_notification_email]" value="<?php echo esc_attr( self::get_saved_value( $sec, 'mep_pdf_admin_notification_email', get_option( 'admin_email' ) ) ); ?>" />
+									<p class="mep-em__hint"><?php esc_html_e( 'Email address that receives a copy of each PDF ticket. Leave empty to send no admin copy.', 'mage-eventpress' ); ?></p>
 								</div>
 							</div>
 						</div>

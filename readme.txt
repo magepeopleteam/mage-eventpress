@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.6.4
+Stable tag: 5.7.0
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,23 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.0 =
+* Feature: Added Undated Events — a per-event switch to publish events with no date at all (open-ended announcements, permanent exhibits, "coming soon" listings), hiding the date/ticket UI and skipping date validation appropriately.
+* Feature: Added Announcement Mode — a fourth event mode, alongside Ticket-Selling, RSVP, and Listing-Only, that replaces the ticket box with an enquiry form. Submissions are managed under a new Events → Enquiries screen (filter, search, mark read, delete, CSV export) and emailed to a per-event recipient or the site admin, with honeypot and flood-control protection.
+* Feature: Enquiry notification emails are now sent as a responsive, branded HTML template using the site's configured theme color, instead of plain text.
+* Feature: The remaining-seats indicator threshold is now configurable in General Settings — choose a fixed seat count (previous behavior) or a percentage of ticket capacity, so small and large events both show accurate availability colors. The low-stock warning and admin alert email follow the same setting.
+* Security Fix: Corrected seat oversell across every checkout path (classic, block, and express). Ticket-type availability was only ever validated for the last ticket type in the cart, compared against the wrong (event-total) capacity, and was never validated at all on block or express checkout — allowing an event to be sold well past its capacity.
+* Fix: Block and Express checkout orders were fatalling before creating any attendee record, so those orders were paid but silently produced no attendee data and inflated the event's apparent seat availability.
+* Feature: Added an automatic repair system that rebuilds missing attendee records for past block/express-checkout orders via a one-time background backfill, plus a live safety net that heals any future order as it reaches a paid status.
+* Fix: Corrected invalid Event JSON-LD structured data — the default event status, the previous-reschedule date, and all emitted dates/times were wrong or improperly timezoned; the schema is now also exposed through a new mpwem_event_schema filter.
+* Fix: An event line item could check out priced at $0 when its stored ticket-price meta was missing, such as on a cart carried over from a plugin update or an "order again."
+* Fix: Attendee-record creation failures are now logged with a reason instead of being silently discarded, so a failed booking can actually be diagnosed.
+* Fix: Corrected the demo data importer's use of a function deprecated since WordPress 6.2, which had spammed a deprecation notice per imported item.
+* Fix: Corrected the Availability Indicator settings screen showing both the fixed-seat and percentage threshold fields at once instead of only the active mode's fields.
+* Fix: The PDF Admin Copy Email field on the modern Email Settings screen can now actually be cleared; it previously reverted to the site admin address on every save.
+* Fix: Guarded the options framework's use of jQuery UI Sortable so its absence no longer breaks every other control (color picker, image select, range inputs) on the same settings screen.
+  10 September 2026*
 
 = 5.6.4 =
 * Fix: Booking several dates of the same recurring event in one order now takes a seat from every one of them. The guard that stops an attendee record being written twice counted the records already made for the order and the event without looking at the date, so once the first date had its attendee every later date in the same order was treated as already handled and got no record at all — only the first date lost a seat, and the rest went on showing full availability.

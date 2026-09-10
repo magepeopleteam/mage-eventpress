@@ -1025,23 +1025,15 @@
 
 				$recipient = MPWEM_Global_Function::get_enquiry_recipient( $event_id );
 				if ( $recipient ) {
-					$body_lines = array(
-						sprintf( __( 'Event: %s', 'mage-eventpress' ), $event_title ),
-						sprintf( __( 'Event link: %s', 'mage-eventpress' ), get_permalink( $event_id ) ),
-						'',
-						sprintf( __( 'Name: %s', 'mage-eventpress' ), $name ),
-						sprintf( __( 'Email: %s', 'mage-eventpress' ), $email ),
-						sprintf( __( 'Phone: %s', 'mage-eventpress' ), $phone !== '' ? $phone : __( '(not given)', 'mage-eventpress' ) ),
-						sprintf( __( 'Subject: %s', 'mage-eventpress' ), $subject ),
-						'',
-						__( 'Message:', 'mage-eventpress' ),
-						$message,
+					$headers = array(
+						'Content-Type: text/html; charset=UTF-8',
+						'Reply-To: ' . $name . ' <' . $email . '>',
 					);
-					$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
+					$email_body = $this->mep_build_enquiry_email_html( $event_id, $event_title, $name, $email, $phone, $subject, $message );
 					wp_mail(
 						apply_filters( 'mpwem_enquiry_email_recipient', $recipient, $event_id, $enquiry_id ),
 						apply_filters( 'mpwem_enquiry_email_subject', $subject, $event_id, $enquiry_id ),
-						apply_filters( 'mpwem_enquiry_email_body', implode( "\n", $body_lines ), $event_id, $enquiry_id ),
+						apply_filters( 'mpwem_enquiry_email_body', $email_body, $event_id, $enquiry_id ),
 						$headers
 					);
 				}
@@ -1050,6 +1042,93 @@
 
 				$labels = MPWEM_Global_Function::get_enquiry_labels( $event_id );
 				wp_send_json_success( array( 'message' => esc_html( $labels['mep_enquiry_success_msg'] ) ) );
+			}
+			/**
+			 * Branded HTML notification for a submitted enquiry, styled with the
+			 * site's own MagePeople theme color (style_setting_sec.mpev_primary_color)
+			 * so it reads as part of the same product rather than a generic system email.
+			 */
+			private function mep_build_enquiry_email_html( $event_id, $event_title, $name, $email, $phone, $subject, $message ) {
+				$accent      = MPWEM_Global_Function::get_style_settings( 'mpev_primary_color', '#6046FF' );
+				$accent_tint = $this->mep_enquiry_email_tint( $accent, 0.08 );
+				$event_url   = get_permalink( $event_id );
+				$site_name   = get_bloginfo( 'name' );
+				$phone_out   = '' !== $phone ? $phone : __( '(not given)', 'mage-eventpress' );
+				$sent_at     = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+
+				$row = function ( $label, $value_html ) {
+					return '<tr>'
+						. '<td style="padding:9px 0;color:#6b7280;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;width:110px;vertical-align:top;">' . esc_html( $label ) . '</td>'
+						. '<td style="padding:9px 0;color:#111827;font-size:14px;line-height:1.5;">' . $value_html . '</td>'
+						. '</tr>';
+				};
+
+				$rows  = $row( __( 'Name', 'mage-eventpress' ), esc_html( $name ) );
+				$rows .= $row( __( 'Email', 'mage-eventpress' ), '<a href="' . esc_url( 'mailto:' . $email ) . '" style="color:' . esc_attr( $accent ) . ';text-decoration:none;">' . esc_html( $email ) . '</a>' );
+				$rows .= $row( __( 'Phone', 'mage-eventpress' ), esc_html( $phone_out ) );
+				$rows .= $row( __( 'Subject', 'mage-eventpress' ), esc_html( $subject ) );
+
+				$body  = '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>' . esc_html( $subject ) . '</title></head>';
+				$body .= '<body style="margin:0;padding:0;background:#f3f4f6;-webkit-text-size-adjust:100%;">';
+				$body .= '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;"><tr><td align="center">';
+				$body .= '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(17,24,39,0.08);">';
+
+				// Header band — plugin accent color.
+				$body .= '<tr><td style="background:' . esc_attr( $accent ) . ';padding:26px 32px;">'
+					. '<span style="display:block;color:#ffffff;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.85;">' . esc_html__( 'New Event Enquiry', 'mage-eventpress' ) . '</span>'
+					. '<span style="display:block;margin-top:6px;color:#ffffff;font-size:20px;font-weight:600;line-height:1.4;">' . esc_html( $event_title ) . '</span>'
+					. '</td></tr>';
+
+				// Intro + details card.
+				$body .= '<tr><td style="padding:28px 32px 8px;">'
+					. '<p style="margin:0 0 20px;color:#374151;font-size:14px;line-height:1.6;">' . esc_html__( 'Someone submitted an enquiry through your event page. Here are the details:', 'mage-eventpress' ) . '</p>'
+					. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' . esc_attr( $accent_tint ) . ';border-radius:10px;"><tr><td style="padding:18px 22px;">'
+					. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $rows . '</table>'
+					. '</td></tr></table>'
+					. '</td></tr>';
+
+				// Message quote block.
+				$body .= '<tr><td style="padding:20px 32px 8px;">'
+					. '<span style="display:block;margin:0 0 8px;color:#6b7280;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;">' . esc_html__( 'Message', 'mage-eventpress' ) . '</span>'
+					. '<div style="border-left:3px solid ' . esc_attr( $accent ) . ';background:#f9fafb;border-radius:0 8px 8px 0;padding:14px 18px;color:#1f2937;font-size:14px;line-height:1.65;">' . nl2br( esc_html( $message ) ) . '</div>'
+					. '</td></tr>';
+
+				// CTA button.
+				$body .= '<tr><td style="padding:26px 32px 30px;">'
+					. '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:8px;background:' . esc_attr( $accent ) . ';">'
+					. '<a href="' . esc_url( 'mailto:' . $email . '?subject=' . rawurlencode( __( 'Re:', 'mage-eventpress' ) . ' ' . $subject ) ) . '" style="display:inline-block;padding:12px 24px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;border-radius:8px;">' . esc_html__( 'Reply to Sender', 'mage-eventpress' ) . '</a>'
+					. '</td></tr></table>';
+				if ( $event_url ) {
+					$body .= '<p style="margin:14px 0 0;"><a href="' . esc_url( $event_url ) . '" style="color:' . esc_attr( $accent ) . ';font-size:13px;text-decoration:none;">' . esc_html__( 'View event page →', 'mage-eventpress' ) . '</a></p>';
+				}
+				$body .= '</td></tr>';
+
+				// Footer.
+				$body .= '<tr><td style="padding:18px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;">'
+					/* translators: 1: site name, 2: date/time. */
+					. '<p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.5;">' . sprintf( esc_html__( 'Sent via the enquiry form on %1$s on %2$s.', 'mage-eventpress' ), esc_html( $site_name ), esc_html( $sent_at ) ) . '</p>'
+					. '</td></tr>';
+
+				$body .= '</table></td></tr></table></body></html>';
+
+				return $body;
+			}
+			/**
+			 * Tint a hex color toward white for a soft, brand-matched card background
+			 * (rgba mixing keeps this readable across email clients, unlike CSS color-mix()).
+			 */
+			private function mep_enquiry_email_tint( $hex, $alpha ) {
+				$hex = ltrim( (string) $hex, '#' );
+				if ( 3 === strlen( $hex ) ) {
+					$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+				}
+				if ( 6 !== strlen( $hex ) || ! ctype_xdigit( $hex ) ) {
+					$hex = '6046FF';
+				}
+				$r = hexdec( substr( $hex, 0, 2 ) );
+				$g = hexdec( substr( $hex, 2, 2 ) );
+				$b = hexdec( substr( $hex, 4, 2 ) );
+				return 'rgba(' . $r . ', ' . $g . ', ' . $b . ', ' . $alpha . ')';
 			}
 			public function flush_meta_value_transients() {
 				MPWEM_Query::flush_post_meta_value_cache();

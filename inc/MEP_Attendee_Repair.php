@@ -66,12 +66,19 @@ class MEP_Attendee_Repair {
 	/** Short-lived lock so two runs never overlap. */
 	const LOCK_TRANSIENT = 'mep_attendee_repair_lock';
 
+	/** Daily hook that re-arms the backfill after a later loss of attendees. */
+	const AUDIT_HOOK = 'mep_attendee_repair_audit';
+
 	/** Orders inspected per batch. Filter with 'mep_attendee_repair_batch_size'. */
 	const BATCH_SIZE = 25;
+
+	/** Newest orders the daily audit samples. Filter with 'mep_attendee_audit_sample'. */
+	const AUDIT_SAMPLE = 20;
 
 	public static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'maybe_schedule' ) );
 		add_action( self::CRON_HOOK, array( __CLASS__, 'run_batch' ) );
+		add_action( self::AUDIT_HOOK, array( __CLASS__, 'audit' ) );
 		// Priority 6: after repair_orphan_event_booking() (5) has had a chance to put
 		// missing line-item meta back, and before order_status_changed() (10), which
 		// expects the attendees to exist so it can move them to the order's status.
@@ -91,10 +98,62 @@ class MEP_Attendee_Repair {
 			return;
 		}
 
+		// Scheduled whether or not the one-time pass has finished: attendee posts can be
+		// lost long after it latched `done`, and audit() is the only thing that notices.
+		if ( ! wp_next_scheduled( self::AUDIT_HOOK ) ) {
+			wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', self::AUDIT_HOOK );
+		}
+
 		$state = self::get_state();
 		if ( ! empty( $state['done'] ) ) {
 			return;
 		}
+
+		if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS, self::CRON_HOOK );
+		}
+	}
+
+	/**
+	 * Restart the backfill when a rebuildable order has lost its attendees.
+	 *
+	 * run_batch() sets `done` as soon as it reaches the end of the history and never
+	 * looks again. That is right for the original one-time repair, but it also means
+	 * attendee posts deleted AFTER that pass — a mistaken bulk delete, a restore from a
+	 * partial backup — stay gone. Seats sold are counted from those posts, so every
+	 * affected event silently goes back to reporting full availability and the attendee
+	 * report comes back empty, with nothing left to heal it: heal_order() only fires on
+	 * a status change, which a completed order never makes again.
+	 *
+	 * Costs one bounded lookup a day, and only re-arms on orders that can actually be
+	 * rebuilt, so an order whose event has since been deleted cannot restart the walk
+	 * every night for nothing.
+	 */
+	public static function audit() {
+		if ( ! self::enabled() ) {
+			return;
+		}
+
+		$state = self::get_state();
+		if ( empty( $state['done'] ) ) {
+			return; // A pass is already in flight; let it finish.
+		}
+
+		$sample  = max( 1, (int) apply_filters( 'mep_attendee_audit_sample', self::AUDIT_SAMPLE ) );
+		$missing = false;
+		foreach ( self::rebuildable_orders( $sample ) as $order_id ) {
+			if ( 0 === self::attendee_count( $order_id ) ) {
+				$missing = true;
+				break;
+			}
+		}
+		if ( ! $missing ) {
+			return;
+		}
+
+		unset( $state['done'], $state['finished'] );
+		$state['cursor'] = PHP_INT_MAX; // Walk the whole history again, newest first.
+		update_option( self::STATE_OPTION, $state, false );
 
 		if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
 			wp_schedule_single_event( time() + MINUTE_IN_SECONDS, self::CRON_HOOK );
@@ -301,6 +360,53 @@ class MEP_Attendee_Repair {
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- table names are built from $wpdb->prefix; both values are placeholders.
 		return array_map( 'intval', (array) $wpdb->get_col( $wpdb->prepare( $sql, $cursor, $limit ) ) );
+	}
+
+	/**
+	 * Newest orders that carry an event line item whose event post still exists.
+	 *
+	 * The event join is what separates "these attendees went missing" from "this event
+	 * was deleted, so it can never be rebuilt" — rebuild() produces nothing for the
+	 * latter, and without the join a single such order at the top of the history would
+	 * make audit() restart the whole walk every night.
+	 *
+	 * @param int $limit How many orders to return.
+	 * @return int[]
+	 */
+	private static function rebuildable_orders( $limit ) {
+		global $wpdb;
+
+		$items    = $wpdb->prefix . 'woocommerce_order_items';
+		$itemmeta = $wpdb->prefix . 'woocommerce_order_itemmeta';
+		$excluded = "( 'wc-failed', 'wc-cancelled', 'wc-refunded', 'wc-checkout-draft', 'trash', 'auto-draft' )";
+
+		if ( self::hpos_enabled() ) {
+			$orders = $wpdb->prefix . 'wc_orders';
+			$sql    = "SELECT o.id
+				FROM {$orders} o
+				JOIN {$items} oi ON oi.order_id = o.id AND oi.order_item_type = 'line_item'
+				JOIN {$itemmeta} im ON im.order_item_id = oi.order_item_id AND im.meta_key = 'event_id'
+				JOIN {$wpdb->posts} e ON e.ID = im.meta_value AND e.post_type = 'mep_events'
+				WHERE o.type = 'shop_order'
+				  AND o.status NOT IN {$excluded}
+				GROUP BY o.id
+				ORDER BY o.id DESC
+				LIMIT %d";
+		} else {
+			$sql = "SELECT o.ID
+				FROM {$wpdb->posts} o
+				JOIN {$items} oi ON oi.order_id = o.ID AND oi.order_item_type = 'line_item'
+				JOIN {$itemmeta} im ON im.order_item_id = oi.order_item_id AND im.meta_key = 'event_id'
+				JOIN {$wpdb->posts} e ON e.ID = im.meta_value AND e.post_type = 'mep_events'
+				WHERE o.post_type = 'shop_order'
+				  AND o.post_status NOT IN {$excluded}
+				GROUP BY o.ID
+				ORDER BY o.ID DESC
+				LIMIT %d";
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- table names are built from $wpdb->prefix; the status list is a literal; the limit is a placeholder.
+		return array_map( 'intval', (array) $wpdb->get_col( $wpdb->prepare( $sql, $limit ) ) );
 	}
 
 	/**

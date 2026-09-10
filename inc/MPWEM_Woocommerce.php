@@ -1123,7 +1123,13 @@
 														if ( ! is_plugin_active( 'woo-juno/main.php' ) ) {
 															if ( ! class_exists( 'WC_Saferpay' ) ) {
 																// mep_clear_cart_after_checkout
-																$woocommerce->cart->empty_cart();
+																// WooCommerce only builds a cart on front-end requests. This handler
+																// is also called from WP-Cron and WP-CLI by MEP_Attendee_Repair, where
+																// $woocommerce->cart is null — an uncaught fatal that killed the batch
+																// part-way through an order it had already created attendees for.
+																if ( is_object( $woocommerce ) && is_object( $woocommerce->cart ) ) {
+																	$woocommerce->cart->empty_cart();
+																}
 															}
 														}
 													}

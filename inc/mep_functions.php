@@ -3146,6 +3146,49 @@ die();
 			return $price;
 		}
 	}
+	if ( ! function_exists( 'mep_cart_ticket_type' ) ) {
+		/**
+		 * Cart ticket data for the event being added, in the shape older addons expect.
+		 *
+		 * Deprecated: use MPWEM_Woocommerce::get_cart_ticket_info() and
+		 * ::get_cart_ticket_price().
+		 *
+		 * This function was dropped in the seat-plan rewrite (2025-11), which moved the
+		 * work into those two methods. Addon builds released before that still call it
+		 * from woocommerce_add_to_cart_validation — the seat plan addon below 2.3.x
+		 * calls it twice — and an undefined function on that filter is a fatal error
+		 * that blocks every add to cart on the site, with only a white screen to show
+		 * for it. Kept as a thin wrapper over the current pipeline so the old callers
+		 * and the free plugin agree on the tickets, including anything the
+		 * mep_cart_ticket_type_data_prepare filter adds to them (that is how the seat
+		 * addon puts seat_name on each ticket, which is exactly what it reads back).
+		 *
+		 * @param string $type        'ticket_type' ( default ), 'ticket_price' or 'validation_data'.
+		 * @param float  $total_price Running total the ticket prices are added to.
+		 * @param int    $product_id  Event id.
+		 * @return array|float Ticket rows, the new total, or the validation rows.
+		 */
+		function mep_cart_ticket_type( $type = 'ticket_type', $total_price = 0, $product_id = 0 ) {
+			$ticket_info = class_exists( 'MPWEM_Woocommerce' ) ? MPWEM_Woocommerce::get_cart_ticket_info( $product_id ) : array();
+			$ticket_info = is_array( $ticket_info ) ? $ticket_info : array();
+			if ( 'ticket_price' === $type ) {
+				$price = class_exists( 'MPWEM_Woocommerce' ) ? MPWEM_Woocommerce::get_cart_ticket_price( $ticket_info ) : 0;
+
+				return (float) $total_price + (float) $price;
+			}
+			if ( 'validation_data' === $type ) {
+				$validate = array();
+				foreach ( array_values( $ticket_info ) as $index => $info ) {
+					$validate[ $index ]['validation_ticket_qty'] = is_array( $info ) && array_key_exists( 'ticket_qty', $info ) ? (int) $info['ticket_qty'] : 0;
+					$validate[ $index ]['event_id']              = $product_id;
+				}
+
+				return $validate;
+			}
+
+			return $ticket_info;
+		}
+	}
 	if ( ! function_exists( 'mep_get_user_custom_field_ids' ) ) {
 		function mep_get_user_custom_field_ids( $event_id ) {
 			$reg_form_id           = mep_fb_get_reg_form_id( $event_id );

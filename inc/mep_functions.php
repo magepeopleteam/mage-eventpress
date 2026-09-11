@@ -1496,23 +1496,169 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $extra_meta;
 		}
 	}
+	if ( ! function_exists( 'mep_find_order_extra_service' ) ) {
+		/**
+		 * The extra-service record already written for one service on one order line.
+		 *
+		 * @param int    $order_id     Order id.
+		 * @param int    $event_id     Event id.
+		 * @param string $service_name Service name.
+		 * @param string $event_date   Event date the service was bought for.
+		 * @param int    $item_id      Order item id, 0 when the caller does not know it.
+		 * @return int Post id, or 0 when nothing is recorded yet.
+		 */
+		function mep_find_order_extra_service( $order_id, $event_id, $service_name, $event_date, $item_id = 0 ) {
+			$meta_query = array(
+				'relation' => 'AND',
+				array( 'key' => 'ea_extra_service_order', 'value' => $order_id ),
+				array( 'key' => 'ea_extra_service_event', 'value' => $event_id ),
+				array( 'key' => 'ea_extra_service_name', 'value' => $service_name ),
+				array( 'key' => 'ea_extra_service_event_date', 'value' => (string) $event_date ),
+			);
+			if ( $item_id ) {
+				// This line's own record, or one written before the item id was stored.
+				$meta_query[] = array(
+					'relation' => 'OR',
+					array( 'key' => 'ea_extra_service_item_id', 'value' => $item_id ),
+					array( 'key' => 'ea_extra_service_item_id', 'compare' => 'NOT EXISTS' ),
+				);
+			}
+			$ids = get_posts( array(
+				'post_type'        => 'mep_extra_service',
+				'post_status'      => 'any',
+				'posts_per_page'   => -1,
+				'fields'           => 'ids',
+				'orderby'          => 'ID',
+				'order'            => 'ASC',
+				'no_found_rows'    => true,
+				'suppress_filters' => true,
+				'meta_query'       => $meta_query,
+			) );
+			if ( ! $ids ) {
+				return 0;
+			}
+			if ( $item_id ) {
+				foreach ( $ids as $id ) {
+					if ( (int) get_post_meta( $id, 'ea_extra_service_item_id', true ) === (int) $item_id ) {
+						return (int) $id;
+					}
+				}
+			}
+			return (int) $ids[0];
+		}
+	}
+	if ( ! function_exists( 'mep_get_order_extra_services' ) ) {
+		/**
+		 * The extra-service posts of an order, without duplicate records.
+		 *
+		 * Before mep_attendee_extra_service_create() became idempotent, every extra
+		 * run of checkout processing inserted the order's services again, so older
+		 * orders carry copies that were never bought (and PDF totals counted them).
+		 * The order lines' _event_extra_service meta is what was actually sold: each
+		 * service keeps as many records as there are lines selling it, and surplus
+		 * copies are dropped. Orders without that line meta (native or legacy
+		 * orders) come back unchanged.
+		 *
+		 * @param int $order_id Order id.
+		 * @return WP_Post[]
+		 */
+		function mep_get_order_extra_services( $order_id ) {
+			$posts = get_posts( array(
+				'post_type'      => 'mep_extra_service',
+				'posts_per_page' => -1,
+				'orderby'        => 'ID',
+				'order'          => 'ASC',
+				'no_found_rows'  => true,
+				'meta_query'     => array(
+					array(
+						'key'     => 'ea_extra_service_order',
+						'value'   => $order_id,
+						'compare' => '=',
+					),
+				),
+			) );
+			$order = function_exists( 'wc_get_order' ) ? wc_get_order( $order_id ) : false;
+			if ( ! $posts || ! is_a( $order, 'WC_Order' ) ) {
+				return $posts;
+			}
+			$sold = array();
+			foreach ( $order->get_items() as $item_id => $item ) {
+				$event_id = wc_get_order_item_meta( $item_id, 'event_id', true );
+				$services = wc_get_order_item_meta( $item_id, '_event_extra_service', true );
+				if ( ! is_array( $services ) ) {
+					continue;
+				}
+				foreach ( $services as $service ) {
+					if ( ! is_array( $service ) || empty( $service['service_name'] ) ) {
+						continue;
+					}
+					$key          = $event_id . '|' . $service['service_name'] . '|' . ( isset( $service['event_date'] ) ? $service['event_date'] : '' );
+					$sold[ $key ] = ( isset( $sold[ $key ] ) ? $sold[ $key ] : 0 ) + 1;
+				}
+			}
+			if ( ! $sold ) {
+				return $posts;
+			}
+			$kept = array();
+			$seen = array();
+			foreach ( $posts as $post ) {
+				$key = get_post_meta( $post->ID, 'ea_extra_service_event', true ) . '|' . get_post_meta( $post->ID, 'ea_extra_service_name', true ) . '|' . get_post_meta( $post->ID, 'ea_extra_service_event_date', true );
+				if ( ! isset( $sold[ $key ] ) ) {
+					$kept[] = $post; // Not traceable to a line (e.g. edited later): leave it alone.
+					continue;
+				}
+				$seen[ $key ] = ( isset( $seen[ $key ] ) ? $seen[ $key ] : 0 ) + 1;
+				if ( $seen[ $key ] <= $sold[ $key ] ) {
+					$kept[] = $post;
+				}
+			}
+			return $kept;
+		}
+	}
 	if ( ! function_exists( 'mep_attendee_extra_service_create' ) ) {
-		function mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service ) {
-			$order        = wc_get_order( $order_id );
+		/**
+		 * Record the extra services bought on one order line.
+		 *
+		 * This runs every time checkout_order_processed() runs for an order, and that
+		 * is more than once: the classic and Store API checkout hooks, the attendee
+		 * repair safety net and re-entering gateways all call it. Attendees are
+		 * deleted and rebuilt on each pass, but these posts were only ever inserted,
+		 * so each extra pass duplicated the order's services on the PDF ticket, the
+		 * reports, the exports and the service stock count. A service already
+		 * recorded for the same order line is now updated in place instead.
+		 *
+		 * @param int   $order_id             Order id.
+		 * @param int   $event_id             Event id.
+		 * @param array $_event_extra_service Services from the line's _event_extra_service meta.
+		 * @param int   $item_id              Order item id; 0 when unknown (admin bookings).
+		 */
+		function mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service, $item_id = 0 ) {
+			$order = wc_get_order( $order_id );
+			if ( ! $order ) {
+				return;
+			}
 			$order_status = $order->get_status();
+			$item_id      = absint( $item_id );
 			if ( is_array( $_event_extra_service ) && sizeof( $_event_extra_service ) > 0 ) {
 				foreach ( $_event_extra_service as $extra_serive ) {
 					if ( $extra_serive['service_name'] ) {
-						$uname    = 'Extra Service for ' . get_the_title( $event_id ) . ' Order #' . $order_id;
-						$new_post = array(
-							'post_title'    => $uname,
-							'post_content'  => '',
-							'post_category' => array(),
-							'tags_input'    => array(),
-							'post_status'   => 'publish',
-							'post_type'     => 'mep_extra_service'
-						);
-						$pid      = wp_insert_post( $new_post );
+						$event_date = isset( $extra_serive['event_date'] ) ? $extra_serive['event_date'] : '';
+						$pid        = mep_find_order_extra_service( $order_id, $event_id, $extra_serive['service_name'], $event_date, $item_id );
+						if ( ! $pid ) {
+							$uname    = 'Extra Service for ' . get_the_title( $event_id ) . ' Order #' . $order_id;
+							$new_post = array(
+								'post_title'    => $uname,
+								'post_content'  => '',
+								'post_category' => array(),
+								'tags_input'    => array(),
+								'post_status'   => 'publish',
+								'post_type'     => 'mep_extra_service'
+							);
+							$pid      = wp_insert_post( $new_post );
+						}
+						if ( ! $pid || is_wp_error( $pid ) ) {
+							continue;
+						}
 						update_post_meta( $pid, 'ea_extra_service_name', $extra_serive['service_name'] );
 						update_post_meta( $pid, 'ea_extra_service_qty', $extra_serive['service_qty'] );
 						update_post_meta( $pid, 'ea_extra_service_unit_price', $extra_serive['service_price'] );
@@ -1520,7 +1666,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 						update_post_meta( $pid, 'ea_extra_service_event', $event_id );
 						update_post_meta( $pid, 'ea_extra_service_order', $order_id );
 						update_post_meta( $pid, 'ea_extra_service_order_status', $order_status );
-						update_post_meta( $pid, 'ea_extra_service_event_date', $extra_serive['event_date'] );
+						update_post_meta( $pid, 'ea_extra_service_event_date', $event_date );
+						if ( $item_id ) {
+							update_post_meta( $pid, 'ea_extra_service_item_id', $item_id );
+						}
 					}
 				}
 			}

@@ -1075,7 +1075,7 @@
 							$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
 							$_event_extra_service  = wc_get_order_item_meta( $item_id, '_event_extra_service', true );
 							$item_quantity         = 0;
-							mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service );
+							mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service, $item_id );
 							mep_delete_attandee_of_an_order( $order_id, $event_id );
 							foreach ( $event_ticket_info_arr as $field ) {
 								if ( $field['ticket_qty'] > 0 ) {

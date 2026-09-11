@@ -912,13 +912,15 @@
 			var text = $root.find('[data-pdf-preview="text"]').val() || '#1C1C22';
 			var showPrice = $root.find('[data-pdf-preview="price"]').is(':checked');
 			var logo = $root.find('[data-pdf-preview="logo"]').val() || '';
+			var background = $root.find('[data-pdf-preview="background"]').val() || '';
 			$preview
 				.removeClass('mep-pdf__preview--default mep-pdf__preview--ticket2 mep-pdf__preview--rcmmaa mep-pdf__preview--gsound mep-pdf__preview--pwtinvoice mep-pdf__preview--invoice')
 				.addClass('mep-pdf__preview--' + slug)
 				.attr('data-theme', theme)
 				.css({
 					'--mep-pdf-preview-bg': bg,
-					'--mep-pdf-preview-text': text
+					'--mep-pdf-preview-text': text,
+					'--mep-pdf-preview-image': background ? 'url("' + background.replace(/"/g, '\\"') + '")' : 'none'
 				});
 			$preview.find('[data-pdf-preview-price]').toggleClass('is-hidden', !showPrice);
 			var $logoWrap = $preview.find('[data-pdf-preview-logo-wrap]');

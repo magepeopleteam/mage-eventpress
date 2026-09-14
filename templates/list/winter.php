@@ -19,8 +19,9 @@
 	$permalink          = get_the_permalink( $event_id );
 	$org_class          = is_array( $event_infos ) && array_key_exists( 'org_class', $event_infos ) ? $event_infos['org_class'] : '';
 	$cat_class          = is_array( $event_infos ) && array_key_exists( 'cat_class', $event_infos ) ? $event_infos['cat_class'] : '';
+	$hide_category_list = is_array( $event_infos ) && array_key_exists( 'hide_category_list', $event_infos ) ? $event_infos['hide_category_list'] : 'no';
 	$first_category     = '';
-	if ( is_string( $taxonomy_category ) && $taxonomy_category !== '' ) {
+	if ( $hide_category_list !== 'yes' && is_string( $taxonomy_category ) && $taxonomy_category !== '' ) {
 		$category_parts = array_map( 'trim', explode( ',', $taxonomy_category ) );
 		$first_category = $category_parts[0] ?? '';
 	}

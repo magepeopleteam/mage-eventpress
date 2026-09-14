@@ -26,13 +26,15 @@
 	$permalink                      = get_the_permalink( $event_id );
 	$event_infos['organizer_title'] = __( 'Organized By:', 'mage-eventpress' );
 	$event_infos['location_title']  = __( 'Location : ', 'mage-eventpress' );
+	$hide_category_list             = is_array($event_infos) && array_key_exists( 'hide_category_list', $event_infos ) ? $event_infos['hide_category_list'] : 'no';
+	$large_list_layout              = is_array($event_infos) && array_key_exists( 'large_list_layout', $event_infos ) ? $event_infos['large_list_layout'] : 'no';
 	$first_category                 = '';
-	if ( is_string( $taxonomy_category ) && $taxonomy_category !== '' ) {
+	if ( $hide_category_list !== 'yes' && is_string( $taxonomy_category ) && $taxonomy_category !== '' ) {
 		$category_parts = array_map( 'trim', explode( ',', $taxonomy_category ) );
 		$first_category = $category_parts[0] ?? '';
 	}
 ?>
-    <div class='filter_item mep-event-list-loop mix mep_event_card <?php echo esc_attr( $column_number . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
+    <div class='filter_item mep-event-list-loop mix mep_event_card <?php echo esc_attr( $column_number . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class . ( $large_list_layout === 'yes' ? ' mep_event_card--large' : '' ) ); ?>'
          data-title="<?php echo esc_attr( $title ); ?>"
          data-city-name="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
          data-state="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"

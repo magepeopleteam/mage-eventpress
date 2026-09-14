@@ -649,6 +649,44 @@
 	margin: 4px 0 8px;
 }
 
+/*
+ * Larger list layout — opt-in via Event List Settings → "Larger List Layout".
+ * Image takes 40% of the row (as before 5.5) and text is larger, so the card
+ * no longer reads as a thin strip across the page. Desktop only: below 641px
+ * the stacked mobile card above is left as it is.
+ */
+@media (min-width: 641px) {
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large .mep_event_card__surface {
+		min-height: 260px;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large .mep_event_card__media {
+		width: 40%;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large .mep_list_thumb {
+		min-height: 260px;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large .mep_event_card__body {
+		padding: 28px 32px;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large h2.mep_list_title {
+		font-size: 22px;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large .mep-event-excerpt,
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large .list_content {
+		font-size: 15px;
+	}
+
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large div.mpwem-price-area .list_price_value,
+	.list_with_filter_section.mep_event_list .mep_event_list_item.mep_event_card--large div.mpwem-price-area .list_price_value .amount {
+		font-size: 18px;
+	}
+}
+
 /* ── Filters / search chrome ────────────────────────────────────── */
 
 /* ── New Style toolbar: date range + filter / layout ─────────────── */

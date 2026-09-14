@@ -45,6 +45,9 @@
 					}
 					$taxonomy_organizer = implode( ', ', $org_names );
 				}
+				// Only the visible category badge is hidden; data-category stays so category filtering keeps working.
+				$hide_category_list = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_category_list', 'no' );
+				$large_list_layout  = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_list_large_layout', 'no' );
 				if ( $style == 'title' ) {
 					$title         = get_the_title( $event_id );
 					$permalink     = get_the_permalink( $event_id );
@@ -52,7 +55,7 @@
 					$date_month    = $upcoming_date ? date_i18n( 'M', strtotime( $upcoming_date ) ) : '';
 					$date_day      = $upcoming_date ? date_i18n( 'd', strtotime( $upcoming_date ) ) : '';
 					$first_category = '';
-					if ( $taxonomy_category !== '' ) {
+					if ( $hide_category_list !== 'yes' && $taxonomy_category !== '' ) {
 						$category_parts = array_map( 'trim', explode( ',', $taxonomy_category ) );
 						$first_category = $category_parts[0] ?? '';
 					}
@@ -141,6 +144,8 @@
 					$event_infos[ 'event_list_setting_sec' ] = $event_list_setting_sec;
 					$event_infos[ 'organizer_name' ] = $organizer_name;
 					$event_infos[ 'category_tax' ] = $taxonomy_category;
+					$event_infos[ 'hide_category_list' ] = $hide_category_list;
+					$event_infos[ 'large_list_layout' ] = $large_list_layout;
 					$event_infos[ 'organizer_tax' ] = $taxonomy_organizer;
 					$event_infos[ 'width' ] = $width;
 					$event_infos[ 'column_number' ] = $columnNumber;

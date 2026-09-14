@@ -2020,6 +2020,28 @@ tr.payment_tabs_html { display: none !important; }
 									'no'  => 'No'
 								)
 							),
+							array(
+								'name'    => 'mep_event_hide_category_list',
+								'label'   => __( 'Hide Category in List', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the category badge on event list cards. Category filtering keeps working.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
+								'name'    => 'mep_event_list_large_layout',
+								'label'   => __( 'Larger List Layout', 'mage-eventpress' ),
+								'desc'    => __( 'Show List view cards with a larger image and larger text. Grid view is not affected.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
                             array(
                                 'name'    => 'mep_hide_event_list_msg',
                                 'label'   => __( 'Hide Event List Message', 'mage-eventpress' ),

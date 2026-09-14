@@ -1123,7 +1123,17 @@
 														if ( ! is_plugin_active( 'woo-juno/main.php' ) ) {
 															if ( ! class_exists( 'WC_Saferpay' ) ) {
 																// mep_clear_cart_after_checkout
-																$woocommerce->cart->empty_cart();
+																//
+																// WooCommerce only builds a cart for front-end requests. This method also runs
+																// from gateway webhooks (Stripe completing a payment minutes after checkout),
+																// the REST API, WP-CLI, wp-admin's Book an Event screen and the attendee repair
+																// cron - and in every one of those WC()->cart is null. Calling empty_cart() there
+																// was a fatal that killed the request immediately after the attendees had been
+																// written: the gateway received a 500 and retried, the admin save died, and on an
+																// order holding more than one event the remaining events were never processed.
+																if ( ! empty( $woocommerce ) && ! empty( $woocommerce->cart ) ) {
+																	$woocommerce->cart->empty_cart();
+																}
 															}
 														}
 													}

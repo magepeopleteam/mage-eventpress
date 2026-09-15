@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.0
+Stable tag: 5.7.1
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,16 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.1 =
+* Security Fix: Refused event bookings that carry no real ticket selection — a request that bypassed the normal ticket fields (a bare add-to-cart link, a direct Store API call, or a plugin adding the event product programmatically) could previously check out at $0.00 instead of being rejected.
+* Fix: Corrected extra services being duplicated on the PDF ticket, in reports/exports, and in stock counts whenever an order was reprocessed (e.g. by the attendee-repair cron or a re-entered gateway) — each extra pass added another copy instead of updating the existing record.
+* Fix: Corrected mep_attendee_create() not returning the new attendee's ID, which caused the Pro "Sync Attendee Data" tool to report failure — and create duplicate attendees on retry — even though the attendee had already been created successfully.
+* Fix: Corrected a fatal error in attendee processing whenever no WooCommerce cart existed, affecting gateway webhooks (e.g. Stripe 3-D Secure, PayPal), the REST API, WP-CLI, the Book an Event admin screen, and the 5.7.0 attendee-repair cron; on multi-event orders this had also stopped later events in the same order from getting an attendee at all.
+* Fix: Restored the mep_cart_ticket_type() function for older Seat Plan add-on builds that still call it directly, which had fatally broken every add-to-cart on sites running that combination.
+* Improvement: Added "Hide Category in List" and "Larger List Layout" options to Event List Settings, so sites that found the 5.5.0 card redesign's category badge or smaller List-view thumbnails a regression can restore the previous look.
+* Improvement: The PDF ticket settings screen now shows a live, ticket-accurate preview (organizer row, facts grid, stub with price/QR, attendee/billing panels, etc.) when the G-Sound theme is selected, including the configured background image.
+  15 September 2026*
 
 = 5.7.0 =
 * Feature: Added Undated Events — a per-event switch to publish events with no date at all (open-ended announcements, permanent exhibits, "coming soon" listings), hiding the date/ticket UI and skipping date validation appropriately.

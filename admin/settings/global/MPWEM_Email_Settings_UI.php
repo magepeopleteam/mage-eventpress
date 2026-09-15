@@ -300,7 +300,9 @@
 				$sec     = 'email_setting_sec';
 				$from    = mep_get_option( 'mep_email_form_name', $sec, get_bloginfo( 'name' ) );
 				$email   = mep_get_option( 'mep_email_form_email', $sec, get_option( 'admin_email' ) );
-				$subject = mep_get_option( 'mep_email_subject', $sec, 'Event Notification' );
+				$subject = function_exists( 'mep_get_confirmation_email_subject' )
+					? mep_get_confirmation_email_subject()
+					: mep_get_option( 'mep_email_subject', $sec, 'Confirmation Email' );
 				$body    = self::get_email_body_or_preset( 'mep_confirmation_email_text', $sec, 'confirmation' );
 				$status  = mep_get_option( 'mep_email_sending_order_status', $sec, array( 'completed' => 'completed' ) );
 				$billing = mep_get_option( 'mep_send_confirmation_to_billing_email', $sec, 'enable' );
@@ -404,16 +406,40 @@
 
 			/* ───────────── PDF Email ───────────── */
 
+			/**
+			 * Reads a saved setting without mep_get_option()'s empty-value fallback.
+			 *
+			 * mep_get_option() returns the default whenever the stored value is empty,
+			 * which is wrong for a field where empty is a deliberate choice: the input
+			 * renders the default again after saving, and the next Save Changes posts
+			 * that default back, so the setting can never be cleared. Fall back only
+			 * when the key was never saved at all.
+			 *
+			 * @param string $section Option name the settings section is stored under.
+			 * @param string $key     Setting key inside that section.
+			 * @param string $default Value to use when the key has never been saved.
+			 * @return string
+			 */
+			private static function get_saved_value( $section, $key, $default = '' ) {
+				$options = get_option( $section );
+				if ( is_array( $options ) && array_key_exists( $key, $options ) ) {
+					return is_scalar( $options[ $key ] ) ? (string) $options[ $key ] : '';
+				}
+
+				return (string) $default;
+			}
+
 			private static function render_pdf() {
 				$sec = 'mep_pdf_email_settings';
 				$get = function( $key, $default = '' ) use ( $sec ) {
 					return mep_get_option( $key, $sec, $default );
 				};
 
-				$status = $get( 'mep_pdf_email_status', array() );
-				if ( ! is_array( $status ) ) {
-					$status = array();
-				}
+				// Normalized, not discarded: the upgrade routine stores this key as a
+				// plain string, which an is_array() check would drop and show unticked.
+				$status = function_exists( 'mep_get_pdf_email_statuses' )
+					? mep_get_pdf_email_statuses()
+					: (array) $get( 'mep_pdf_email_status', array() );
 
 				$vars = array( '{customer_name}', '{event_name}', '{event_venue}', '{event_date}', '{order_id}', '{payment_method}', '{amount_paid}' );
 				?>
@@ -442,8 +468,8 @@
 								</div>
 								<div class="mep-em__field">
 									<label class="mep-em__label"><?php esc_html_e( 'Admin Copy Email', 'mage-eventpress' ); ?></label>
-									<input type="email" class="mep-em__input" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_admin_notification_email]" value="<?php echo esc_attr( $get( 'mep_pdf_admin_notification_email', get_option( 'admin_email' ) ) ); ?>" />
-									<p class="mep-em__hint"><?php esc_html_e( 'Email address that receives a copy of each PDF ticket.', 'mage-eventpress' ); ?></p>
+									<input type="email" class="mep-em__input" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_admin_notification_email]" value="<?php echo esc_attr( self::get_saved_value( $sec, 'mep_pdf_admin_notification_email', get_option( 'admin_email' ) ) ); ?>" />
+									<p class="mep-em__hint"><?php esc_html_e( 'Email address that receives a copy of each PDF ticket. Leave empty to send no admin copy.', 'mage-eventpress' ); ?></p>
 								</div>
 							</div>
 						</div>
@@ -504,7 +530,7 @@
 										foreach ( $opts as $key => $label ) :
 											?>
 											<label class="mep-em__check">
-												<input type="checkbox" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_email_status][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $key ); ?>" <?php checked( isset( $status[ $key ] ) && (string) $status[ $key ] === (string) $key ); ?> />
+												<input type="checkbox" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_email_status][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $key ); ?>" <?php checked( in_array( (string) $key, $status, true ) ); ?> />
 												<span><?php echo esc_html( $label ); ?></span>
 											</label>
 										<?php endforeach; ?>
@@ -513,8 +539,8 @@
 								<div class="mep-em__field">
 									<label class="mep-em__label"><?php esc_html_e( 'Add to Calendar Link', 'mage-eventpress' ); ?></label>
 									<select class="mep-em__select" name="<?php echo esc_attr( $sec ); ?>[mep_pdf_add_to_calendar]">
-										<option value="yes" <?php selected( $get( 'mep_pdf_add_to_calendar', 'no' ), 'yes' ); ?>><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></option>
-										<option value="no" <?php selected( $get( 'mep_pdf_add_to_calendar', 'no' ), 'no' ); ?>><?php esc_html_e( 'No', 'mage-eventpress' ); ?></option>
+										<option value="yes" <?php selected( $get( 'mep_pdf_add_to_calendar', 'yes' ), 'yes' ); ?>><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></option>
+										<option value="no" <?php selected( $get( 'mep_pdf_add_to_calendar', 'yes' ), 'no' ); ?>><?php esc_html_e( 'No', 'mage-eventpress' ); ?></option>
 									</select>
 								</div>
 								<div class="mep-em__field">

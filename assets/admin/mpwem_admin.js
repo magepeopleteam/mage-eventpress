@@ -153,7 +153,7 @@ function mpwem_initWpEditor(id) {
             }
         }
 
-        if (targetId === '#mpwem_date_settings') {
+        if (targetId === '#mpwem_date_settings' && !mpwem_isUndatedEvent()) {
             const startDate = $panel.find('[name="event_start_date_normal"],[name="event_start_date"],[name="event_start_date_everyday"],[name="event_start_date_daywise"]').first().val();
             const endDate = $panel.find('[name="event_end_date_normal"],[name="event_end_date"],[name="event_end_date_everyday"],[name="event_end_date_daywise"]').first().val();
             const startTime = $panel.find('[name="event_start_time_normal"],[name="event_start_time"]').first().val();
@@ -164,8 +164,7 @@ function mpwem_initWpEditor(id) {
         }
 
         if (targetId === '#mpwem_ticket_pricing_settings') {
-            const regStatus = $panel.find('[name="mep_reg_status"]').val();
-            if (regStatus !== 'off') {
+            if (mpwem_eventMode() === 'on') {
                 let hasValidTicket = false;
                 $panel.find('[name="option_name_t[]"]').each(function () {
                     const name = $(this).val();
@@ -1139,17 +1138,53 @@ jQuery(function ($) {
 });
 
 
+/**
+ * Current Event Mode ('on' | 'rsvp' | 'off' | 'announcement').
+ *
+ * Reads whichever control is on screen: the Modern wizard's hidden #mep_reg_status
+ * input, or the Classic editor's Event Mode <select> of the same name. A legacy
+ * checkbox (older markup / add-ons) still resolves to on/off.
+ */
+function mpwem_eventMode() {
+    const $field = jQuery('[name="mep_reg_status"]').first();
+    if (!$field.length) return 'on';
+    if ($field.is('input[type="checkbox"]')) {
+        return $field.is(':checked') ? 'on' : 'off';
+    }
+    return (($field.val() || '') + '').trim() || 'off';
+}
+
+/** Whether the "Undated Event" switch in the Date & Time step is on. */
+function mpwem_isUndatedEvent() {
+    const $cb = jQuery('input[name="mep_event_no_date"]').first();
+    return $cb.length > 0 && $cb.is(':checked');
+}
+
 jQuery(document).ready(function($) {
-    
-    // Function for Registration Status (Unchecked = Show)
-    function checkRegStatus() {
-        var isChecked = $('input[name="mep_reg_status"]').is(':checked');
-        // Logic: Show if NOT checked, Hide if checked
-        if (!isChecked) {
-            $('.reg_close_msg_dash').show();
+
+    // Undated events hide the whole date & time area; the fields stay in the DOM
+    // (other scripts query them) but are cleared server-side on save.
+    function syncNoDateArea(animate) {
+        const $area = $('.mpwem_date_required_area');
+        if (!$area.length) return;
+        if (mpwem_isUndatedEvent()) {
+            animate ? $area.stop(true, true).slideUp(200) : $area.hide();
         } else {
-            $('.reg_close_msg_dash').hide();
+            animate ? $area.stop(true, true).slideDown(200) : $area.show();
         }
+    }
+
+    // Show the settings panel that belongs to the selected Event Mode.
+    function syncEventMode() {
+        const mode = mpwem_eventMode();
+        const isTicketing = mode === 'on';
+
+        // The ticket & pricing body is a [data-collapse] section: visible only with .mActive.
+        $('[data-collapse="#mep_reg_status"]').toggleClass('mActive', isTicketing).toggle(isTicketing);
+        $('.mpwem-rsvp-settings-area').toggle(mode === 'rsvp');
+        $('.mpwem-announcement-settings-area').toggle(mode === 'announcement');
+        // "Registration off" message only makes sense for Listing-Only events.
+        $('.reg_close_msg_dash').toggle(mode === 'off');
     }
 
     // Function for Message Text (Checked = Show)
@@ -1163,16 +1198,24 @@ jQuery(document).ready(function($) {
     }
 
     // Trigger on Change
-    $('input[name="mep_reg_status"]').on('change', function() {
-        checkRegStatus();
+    $(document).on('change', '[name="mep_reg_status"]', function() {
+        syncEventMode();
+    });
+
+    $(document).on('change', 'input[name="mep_event_no_date"]', function() {
+        syncNoDateArea(true);
     });
 
     $('input[name="mep_reg_status_show_msg"]').on('change', function() {
         checkMsgVisibility();
     });
 
-    // Run on Page Load to check current saved values
-    checkRegStatus();
+    // Run on Page Load to check current saved values. The Modern wizard owns its own
+    // mode-driven layout (mpwem_event_edit.js), so only drive the Classic panels here.
+    if (!$('#mpwem_event_mode_toggle').length) {
+        syncEventMode();
+    }
+    syncNoDateArea(false);
     checkMsgVisibility();
 });
 

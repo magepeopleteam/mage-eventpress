@@ -16,21 +16,21 @@
 		$reg_status = 'on'; // native checkout handles paid events when WooCommerce is not active
 	}
 
-	// Listing mode has no registration box at all
-	if ( $reg_status === 'off' ) {
+	// Listing and Announcement modes have no registration box at all. Announcement
+	// renders its own notice + enquiry form from templates/layout/announcement.php.
+	if ( $reg_status === 'off' || $reg_status === 'announcement' ) {
+		return;
+	}
+
+	// An undated event has no occurrence to book, so the ticket options are omitted
+	// while the rest of the details page renders normally.
+	if ( MPWEM_Global_Function::is_undated_event( $event_id ) ) {
 		return;
 	}
 
 	// RSVP mode renders a free RSVP form with direct attendee database storage
 	if ( $reg_status === 'rsvp' ) {
-		$url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
-		$url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
-		$url_date = $url_date ?: $url_date_2;
-		$url_date = $url_date ? date( 'Y-m-d H:i', (int)$url_date ) : '';
-		if ($url_date) {
-			$date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
-			$url_date = date( $date_format, strtotime($url_date) );
-		}
+		$url_date = MPWEM_Functions::get_requested_date();
 
 		$all_dates = MPWEM_Functions::get_dates( $event_id );
 		$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
@@ -105,12 +105,7 @@
 	$date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$event_infos              = MPWEM_Functions::get_all_info( $event_id );
 	$event_recurring			= is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
-    $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
-    $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
-    $url_date=$url_date?:$url_date_2;
-    $url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
-    $date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
-    $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+    $url_date = MPWEM_Functions::get_requested_date();
     $all_dates   = MPWEM_Functions::get_dates( $event_id );
     $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
 	$upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');
@@ -124,8 +119,16 @@
 		$expire_on = function_exists( 'mep_get_option' )
 			? mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' )
 			: 'event_start_datetime';
+		// Normalize the legacy option value to the current one - the settings UI
+		// has saved 'event_expire_datetime' for "Event End Time" for a long time
+		// (MPWEM_General_Settings_UI.php, MPWEM_Quick_Setup.php, admin_setting_panel.php),
+		// same as every other reader of this option (MPWEM_Query.php, MPWEM_Calendar.php,
+		// mep_functions.php...). Comparing against 'event_end_datetime' here never
+		// matched, so "Expire on: Event End Time" was silently ignored on this page -
+		// it always expired at event start instead.
+		$expire_on    = $expire_on === 'event_end_datetime' ? 'event_expire_datetime' : $expire_on;
 		$reference_dt = $user_date;
-		if ( $expire_on === 'event_end_datetime' ) {
+		if ( $expire_on === 'event_expire_datetime' ) {
 			$end_ref = $event_type === 'no' ? get_post_meta( $event_id, 'event_end_datetime', true ) : '';
 			if ( empty( $end_ref ) ) {
 				$end_time = get_post_meta( $event_id, 'event_end_time', true );
@@ -144,7 +147,30 @@
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
 		if ( $reg_status == 'on' && $selected_date_expired ) {
-			MPWEM_Layout::msg( esc_html__( 'Sorry, this date has expired and is no longer available for booking.', 'mage-eventpress' ), 'mpwem_date_expired_msg' );
+			$expired_date_label = '';
+			$expired_date_src   = ! empty( $user_date ) ? $user_date : $date;
+			if ( ! empty( $expired_date_src ) && strtotime( $expired_date_src ) ) {
+				$expired_date_label = MPWEM_Global_Function::date_format( $expired_date_src, 'full', $event_id );
+			}
+			?>
+			<div class="mpwem_date_expired_msg" role="status" aria-live="polite">
+				<div class="mpwem_date_expired_msg__inner">
+					<span class="mpwem_date_expired_msg__icon" aria-hidden="true">
+						<i class="far fa-calendar-times"></i>
+					</span>
+					<div class="mpwem_date_expired_msg__body">
+						<strong class="mpwem_date_expired_msg__title"><?php esc_html_e( 'Date unavailable', 'mage-eventpress' ); ?></strong>
+						<p class="mpwem_date_expired_msg__text"><?php esc_html_e( 'Sorry, this date has expired and is no longer available for booking.', 'mage-eventpress' ); ?></p>
+						<?php if ( $expired_date_label ) : ?>
+							<span class="mpwem_date_expired_msg__meta">
+								<i class="far fa-clock" aria-hidden="true"></i>
+								<?php echo esc_html( $expired_date_label ); ?>
+							</span>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+			<?php
 		} elseif ( $reg_status == 'on' ) {
 			$full_location = MPWEM_Functions::get_location( $event_id );
 			$total_sold      = mep_ticket_type_sold( $event_id, '', $date );

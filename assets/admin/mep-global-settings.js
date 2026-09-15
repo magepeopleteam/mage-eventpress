@@ -352,7 +352,62 @@
 			});
 	}
 
+	function showSettingsSavedBanner() {
+		var $banner = $('#mep-gs-saved-banner');
+		if (!$banner.length) {
+			$banner = $(
+				'<div class="mep-gs__saved-banner" id="mep-gs-saved-banner" role="status">' +
+					'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span>' +
+					'<span></span>' +
+				'</div>'
+			);
+			$banner.find('span').last().text(
+				(mepGs.i18n && mepGs.i18n.saved) || 'Settings saved successfully.'
+			);
+			$('.mep-gs__topbar').first().after($banner);
+		}
+
+		$banner.stop(true, true).show();
+		window.clearTimeout($banner.data('mepGsSavedTimer'));
+		$banner.data(
+			'mepGsSavedTimer',
+			window.setTimeout(function () {
+				$banner.fadeOut(400, function () {
+					$(this).remove();
+				});
+			}, 4000)
+		);
+
+		if (window.history && window.history.replaceState) {
+			try {
+				var url = new URL(window.location.href);
+				url.searchParams.delete('settings-updated');
+				window.history.replaceState({}, '', url.toString());
+			} catch (e) {
+				/* ignore */
+			}
+		}
+	}
+
 	$(function () {
+		if (!$('.mep-gs__root').length) {
+			return;
+		}
+
+		// Confirmation after options.php redirect or multi-form AJAX save reload.
+		if ($('#mep-gs-saved-banner').length) {
+			showSettingsSavedBanner();
+		} else {
+			try {
+				var bootParams = new URLSearchParams(window.location.search);
+				if (bootParams.get('settings-updated') === 'true') {
+					showSettingsSavedBanner();
+				}
+			} catch (e) {
+				/* ignore */
+			}
+		}
+
 		function syncSiPreview() {
 			var $preview = $('#mep-si-color-preview');
 			if (!$preview.length) {
@@ -672,6 +727,19 @@
 		$(document).on('change', 'input[data-mep-fully-booked]', syncFullyBooked);
 		syncFullyBooked();
 
+		function syncAvailabilityMode() {
+			var $mode = $('#mep-gn-mep_availability_indicator_mode');
+			if (!$mode.length) {
+				return;
+			}
+			var percentage = $mode.val() === 'percentage';
+			// Both groups stay in the DOM so switching modes never discards stored values.
+			$('.mep-gn__availability-fixed').prop('hidden', percentage);
+			$('.mep-gn__availability-percent').prop('hidden', !percentage);
+		}
+		$(document).on('change', '#mep-gn-mep_availability_indicator_mode', syncAvailabilityMode);
+		syncAvailabilityMode();
+
 		$(document).on('input change', '#mep-gn-zoom', function () {
 			$('#mep-gn-zoom-val').text($(this).val());
 		});
@@ -844,13 +912,15 @@
 			var text = $root.find('[data-pdf-preview="text"]').val() || '#1C1C22';
 			var showPrice = $root.find('[data-pdf-preview="price"]').is(':checked');
 			var logo = $root.find('[data-pdf-preview="logo"]').val() || '';
+			var background = $root.find('[data-pdf-preview="background"]').val() || '';
 			$preview
 				.removeClass('mep-pdf__preview--default mep-pdf__preview--ticket2 mep-pdf__preview--rcmmaa mep-pdf__preview--gsound mep-pdf__preview--pwtinvoice mep-pdf__preview--invoice')
 				.addClass('mep-pdf__preview--' + slug)
 				.attr('data-theme', theme)
 				.css({
 					'--mep-pdf-preview-bg': bg,
-					'--mep-pdf-preview-text': text
+					'--mep-pdf-preview-text': text,
+					'--mep-pdf-preview-image': background ? 'url("' + background.replace(/"/g, '\\"') + '")' : 'none'
 				});
 			$preview.find('[data-pdf-preview-price]').toggleClass('is-hidden', !showPrice);
 			var $logoWrap = $preview.find('[data-pdf-preview-logo-wrap]');

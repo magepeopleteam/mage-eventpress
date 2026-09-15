@@ -115,6 +115,7 @@
 				$text    = self::get_opt( 'mep_pdf_text_color', '#1C1C22' );
 				$show    = self::get_opt( 'mep_pdf_show_price', 'yes' );
 				$logo    = self::get_opt( 'mep_pdf_logo', '' );
+				$ticket_bg = self::get_opt( 'mep_pdf_bg', '' );
 				$theme   = $theme ? $theme : 'default.php';
 				$bg      = $bg ? $bg : '#FFFFFF';
 				$text    = $text ? $text : '#1C1C22';
@@ -201,8 +202,9 @@
 								id="mep-pdf-preview"
 								class="mep-pdf__preview mep-pdf__preview--<?php echo esc_attr( $preview ); ?>"
 								data-theme="<?php echo esc_attr( $theme ); ?>"
-								style="--mep-pdf-preview-bg:<?php echo esc_attr( $bg ); ?>;--mep-pdf-preview-text:<?php echo esc_attr( $text ); ?>;"
+								style="--mep-pdf-preview-bg:<?php echo esc_attr( $bg ); ?>;--mep-pdf-preview-text:<?php echo esc_attr( $text ); ?>;--mep-pdf-preview-image:<?php echo $ticket_bg ? 'url(&quot;' . esc_url( $ticket_bg ) . '&quot;)' : 'none'; ?>;"
 							>
+								<div class="mep-pdf__preview-generic">
 								<div class="mep-pdf__preview-accent" aria-hidden="true"></div>
 								<div class="mep-pdf__preview-head">
 									<div class="mep-pdf__preview-brand">
@@ -232,6 +234,27 @@
 								<div class="mep-pdf__preview-foot">
 									<span class="mep-pdf__preview-price<?php echo ( 'yes' === (string) $show ) ? '' : ' is-hidden'; ?>" data-pdf-preview-price>$99.00</span>
 									<span class="mep-pdf__preview-code">#TKT-2048</span>
+								</div>
+								</div>
+								<div class="mep-pdf__gsound-page" aria-label="<?php esc_attr_e( 'G-Sound ticket preview', 'mage-eventpress' ); ?>">
+									<div class="mep-pdf__gsound-ticket">
+										<div class="mep-pdf__gsound-main">
+											<div class="mep-pdf__gsound-org">
+												<span class="mep-pdf__preview-logo<?php echo $logo ? ' has-img' : ''; ?>" data-pdf-preview-logo-wrap>
+													<?php if ( $logo ) : ?><img src="<?php echo esc_url( $logo ); ?>" alt="" data-pdf-preview-logo /><?php else : ?><span data-pdf-preview-logo-fallback>DI</span><?php endif; ?>
+												</span>
+												<span><strong><?php esc_html_e( 'Doogle Inc, Myamazon Inc', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Company address · phone number', 'mage-eventpress' ); ?></small></span>
+											</div>
+											<div class="mep-pdf__gsound-headline"><span><?php esc_html_e( 'Ticket', 'mage-eventpress' ); ?></span><strong><?php esc_html_e( 'Electronic Dance Music Carnival', 'mage-eventpress' ); ?></strong></div>
+											<div class="mep-pdf__gsound-facts"><span><small><?php esc_html_e( 'Date', 'mage-eventpress' ); ?></small><strong><?php esc_html_e( '19 Oct 2026', 'mage-eventpress' ); ?></strong></span><span><small><?php esc_html_e( 'Doors', 'mage-eventpress' ); ?></small><strong><?php esc_html_e( '4:00 pm', 'mage-eventpress' ); ?></strong></span><span><small><?php esc_html_e( 'Admission', 'mage-eventpress' ); ?></small><strong><?php esc_html_e( 'GA Dance Floor', 'mage-eventpress' ); ?></strong></span><span class="is-wide"><small><?php esc_html_e( 'Venue', 'mage-eventpress' ); ?></small><strong><?php esc_html_e( 'Ultra Beach Arena, Miami', 'mage-eventpress' ); ?></strong></span><span><small><?php esc_html_e( 'Order', 'mage-eventpress' ); ?></small><strong>#799</strong></span></div>
+											<div class="mep-pdf__gsound-holder"><b>SA</b><span><strong><?php esc_html_e( 'Shahnur Alam', 'mage-eventpress' ); ?></strong><small>shahnuralambithi@gmail.com</small></span></div>
+										</div>
+										<div class="mep-pdf__gsound-stub"><span class="mep-pdf__preview-price<?php echo ( 'yes' === (string) $show ) ? '' : ' is-hidden'; ?>" data-pdf-preview-price>$90.00</span><small><?php esc_html_e( 'Paid — cash on delivery', 'mage-eventpress' ); ?></small><span class="mep-pdf__preview-qr" aria-hidden="true"></span><strong>1799752801</strong><small><?php esc_html_e( 'Scan at gate', 'mage-eventpress' ); ?></small></div>
+									</div>
+									<div class="mep-pdf__gsound-duo"><div><strong><?php esc_html_e( 'Attendee', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Name · Email · Phone · Payment', 'mage-eventpress' ); ?></small></div><div><strong><?php esc_html_e( 'Billing', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Selected billing fields', 'mage-eventpress' ); ?></small></div></div>
+									<div class="mep-pdf__gsound-section"><strong><?php esc_html_e( 'Extra services', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Service · Qty · Unit · Total', 'mage-eventpress' ); ?></small><span><?php esc_html_e( 'Ticket + Extras = Total', 'mage-eventpress' ); ?></span></div>
+									<div class="mep-pdf__gsound-section"><strong><?php esc_html_e( 'Event notes', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Personalized event text', 'mage-eventpress' ); ?></small></div>
+									<div class="mep-pdf__gsound-footer"><?php esc_html_e( 'One entry per code.', 'mage-eventpress' ); ?><span><?php esc_html_e( 'Order #799 · Ticket 1799752801', 'mage-eventpress' ); ?></span></div>
 								</div>
 							</div>
 						</div>
@@ -442,7 +465,7 @@
 				<div class="mep-pdf__field">
 					<span class="mep-pdf__label"><?php echo esc_html( $label ); ?></span>
 					<div class="mep-pdf__upload<?php echo $has ? ' has-file' : ''; ?>" data-mep-pdf-upload>
-						<input type="hidden" class="wpsa-url mep-pdf__upload-url" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>"<?php echo ( 'mep_pdf_logo' === $name ) ? ' data-pdf-preview="logo"' : ''; ?> />
+						<input type="hidden" class="wpsa-url mep-pdf__upload-url" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>"<?php echo ( 'mep_pdf_logo' === $name ) ? ' data-pdf-preview="logo"' : ( ( 'mep_pdf_bg' === $name ) ? ' data-pdf-preview="background"' : '' ); ?> />
 						<button type="button" class="mep-pdf__upload-zone wpsa-browse" data-uploader_title="<?php echo esc_attr( $label ); ?>" data-uploader_button_text="<?php esc_attr_e( 'Use this image', 'mage-eventpress' ); ?>">
 							<span class="mep-pdf__upload-preview" <?php echo $has ? '' : 'hidden'; ?>>
 								<img src="<?php echo esc_url( $value ); ?>" alt="" />

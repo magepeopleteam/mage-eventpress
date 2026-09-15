@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.4.0
+Stable tag: 5.6.4
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,56 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.6.4 =
+* Fix: Booking several dates of the same recurring event in one order now takes a seat from every one of them. The guard that stops an attendee record being written twice counted the records already made for the order and the event without looking at the date, so once the first date had its attendee every later date in the same order was treated as already handled and got no record at all — only the first date lost a seat, and the rest went on showing full availability.
+* Fix: "Add to cart" no longer does nothing on events that use a custom attendee form. The hidden block the attendee rows are cloned from sits inside the booking form and its fields were marked required; a browser will not submit a form holding a required field it cannot show an error on, and it tells the visitor nothing, so the button simply went dead and switching the attendee form off was the only way to take a booking. Fields nobody can see are now kept out of validation, while a required field the visitor can see still raises the normal error against it.
+* Fix: The X (Twitter) share icon renders again. It is the default for that button, but the mark only exists in Font Awesome 6 while the plugin ships Font Awesome 5, so the share row showed an empty box. It is now drawn directly and no longer depends on which version of the icon font is loaded.
+* Fix: The X mark can be chosen in the icon library as well, which previously offered only the old Twitter bird.
+* Fix: The icon library can be closed again. On the settings screen the sidebar was painted over the modal, hiding the search box and the Close link — the only way out, since neither Escape nor a click outside was accepted and picking an icon left the library standing, so the choice could never be saved. The library now sits above the sidebar, accepts Escape and a click outside, and closes once an icon is picked.
+* Performance: The icon library binds its selection handler once, instead of attaching another copy to all 1,100+ icons every time it is opened.
+  3 September 2026*
+
+= 5.6.3 =
+* Fix: Attendee answers are no longer recorded against the wrong attendee. The hidden block the attendee form is cloned from sits inside the registration form, so its empty fields were posted along with the real ones; on the Horizon layout, which moves the attendee blocks below the form, that blank arrived first and pushed every answer one attendee out of step — the last attendee's answers were dropped and one record was left with no custom-field data and the billing name in place of the name that was typed. A booking for a single ticket lost its attendee details entirely. The clone source is now excluded from the submitted booking.
+  2 September 2026*
+
+= 5.6.2 =
+* Security: Fixed an Insecure Direct Object Reference in the native (non-WooCommerce) checkout's payment-cancellation callback, reported by benzdeus via Patchstack. The callback checked only that the id it was handed belonged to an order, so a request to any front-end URL could move another visitor's registration to the Trash — pending or completed alike — with no login, nonce or booking token of any kind. Cancelling now requires the single-use key issued to the payment gateway for that specific payment attempt, applies only while the order is still awaiting payment, and spends the key on use so the callback cannot be replayed. An offline order never goes to a gateway, holds no such key, and cannot be cancelled through this route at all.
+* Fix: Corrected the redirect that follows a genuine cancellation — it assembled its query string incorrectly, so the "Registration Cancelled" notice never appeared on the event page.
+  1 September 2026*
+
+= 5.6.1 =
+* Security: Restricted the RSVP responses screen to shop managers, and the payment-gateway settings and credential modals to administrators; both were reachable by lower-privileged roles.
+* Performance: Rebuilt the Event Orders screen to page in SQL. It previously loaded every order on the site into memory to show twenty rows, which exhausted memory on stores with real order history.
+* Fix: Event bookings are no longer lost on orders created outside the WooCommerce checkout — PayPal Express and similar flows bypass it, and the booking meta and attendee record went with them.
+* Fix: The confirmation email is now sent when the trigger status was never explicitly saved, and the email settings screen no longer contradicts what is actually sent.
+* Fix: Event list layouts show every organizer instead of only the first.
+* Fix: Attendee form validation errors are shown on the front end instead of failing silently.
+* Fix: Calendar Settings saved in admin now reach the front end, and recurring weekday events no longer drift to the wrong day or lose their extra dates.
+* Fix: The full event description always renders, and interactive blocks inside it survive the "read more" treatment.
+* Fix: Modern admin event lists show event IDs again.
+* Fix: Advanced and global settings on the modern settings screens persist correctly.
+* Fix: The attendee form's disabled state is preserved when the event is edited.
+* Fix: Order meta is HPOS-safe, and event line-item meta is shared consistently between the order and the booking.
+* Fix: The duplicate-cart notice is translatable and now returns shoppers to the cart.
+* Fix: Registered the mpwem_global script handle so scripts depending on it load again.
+* Improvement: Settings flyout children can be filtered, so add-ons can nest their own pages under Settings.
+* Improvement: Refreshed the translation template and stopped exposing icon slugs as translatable strings.
+  31 August 2026*
+
+= 5.5.0 =
+* Fix: Corrected a critical performance issue where the event list's expiry filtering built a database query WordPress could not optimize, causing full-table scans against post meta on sites with a large postmeta table. Rewrote it as a targeted, indexed lookup.
+* Improvement: Enhanced the default theme's responsiveness and overall layout consistency.
+* Improvement: Enhanced the expired-event card's styling and messaging.
+* Improvement: Enhanced the title block styling for the default theme.
+* Improvement: Enhanced speaker role display and interaction.
+* Improvement: Enhanced the Smart theme's hero section styling and responsiveness.
+  18 August 2026*
+
+= 5.4.1 =
+* Fix: Corrected the event list card's date/time range for "Particular Date" recurring events — it paired the correctly-resolved upcoming occurrence's start time with the primary event's raw end date/time meta instead of that same occurrence's own end, showing mismatched dates (e.g. an upcoming date's start next to an unrelated past occurrence's end).
+* Fix: Global Quantity ("Full Event Base") never applied to Single Events — two seat-count filters compared postmeta against the wrong value (a copy-paste mistake), so enabling Global Quantity on a Single Event silently did nothing until the event was temporarily switched to "Particular Event."
 
 = 5.4.0 =
 * Fix: Scoped the global icon-picker modal (and its 1,100+ icon markup, printed in admin_footer) to this plugin's own admin pages only — it was previously rendering on every wp-admin screen (e.g. the Plugins list), where it showed as an empty, unstyled grid since the Font Awesome stylesheet it needs is only loaded on this plugin's own screens.

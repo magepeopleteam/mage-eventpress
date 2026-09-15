@@ -5,6 +5,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class MEP_Custom_Orders_Page {
 
+	/** Rows shown per page on the order list. */
+	const PER_PAGE = 20;
+
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'add_menu_page' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
@@ -18,6 +21,24 @@ class MEP_Custom_Orders_Page {
 		add_action( 'admin_head', array( __CLASS__, 'menu_counter_style' ) );
 		add_action( 'transition_post_status', array( __CLASS__, 'log_status_change' ), 10, 3 );
 		add_action( 'transition_post_status', array( __CLASS__, 'sync_attendee_status' ), 10, 3 );
+		// The Payment Gateway filter list is a DISTINCT over postmeta, so it is
+		// cached. Drop the cache the moment a gateway value is written, so a
+		// gateway used for the first time appears in the dropdown immediately.
+		add_action( 'added_post_meta', array( __CLASS__, 'maybe_flush_gateway_cache' ), 10, 3 );
+		add_action( 'updated_post_meta', array( __CLASS__, 'maybe_flush_gateway_cache' ), 10, 3 );
+	}
+
+	/**
+	 * Invalidate the cached gateway filter list when an order records a gateway.
+	 *
+	 * @param int    $meta_id  Unused.
+	 * @param int    $post_id  Unused.
+	 * @param string $meta_key Meta key that was written.
+	 */
+	public static function maybe_flush_gateway_cache( $meta_id, $post_id, $meta_key ) {
+		if ( '_mep_payment_gateway' === $meta_key ) {
+			MEP_Orders_Query::flush_gateway_options();
+		}
 	}
 
 	/**
@@ -185,7 +206,7 @@ class MEP_Custom_Orders_Page {
 			'edit.php?post_type=mep_events',
 			__( 'Event Orders', 'mage-eventpress' ),
 			$menu_title,
-			'manage_options',
+			MPWEM_Global_Function::get_shop_manager_capability(),
 			'mep_event_orders',
 			array( __CLASS__, 'render_page' )
 		);
@@ -264,27 +285,28 @@ class MEP_Custom_Orders_Page {
 	 * Data helpers
 	 * -------------------------------------------------------------------- */
 
+	/**
+	 * Event id => title for the filter dropdown. Two columns, not whole post
+	 * objects: the dropdown never needed the post bodies or their meta.
+	 *
+	 * @return array<int,string>
+	 */
 	private static function get_all_events() {
-		return get_posts( array(
-			'post_type'      => 'mep_events',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-		) );
+		return MEP_Orders_Query::get_event_options();
 	}
 
 	private static function get_all_gateways() {
-		global $wpdb;
-		$rows = $wpdb->get_col(
-			"SELECT DISTINCT meta_value FROM {$wpdb->postmeta}
-			 WHERE meta_key = '_mep_payment_gateway' AND meta_value != ''"
-		);
-		return array_filter( $rows );
+		return MEP_Orders_Query::get_gateway_options();
 	}
 
 	/**
-	 * Build the full order data array applying optional filters.
+	 * One page of orders, with the totals for the whole filtered set.
+	 *
+	 * Filtering, ordering, counting and the revenue sum are all done by the
+	 * database (see MEP_Orders_Query); only the rows actually shown are loaded.
+	 * The previous implementation built the entire order history in PHP and then
+	 * sliced 20 rows out of it, which is what made this screen unusable — and
+	 * eventually fatal — once a store had real order volume.
 	 *
 	 * @param array $filters {
 	 *   string  $search     Free-text (customer name / email / order id)
@@ -295,224 +317,13 @@ class MEP_Custom_Orders_Page {
 	 *   string  $date_to    Y-m-d
 	 *   string  $source     'all' | 'mep_custom_order' | 'shop_order'
 	 * }
+	 * @param int   $page
+	 * @param int   $per_page
+	 *
+	 * @return array{rows:array,total:int,revenue:float}
 	 */
-	private static function fetch_orders( $filters = array() ) {
-		$filters = wp_parse_args( $filters, array(
-			'search'    => '',
-			'event_id'  => 0,
-			'status'    => '',
-			'gateway'   => '',
-			'date_from' => '',
-			'date_to'   => '',
-			'source'    => 'all',
-		) );
-
-		$data = array();
-
-		/* ---- Custom (native) orders ---- */
-		if ( in_array( $filters['source'], array( 'all', 'mep_custom_order' ), true ) ) {
-			$query_args = array(
-				'post_type'      => 'mep_custom_order',
-				'post_status'    => 'any',
-				'posts_per_page' => -1,
-			);
-
-			if ( $filters['status'] ) {
-				$query_args['post_status'] = sanitize_key( $filters['status'] );
-			}
-
-			if ( $filters['event_id'] ) {
-				$query_args['meta_query'][] = array(
-					'key'   => '_mep_event_id',
-					'value' => absint( $filters['event_id'] ),
-				);
-			}
-
-			if ( $filters['gateway'] ) {
-				$query_args['meta_query'][] = array(
-					'key'   => '_mep_payment_gateway',
-					'value' => sanitize_text_field( $filters['gateway'] ),
-				);
-			}
-
-			if ( $filters['date_from'] ) {
-				$query_args['date_query']['after'] = array(
-					'year'  => (int) substr( $filters['date_from'], 0, 4 ),
-					'month' => (int) substr( $filters['date_from'], 5, 2 ),
-					'day'   => (int) substr( $filters['date_from'], 8, 2 ),
-				);
-				$query_args['date_query']['inclusive'] = true;
-			}
-
-			if ( $filters['date_to'] ) {
-				$query_args['date_query']['before'] = array(
-					'year'  => (int) substr( $filters['date_to'], 0, 4 ),
-					'month' => (int) substr( $filters['date_to'], 5, 2 ),
-					'day'   => (int) substr( $filters['date_to'], 8, 2 ),
-				);
-				$query_args['date_query']['inclusive'] = true;
-			}
-
-			$q = new WP_Query( $query_args );
-			while ( $q->have_posts() ) {
-				$q->the_post();
-				$id             = get_the_ID();
-				$event_id       = (int) get_post_meta( $id, '_mep_event_id', true );
-				$event_name     = $event_id ? get_the_title( $event_id ) : '-';
-				$gateway        = get_post_meta( $id, '_mep_payment_gateway', true );
-				$total_raw      = (float) get_post_meta( $id, '_mep_order_total', true );
-				$customer_phone = get_post_meta( $id, '_mep_customer_phone', true );
-
-				// Always prefer WP user account data for the Customer column so it
-				// is clearly distinct from the attendee form field values.
-				$booker_id      = (int) get_post_meta( $id, '_mep_user_id', true );
-				$booker         = $booker_id ? get_userdata( $booker_id ) : false;
-				$customer_name  = $booker ? $booker->display_name : get_post_meta( $id, '_mep_customer_name', true );
-				$customer_email = $booker ? $booker->user_email   : get_post_meta( $id, '_mep_customer_email', true );
-
-				$raw_status   = get_post_status();
-				$order_status = self::payment_status_label( $raw_status );
-				$form_fields  = (array) get_post_meta( $id, '_mep_attendee_form_fields', true );
-				$timestamp    = get_post_time( 'U', true );
-
-				// Free-text search
-				if ( $filters['search'] ) {
-					$s = strtolower( $filters['search'] );
-					$haystack = strtolower( $customer_name . ' ' . $customer_email . ' ' . $id );
-					if ( strpos( $haystack, $s ) === false ) {
-						continue;
-					}
-				}
-
-				$data[] = array(
-					'ID'              => $id,
-					'source'          => 'mep_custom_order',
-					'order_status'    => $order_status,
-					'raw_status'      => $raw_status,
-					'customer_name'   => $customer_name,
-					'customer_email'  => $customer_email,
-					'customer_phone'  => $customer_phone,
-					'event_id'        => $event_id,
-					'event'           => $event_name,
-					'total_raw'       => $total_raw,
-					'total'           => self::format_price( $total_raw ),
-					'gateway'         => $gateway ?: '-',
-					'date'            => get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
-					'timestamp'       => $timestamp,
-					'attendee_info'   => $form_fields,
-				);
-			}
-			wp_reset_postdata();
-		}
-
-		/* ---- WooCommerce orders ---- */
-		if ( in_array( $filters['source'], array( 'all', 'shop_order' ), true ) && class_exists( 'WooCommerce' ) ) {
-			// Queried via wc_get_orders() (WC_Order_Query), NOT a raw WP_Query on
-			// post_type=shop_order — that legacy-post query returns zero rows once a
-			// store is on High-Performance Order Storage (HPOS), since orders then
-			// live in wp_wc_orders instead of wp_posts. wc_get_orders() is the
-			// storage-agnostic API that works correctly either way.
-			$wc_args = array(
-				'limit'  => -1,
-				'status' => 'any',
-				'type'   => 'shop_order',
-				'return' => 'objects',
-			);
-
-			if ( $filters['status'] ) {
-				// Native "Completed" is stored as `publish`; WooCommerce uses `wc-completed`.
-				$wc_status       = ( 'publish' === $filters['status'] ) ? 'completed' : sanitize_key( $filters['status'] );
-				$wc_args['status'] = 'wc-' . $wc_status;
-			}
-
-			if ( $filters['date_from'] && $filters['date_to'] ) {
-				$wc_args['date_created'] = $filters['date_from'] . '...' . $filters['date_to'];
-			} elseif ( $filters['date_from'] ) {
-				$wc_args['date_created'] = '>=' . $filters['date_from'];
-			} elseif ( $filters['date_to'] ) {
-				$wc_args['date_created'] = '<=' . $filters['date_to'];
-			}
-
-			$wc_orders = wc_get_orders( $wc_args );
-			foreach ( $wc_orders as $order ) {
-				if ( ! $order instanceof WC_Order ) {
-					continue;
-				}
-				$id = $order->get_id();
-
-				$has_event   = false;
-				$event_names = array();
-				$matched_eid = 0;
-				foreach ( $order->get_items() as $item ) {
-					// Order-item meta lives in its own CRUD store (wp_woocommerce_order_itemmeta),
-					// never in wp_postmeta — $item->get_meta() is the correct read, not get_post_meta().
-					$eid = (int) $item->get_meta( 'event_id' );
-					if ( $eid ) {
-						$has_event     = true;
-						$matched_eid   = $eid;
-						$event_names[] = get_the_title( $eid );
-					}
-				}
-
-				if ( ! $has_event ) {
-					continue;
-				}
-
-				// Event filter
-				if ( $filters['event_id'] && (int) $filters['event_id'] !== $matched_eid ) {
-					continue;
-				}
-
-				$customer_name  = trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() );
-				$customer_email = $order->get_billing_email();
-				$customer_phone = $order->get_billing_phone();
-				$gateway        = $order->get_payment_method_title();
-				$total_raw      = (float) $order->get_total();
-				$order_status   = wc_get_order_status_name( $order->get_status() );
-				$timestamp      = $order->get_date_created() ? $order->get_date_created()->getTimestamp() : 0;
-
-				// Gateway filter
-				if ( $filters['gateway'] && strtolower( $gateway ) !== strtolower( $filters['gateway'] ) ) {
-					continue;
-				}
-
-				// Free-text search
-				if ( $filters['search'] ) {
-					$s        = strtolower( $filters['search'] );
-					$haystack = strtolower( $customer_name . ' ' . $customer_email . ' ' . $id );
-					if ( strpos( $haystack, $s ) === false ) {
-						continue;
-					}
-				}
-
-				$data[] = array(
-					'ID'              => $id,
-					'source'          => 'shop_order',
-					'order_status'    => $order_status,
-					'raw_status'      => $order->get_status(),
-					'customer_name'   => $customer_name,
-					'customer_email'  => $customer_email,
-					'customer_phone'  => $customer_phone,
-					'event_id'        => $matched_eid,
-					'event'           => implode( ', ', $event_names ),
-					'total_raw'       => $total_raw,
-					'total'           => $order->get_formatted_order_total(),
-					'gateway'         => $gateway ?: '-',
-					'date'            => $order->get_date_created()
-						? $order->get_date_created()->date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) )
-						: '-',
-					'timestamp'       => $timestamp,
-					'attendee_info'   => array(),
-				);
-			}
-		}
-
-		// Newest order first, by order ID (descending).
-		usort( $data, function( $a, $b ) {
-			return (int) $b['ID'] - (int) $a['ID'];
-		} );
-
-		return $data;
+	private static function fetch_orders_page( $filters = array(), $page = 1, $per_page = self::PER_PAGE ) {
+		return MEP_Orders_Query::get_page( $filters, $page, $per_page );
 	}
 
 	private static function payment_status_label( $post_status ) {
@@ -559,18 +370,18 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_filter() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
-		$filters = self::sanitize_filters_from_request();
-		$orders  = self::fetch_orders( $filters );
-
+		$filters  = self::sanitize_filters_from_request();
 		$page     = max( 1, isset( $_REQUEST['paged'] ) ? absint( $_REQUEST['paged'] ) : 1 );
-		$per_page = 20;
-		$total    = count( $orders );
-		$pages    = max( 1, ceil( $total / $per_page ) );
-		$slice    = array_slice( $orders, ( $page - 1 ) * $per_page, $per_page );
+		$per_page = self::PER_PAGE;
+
+		$result = self::fetch_orders_page( $filters, $page, $per_page );
+		$slice  = $result['rows'];
+		$total  = $result['total'];
+		$pages  = max( 1, (int) ceil( $total / $per_page ) );
 
 		ob_start();
 		if ( empty( $slice ) ) {
@@ -585,15 +396,12 @@ class MEP_Custom_Orders_Page {
 		}
 		$tbody_html = ob_get_clean();
 
-		// Summary stats
-		$total_revenue = array_sum( array_column( $orders, 'total_raw' ) );
-
 		wp_send_json_success( array(
 			'tbody'    => $tbody_html,
 			'total'    => $total,
 			'pages'    => $pages,
 			'page'     => $page,
-			'revenue'  => self::format_price( $total_revenue ),
+			'revenue'  => self::format_price( $result['revenue'] ),
 		) );
 	}
 
@@ -602,12 +410,16 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function export_csv() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_die( 'Unauthorized', 403 );
 		}
 
 		$filters = self::sanitize_filters_from_request();
-		$orders  = self::fetch_orders( $filters );
+
+		// An export legitimately covers the whole filtered set, so it is streamed
+		// in bounded batches rather than assembled in memory first: rows are
+		// written out as they are read and peak memory stays flat.
+		@set_time_limit( 0 );
 
 		$filename = 'event-orders-' . gmdate( 'Y-m-d-His' ) . '.csv';
 
@@ -633,7 +445,7 @@ class MEP_Custom_Orders_Page {
 			__( 'Date', 'mage-eventpress' ),
 		) );
 
-		foreach ( $orders as $o ) {
+		MEP_Orders_Query::each( $filters, function( $o ) use ( $out ) {
 			fputcsv( $out, array_map( array( __CLASS__, 'csv_safe_cell' ), array(
 				'#' . $o['ID'],
 				$o['source'] === 'shop_order' ? 'WooCommerce' : 'Native',
@@ -646,7 +458,13 @@ class MEP_Custom_Orders_Page {
 				$o['gateway'],
 				$o['date'],
 			) ) );
-		}
+			// Flush as we go so a large export starts downloading immediately
+			// instead of buffering the whole file first.
+			if ( ob_get_level() ) {
+				@ob_flush();
+			}
+			flush();
+		} );
 
 		fclose( $out );
 		exit;
@@ -672,7 +490,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_update_status() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -752,7 +570,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_resend_pdf() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( array( 'message' => __( 'Unauthorized', 'mage-eventpress' ) ), 403 );
 		}
 
@@ -795,7 +613,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_bulk_status() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -842,7 +660,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_add_note() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -909,7 +727,7 @@ class MEP_Custom_Orders_Page {
 	 * -------------------------------------------------------------------- */
 	public static function ajax_delete_note() {
 		check_ajax_referer( 'mep_orders_nonce', 'nonce' );
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 			wp_send_json_error( 'Unauthorized', 403 );
 		}
 
@@ -1106,36 +924,43 @@ class MEP_Custom_Orders_Page {
 
 		// Initial load (non-AJAX)
 		$filters  = self::sanitize_filters_from_request();
-		$all_data = self::fetch_orders( $filters );
-
-		$per_page = 20;
+		$per_page = self::PER_PAGE;
 		$page     = max( 1, isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1 );
-		$total    = count( $all_data );
-		$pages    = max( 1, ceil( $total / $per_page ) );
-		$slice    = array_slice( $all_data, ( $page - 1 ) * $per_page, $per_page );
 
-		$total_revenue = array_sum( array_column( $all_data, 'total_raw' ) );
+		$result = self::fetch_orders_page( $filters, $page, $per_page );
+		$slice  = $result['rows'];
+		$total  = $result['total'];
+		$pages  = max( 1, (int) ceil( $total / $per_page ) );
+
+		$total_revenue = $result['revenue'];
 		$is_pro        = self::is_pro_active();
 		$upgrade_url   = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/product/mage-woo-event-booking-manager-pro/', 0 );
 		?>
 		<div class="mep-orders-wrap">
 
 			<!-- Header -->
-			<div class="mep-orders-header">
-				<div class="mep-orders-title-group">
-					<h1 class="mep-orders-title">
+			<header class="bde-hero">
+				<div class="bde-hero-copy">
+					<span class="bde-eyebrow">
 						<span class="dashicons dashicons-clipboard"></span>
-						<?php esc_html_e( 'Event Orders', 'mage-eventpress' ); ?>
-					</h1>
-					<p class="mep-orders-subtitle"><?php esc_html_e( 'Manage and track all event bookings in one place.', 'mage-eventpress' ); ?></p>
+						<?php esc_html_e( 'Orders', 'mage-eventpress' ); ?>
+					</span>
+					<h1 class="bde-title"><?php esc_html_e( 'Event Orders', 'mage-eventpress' ); ?></h1>
+					<p class="bde-subtitle"><?php esc_html_e( 'Manage and track all event bookings in one place.', 'mage-eventpress' ); ?></p>
 				</div>
-				<div class="mep-orders-header-actions">
-					<button type="button" id="mep-export-csv" class="mep-btn mep-btn-outline">
-						<span class="dashicons dashicons-download"></span>
-						<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
-					</button>
+				<div class="bde-hero-side">
+					<div class="bde-hero-badge">
+						<span class="dashicons dashicons-cart"></span>
+						<span><?php echo esc_html( sprintf( _n( '%s order', '%s orders', $total, 'mage-eventpress' ), number_format_i18n( $total ) ) ); ?></span>
+					</div>
+					<div class="bde-hero-actions">
+						<button type="button" id="mep-export-csv" class="mep-btn mep-btn-outline">
+							<span class="dashicons dashicons-download"></span>
+							<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
+						</button>
+					</div>
 				</div>
-			</div>
+			</header>
 
 			<!-- Stats Bar -->
 			<div class="mep-stats-bar">
@@ -1215,9 +1040,9 @@ class MEP_Custom_Orders_Page {
 							<label for="mep-event-id"><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></label>
 							<select id="mep-event-id" name="mep_event_id">
 								<option value=""><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></option>
-								<?php foreach ( $events as $ev ) : ?>
-									<option value="<?php echo esc_attr( $ev->ID ); ?>" <?php selected( $filters['event_id'], $ev->ID ); ?>>
-										<?php echo esc_html( $ev->post_title ); ?>
+								<?php foreach ( $events as $ev_id => $ev_title ) : ?>
+									<option value="<?php echo esc_attr( $ev_id ); ?>" <?php selected( $filters['event_id'], $ev_id ); ?>>
+										<?php echo esc_html( $ev_title ); ?>
 									</option>
 								<?php endforeach; ?>
 							</select>
@@ -1349,7 +1174,7 @@ class MEP_Custom_Orders_Page {
 	}
 
 	private static function render_pagination( $current, $total_pages, $total_items ) {
-		$per_page = 20;
+		$per_page = self::PER_PAGE;
 		$start    = ( ( $current - 1 ) * $per_page ) + 1;
 		$end      = min( $current * $per_page, $total_items );
 		?>
@@ -1480,7 +1305,7 @@ class MEP_Custom_Orders_Page {
 		global $meppdf;
 		if ( is_object( $meppdf ) && method_exists( $meppdf, 'get_invoice_ajax_url' ) ) {
 			$status_slug      = ( 'publish' === $status ) ? 'completed' : $status;
-			$pdf_email_status = function_exists( 'mep_get_option' ) ? mep_get_option( 'mep_pdf_email_status', 'mep_pdf_email_settings', array() ) : array();
+			$pdf_email_status = function_exists( 'mep_get_pdf_email_statuses' ) ? mep_get_pdf_email_statuses() : array();
 			$status_matched   = function_exists( 'mep_is_status_match_for_pdf_email' )
 				? mep_is_status_match_for_pdf_email( $status_slug, $pdf_email_status )
 				: in_array( $status_slug, (array) $pdf_email_status, true );

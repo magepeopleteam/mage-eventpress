@@ -83,14 +83,86 @@ function mpwem_ex_price(parent) {
     });
     return total;
 }
+/**
+ * Attendee blocks with more than 4 fields get a 2-column layout class.
+ */
+function mpwem_mark_attendee_form_columns(parent) {
+    const $scope = parent && parent.length ? parent : jQuery('.mpwem_registration_area');
+    $scope.find('.mep_attendee_info .mep_form_item, .mep_attendee_info_hidden .mep_form_item').each(function () {
+        const $card = jQuery(this);
+        const fieldCount = $card.children('.mp_form_item').length;
+        $card.toggleClass('mep-form--cols-2', fieldCount > 4);
+    });
+}
+/**
+ * Turn a freshly cloned attendee block back into real, submittable inputs.
+ *
+ * The blocks are cloned from .mep_attendee_info_hidden, whose controls are kept
+ * disabled (see mpwem_attendee_management), so every copy inherits that flag and
+ * has to be re-enabled once it lands in a real attendee container.
+ */
+function mpwem_enable_attendee_clone(target) {
+    if (!target || !target.length) {
+        return;
+    }
+    target.find('.mep-template-disabled')
+        .removeClass('mep-template-disabled')
+        .prop('disabled', false)
+        .removeAttr('disabled');
+}
+/**
+ * Make the booking form validatable, immediately before the browser validates it.
+ *
+ * Constraint validation runs *before* the submit event, so the submit handler further
+ * down cannot help here: when a required control sits in a display:none block the
+ * browser has nowhere to show the error, so it refuses to submit and tells the visitor
+ * nothing at all. The booking button just goes dead and only the console says why
+ * ("An invalid form control with name='user_name[]' is not focusable").
+ *
+ * The two blocks that can hold such a control are both ones the plugin itself marks as
+ * inert - the clone source and a conditional field whose condition is not met - so only
+ * those are touched, and only when the control is still empty. A value the visitor
+ * typed is never disabled, because disabled controls are left out of the posted data.
+ * Anything that becomes visible later is re-enabled by the code that reveals it.
+ */
+function mpwem_prepare_form_for_validation(parent) {
+    if (!parent || !parent.length) {
+        return;
+    }
+    parent.find('.mep_attendee_info_hidden').find('input, select, textarea').each(function () {
+        if (!jQuery(this).prop('disabled')) {
+            jQuery(this).addClass('mep-template-disabled').prop('disabled', true);
+        }
+    });
+    parent.find('.dNone').find('input, select, textarea').each(function () {
+        if (!this.required || this.disabled || this.type === 'hidden') {
+            return;
+        }
+        if (jQuery.trim(this.value || '') !== '') {
+            return;
+        }
+        jQuery(this).prop('disabled', true);
+    });
+}
 function mpwem_attendee_management(parent, total_qty) {
     let form_target = parent.find('.mep_attendee_info');
     let same_attendee = parent.find('[name="mep_same_attendee"]').val();
-    
+
     // Strip required attributes from hidden template inputs to avoid "invalid form control is not focusable" error
     parent.find('.mep_attendee_info_hidden').find('input, select, textarea').each(function () {
         if (jQuery(this).prop('required')) {
             jQuery(this).removeAttr('required').addClass('mep-originally-required');
+        }
+        // The hidden block is only a clone source, never something the visitor fills in,
+        // but it lives inside the registration form so its empty controls are posted
+        // alongside the real ones. Themes that move the attendee blocks further down the
+        // document - Horizon puts them in a drawer after </form> and re-attaches them with
+        // the form attribute, and form data is built in document order - then get that
+        // blank value at index 0 of every attendee array, which shifts every answer onto
+        // the wrong attendee and drops the last one's answers entirely. Disabled controls
+        // are left out of the submitted form data, so the template stops interfering.
+        if (!jQuery(this).prop('disabled')) {
+            jQuery(this).addClass('mep-template-disabled').attr('disabled', 'disabled');
         }
     });
 
@@ -113,9 +185,11 @@ function mpwem_attendee_management(parent, total_qty) {
                             hidden_target.find('.mep_form_item').attr('data-seat_name', seat_name);
                             hidden_target.find('.mpwem_ticket_count').html(seat_name).promise().done(function () {
                                 form_target.append(hidden_target.html());
+                                mpwem_enable_attendee_clone(form_target);
                                 form_target.find('.mep-originally-required').attr('required', 'required');
                             }).promise().done(function () {
                                 mpwem_load_date_picker(parent);
+                                mpwem_mark_attendee_form_columns(parent);
                             });
                         }
                     }).promise().done(function () {
@@ -128,7 +202,10 @@ function mpwem_attendee_management(parent, total_qty) {
                                 }
                             });
                         }
+                        mpwem_mark_attendee_form_columns(parent);
                     });
+                } else {
+                    mpwem_mark_attendee_form_columns(parent);
                 }
             } else {
                 parent.find('[name="option_qty[]"]').each(function () {
@@ -154,6 +231,7 @@ function mpwem_attendee_management(parent, total_qty) {
                                 hidden_target.find('.mpwem_ticket_name').html(ticket_name);
                                 hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
                                     form_target.append(hidden_target.html()).promise().done(function () {
+                                        mpwem_enable_attendee_clone(jQuery(this));
                                         jQuery(this).find('.mep-originally-required').attr('required', 'required');
                                         jQuery(this).find('.mp_form_item').each(function () {
                                             let condition_type = jQuery(this).attr('data-depend');
@@ -162,16 +240,20 @@ function mpwem_attendee_management(parent, total_qty) {
                                                 jQuery(this).slideDown('fast').removeClass('dNone');
                                             }
                                         });
+                                        mpwem_mark_attendee_form_columns(parent);
                                     });
                                 }).promise().done(function () {
                                     mpwem_load_date_picker(parent);
+                                    mpwem_mark_attendee_form_columns(parent);
                                 });
                             }
                         }
                     }
                 });
+                mpwem_mark_attendee_form_columns(parent);
             }
         }
+        mpwem_mark_attendee_form_columns(parent);
     } else {
         if (same_attendee === 'yes' || same_attendee === 'must') {
             form_target.slideUp(250);
@@ -185,6 +267,7 @@ function mpwem_attendee_management(parent, total_qty) {
     $(document).ready(function () {
         $('body').find('.mpwem_registration_area').each(function () {
             mpwem_price_calculation($(this));
+            mpwem_mark_attendee_form_columns($(this));
         });
     });
     $(document).on('change', '.mpwem_registration_area [name="mpwem_date_time"]', function () {
@@ -412,9 +495,11 @@ function mpwem_attendee_management(parent, total_qty) {
                     if (total_qty < min_qty) {
                         alert('must buy minimum number of ticket : ' + min_qty);
                     } else {
+                        mpwem_prepare_form_for_validation(parent);
                         parent.find('.mpwem_add_to_cart').trigger('click');
                     }
                 } else {
+                    mpwem_prepare_form_for_validation(parent);
                     parent.find('.mpwem_add_to_cart').trigger('click');
                 }
             } else {
@@ -424,6 +509,17 @@ function mpwem_attendee_management(parent, total_qty) {
                 return false;
             }
         }
+    });
+    /**
+     * Last line of defence before the booking is posted: whichever code path cloned the
+     * attendee blocks, the clone source must not reach the server and every real attendee
+     * control must. Without this the attendee answers can be posted one index out of step
+     * (see mpwem_attendee_management), which silently files each answer against the wrong
+     * attendee and loses the last attendee's answers altogether.
+     */
+    $(document).on('submit', 'form#mpwem_registration', function () {
+        $(this).find('.mep_attendee_info_hidden').find('input, select, textarea').prop('disabled', true);
+        mpwem_enable_attendee_clone($('.mep_attendee_info'));
     });
     $(document).on('change', '.mpwem_registration_area [name="event_extra_service_qty[]"]', function () {
         let parent = $(this).closest('.mpwem_registration_area');
@@ -545,46 +641,112 @@ function mpwem_attendee_management(parent, total_qty) {
 //*****************************Related Event***********************************//
 (function ($) {
     "use strict";
-    $(document).ready(function () {
-        //$('.mpwem_related_area').slideDown('fast').promise().done(function () {
-        $('.mpwem_related_area .related_item').slick({
-            dots: false,
-            arrows: true,
-            prevArrow: '.related_prev',
-            nextArrow: '.related_next',
-            infinite: true,
-            centerMode: false, // Make sure centerMode is false
-            autoplay: false,
-            autoplaySpeed: 2000,
-            centerPadding: '0px',
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: false,
-                        centerMode: false // Ensure left alignment on responsive
-                    }
-                },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: false,
-                        centerMode: false // Ensure left alignment on responsive
-                    }
-                },
-            ]
-        }).promise().done(function () {
-            $('.mpwem_related_area').removeClass('on_load_off');
+    function mpwem_related_refresh_slider($slider) {
+        if (!$slider || !$slider.length || !$slider.hasClass('slick-initialized')) {
+            return;
+        }
+        // Clear list-template inline % widths so slick can own exact pixel widths.
+        $slider.find('.slick-slide, .filter_item.mep_event_card').each(function () {
+            var el = this;
+            if (el.style && el.style.width && String(el.style.width).indexOf('%') !== -1) {
+                el.style.removeProperty('width');
+            }
         });
-        //});
+        $slider.slick('setPosition');
+    }
+
+    $(document).ready(function () {
+        $('.mpwem_related_area').each(function () {
+            var $area = $(this);
+            var $slider = $area.find('.related_item');
+            if (!$slider.length || $slider.hasClass('slick-initialized')) {
+                return;
+            }
+
+            // Drop grid % widths before init so slides don't overflow / look cut.
+            $slider.find('.filter_item.mep_event_card, .mep-event-list-loop').each(function () {
+                this.style.removeProperty('width');
+            });
+
+            var slideCount = $slider.children('.filter_item, .mep-event-list-loop').length;
+            var desktopShow = Math.min(3, Math.max(1, slideCount));
+            var tabletShow = Math.min(2, desktopShow);
+            var mobileShow = 1;
+
+            $slider.slick({
+                dots: false,
+                arrows: true,
+                prevArrow: $area.find('.related_prev'),
+                nextArrow: $area.find('.related_next'),
+                infinite: slideCount > desktopShow,
+                centerMode: false,
+                variableWidth: false,
+                autoplay: false,
+                autoplaySpeed: 2000,
+                centerPadding: '0px',
+                slidesToShow: desktopShow,
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: tabletShow,
+                            slidesToScroll: 1,
+                            infinite: slideCount > tabletShow,
+                            dots: false,
+                            centerMode: false,
+                            variableWidth: false
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: mobileShow,
+                            slidesToScroll: 1,
+                            infinite: slideCount > mobileShow,
+                            dots: false,
+                            centerMode: false,
+                            variableWidth: false
+                        }
+                    }
+                ]
+            }).promise().done(function () {
+                $area.removeClass('on_load_off');
+                mpwem_related_refresh_slider($slider);
+                // Re-apply lazy bg images after slick has real slide widths (incl. clones).
+                $slider.find('.mep_list_thumb [data-bg-image]').each(function () {
+                    var $img = $(this);
+                    var bg_url = $img.data('bg-image');
+                    if (!bg_url) {
+                        return;
+                    }
+                    if ($img.css('background-image') === 'none' || !$img.css('background-image')) {
+                        $img.css({
+                            'background-image': 'url("' + bg_url + '")',
+                            'background-size': 'cover',
+                            'background-position': 'center center',
+                            'background-repeat': 'no-repeat'
+                        });
+                    }
+                });
+                if (typeof mpwem_load_bg_image === 'function') {
+                    mpwem_load_bg_image();
+                }
+                // Recalc after fonts/images settle so the 3rd card isn't clipped.
+                setTimeout(function () {
+                    mpwem_related_refresh_slider($slider);
+                }, 50);
+                $(window).on('load.mpwemRelated', function () {
+                    mpwem_related_refresh_slider($slider);
+                });
+            });
+        });
+    });
+
+    $(window).on('resize.mpwemRelated', function () {
+        $('.mpwem_related_area .related_item.slick-initialized').each(function () {
+            mpwem_related_refresh_slider($(this));
+        });
     });
 }(jQuery));
 //*****************************Event list***********************************//
@@ -594,8 +756,14 @@ function mpwem_attendee_management(parent, total_qty) {
         let $this = $(this);
         let parent = $this.closest('.mpwem_list_date_list');
         let target = parent.find('.date_list_area');
+        if (!target.length) {
+            return;
+        }
         if (target.find('.date_item').length === 0) {
             let event_id = $this.data('event-id');
+            if (!event_id) {
+                return;
+            }
             jQuery.ajax({
                 type: 'POST',
                 url: mpwem_script_var.url,
@@ -609,7 +777,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 },
                 success: function (data) {
                     target.html(data);
-                    target.addClass('open_list');
+                    target.addClass('open_list mActive').show();
                     mpwem_loader_remove($this);
                 }
             });
@@ -1302,22 +1470,6 @@ document.querySelectorAll('li').forEach(function(li) {
 });
 
 
-jQuery(function ($) {
-    $('.mpwem_book_now').on('click', function (e) {
-        e.preventDefault();
-
-        const $wrap = $(this).closest('.mpwem_summery');
-        const alreadyInCart = $wrap.data('in-cart');
-
-        if (alreadyInCart === 1 || alreadyInCart === '1') {
-            alert('This product is already in your cart.');
-            return;
-        }
-
-        $wrap.find('.mpwem_add_to_cart').trigger('click');
-    });
-});
-
 (function ($) {
     "use strict";
     $(document).on('submit', '#mpwem_registration', function(e) {
@@ -1351,6 +1503,65 @@ jQuery(function ($) {
             },
             complete: function() {
                 $btn.prop('disabled', false).find('span').text('Submit RSVP');
+            }
+        });
+    });
+}(jQuery));
+
+/* ============================================================
+ * Enquiry ("query") form — Announcement-mode events.
+ * Posts to wp_ajax_mep_submit_enquiry (MPWEM_Hooks::mep_submit_enquiry).
+ * Deliberately its own <form>, so it never collides with the RSVP handler
+ * bound to #mpwem_registration above.
+ * ============================================================ */
+(function ($) {
+    "use strict";
+    $(document).on('submit', '.mpwem_enquiry_form', function (e) {
+        e.preventDefault();
+
+        var $form = $(this);
+        if ($form.data('mpwemEnquirySubmitting')) {
+            return;
+        }
+
+        var $btn = $form.find('.mpwem_enquiry_submit_btn');
+        var $label = $btn.find('span');
+        var $msg = $form.find('.mpwem_enquiry_message');
+        var originalLabel = $label.text();
+
+        // Let the browser surface its own messages for required/typed fields first.
+        if (this.checkValidity && !this.checkValidity()) {
+            this.reportValidity && this.reportValidity();
+            return;
+        }
+
+        $form.data('mpwemEnquirySubmitting', true);
+        $btn.prop('disabled', true);
+        $label.text($btn.data('sending-text') || 'Sending...');
+        $msg.hide().removeClass('success error').text('');
+
+        $.ajax({
+            url: (typeof mpwem_script_var !== 'undefined' && mpwem_script_var.url) ? mpwem_script_var.url : (typeof mpwem_ajax_url !== 'undefined' ? mpwem_ajax_url : ''),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function (response) {
+                if (response && response.success) {
+                    $msg.text(response.data.message).addClass('success').show();
+                    $form.find('input[type="text"], input[type="email"], textarea').val('');
+                } else {
+                    var errorMsg = (response && response.data && response.data.message)
+                        ? response.data.message
+                        : 'An error occurred. Please try again.';
+                    $msg.text(errorMsg).addClass('error').show();
+                }
+            },
+            error: function () {
+                $msg.text('Connection error. Please try again.').addClass('error').show();
+            },
+            complete: function () {
+                $form.data('mpwemEnquirySubmitting', false);
+                $btn.prop('disabled', false);
+                $label.text(originalLabel);
             }
         });
     });
@@ -1800,4 +2011,131 @@ jQuery(function ($) {
         });
     });
 
+}(jQuery));
+
+//*****************************Description Read More***********************************//
+(function ($) {
+    "use strict";
+
+    function mpwemCountWords(text) {
+        var trimmed = (text || '').replace(/\s+/g, ' ').trim();
+        if (!trimmed) {
+            return 0;
+        }
+        return trimmed.split(' ').length;
+    }
+
+    function mpwemGetDescriptionOverflow(content, limit) {
+        var count = 0;
+        var reached = false;
+        var overflow = [];
+
+        $(content).contents().each(function () {
+            if (reached) {
+                if (this.nodeType === 1) {
+                    overflow.push(this);
+                }
+                return;
+            }
+
+            count += mpwemCountWords(this.textContent || '');
+            if (count >= limit) {
+                reached = true;
+            }
+        });
+
+        return overflow;
+    }
+
+    function mpwemInitDetailsReadMore() {
+        $('.mpwem_details--has-readmore').each(function () {
+            var $wrap = $(this);
+            if ($wrap.data('readmore-ready')) {
+                return;
+            }
+
+            var $content = $wrap.find('.mpwem_details_content').first();
+            var $button = $wrap.find('.mpwem_details_readmore').first();
+            if (!$content.length || !$button.length) {
+                return;
+            }
+
+            var limit = parseInt($wrap.attr('data-readmore-words'), 10) || 200;
+            var wordCount = mpwemCountWords($content.text());
+
+            if (wordCount <= limit) {
+                $content.removeClass('is-collapsed');
+                $button.remove();
+                $wrap.removeClass('mpwem_details--has-readmore');
+                $wrap.data('readmore-ready', true);
+                return;
+            }
+
+            var overflow = mpwemGetDescriptionOverflow($content.get(0), limit);
+            if (!overflow.length) {
+                $button.remove();
+                $wrap.removeClass('mpwem_details--has-readmore');
+                $wrap.data('readmore-ready', true);
+                return;
+            }
+
+            $(overflow).addClass('mpwem_details_readmore__overflow');
+            $content.addClass('is-collapsed');
+            $wrap.addClass('is-collapsed').data('readmore-ready', true);
+        });
+    }
+
+    function mpwemInitSpeakerRoleReadMore() {
+        $(document).on('click', '[data-mep-speaker-role-toggle]', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $button = $(this);
+            var $wrap = $button.closest('[data-mep-speaker-role]');
+            var $text = $wrap.find('.mep-default-speaker__role-text').first();
+            if (!$wrap.length || !$text.length) {
+                return;
+            }
+
+            var expanded = $wrap.hasClass('is-expanded');
+            var shortText = $text.attr('data-short') || '';
+            var fullText = $text.attr('data-full') || '';
+
+            if (expanded) {
+                $text.text(shortText + '…');
+                $wrap.removeClass('is-expanded').addClass('is-collapsed');
+                $button.attr('aria-expanded', 'false');
+            } else {
+                $text.text(fullText);
+                $wrap.addClass('is-expanded').removeClass('is-collapsed');
+                $button.attr('aria-expanded', 'true');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        mpwemInitDetailsReadMore();
+        mpwemInitSpeakerRoleReadMore();
+    });
+
+    $(document).on('click', '.mpwem_details_readmore', function (e) {
+        e.preventDefault();
+        var $button = $(this);
+        var $wrap = $button.closest('.mpwem_details--has-readmore');
+        var $content = $wrap.find('.mpwem_details_content').first();
+        if (!$wrap.length || !$content.length) {
+            return;
+        }
+
+        var expanded = $wrap.hasClass('is-expanded');
+        if (expanded) {
+            $content.addClass('is-collapsed');
+            $wrap.removeClass('is-expanded').addClass('is-collapsed');
+            $button.attr('aria-expanded', 'false');
+        } else {
+            $content.removeClass('is-collapsed');
+            $wrap.addClass('is-expanded').removeClass('is-collapsed');
+            $button.attr('aria-expanded', 'true');
+        }
+    });
 }(jQuery));

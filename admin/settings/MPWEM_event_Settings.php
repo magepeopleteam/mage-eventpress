@@ -11,7 +11,6 @@
 			public function __construct() {
 				add_action( 'mpwem_event_tab_setting_item', array( $this, 'event_settings' ) );
 				add_action( 'wp_ajax_mpwem_reset_booking', array( $this, 'mpwem_reset_booking' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_reset_booking', array( $this, 'mpwem_reset_booking' ) );
 			}
 
 			public function event_settings( $event_id ) {
@@ -123,7 +122,10 @@
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
 					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
 				}
-				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				$post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+				if ( ! $post_id || 'mep_events' !== get_post_type( $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'Invalid event' ] );
+				}
 				if ( ! current_user_can( 'edit_post', $post_id ) ) {
 					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
 					die;

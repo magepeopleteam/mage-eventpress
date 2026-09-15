@@ -13,6 +13,7 @@
 				$this->load_file();
 				add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue' ), 90 );
 				add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue' ), 90 );
+				add_action( 'enqueue_block_assets', array( $this, 'enqueue_cart_details_block_assets' ), 20 );
 				add_action( 'admin_head', array( $this, 'add_admin_head' ), 5 );
 				add_action( 'wp_head', array( $this, 'add_frontend_head' ), 5 );
 			}
@@ -37,6 +38,12 @@
 				if ( MPWEM_Global_Function::has_woocommerce() ) {
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
+					// Rebuilds attendees for event orders that were taken while the
+					// block-checkout handler was failing, and keeps healing any order
+					// that reaches a paid status without them. One-time pass, in the
+					// background; see MEP_Attendee_Repair for the opt-out.
+					require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Attendee_Repair.php';
+					MEP_Attendee_Repair::init();
 				}
 				// The custom order CPT and the "Event Orders" admin list/detail page are
 				// always loaded — the list merges native orders with WooCommerce orders
@@ -44,6 +51,11 @@
 				// available even while WooCommerce payment is in use.
 				require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Order_CPT.php';
 				MEP_Order_CPT::init();
+				// Helper indexes for the postmeta lookups this plugin counts with.
+				// Added once, in the background; see MEP_DB_Index for the opt-out.
+				require_once MPWEM_PLUGIN_DIR . '/inc/MEP_DB_Index.php';
+				MEP_DB_Index::init();
+				require_once MPWEM_PLUGIN_DIR . '/admin/MEP_Orders_Query.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MEP_Custom_Orders_Page.php';
 				MEP_Custom_Orders_Page::init();
 
@@ -67,6 +79,25 @@
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax_meta.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_low_stock_display.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep-expired-event-noindex.php" );
+			}
+			/**
+			 * Registers the shared "mpwem_global" handles without printing them.
+			 *
+			 * The bundles in global_enqueue() are gated to this plugin's own screens,
+			 * which used to mean the handle did not exist anywhere else at all. Add-ons
+			 * (PRO) list it as a dependency, so WordPress dropped their scripts on those
+			 * pages - silently before, and with a "dependencies that are not registered"
+			 * notice since WordPress 6.9.1. Registering costs nothing and keeps the gate
+			 * intact: the files are only downloaded when a handle that depends on them
+			 * is actually enqueued.
+			 */
+			public function register_global_assets(): void {
+				if ( ! wp_style_is( 'mpwem_global', 'registered' ) ) {
+					wp_register_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), MPWEM_PLUGIN_VERSION );
+				}
+				if ( ! wp_script_is( 'mpwem_global', 'registered' ) ) {
+					wp_register_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
+				}
 			}
 			public function global_enqueue() {
 				wp_enqueue_script( 'jquery' );
@@ -92,9 +123,14 @@
 //				);
 				$fontAwesome = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
 				if ( $fontAwesome == 'no' ) {
-					wp_enqueue_style( 'mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0' );
-					wp_enqueue_style( 'mp_font_awesome-660', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css', array(), '6.6.0' );
-					wp_enqueue_style( 'mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4' );
+					// Self-hosted instead of 3 redundant external CDN requests (an old
+					// v4 build nothing here actually uses, plus v5 and v6 of the same
+					// icon set). Every icon in this plugin/PRO uses the "fas" prefix,
+					// which v5.15.4 already covers, so this is a straight swap with no
+					// icon-name changes. Self-hosting also means icons no longer go
+					// blank whenever the visitor's browser/network blocks cdnjs.cloudflare.com
+					// or cdn.jsdelivr.net (ad blockers commonly target both by name).
+					wp_enqueue_style( 'mp_font_awesome', MPWEM_PLUGIN_URL . '/assets/vendor/fontawesome/css/all.min.css', array(), '5.15.4' );
 				}
 				$flatIcon = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_flaticon_from_theme', 'no' );
 				if ( $flatIcon == 'no' ) {
@@ -150,6 +186,9 @@
 			}
 
 			public function admin_enqueue( $hook ) {
+				// Keep the shared handle resolvable on every admin screen; the bail below
+				// still stops this plugin's own bundles from loading outside MEP pages.
+				$this->register_global_assets();
 				$is_mep_page = self::is_mep_admin_page( $hook );
 
 				// Everything below (editor assets, jQuery UI, select2, Font Awesome,
@@ -183,8 +222,18 @@
 				}
 
 				//loading pick plugin
-				wp_enqueue_style( 'mage-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.css' );
-				wp_enqueue_script( 'magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', array( 'jquery', 'wp-color-picker' ) );
+				wp_enqueue_style( 'mage-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.css', array(), MPWEM_PLUGIN_VERSION );
+				// mage-options-framework.js initialises jQuery UI sortable, so the widget has
+				// to be loaded before it. It is enqueued above, but listing it here is what
+				// makes WordPress guarantee the order. The handle is only added when it is
+				// registered: on a site where something deregistered jquery-ui-sortable, a
+				// hard dependency would make WordPress drop this file altogether and take
+				// every other options-framework field down with it.
+				$options_framework_deps = array( 'jquery', 'wp-color-picker' );
+				if ( wp_script_is( 'jquery-ui-sortable', 'registered' ) ) {
+					$options_framework_deps[] = 'jquery-ui-sortable';
+				}
+				wp_enqueue_script( 'magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', $options_framework_deps, MPWEM_PLUGIN_VERSION );
 				wp_localize_script( 'PickpluginsOptionsFramework', 'PickpluginsOptionsFramework_ajax', array( 'PickpluginsOptionsFramework_ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 				wp_enqueue_script( 'form-field-dependency', MPWEM_PLUGIN_URL . '/assets/helper/form-field-dependency.js', array( 'jquery' ), null, false );
 				//******************/
@@ -232,7 +281,58 @@
 
 				do_action( 'add_mpwem_admin_script' );
 			}
+			/**
+			 * Gate for the whole frontend bundle (mage-icon font, Font Awesome,
+			 * Flaticon, Slick, Owl Carousel, timeline, calendar, mixitup, moment.js...).
+			 * Opt-in via settings - default stays "load on every page" so sites
+			 * relying on a shortcode placement we can't detect here (widgets,
+			 * page builders that don't store it in post_content) don't silently
+			 * lose icons/styles. Use the mpwem_force_load_frontend_assets filter
+			 * to force-load on a page this misses once the setting is enabled.
+			 */
+			public function should_load_frontend_assets() {
+				$only_on_event_pages = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_assets_only_on_event_pages', 'no' );
+				if ( $only_on_event_pages !== 'yes' ) {
+					return true;
+				}
+				if ( apply_filters( 'mpwem_force_load_frontend_assets', false ) ) {
+					return true;
+				}
+				if ( is_singular( array( 'mep_events', 'mep_event_speaker', 'mep_events_reg_form' ) )
+					|| is_post_type_archive( 'mep_events' )
+					|| is_tax( array( 'mep_cat', 'mep_org', 'mep_tag' ) ) ) {
+					return true;
+				}
+				global $post;
+				if ( $post instanceof WP_Post ) {
+					$shortcodes = array(
+						'event-list-recurring',
+						'event-list',
+						'events_list',
+						'expire-event-list',
+						'event-add-cart-section',
+						'event-city-list',
+						'event-speaker-list',
+						'event-calendar',
+						'mep-event-calendar',
+						'mep_booking_confirmation',
+					);
+					foreach ( $shortcodes as $shortcode ) {
+						if ( has_shortcode( $post->post_content, $shortcode ) ) {
+							return true;
+						}
+					}
+					if ( function_exists( 'has_block' ) && has_block( 'mage/event-list', $post ) ) {
+						return true;
+					}
+				}
+				return false;
+			}
 			public function frontend_enqueue() {
+				$this->register_global_assets();
+				if ( ! $this->should_load_frontend_assets() ) {
+					return;
+				}
 				$this->global_enqueue();
 				$is_divi = function_exists('et_divi_builder_init') || defined('ET_BUILDER_PLUGIN_ACTIVE');
 				wp_enqueue_script( 'mep-mixitup-min-js', 'https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.0/mixitup.min.js', array(), '3.3.0', true );
@@ -252,6 +352,12 @@
 				} else {
 					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), MPWEM_PLUGIN_VERSION );
 				}
+				wp_enqueue_style(
+					'mep_event_list_modern',
+					MPWEM_PLUGIN_URL . '/assets/frontend/mep-event-list-modern.css',
+					array( $is_divi ? 'divi_style' : 'mpwem_style' ),
+					MPWEM_PLUGIN_VERSION
+				);
 				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
 				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array(
 					'url'             => admin_url( 'admin-ajax.php' ),
@@ -260,8 +366,129 @@
 					'native_nonce'    => wp_create_nonce( 'mep_native_checkout_nonce' ),
 					'is_logged_in'    => is_user_logged_in() ? '1' : '0',
 				) );
+				$this->enqueue_horizon_theme_assets();
+				$this->enqueue_cart_details_assets();
 				do_action( 'add_mpwem_frontend_script' );
 
+			}
+			/**
+			 * Cart / checkout event details card styles (classic + Woo Blocks).
+			 */
+			private function enqueue_cart_details_assets() {
+				// Always load on storefront pages so Woo Blocks cart/checkout keep spacing.
+				if ( is_admin() ) {
+					return;
+				}
+				$load = true;
+				if ( function_exists( 'is_cart' ) || function_exists( 'is_checkout' ) ) {
+					$load = ( function_exists( 'is_cart' ) && is_cart() )
+						|| ( function_exists( 'is_checkout' ) && is_checkout() )
+						|| ( function_exists( 'is_account_page' ) && is_account_page() )
+						|| ( function_exists( 'has_block' ) && ( has_block( 'woocommerce/cart' ) || has_block( 'woocommerce/checkout' ) ) );
+				}
+				if ( ! $load ) {
+					return;
+				}
+				wp_enqueue_style(
+					'mep_cart_details',
+					MPWEM_PLUGIN_URL . '/assets/frontend/mep-cart-details.css',
+					array(),
+					MPWEM_PLUGIN_VERSION
+				);
+			}
+			public function enqueue_cart_details_block_assets() {
+				if ( is_admin() ) {
+					return;
+				}
+				$load = ( function_exists( 'is_cart' ) && is_cart() )
+					|| ( function_exists( 'is_checkout' ) && is_checkout() )
+					|| ( function_exists( 'is_account_page' ) && is_account_page() );
+				if ( ! $load ) {
+					return;
+				}
+				wp_enqueue_style(
+					'mep_cart_details',
+					MPWEM_PLUGIN_URL . '/assets/frontend/mep-cart-details.css',
+					array(),
+					MPWEM_PLUGIN_VERSION
+				);
+			}
+			/**
+			 * Load Horizon theme CSS/JS only when that template is active.
+			 * Keeps Default, Smart, and Virtual templates unchanged.
+			 */
+			private function enqueue_horizon_theme_assets() {
+				$event_id = 0;
+				if ( is_singular( 'mep_events' ) ) {
+					$event_id = (int) get_the_ID();
+				} elseif ( isset( $_GET['post'] ) && is_admin() ) {
+					// Skip admin — frontend only.
+					return;
+				}
+				if ( $event_id <= 0 ) {
+					return;
+				}
+				$template = MPWEM_Functions::get_details_template_name( $event_id );
+				if ( $template !== 'horizon.php' ) {
+					return;
+				}
+				add_filter( 'body_class', function ( $classes ) {
+					$classes[] = 'mep-horizon-active';
+					return $classes;
+				} );
+				wp_enqueue_style(
+					'mpwem_horizon_theme',
+					MPWEM_PLUGIN_URL . '/assets/frontend/horizon-theme.css',
+					array( 'mpwem_style' ),
+					MPWEM_PLUGIN_VERSION
+				);
+				wp_enqueue_script(
+					'mpwem_horizon_theme',
+					MPWEM_PLUGIN_URL . '/assets/frontend/horizon-theme.js',
+					array( 'jquery', 'mpwem_script' ),
+					MPWEM_PLUGIN_VERSION,
+					true
+				);
+				wp_localize_script(
+					'mpwem_horizon_theme',
+					'mep_horizon_i18n',
+					array(
+						'register'            => __( 'Reserve Tickets →', 'mage-eventpress' ),
+						'reserve'             => __( 'Reserve Tickets →', 'mage-eventpress' ),
+						'reserveTicket'       => __( 'Reserve 1 Ticket →', 'mage-eventpress' ),
+						'reserveTickets'      => __( 'Reserve %d Tickets →', 'mage-eventpress' ),
+						'available'           => __( 'Available', 'mage-eventpress' ),
+						'ticketType'          => __( 'Ticket Type', 'mage-eventpress' ),
+						'date'                => __( 'Date', 'mage-eventpress' ),
+						'time'                => __( 'Time', 'mage-eventpress' ),
+						'total'               => __( 'Total', 'mage-eventpress' ),
+						'extraService'        => __( 'Extra Service', 'mage-eventpress' ),
+						'addCalendar'         => __( 'Add to Calendar', 'mage-eventpress' ),
+						'hideCalendar'        => __( 'Hide Calendar', 'mage-eventpress' ),
+						'loadMore'            => __( 'Load more', 'mage-eventpress' ),
+						'showLess'            => __( 'Show less', 'mage-eventpress' ),
+						'attendeeDetails'     => __( 'Enter attendee details', 'mage-eventpress' ),
+						'attendeeEdit'        => __( 'Edit', 'mage-eventpress' ),
+						'attendeeDrawerTitle' => __( 'Attendee details', 'mage-eventpress' ),
+						'attendeeDrawerHelp'  => __( 'Complete the required fields for this ticket, then save.', 'mage-eventpress' ),
+						'attendeeContinue'    => __( 'Save attendee details', 'mage-eventpress' ),
+						'attendeeIncomplete'  => __( 'Required', 'mage-eventpress' ),
+						'attendeeComplete'    => __( 'Completed', 'mage-eventpress' ),
+						'attendeeMissing'     => __( 'Please complete attendee details before booking.', 'mage-eventpress' ),
+						'attendeeRequiredField' => __( 'Please complete this required field.', 'mage-eventpress' ),
+						'attendeeInvalidEmail'  => __( 'Please enter a valid email address.', 'mage-eventpress' ),
+						'attendeeInvalidField'  => __( 'Please enter a valid value.', 'mage-eventpress' ),
+						'attendeeAdded'       => __( 'Attendee details added', 'mage-eventpress' ),
+						'attendeeForTicket'   => __( 'Attendees for %s', 'mage-eventpress' ),
+						'close'               => __( 'Close', 'mage-eventpress' ),
+						'reviewsEyebrow'      => __( 'Reviews', 'mage-eventpress' ),
+						'reviewsTitle'        => __( 'What attendees say', 'mage-eventpress' ),
+						'reviewSingular'      => __( '1 review', 'mage-eventpress' ),
+						'reviewPlural'        => __( '%d reviews', 'mage-eventpress' ),
+						'noReviewsYet'        => __( 'Be the first to share your experience.', 'mage-eventpress' ),
+						'sameAttendee'        => MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' ),
+					)
+				);
 			}
 			public function add_admin_head() {
 				$this->js_constant();
@@ -304,104 +531,228 @@
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.
 			public function event_rich_text_data() {
 				global $post;
-				if ( is_single() ) {
-					$event_id = $post->ID;
-					if ( $event_id && get_post_type( $event_id ) == 'mep_events' ) {
-						$event_name           = get_the_title( $event_id );
-						$event_start_date     = get_post_meta( $post->ID, 'event_start_datetime', true ) ? wp_date( 'Y-m-d H:i:s T', strtotime( get_post_meta( $post->ID, 'event_start_datetime', true ) ) ) : '';
-						$event_end_date       = get_post_meta( $post->ID, 'event_end_datetime', true ) ? get_post_meta( $post->ID, 'event_end_datetime', true ) : '';
-						$event_rt_status      = get_post_meta( $post->ID, 'mep_rt_event_status', true ) ? get_post_meta( $post->ID, 'mep_rt_event_status', true ) : 'EventRescheduled';
-						$event_rt_atdnce_mode = get_post_meta( $post->ID, 'mep_rt_event_attandence_mode', true ) ? get_post_meta( $post->ID, 'mep_rt_event_attandence_mode', true ) : 'OfflineEventAttendanceMode';
-						$event_rt_prv_date    = get_post_meta( $post->ID, 'mep_rt_event_prvdate', true ) ? get_post_meta( $post->ID, 'mep_rt_event_prvdate', true ) : $event_start_date;
-						$terms                = get_the_terms( $event_id, 'mep_org' );
-						$org_name             = is_array( $terms ) && sizeof( $terms ) > 0 ? $terms[0]->name : 'No Performer';
-						$rt_status            = get_post_meta( $event_id, 'mep_rich_text_status', true ) ? get_post_meta( $event_id, 'mep_rich_text_status', true ) : 'enable';
-						if ( $rt_status == 'enable' ) {
-							ob_start();
-							?>
-                            <script type="application/ld+json">
-                                {
-								"@context"  : "https://schema.org",
-								"@type"     : "Event",
-								"name"      : "<?php echo esc_attr( $event_name ); ?>",
-                            "startDate" : "<?php echo esc_attr( $event_start_date ); ?>",
-                            "endDate"   : "<?php echo esc_attr( $event_end_date ); ?>",
-                            "offers": {
-                                "@type"         : "Offer",
-                                "url"           : "<?php echo get_the_permalink( $event_id ); ?>",
-                                "price"         : "<?php echo strip_tags( mep_event_list_number_price( $event_id ) ); ?>",
-                                "priceCurrency" : "<?php echo MPWEM_Global_Function::has_woocommerce() ? get_woocommerce_currency() : 'USD'; ?>",
-                                "availability"  : "https://schema.org/InStock",
-                                "validFrom"     : "<?php echo esc_attr( $event_end_date ); ?>"
-                            },
-                            "organizer": {
-                                "@type" : "Organization",
-                                "name"  : "<?php echo esc_attr( $org_name ); ?>",
-                                "url"   : "<?php echo get_the_permalink( $event_id ); ?>"
-                            },
-                            "eventStatus"           : "https://schema.org/<?php echo esc_attr( $event_rt_status ); ?>",
-                            "eventAttendanceMode"   : "https://schema.org/<?php echo esc_attr( $event_rt_atdnce_mode ); ?>",
-                            "previousStartDate"     : "<?php echo esc_attr( $event_rt_prv_date ); ?>",
+				if ( ! is_single() || ! ( $post instanceof WP_Post ) ) {
+					return;
+				}
+				$event_id = $post->ID;
+				if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' ) {
+					return;
+				}
+				$rt_status = get_post_meta( $event_id, 'mep_rich_text_status', true ) ? get_post_meta( $event_id, 'mep_rich_text_status', true ) : 'enable';
+				if ( $rt_status !== 'enable' ) {
+					return;
+				}
+				/**
+				 * Filters the schema.org/Event graph before it is printed into the document head.
+				 *
+				 * Return an empty array to suppress the JSON-LD output altogether.
+				 *
+				 * @param array $schema   The assembled Event schema.
+				 * @param int   $event_id The event post ID.
+				 */
+				$schema = apply_filters( 'mpwem_event_schema', $this->build_event_schema( $event_id ), $event_id );
+				if ( ! is_array( $schema ) || sizeof( $schema ) === 0 ) {
+					return;
+				}
+				// Slashes are left escaped on purpose so a "</script>" inside any value cannot break out of the tag.
+				$json = wp_json_encode( $schema, JSON_UNESCAPED_UNICODE );
+				if ( ! $json ) {
+					return;
+				}
+				echo '<script type="application/ld+json">' . $json . '</script>' . "\n";
+			}
 
-                            "location"  : <?php
-									// Determine if this is an online/virtual event
-									$location_data    = MPWEM_Functions::get_location( $event_id );
-									$location_display = '';
-									// Get location/venue first
-									if ( ! empty( $location_data['location'] ) ) {
-										$location_display = $location_data['location'];
-									} else {
-										// If no location/venue, build from street + city
-										$location_parts = array();
-										if ( ! empty( $location_data['street'] ) ) {
-											$location_parts[] = $location_data['street'];
-										}
-										if ( ! empty( $location_data['city'] ) ) {
-											$location_parts[] = $location_data['city'];
-										}
-										if ( ! empty( $location_parts ) ) {
-											$location_display = implode( ' ', $location_parts );
-										}
-									}
-									// Check if event is virtual/online
-									$is_online_event = ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false;
-									if ( $is_online_event || $event_rt_atdnce_mode === 'OnlineEventAttendanceMode' ) {
-										// Output VirtualLocation for online events
-										echo '{
-                                        "@type"         : "VirtualLocation",
-                                        "url"           : "' . esc_url( get_the_permalink( $event_id ) ) . '"
-                                    }';
-									} else {
-										// Output Place for physical events
-										echo '{
-                                        "@type"         : "Place",
-                                        "name"          : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'location' ) ) . '",
-                                        "address"       : {
-                                        "@type"         : "PostalAddress",
-                                        "streetAddress" : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'street' ) ) . '",
-                                        "addressLocality": "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'city' ) ) . '",
-                                        "postalCode"    : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'zip' ) ) . '",
-                                        "addressRegion" : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'state' ) ) . '",
-                                        "addressCountry": "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'country' ) ) . '"
-                                        }
-                                    }';
-									}
-								?>,
-                            "image": [
-                                "<?php echo get_the_post_thumbnail_url( $event_id, 'full' ); ?>"
-                            ],
-                            "description": "<?php echo strip_tags( mep_string_sanitize( get_the_excerpt( $event_id ) ) ); ?>",
-                            "performer": {
-                                "@type" : "PerformingGroup",
-                                "name"  : "<?php echo esc_attr( $org_name ); ?>"
-                            }
-                            }
-                            </script>
-							<?php
-							echo ob_get_clean();
+			/**
+			 * Assembles the schema.org/Event graph for a single event.
+			 *
+			 * @param int $event_id The event post ID.
+			 *
+			 * @return array
+			 */
+			protected function build_event_schema( $event_id ) {
+				$event_status = get_post_meta( $event_id, 'mep_rt_event_status', true );
+				if ( ! in_array( $event_status, array( 'EventScheduled', 'EventRescheduled', 'EventMovedOnline', 'EventPostponed', 'EventCancelled' ), true ) ) {
+					$event_status = 'EventScheduled';
+				}
+				$attendance_mode = get_post_meta( $event_id, 'mep_rt_event_attandence_mode', true );
+				if ( ! in_array( $attendance_mode, array( 'OfflineEventAttendanceMode', 'OnlineEventAttendanceMode', 'MixedEventAttendanceMode' ), true ) ) {
+					$attendance_mode = 'OfflineEventAttendanceMode';
+				}
+				$start_date = $this->schema_datetime( get_post_meta( $event_id, 'event_start_datetime', true ) );
+				$end_date   = $this->schema_datetime( get_post_meta( $event_id, 'event_end_datetime', true ) );
+				$terms      = get_the_terms( $event_id, 'mep_org' );
+				$org_name   = is_array( $terms ) && sizeof( $terms ) > 0 ? $terms[0]->name : 'No Performer';
+				$permalink  = get_the_permalink( $event_id );
+				$schema     = array(
+					'@context' => 'https://schema.org',
+					'@type'    => 'Event',
+					'name'     => get_the_title( $event_id ),
+				);
+				if ( $start_date ) {
+					$schema['startDate'] = $start_date;
+				}
+				if ( $end_date ) {
+					$schema['endDate'] = $end_date;
+				}
+				$schema['offers'] = array(
+					'@type'         => 'Offer',
+					'url'           => $permalink,
+					'price'         => $this->schema_price( $event_id ),
+					'priceCurrency' => MPWEM_Global_Function::has_woocommerce() ? get_woocommerce_currency() : 'USD',
+					'availability'  => 'https://schema.org/InStock',
+				);
+				$valid_from = $this->schema_offer_valid_from( $event_id );
+				if ( $valid_from ) {
+					$schema['offers']['validFrom'] = $valid_from;
+				}
+				$schema['organizer']           = array(
+					'@type' => 'Organization',
+					'name'  => $org_name,
+					'url'   => $permalink,
+				);
+				$schema['eventStatus']         = 'https://schema.org/' . $event_status;
+				$schema['eventAttendanceMode'] = 'https://schema.org/' . $attendance_mode;
+				// previousStartDate is only meaningful for an event that moved, and Google warns about it otherwise.
+				if ( in_array( $event_status, array( 'EventRescheduled', 'EventPostponed' ), true ) ) {
+					$previous_start = $this->schema_datetime( get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) );
+					if ( $previous_start ) {
+						$schema['previousStartDate'] = $previous_start;
+					}
+				}
+				$schema['location'] = $this->schema_location( $event_id, $attendance_mode );
+				$image              = get_the_post_thumbnail_url( $event_id, 'full' );
+				if ( $image ) {
+					$schema['image'] = array( $image );
+				}
+				$schema['description'] = wp_strip_all_tags( mep_string_sanitize( get_the_excerpt( $event_id ) ) );
+				$schema['performer']   = array(
+					'@type' => 'PerformingGroup',
+					'name'  => $org_name,
+				);
+
+				return $schema;
+			}
+
+			/**
+			 * Builds the location node, virtual or physical, for the event schema.
+			 *
+			 * @param int    $event_id        The event post ID.
+			 * @param string $attendance_mode The resolved schema.org attendance mode.
+			 *
+			 * @return array
+			 */
+			protected function schema_location( $event_id, $attendance_mode ) {
+				$location_data    = MPWEM_Functions::get_location( $event_id );
+				$location_display = '';
+				// Get location/venue first
+				if ( ! empty( $location_data['location'] ) ) {
+					$location_display = $location_data['location'];
+				} else {
+					// If no location/venue, build from street + city
+					$location_parts = array();
+					if ( ! empty( $location_data['street'] ) ) {
+						$location_parts[] = $location_data['street'];
+					}
+					if ( ! empty( $location_data['city'] ) ) {
+						$location_parts[] = $location_data['city'];
+					}
+					if ( ! empty( $location_parts ) ) {
+						$location_display = implode( ' ', $location_parts );
+					}
+				}
+				// Check if event is virtual/online
+				$is_online_event = ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false;
+				if ( $is_online_event || $attendance_mode === 'OnlineEventAttendanceMode' ) {
+					return array(
+						'@type' => 'VirtualLocation',
+						'url'   => get_the_permalink( $event_id ),
+					);
+				}
+
+				return array(
+					'@type'   => 'Place',
+					'name'    => MPWEM_Functions::get_location( $event_id, 'location' ),
+					'address' => array(
+						'@type'           => 'PostalAddress',
+						'streetAddress'   => MPWEM_Functions::get_location( $event_id, 'street' ),
+						'addressLocality' => MPWEM_Functions::get_location( $event_id, 'city' ),
+						'postalCode'      => MPWEM_Functions::get_location( $event_id, 'zip' ),
+						'addressRegion'   => MPWEM_Functions::get_location( $event_id, 'state' ),
+						'addressCountry'  => MPWEM_Functions::get_location( $event_id, 'country' ),
+					),
+				);
+			}
+
+			/**
+			 * Lowest ticket price for the event, as a plain decimal string.
+			 *
+			 * @param int $event_id The event post ID.
+			 *
+			 * @return string
+			 */
+			protected function schema_price( $event_id ) {
+				$has_woo  = MPWEM_Global_Function::has_woocommerce();
+				$price    = $has_woo && function_exists( 'mep_event_list_number_price' ) ? mep_event_list_number_price( $event_id ) : get_post_meta( $event_id, '_price', true );
+				$decimals = function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2;
+
+				return is_numeric( $price ) ? number_format( (float) $price, (int) $decimals, '.', '' ) : '0';
+			}
+
+			/**
+			 * Works out when the tickets went on sale, for offers.validFrom.
+			 *
+			 * Uses the earliest per ticket sale start date when one is set, otherwise the date the event
+			 * was published, since that is the point from which the tickets have been bookable.
+			 *
+			 * @param int $event_id The event post ID.
+			 *
+			 * @return string ISO 8601 date, or an empty string when nothing usable is stored.
+			 */
+			protected function schema_offer_valid_from( $event_id ) {
+				$tickets  = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+				$earliest = '';
+				if ( is_array( $tickets ) ) {
+					foreach ( $tickets as $ticket ) {
+						if ( ! is_array( $ticket ) || empty( $ticket['option_sale_start_date_t'] ) ) {
+							continue;
+						}
+						$sale_start = $this->schema_datetime( $ticket['option_sale_start_date_t'] );
+						if ( ! $sale_start ) {
+							continue;
+						}
+						if ( ! $earliest || strtotime( $sale_start ) < strtotime( $earliest ) ) {
+							$earliest = $sale_start;
 						}
 					}
 				}
+
+				return $earliest ? $earliest : $this->schema_datetime( get_post_field( 'post_date', $event_id ) );
+			}
+
+			/**
+			 * Converts a stored event date into an ISO 8601 string carrying the site UTC offset.
+			 *
+			 * Event date meta is saved as site local wall time, which is the same assumption
+			 * get_mep_datetime() makes when rendering it. Passing the value through strtotime() instead
+			 * would read it in the PHP default timezone, which WordPress pins to UTC, and shift the
+			 * published time by the site offset.
+			 *
+			 * @param string $value Raw date meta, e.g. "2026-09-28 20:00:00".
+			 *
+			 * @return string ISO 8601 date, or an empty string when the value is missing or unparsable.
+			 */
+			protected function schema_datetime( $value ) {
+				$value = is_string( $value ) ? trim( $value ) : '';
+				if ( $value === '' || strpos( $value, '0000-00-00' ) === 0 ) {
+					return '';
+				}
+				try {
+					$date = new DateTime( $value, wp_timezone() );
+				} catch ( Exception $e ) {
+					return '';
+				}
+
+				return $date->format( 'c' );
 			}
 			// Add Open Graph meta tags for better social sharing
 			public function add_open_graph_tags() {

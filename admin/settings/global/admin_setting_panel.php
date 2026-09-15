@@ -213,6 +213,12 @@
 		}
 
 		function render_gateway_modals() {
+			// These modals expose live gateway credentials and a save nonce, so
+			// they are limited to the capability that owns the Payment settings
+			// page. The event screens only require edit_posts.
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
 			$screen = get_current_screen();
 			if ( ! $screen || ! in_array( $screen->id, array( 'mep_events_page_mep_event_settings_page', 'mep_events', 'mep_events_page_mpwem_event_edit' ), true ) ) {
 				return;
@@ -595,15 +601,15 @@
 
 		function ajax_save_gateway_settings() {
 			check_ajax_referer( 'mep_save_gateway', 'nonce' );
-			// The PayPal/Stripe Configure modals are reachable from both the Global
-			// Payment Settings page (manage_options) and the Event Edit → Payment
-			// Configuration modal (edit_posts). Allow either so the real-time save
-			// works in both contexts.
-			if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'edit_posts' ) ) {
+			// This writes the site-wide payment_setting_sec option (gateway
+			// credentials and enable flags), so it requires the same capability as
+			// the Payment settings page that owns those values. The Configure
+			// modals are only rendered for that capability as well.
+			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
 			}
 			$gateway  = sanitize_key( $_POST['gateway'] ?? '' );
-			$fields   = $_POST['fields'] ?? array();
+			$fields   = isset( $_POST['fields'] ) && is_array( $_POST['fields'] ) ? wp_unslash( $_POST['fields'] ) : array();
 			$existing = get_option( 'payment_setting_sec', array() );
 			if ( ! is_array( $existing ) ) {
 				$existing = array();
@@ -1518,7 +1524,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Google Map Type', 'mage-eventpress' ),
 								'desc'    => __( 'Choose how maps appear on the site. API maps are more accurate and support drag-and-drop.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'yes',
+								'default' => 'iframe',
 								'options' => array(
 									''       => 'Please Select a Map Type',
 									'api'    => 'API',
@@ -1537,7 +1543,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Event Expiry Time', 'mage-eventpress' ),
 								'desc'    => __( 'When the event should stop accepting bookings.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'mep_event_start_date',
+								'default' => 'event_start_datetime',
 								'options' => array(
 									'event_start_datetime'  => 'Event Start Time',
 									'event_expire_datetime' => 'Event End Time'
@@ -1659,6 +1665,17 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'    => 'mep_load_assets_only_on_event_pages',
+								'label'   => __( 'Load Event Styles/Scripts Only on Event Pages?', 'mage-eventpress' ),
+								'desc'    => __( 'Improves page speed by only loading the plugin\'s icon font, carousel, calendar and other frontend assets on pages that actually contain an event (single event, event archive, or an event shortcode/block). If an event shortcode is placed inside a widget or page builder module that this can\'t detect, select "No" or use the mpwem_force_load_frontend_assets filter.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
 								'name'    => 'mep_speed_up_list_page',
 								'label'   => __( 'Faster Event List Loading', 'mage-eventpress' ),
 								'desc'    => __( 'Speeds up the event list. Disables waitlist and seat counts on that page.', 'mage-eventpress' ),
@@ -1757,6 +1774,65 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'    => 'mep_availability_indicator_mode',
+								'label'   => __( 'Availability Indicator Mode', 'mage-eventpress' ),
+								'desc'    => __( 'How the remaining seats badge decides between green, amber and red. "Fixed seat count" compares the seats left to a number; "Percentage of capacity" compares them to a share of the total seats configured for the ticket, so small and large events behave consistently.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'fixed',
+								'options' => array(
+									'fixed'      => __( 'Fixed seat count', 'mage-eventpress' ),
+									'percentage' => __( 'Percentage of capacity', 'mage-eventpress' )
+								)
+							),
+							array(
+								'name'        => 'mep_availability_low_threshold',
+								'label'       => __( 'Low Availability Seats (Red)', 'mage-eventpress' ),
+								'desc'        => __( 'Fixed seat count mode only. Show the badge in red when the seats left are at or below this number.', 'mage-eventpress' ),
+								'type'        => 'number',
+								'default'     => '10',
+								'min'         => '0',
+								'placeholder' => '10'
+							),
+						array(
+							'name'        => 'mep_availability_medium_threshold',
+							'label'       => __( 'Medium Availability Seats (Amber)', 'mage-eventpress' ),
+							'desc'        => __( 'Fixed seat count mode only. Show the badge in amber when the seats left are at or below this number but above the red threshold. Set to 0 to keep the badge green until it turns red.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '0',
+							'min'         => '0',
+							'placeholder' => '0'
+						),
+						array(
+							'name'        => 'mep_availability_low_percent',
+							'label'       => __( 'Low Availability Percentage (Red)', 'mage-eventpress' ),
+							'desc'        => __( 'Percentage mode only. Show the badge in red when less than this percentage of the total seats is left.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '10',
+							'min'         => '0',
+							'max'         => '100',
+							'placeholder' => '10'
+						),
+						array(
+							'name'        => 'mep_availability_medium_percent',
+							'label'       => __( 'Medium Availability Percentage (Amber)', 'mage-eventpress' ),
+							'desc'        => __( 'Percentage mode only. Show the badge in amber up to this percentage of the total seats, and in green above it.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '30',
+							'min'         => '0',
+							'max'         => '100',
+							'placeholder' => '30'
+						),
+						array(
+							'name'        => 'mep_low_stock_percent',
+							'label'       => __( 'Low Stock Percentage', 'mage-eventpress' ),
+							'desc'        => __( 'Percentage mode only. Show the low stock warning when the seats left are at or below this percentage of the total seats. The fixed "Low Stock Threshold" above is used in fixed seat count mode.', 'mage-eventpress' ),
+							'type'        => 'number',
+							'default'     => '10',
+							'min'         => '0',
+							'max'         => '100',
+							'placeholder' => '10'
+						),
+							array(
 								'name'    => 'mep_show_hidden_wc_product',
 								'label'   => __( 'Show Hidden WooCommerce Products', 'mage-eventpress' ),
 								'desc'    => __( 'Show the hidden WooCommerce products created for each event.', 'mage-eventpress' ),
@@ -1846,7 +1922,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Date Picker Format', 'mage-eventpress' ),
 								'desc'    => __( 'Date format for the date picker. Avoid text-based formats on non-English sites.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'no',
+								'default' => 'yy-mm-dd',
 								'options' => array(
 									'yy-mm-dd'   => $current_date,
 									'yy/mm/dd'   => date( 'Y/m/d', strtotime( $current_date ) ),
@@ -1939,6 +2015,28 @@ tr.payment_tabs_html { display: none !important; }
 								'desc'    => __( 'Hide the Book Now button that appears on hover in the event list.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_hide_event_hover_btn', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
+								'name'    => 'mep_event_hide_category_list',
+								'label'   => __( 'Hide Category in List', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the category badge on event list cards. Category filtering keeps working.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
+								'name'    => 'mep_event_list_large_layout',
+								'label'   => __( 'Larger List Layout', 'mage-eventpress' ),
+								'desc'    => __( 'Show List view cards with a larger image and larger text. Grid view is not affected.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
 								'options' => array(
 									'yes' => 'Yes',
 									'no'  => 'No'
@@ -2099,6 +2197,27 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'    => 'mep_enable_description_read_more',
+								'label'   => __( 'Collapse Long Event Descriptions', 'mage-eventpress' ),
+								'desc'    => __( 'Show a Read More control for long event descriptions. Content is collapsed only between complete blocks so interactive blocks keep working.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
+								'name'    => 'mep_description_read_more_word_limit',
+								'label'   => __( 'Description Read More Word Limit', 'mage-eventpress' ),
+								'desc'    => __( 'Collapse descriptions longer than this many words. The visible excerpt may include a few extra words so HTML and interactive blocks are never split.', 'mage-eventpress' ),
+								'type'    => 'number',
+								'default' => 200,
+								'min'     => 1,
+								'max'     => 5000,
+								'step'    => 1,
+							),
+							array(
 								'name'    => 'mep_event_hide_description_title',
 								'label'   => __( 'Hide Description Title', 'mage-eventpress' ),
 								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
@@ -2164,7 +2283,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Email Subject', 'mage-eventpress' ),
 								'desc'    => __( 'Subject line for the confirmation email.', 'mage-eventpress' ),
 								'type'    => 'text',
-								'default' => 'Event Notification'
+								'default' => 'Confirmation Email'
 							),
 							array(
 								'name'    => 'mep_confirmation_email_text',
@@ -2294,7 +2413,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Auto Play', 'mage-eventpress' ),
 								'desc'    => __( 'Automatically advance carousel slides.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'yes',
+								'default' => 'true',
 								'options' => array(
 									'true'  => 'Yes',
 									'false' => 'No'
@@ -2305,7 +2424,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Infinite Loop', 'mage-eventpress' ),
 								'desc'    => __( 'Restart the carousel after the last slide.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'yes',
+								'default' => 'true',
 								'options' => array(
 									'true'  => 'Yes',
 									'false' => 'No'
@@ -3058,6 +3177,9 @@ tr.payment_tabs_html { display: none !important; }
 							'sending' => __( 'Sending…', 'mage-eventpress' ),
 							'error'   => __( 'Something went wrong. Please try again.', 'mage-eventpress' ),
 						),
+					) ) . ';'
+					. 'window.mepGs.i18n = ' . wp_json_encode( array(
+						'saved' => __( 'Settings saved successfully.', 'mage-eventpress' ),
 					) ) . ';',
 					'before'
 				);
@@ -3117,6 +3239,13 @@ tr.payment_tabs_html { display: none !important; }
 									</button>
 								<?php endif; ?>
 							</div>
+
+							<?php if ( isset( $_GET['settings-updated'] ) && 'true' === (string) wp_unslash( $_GET['settings-updated'] ) ) : ?>
+								<div class="mep-gs__saved-banner" id="mep-gs-saved-banner" role="status">
+									<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span>
+									<span><?php esc_html_e( 'Settings saved successfully.', 'mage-eventpress' ); ?></span>
+								</div>
+							<?php endif; ?>
 
 							<div class="mep-gs__content">
 								<?php foreach ( $visible_tabs as $tab_id => $config ) : ?>

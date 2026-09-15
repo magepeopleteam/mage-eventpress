@@ -9,6 +9,21 @@
 		die;
 	} // Cannot access pages directly.
 	class MEP_Low_Stock_Display {
+
+		/**
+		 * Option group holding the global settings.
+		 */
+		const SETTINGS_SECTION = 'general_setting_sec';
+
+		/**
+		 * CSS class per availability level.
+		 */
+		const LEVEL_CLASSES = array(
+			'low'    => 'remaining-low',
+			'medium' => 'remaining-medium',
+			'high'   => 'remaining-high',
+		);
+
 		public function __construct() {
 			add_action( 'mep_before_check_low_stock', array( $this, 'display_low_stock_warning' ), 10, 3 );
 			add_action( 'mep_after_check_low_stock', array( $this, 'display_limited_availability_ribbon' ), 10, 3 );
@@ -21,29 +36,203 @@
 		}
 
 		/**
+		 * Read a global setting without mep_get_option()'s empty() fallback, so a
+		 * deliberately stored "0" is honoured instead of silently reverting to the default.
+		 *
+		 * @param string $key
+		 * @param mixed  $default
+		 *
+		 * @return mixed
+		 */
+		private static function get_setting( $key, $default = '' ) {
+			$options = get_option( self::SETTINGS_SECTION );
+			if ( is_array( $options ) && isset( $options[ $key ] ) && '' !== $options[ $key ] && null !== $options[ $key ] ) {
+				return $options[ $key ];
+			}
+
+			return $default;
+		}
+
+		/**
+		 * How availability thresholds are measured: against a fixed seat count, or
+		 * against a percentage of the ticket's total capacity.
+		 *
+		 * @return string fixed|percentage
+		 */
+		public static function get_indicator_mode() {
+			$mode = self::get_setting( 'mep_availability_indicator_mode', 'fixed' );
+
+			return ( 'percentage' === $mode ) ? 'percentage' : 'fixed';
+		}
+
+		/**
+		 * Clamp a stored percentage setting into 0-100.
+		 *
+		 * @param mixed $value
+		 * @param float $default
+		 *
+		 * @return float
+		 */
+		private static function clamp_percent( $value, $default ) {
+			if ( ! is_numeric( $value ) ) {
+				return (float) $default;
+			}
+
+			return max( 0, min( 100, (float) $value ) );
+		}
+
+		/**
+		 * Remaining seats as a percentage of total capacity.
+		 *
+		 * @param int $available_seats
+		 * @param int $total_capacity
+		 *
+		 * @return float|null Null when capacity is unknown, so callers can fall back.
+		 */
+		private static function get_available_percent( $available_seats, $total_capacity ) {
+			$total_capacity = (int) $total_capacity;
+			if ( $total_capacity <= 0 ) {
+				return null;
+			}
+
+			return ( (int) $available_seats / $total_capacity ) * 100;
+		}
+
+		/**
+		 * Resolve the availability level for a ticket.
+		 *
+		 * In fixed mode the defaults (low 10, medium 0 = disabled) reproduce the historic
+		 * "10 or fewer seats is red, otherwise green" behaviour exactly.
+		 *
+		 * @param int $available_seats
+		 * @param int $total_capacity  Total seats configured for this ticket. 0 = unknown.
+		 *
+		 * @return string low|medium|high
+		 */
+		public static function get_availability_level( $available_seats, $total_capacity = 0 ) {
+			$available_seats = (int) $available_seats;
+			$total_capacity  = (int) apply_filters( 'mep_availability_total_capacity', $total_capacity, $available_seats );
+			$mode            = self::get_indicator_mode();
+			$percent         = ( 'percentage' === $mode ) ? self::get_available_percent( $available_seats, $total_capacity ) : null;
+
+			if ( null !== $percent ) {
+				$low_percent    = self::clamp_percent( self::get_setting( 'mep_availability_low_percent', 10 ), 10 );
+				$medium_percent = self::clamp_percent( self::get_setting( 'mep_availability_medium_percent', 30 ), 30 );
+				if ( $medium_percent < $low_percent ) {
+					$medium_percent = $low_percent;
+				}
+
+				if ( $percent < $low_percent ) {
+					$level = 'low';
+				} elseif ( $percent <= $medium_percent ) {
+					$level = 'medium';
+				} else {
+					$level = 'high';
+				}
+			} else {
+				// Fixed seat counts. Also the fallback when capacity cannot be determined.
+				$low_threshold    = (int) self::get_setting( 'mep_availability_low_threshold', 10 );
+				$medium_threshold = (int) self::get_setting( 'mep_availability_medium_threshold', 0 );
+
+				if ( $available_seats <= $low_threshold ) {
+					$level = 'low';
+				} elseif ( $medium_threshold > $low_threshold && $available_seats <= $medium_threshold ) {
+					$level = 'medium';
+				} else {
+					$level = 'high';
+				}
+			}
+
+			return apply_filters( 'mep_availability_level', $level, $available_seats, $total_capacity, $mode );
+		}
+
+		/**
+		 * CSS class for the "X Tickets remaining" badge.
+		 *
+		 * @param int $available_seats
+		 * @param int $total_capacity
+		 *
+		 * @return string
+		 */
+		public static function get_availability_class( $available_seats, $total_capacity = 0 ) {
+			$level = self::get_availability_level( $available_seats, $total_capacity );
+			$class = isset( self::LEVEL_CLASSES[ $level ] ) ? self::LEVEL_CLASSES[ $level ] : 'remaining-high';
+
+			return apply_filters( 'mep_availability_indicator_class', $class, $available_seats, $total_capacity, $level );
+		}
+
+		/**
+		 * Whether remaining seats have hit the low stock threshold, honouring the
+		 * configured measurement mode.
+		 *
+		 * @param int $available_seats
+		 * @param int $total_capacity
+		 *
+		 * @return bool
+		 */
+		public static function is_low_stock_threshold_met( $available_seats, $total_capacity = 0 ) {
+			$available_seats = (int) $available_seats;
+			if ( $available_seats <= 0 ) {
+				return false;
+			}
+
+			$percent = ( 'percentage' === self::get_indicator_mode() )
+				? self::get_available_percent( $available_seats, $total_capacity )
+				: null;
+
+			if ( null !== $percent ) {
+				return $percent <= self::clamp_percent( self::get_setting( 'mep_low_stock_percent', 10 ), 10 );
+			}
+
+			$low_stock_threshold = (int) mep_get_option( 'mep_low_stock_threshold', 'general_setting_sec', 3 );
+
+			return $available_seats <= $low_stock_threshold;
+		}
+
+		/**
+		 * Human readable description of the threshold that is actually in force, for the
+		 * admin alert email and the debug comment.
+		 *
+		 * @param int $total_capacity
+		 *
+		 * @return string
+		 */
+		public static function describe_low_stock_threshold( $total_capacity = 0 ) {
+			if ( 'percentage' === self::get_indicator_mode() && (int) $total_capacity > 0 ) {
+				return sprintf(
+				/* translators: 1: percentage threshold, 2: total seats configured for the ticket. */
+					__( '%1$s%% of %2$d seats', 'mage-eventpress' ),
+					self::clamp_percent( self::get_setting( 'mep_low_stock_percent', 10 ), 10 ),
+					(int) $total_capacity
+				);
+			}
+
+			return (string) (int) mep_get_option( 'mep_low_stock_threshold', 'general_setting_sec', 3 );
+		}
+
+		/**
 		 * Check if low stock warning should be shown
 		 */
-		public function should_show_low_stock_warning( $show, $post_id, $ticket_type_name, $available_seats ) {
+		public function should_show_low_stock_warning( $show, $post_id, $ticket_type_name, $available_seats, $total_capacity = 0 ) {
 			$show_low_stock = mep_get_option( 'mep_show_low_stock_warning', 'general_setting_sec', 'yes' );
 			if ( $show_low_stock !== 'yes' ) {
 				return false;
 			}
-			$low_stock_threshold = (int) mep_get_option( 'mep_low_stock_threshold', 'general_setting_sec', 3 );
 
-			return $available_seats <= $low_stock_threshold && $available_seats > 0;
+			return self::is_low_stock_threshold_met( $available_seats, $total_capacity );
 		}
 
 		/**
 		 * Display low stock warning message
 		 */
-		public function display_low_stock_warning( $post_id, $ticket_type_name, $available_seats ) {
+		public function display_low_stock_warning( $post_id, $ticket_type_name, $available_seats, $total_capacity = 0 ) {
 			$show_low_stock = mep_get_option( 'mep_show_low_stock_warning', 'general_setting_sec', 'yes' );
 			if ( $show_low_stock !== 'yes' ) {
 				return;
 			}
-			$low_stock_threshold = (int) mep_get_option( 'mep_low_stock_threshold', 'general_setting_sec', 3 );
+			$low_stock_threshold = self::describe_low_stock_threshold( $total_capacity );
 			$low_stock_text = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left' );
-			if ( $available_seats <= $low_stock_threshold && $available_seats > 0 ) {
+			if ( self::is_low_stock_threshold_met( $available_seats, $total_capacity ) ) {
 				$warning_text = $this->format_low_stock_message( $low_stock_text, $available_seats );
 				echo '<div class="mep-low-stock-warning">' . esc_html( $warning_text ) . '</div>';
 				// Trigger email notification
@@ -244,14 +433,13 @@
 		/**
 		 * Get low stock status for a ticket type
 		 */
-		public static function get_low_stock_status( $post_id, $ticket_type_name, $available_seats ) {
-			$show_low_stock      = mep_get_option( 'mep_show_low_stock_warning', 'general_setting_sec', 'yes' );
-			$low_stock_threshold = (int) mep_get_option( 'mep_low_stock_threshold', 'general_setting_sec', 3 );
+		public static function get_low_stock_status( $post_id, $ticket_type_name, $available_seats, $total_capacity = 0 ) {
+			$show_low_stock = mep_get_option( 'mep_show_low_stock_warning', 'general_setting_sec', 'yes' );
 			if ( $show_low_stock !== 'yes' ) {
 				return false;
 			}
 
-			return $available_seats <= $low_stock_threshold && $available_seats > 0;
+			return self::is_low_stock_threshold_met( $available_seats, $total_capacity );
 		}
 
 		/**
@@ -279,8 +467,8 @@
 			$selected_date   = isset( $_GET['event_date'] ) ? sanitize_text_field( $_GET['event_date'] ) : $event_date;
 			$total_sold      = mep_get_ticket_type_seat_count( $post_id, $ticket_type_name, $selected_date, $total_quantity, $total_resv_quantity );
 			$available_seats = (int) $total_quantity - ( (int) $total_sold + (int) $total_resv_quantity );
-			if ( $this->should_show_low_stock_warning( true, $post_id, $ticket_type_name, $available_seats ) ) {
-				$this->display_low_stock_warning( $post_id, $ticket_type_name, $available_seats );
+			if ( $this->should_show_low_stock_warning( true, $post_id, $ticket_type_name, $available_seats, (int) $total_quantity ) ) {
+				$this->display_low_stock_warning( $post_id, $ticket_type_name, $available_seats, (int) $total_quantity );
 			}
 		}
 
@@ -306,9 +494,9 @@
 	/**
 	 * Helper function to display low stock warning in templates
 	 */
-	function mep_display_low_stock_warning( $post_id, $ticket_type_name, $available_seats ) {
+	function mep_display_low_stock_warning( $post_id, $ticket_type_name, $available_seats, $total_capacity = 0 ) {
 		$low_stock_display = new MEP_Low_Stock_Display();
-		$low_stock_display->display_low_stock_warning( $post_id, $ticket_type_name, $available_seats );
+		$low_stock_display->display_low_stock_warning( $post_id, $ticket_type_name, $available_seats, $total_capacity );
 	}
 	/**
 	 * Helper function to display limited availability ribbon in templates
@@ -320,6 +508,28 @@
 	/**
 	 * Helper function to check if low stock warning should be shown
 	 */
-	function mep_is_low_stock( $post_id, $ticket_type_name, $available_seats ) {
-		return MEP_Low_Stock_Display::get_low_stock_status( $post_id, $ticket_type_name, $available_seats );
+	function mep_is_low_stock( $post_id, $ticket_type_name, $available_seats, $total_capacity = 0 ) {
+		return MEP_Low_Stock_Display::get_low_stock_status( $post_id, $ticket_type_name, $available_seats, $total_capacity );
+	}
+	/**
+	 * Helper function to get the CSS class for the "X Tickets remaining" badge.
+	 *
+	 * @param int $available_seats Seats still on sale.
+	 * @param int $total_capacity  Total seats configured for the ticket. 0 = unknown.
+	 *
+	 * @return string remaining-low|remaining-medium|remaining-high
+	 */
+	function mep_get_availability_class( $available_seats, $total_capacity = 0 ) {
+		return MEP_Low_Stock_Display::get_availability_class( $available_seats, $total_capacity );
+	}
+	/**
+	 * Helper function to get the availability level for a ticket.
+	 *
+	 * @param int $available_seats Seats still on sale.
+	 * @param int $total_capacity  Total seats configured for the ticket. 0 = unknown.
+	 *
+	 * @return string low|medium|high
+	 */
+	function mep_get_availability_level( $available_seats, $total_capacity = 0 ) {
+		return MEP_Low_Stock_Display::get_availability_level( $available_seats, $total_capacity );
 	}

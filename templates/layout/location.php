@@ -26,23 +26,33 @@
 		$location = is_array($event_infos) && array_key_exists( 'full_address', $event_infos ) ? $event_infos['full_address'] : [];
 		if ( is_array( $location ) && sizeof( $location ) > 0 ) {
 			if ( $type == 'sidebar' ) {
+				$is_default_theme = ( $event_template === 'default-theme.php' );
+				$is_smart_theme   = ( $event_template === 'smart.php' );
 				?>
-                <div class="mpwem_location_sidebar">
+                <div class="mpwem_location_sidebar<?php echo $is_default_theme ? ' mpwem_location_sidebar--default' : ''; ?>">
                     <h5 class="widgets_title ">
-						<?php if ( $event_template == 'smart.php' ) { ?>
-                            <span class="<?php echo esc_attr( $location_icon ); ?> _mr_xs"></span>
+						<?php if ( $is_smart_theme || $is_default_theme ) { ?>
+                            <span class="<?php echo esc_attr( $location_icon ); ?> _mr_xs" aria-hidden="true"></span>
 						<?php } ?>
 						<?php esc_html_e( 'Event Location', 'mage-eventpress' ); ?>
                     </h5>
-                    <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
+					<?php if ( $is_default_theme ) { ?>
+                        <div class="mpwem_location_address">
+                            <p><?php echo esc_html( implode( ', ', $location ) ); ?></p>
+                        </div>
+					<?php } else { ?>
+                        <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
+					<?php } ?>
 					<?php if ( $map_status ) { ?>
-						<?php if ( $event_template == 'smart.php' ) { ?>
+						<?php if ( $is_smart_theme ) { ?>
                             <button type="button" class="_button_theme_margin_auto" onclick="window.location.href = '#mpwem_map_area'">
-                                <i class="<?php echo esc_attr( $location_icon ); ?> _mr_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
+                                <i class="<?php echo esc_attr( $location_icon ); ?>" aria-hidden="true"></i>
+                                <span><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></span>
                             </button>
 						<?php } else { ?>
-                            <button type="button" class="_button_theme_margin_auto" data-target-popup="mpwem_popup_map">
-                                <i class="<?php echo esc_attr( $location_icon ); ?> _mr_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
+                            <button type="button" class="_button_theme_margin_auto<?php echo $is_default_theme ? ' mpwem_location_map_btn' : ''; ?>" data-target-popup="mpwem_popup_map">
+                                <i class="<?php echo esc_attr( $location_icon ); ?>" aria-hidden="true"></i>
+                                <span><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></span>
                             </button>
                             <div class="mpPopup" data-popup="mpwem_popup_map">
                                 <div class="popupMainArea _max_1000">
@@ -64,7 +74,7 @@
                 <div class="short_item">
                     <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr( $location_icon ); ?>"></span></h4>
                     <div class="_fdColumn">
-                        <h6><?php esc_html_e( 'Event Location:', 'mage-eventpress' ); ?></h6>
+                        <h6><?php esc_html_e( 'Event Location', 'mage-eventpress' ); ?></h6>
                         <p><?php echo esc_html( implode( ', ', $location ) ); ?></p>
                     </div>
                 </div>

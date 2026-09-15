@@ -23,10 +23,12 @@
 					'mep_date_list_in_event_listing',
 					'mep_event_hide_organizer_list',
 					'mep_event_hide_location_list',
+					'mep_event_hide_category_list',
 					'mep_event_hide_time_list',
 					'mep_event_hide_end_time_list',
 					'mep_hide_event_hover_btn',
 					'mep_hide_event_list_msg',
+					'mep_event_list_large_layout',
 				);
 			}
 

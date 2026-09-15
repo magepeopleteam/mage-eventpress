@@ -253,30 +253,51 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $qty;
 		}
 	}
-	function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page' ) {
-		global $wpdb;
-		if ( is_array( $post_type ) ) {
-			$post_type           = esc_sql( $post_type );
-			$post_type_in_string = "'" . implode( "','", $post_type ) . "'";
-			$sql                 = $wpdb->prepare( "
-			SELECT ID
-			FROM $wpdb->posts
-			WHERE post_name = %s
-			AND post_type IN ($post_type_in_string)
-		", $page_slug );
-		} else {
-			$sql = $wpdb->prepare( "
-			SELECT ID
-			FROM $wpdb->posts
-			WHERE post_name = %s
-			AND post_type = %s
-		", $page_slug, $post_type );
+	/**
+	 * Look a page up by slug, optionally across several post types.
+	 *
+	 * The post types used to be interpolated into the statement and only $page_slug was
+	 * passed to prepare(), which left the SQL depending on esc_sql() rather than on the
+	 * placeholder machinery, and gave prepare() a single placeholder to fill. If a caller
+	 * ever passed an array of slugs, prepare() saw one placeholder against several
+	 * arguments, logged "The query only expected one placeholder, but an array of multiple
+	 * placeholders was sent" and returned null - so get_var() ran an empty query and the
+	 * lookup silently found nothing. Every value is a placeholder now, and the slug is
+	 * forced to a single scalar.
+	 *
+	 * Guarded with function_exists() as well: the name is generic and was declared
+	 * unconditionally here while a second, different implementation further down this
+	 * same file was already guarded, so anything else defining it first fatally clashed.
+	 *
+	 * @param string       $page_slug
+	 * @param string       $output
+	 * @param string|array $post_type
+	 * @return WP_Post|array|null
+	 */
+	if ( ! function_exists( 'mep_get_page_by_slug' ) ) {
+		function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page' ) {
+			global $wpdb;
+			if ( is_array( $page_slug ) ) {
+				$page_slug = reset( $page_slug );
+			}
+			if ( ! is_scalar( $page_slug ) || '' === (string) $page_slug ) {
+				return null;
+			}
+			$post_types = array_values( array_filter( array_map( 'strval', (array) $post_type ) ) );
+			if ( ! $post_types ) {
+				$post_types = array( 'page' );
+			}
+			$placeholders = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
+			$sql          = $wpdb->prepare(
+				"SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type IN ( $placeholders )", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders only
+				array_merge( array( (string) $page_slug ), $post_types )
+			);
+			$page = $wpdb->get_var( $sql );
+			if ( $page ) {
+				return get_post( $page, $output );
+			}
+			return null;
 		}
-		$page = $wpdb->get_var( $sql );
-		if ( $page ) {
-			return get_post( $page, $output );
-		}
-		return null;
 	}
 	function mep_add_event_into_feed_request( $qv ) {
 		if ( isset( $qv['feed'] ) ) {
@@ -375,7 +396,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_get_attendee_info_query( $event_id, $order_id ) {
 			$_user_set_status    = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status       = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-			$order_status        = array_values( $_order_status );
+			$order_status        = array_values( array_filter( (array) $_order_status ) ?: array( 'processing', 'completed' ) );
 			$order_status_filter = array(
 				'key'     => 'ea_order_status',
 				'value'   => $order_status,
@@ -812,6 +833,168 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 
 	
+	if ( ! function_exists( 'mep_resolve_confirmation_email_body' ) ) {
+		/**
+		 * Resolve the confirmation body without changing delivery eligibility.
+		 *
+		 * Existing events created before the status meta was introduced keep using
+		 * their non-empty event body. An explicit off always falls back to global.
+		 *
+		 * @param int    $event_id         Event post ID.
+		 * @param string $global_email_text Global confirmation body.
+		 * @return string
+		 */
+		function mep_resolve_confirmation_email_body( $event_id, $global_email_text = '' ) {
+			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
+			$event_email_text = is_string( $event_email_text ) ? $event_email_text : '';
+			$has_status       = metadata_exists( 'post', $event_id, 'mep_event_cc_email_status' );
+			$status           = $has_status ? get_post_meta( $event_id, 'mep_event_cc_email_status', true ) : '';
+			$use_event_body   = $has_status ? 'on' === $status : '' !== trim( $event_email_text );
+
+			if ( $use_event_body && '' !== trim( $event_email_text ) ) {
+				return $event_email_text;
+			}
+
+			if ( '' !== trim( (string) $global_email_text ) ) {
+				return (string) $global_email_text;
+			}
+
+			return class_exists( 'MPWEM_Email_Settings_UI' )
+				? MPWEM_Email_Settings_UI::get_preset_template( 'confirmation' )
+				: '';
+		}
+	}
+
+	if ( ! function_exists( 'mep_normalize_order_status_list' ) ) {
+		/**
+		 * Reduce a stored multicheck value to a plain list of status slugs.
+		 *
+		 * These settings are declared as multicheck, so a saved value is normally
+		 * a slug => slug map. Values written by the addon upgrade routines are
+		 * plain strings instead, which a naive is_array() check throws away. Take
+		 * both shapes, plus a comma separated string, and return one list.
+		 *
+		 * @param mixed $value Raw option value.
+		 * @return array List of sanitized status keys.
+		 */
+		function mep_normalize_order_status_list( $value ) {
+			if ( is_string( $value ) ) {
+				$value = '' === trim( $value ) ? array() : explode( ',', $value );
+			}
+
+			if ( ! is_array( $value ) ) {
+				return array();
+			}
+
+			// Legacy "off" sentinel from older defaults — never a real order status.
+			unset( $value['disable_email'] );
+
+			$statuses = array_map( 'sanitize_key', array_values( $value ) );
+			$statuses = array_filter( $statuses, function ( $status ) {
+				return '' !== $status && 'disable_email' !== $status;
+			} );
+
+			return array_values( array_unique( $statuses ) );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_email_sending_order_statuses' ) ) {
+		/**
+		 * Order statuses that trigger the event confirmation email.
+		 *
+		 * The settings screen renders "Completed" ticked whenever the key has
+		 * never been saved, while every runtime caller defaulted to a
+		 * `disable_email` sentinel. A site that never opened that panel therefore
+		 * showed the trigger as on and sent nothing. Both sides now resolve from
+		 * here: a missing key means the default the screen displays, and a key
+		 * saved empty means the admin deliberately unticked every status.
+		 *
+		 * @return array List of sanitized order status keys.
+		 */
+		function mep_get_email_sending_order_statuses() {
+			$section  = get_option( 'email_setting_sec' );
+			$section  = is_array( $section ) ? $section : array();
+			$statuses = array_key_exists( 'mep_email_sending_order_status', $section )
+				? mep_normalize_order_status_list( $section['mep_email_sending_order_status'] )
+				: array( 'completed' );
+
+			$statuses = apply_filters( 'mep_email_sending_order_statuses', $statuses );
+
+			return is_array( $statuses ) ? array_values( $statuses ) : array();
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_pdf_email_statuses' ) ) {
+		/**
+		 * Order statuses that send the PDF ticket email.
+		 *
+		 * The upgrade routine writes this key as a plain string, while the
+		 * settings screen reads it as a multicheck map and discarded anything
+		 * that was not already an array — so a migrated site saw every box
+		 * unticked while the sender was still bound to the migrated status, and
+		 * saving that panel wiped the binding for good. Normalize instead of
+		 * discarding. There is no invented default: an unset key means off, which
+		 * is what the screen has always shown.
+		 *
+		 * @return array List of sanitized status keys.
+		 */
+		function mep_get_pdf_email_statuses() {
+			$section = get_option( 'mep_pdf_email_settings' );
+			$section = is_array( $section ) ? $section : array();
+			$value   = array_key_exists( 'mep_pdf_email_status', $section ) ? $section['mep_pdf_email_status'] : array();
+
+			return mep_normalize_order_status_list( $value );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_confirmation_email_subject' ) ) {
+		/**
+		 * Subject line for the event confirmation email.
+		 *
+		 * The sender fell back to "Confirmation Email" while the settings screen
+		 * advertised "Event Notification", so an admin who never saved a subject
+		 * was shown a subject their customers never received. The sender's string
+		 * wins because that is what has actually been delivered; the screen now
+		 * resolves the same way instead of the default being written twice.
+		 *
+		 * @return string
+		 */
+		function mep_get_confirmation_email_subject() {
+			$subject = mep_get_option( 'mep_email_subject', 'email_setting_sec', '' );
+			$subject = is_string( $subject ) ? trim( $subject ) : '';
+
+			return '' !== $subject ? $subject : __( 'Confirmation Email', 'mage-eventpress' );
+		}
+	}
+
+	if ( ! function_exists( 'mep_email_sends_on_order_status' ) ) {
+		/**
+		 * Whether the confirmation email is configured to fire on this status.
+		 *
+		 * @param string $order_status WooCommerce/native order status.
+		 * @return bool
+		 */
+		function mep_email_sends_on_order_status( $order_status ) {
+			return in_array( sanitize_key( $order_status ), mep_get_email_sending_order_statuses(), true );
+		}
+	}
+
+	if ( ! function_exists( 'mep_should_send_billing_confirmation' ) ) {
+		/**
+		 * Whether the global confirmation settings allow a billing email now.
+		 *
+		 * @param string $order_status WooCommerce/native order status.
+		 * @return bool
+		 */
+		function mep_should_send_billing_confirmation( $order_status ) {
+			if ( 'enable' !== mep_get_option( 'mep_send_confirmation_to_billing_email', 'email_setting_sec', 'enable' ) ) {
+				return false;
+			}
+
+			return mep_email_sends_on_order_status( $order_status );
+		}
+	}
+
 	// Send Confirmation email to customer
 	if ( ! function_exists( 'mep_event_confirmation_email_sent' ) ) {
 		function mep_event_confirmation_email_sent( $event_id, $sent_email, $order_id, $attendee_id = 0, $event_ticket_info_arr = array() ) {
@@ -819,19 +1002,13 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$global_email_text       = mep_get_option( 'mep_confirmation_email_text', 'email_setting_sec', '' );
 			$global_email_form_email = mep_get_option( 'mep_email_form_email', 'email_setting_sec', '' );
 			$global_email_form_name  = mep_get_option( 'mep_email_form_name', 'email_setting_sec', '' );
-			$global_email_subject    = mep_get_option( 'mep_email_subject', 'email_setting_sec', '' );
 			// Site Info
 			$admin_email = get_option( 'admin_email' );
 			$site_name   = get_option( 'blogname' );
 			$form_email  = ! empty( $global_email_form_email ) ? $global_email_form_email : $admin_email;
 			$form_name   = ! empty( $global_email_form_name ) ? $global_email_form_name : $site_name;
-			$email_sub   = ! empty( $global_email_subject ) ? $global_email_subject : 'Confirmation Email';
-			// Event Specific Text
-			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
-			$email_body       = ! empty( $event_email_text ) ? $event_email_text : $global_email_text;
-			if ( empty( $email_body ) && class_exists( 'MPWEM_Email_Settings_UI' ) ) {
-				$email_body = MPWEM_Email_Settings_UI::get_preset_template( 'confirmation' );
-			}
+			$email_sub   = mep_get_confirmation_email_subject();
+			$email_body = mep_resolve_confirmation_email_body( $event_id, $global_email_text );
 			// Dynamic Content Replace
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter
@@ -929,6 +1106,90 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
+	if ( ! function_exists( 'mep_get_order_meta_map' ) ) {
+		/**
+		 * Billing/payment meta for an order, in the legacy get_post_meta( $order_id ) shape.
+		 *
+		 * Several modules (PDF tickets, PDF invoices, the attendee list, CSV export) were
+		 * written against get_post_meta( $order_id ), which returns [ key => [ 0 => value ] ].
+		 * That only reaches an order while WooCommerce keeps orders in wp_posts. With
+		 * High-Performance Order Storage the order lives in wp_wc_orders and the very same
+		 * call returns an empty array, blanking every billing line those modules print.
+		 *
+		 * Rebuilding the identical array shape from the order object keeps all of those call
+		 * sites — and their array_key_exists() guards — working under either storage engine.
+		 * Native (non-WooCommerce) orders are real posts, so they still fall through to
+		 * get_post_meta().
+		 *
+		 * @param int|string $order_id Order id.
+		 * @return array Meta keyed exactly like get_post_meta( $order_id ).
+		 */
+		function mep_get_order_meta_map( $order_id ) {
+			$order = $order_id && function_exists( 'wc_get_order' ) ? wc_get_order( $order_id ) : false;
+			if ( ! $order instanceof WC_Abstract_Order ) {
+				$meta = $order_id ? get_post_meta( $order_id ) : array();
+				return is_array( $meta ) ? $meta : array();
+			}
+			$fields = array(
+				'_billing_first_name'   => $order->get_billing_first_name(),
+				'_billing_last_name'    => $order->get_billing_last_name(),
+				'_billing_company'      => $order->get_billing_company(),
+				'_billing_address_1'    => $order->get_billing_address_1(),
+				'_billing_address_2'    => $order->get_billing_address_2(),
+				'_billing_city'         => $order->get_billing_city(),
+				'_billing_state'        => $order->get_billing_state(),
+				'_billing_postcode'     => $order->get_billing_postcode(),
+				'_billing_country'      => $order->get_billing_country(),
+				'_billing_email'        => $order->get_billing_email(),
+				'_billing_phone'        => $order->get_billing_phone(),
+				'_payment_method'       => $order->get_payment_method(),
+				'_payment_method_title' => $order->get_payment_method_title(),
+				'_customer_user'        => $order->get_customer_id(),
+				'_order_total'          => $order->get_total(),
+				'_order_currency'       => $order->get_currency(),
+			);
+			$order_meta = array();
+			foreach ( $fields as $key => $value ) {
+				// A field the order does not carry gets no key at all, which is exactly what
+				// the array_key_exists() guards at the call sites test before printing a row.
+				if ( $value !== '' && $value !== null ) {
+					$order_meta[ $key ] = array( (string) $value );
+				}
+			}
+			// Custom meta the order carries as well (billing_vat and friends), serialized the
+			// same way get_post_meta() hands back non-scalar values.
+			foreach ( $order->get_meta_data() as $meta ) {
+				$data = $meta->get_data();
+				$key  = isset( $data['key'] ) ? $data['key'] : '';
+				if ( $key === '' || isset( $order_meta[ $key ] ) ) {
+					continue;
+				}
+				$order_meta[ $key ] = array( is_scalar( $data['value'] ) ? (string) $data['value'] : maybe_serialize( $data['value'] ) );
+			}
+			return $order_meta;
+		}
+	}
+	if ( ! function_exists( 'mep_attendee_create_last_error' ) ) {
+		/**
+		 * Reason the last attendee insert failed, for the caller to report or log.
+		 *
+		 * mep_attendee_create() returns a bare false when wp_insert_post() refuses the
+		 * post, which told nobody anything: at checkout the attendee was lost silently and
+		 * the seat was never counted, and the sync screen could only say "please reload and
+		 * try again". The WP_Error is kept here so the reason survives the boolean return.
+		 *
+		 * @param WP_Error|null $error Pass a WP_Error to record one, or nothing to read it.
+		 * @return string Empty when the last insert succeeded or nothing has run yet.
+		 */
+		function mep_attendee_create_last_error( $error = null ) {
+			static $last = '';
+			if ( ! is_null( $error ) ) {
+				$last = is_wp_error( $error ) ? $error->get_error_code() . ': ' . $error->get_error_message() : (string) $error;
+			}
+
+			return $last;
+		}
+	}
 	if ( ! function_exists( 'mep_attendee_create' ) ) {
 		function mep_attendee_create( $type, $order_id, $event_id, $_user_info = array(), $force_order_status = 'no' ) {
 			// Getting an instance of the order object
@@ -992,10 +1253,22 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				'post_type'     => 'mep_events_attendees'  //'post',page' or use a custom post type if you want to
 			);
 			//SAVE THE POST
-			$pid = wp_insert_post( $new_post );
+			// $wp_error = true so a refused insert explains itself instead of returning 0.
+			$pid = wp_insert_post( $new_post, true );
 			if ( ! $pid || is_wp_error( $pid ) ) {
+				mep_attendee_create_last_error( is_wp_error( $pid ) ? $pid : new WP_Error( 'mep_attendee_not_created', __( 'WordPress did not create the attendee record.', 'mage-eventpress' ) ) );
+				// A lost attendee is also a lost seat: sold counts are read from these posts,
+				// so a silent failure here is what lets an event carry on overselling.
+				if ( function_exists( 'wc_get_logger' ) ) {
+					wc_get_logger()->error(
+						sprintf( 'Attendee not created for order %1$s, event %2$s: %3$s', $order_id, $event_id, mep_attendee_create_last_error() ),
+						array( 'source' => 'mage-eventpress' )
+					);
+				}
+
 				return false;
 			}
+			mep_attendee_create_last_error( '' );
 			$pin = $user_id . $order_id . $event_id . $pid;
 			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input( $uname ) );
 			update_post_meta( $pid, 'ea_address_1', mep_prevent_serialized_input( $address ) );
@@ -1011,24 +1284,31 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty );
 			update_post_meta( $pid, 'ea_ticket_price', mep_get_ticket_price_by_event( $event_id, $ticket_type, 0 ) );
 			update_post_meta( $pid, 'ea_ticket_order_amount', $ticket_total_price );
-			update_post_meta( $order_id, 'ea_ticket_qty', $ticket_qty );
-			update_post_meta( $order_id, 'ea_ticket_type', $ticket_type );
-			update_post_meta( $order_id, 'ea_event_id', $event_id );
 			update_post_meta( $pid, 'ea_payment_method', $payment_method );
 			update_post_meta( $pid, 'ea_event_name', get_the_title( $event_id ) );
 			update_post_meta( $pid, 'ea_event_id', $event_id );
 			update_post_meta( $pid, 'ea_order_id', $order_id );
 			update_post_meta( $pid, 'ea_user_id', $user_id );
 			update_post_meta( $pid, 'mep_checkin', 'No' );
-			update_post_meta( $order_id, 'ea_user_id', $user_id );
-			update_post_meta( $order_id, 'order_type_name', 'mep_events' );
 			update_post_meta( $pid, 'ea_ticket_no', $pin );
 			update_post_meta( $pid, 'ea_event_date', mep_normalize_event_date_value( $event_date ) );
 			if ( $force_order_status == 'yes' ) {
 				update_post_meta( $pid, 'ea_order_status', $order_status );
 			}
 			update_post_meta( $pid, 'ea_flag', 'checkout_processed' );
-			update_post_meta( $order_id, 'ea_order_status', $order_status );
+			// Order-level markers, written through the order object rather than
+			// update_post_meta( $order_id, ... ). Once High-Performance Order Storage is on
+			// the order lives in wp_wc_orders, so a post-meta write lands on the hidden
+			// shop_order_placehold post and can never be read back — which is why the
+			// Google Sheets sync, whose wc_get_orders() meta_query filters on
+			// order_type_name, silently found no orders to sync on HPOS sites.
+			$order->update_meta_data( 'ea_ticket_qty', $ticket_qty );
+			$order->update_meta_data( 'ea_ticket_type', $ticket_type );
+			$order->update_meta_data( 'ea_event_id', $event_id );
+			$order->update_meta_data( 'ea_user_id', $user_id );
+			$order->update_meta_data( 'order_type_name', 'mep_events' );
+			$order->update_meta_data( 'ea_order_status', $order_status );
+			$order->save_meta_data();
 			$hooking_data = apply_filters( 'mep_event_attendee_dynamic_data', array(), $pid, $type, $order_id, $event_id, $_user_info );
 			if ( is_array( $hooking_data ) && sizeof( $hooking_data ) > 0 ) {
 				foreach ( $hooking_data as $_data ) {
@@ -1045,6 +1325,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					do_action( 'mep_attendee_upload_file_save', $event_id, $_user_info, $_field );
 				}
 			} // End User Form builder data update loop
+
+			// Callers (the Pro "Sync Attendee Data" tool) need the new id to tell a real insert
+			// from a failed one; without it every successful sync was reported as a failure.
+			return $pid;
 		}
 	}
 	if ( ! function_exists( 'mep_rsvp_attendee_create' ) ) {
@@ -1216,23 +1500,169 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $extra_meta;
 		}
 	}
+	if ( ! function_exists( 'mep_find_order_extra_service' ) ) {
+		/**
+		 * The extra-service record already written for one service on one order line.
+		 *
+		 * @param int    $order_id     Order id.
+		 * @param int    $event_id     Event id.
+		 * @param string $service_name Service name.
+		 * @param string $event_date   Event date the service was bought for.
+		 * @param int    $item_id      Order item id, 0 when the caller does not know it.
+		 * @return int Post id, or 0 when nothing is recorded yet.
+		 */
+		function mep_find_order_extra_service( $order_id, $event_id, $service_name, $event_date, $item_id = 0 ) {
+			$meta_query = array(
+				'relation' => 'AND',
+				array( 'key' => 'ea_extra_service_order', 'value' => $order_id ),
+				array( 'key' => 'ea_extra_service_event', 'value' => $event_id ),
+				array( 'key' => 'ea_extra_service_name', 'value' => $service_name ),
+				array( 'key' => 'ea_extra_service_event_date', 'value' => (string) $event_date ),
+			);
+			if ( $item_id ) {
+				// This line's own record, or one written before the item id was stored.
+				$meta_query[] = array(
+					'relation' => 'OR',
+					array( 'key' => 'ea_extra_service_item_id', 'value' => $item_id ),
+					array( 'key' => 'ea_extra_service_item_id', 'compare' => 'NOT EXISTS' ),
+				);
+			}
+			$ids = get_posts( array(
+				'post_type'        => 'mep_extra_service',
+				'post_status'      => 'any',
+				'posts_per_page'   => -1,
+				'fields'           => 'ids',
+				'orderby'          => 'ID',
+				'order'            => 'ASC',
+				'no_found_rows'    => true,
+				'suppress_filters' => true,
+				'meta_query'       => $meta_query,
+			) );
+			if ( ! $ids ) {
+				return 0;
+			}
+			if ( $item_id ) {
+				foreach ( $ids as $id ) {
+					if ( (int) get_post_meta( $id, 'ea_extra_service_item_id', true ) === (int) $item_id ) {
+						return (int) $id;
+					}
+				}
+			}
+			return (int) $ids[0];
+		}
+	}
+	if ( ! function_exists( 'mep_get_order_extra_services' ) ) {
+		/**
+		 * The extra-service posts of an order, without duplicate records.
+		 *
+		 * Before mep_attendee_extra_service_create() became idempotent, every extra
+		 * run of checkout processing inserted the order's services again, so older
+		 * orders carry copies that were never bought (and PDF totals counted them).
+		 * The order lines' _event_extra_service meta is what was actually sold: each
+		 * service keeps as many records as there are lines selling it, and surplus
+		 * copies are dropped. Orders without that line meta (native or legacy
+		 * orders) come back unchanged.
+		 *
+		 * @param int $order_id Order id.
+		 * @return WP_Post[]
+		 */
+		function mep_get_order_extra_services( $order_id ) {
+			$posts = get_posts( array(
+				'post_type'      => 'mep_extra_service',
+				'posts_per_page' => -1,
+				'orderby'        => 'ID',
+				'order'          => 'ASC',
+				'no_found_rows'  => true,
+				'meta_query'     => array(
+					array(
+						'key'     => 'ea_extra_service_order',
+						'value'   => $order_id,
+						'compare' => '=',
+					),
+				),
+			) );
+			$order = function_exists( 'wc_get_order' ) ? wc_get_order( $order_id ) : false;
+			if ( ! $posts || ! is_a( $order, 'WC_Order' ) ) {
+				return $posts;
+			}
+			$sold = array();
+			foreach ( $order->get_items() as $item_id => $item ) {
+				$event_id = wc_get_order_item_meta( $item_id, 'event_id', true );
+				$services = wc_get_order_item_meta( $item_id, '_event_extra_service', true );
+				if ( ! is_array( $services ) ) {
+					continue;
+				}
+				foreach ( $services as $service ) {
+					if ( ! is_array( $service ) || empty( $service['service_name'] ) ) {
+						continue;
+					}
+					$key          = $event_id . '|' . $service['service_name'] . '|' . ( isset( $service['event_date'] ) ? $service['event_date'] : '' );
+					$sold[ $key ] = ( isset( $sold[ $key ] ) ? $sold[ $key ] : 0 ) + 1;
+				}
+			}
+			if ( ! $sold ) {
+				return $posts;
+			}
+			$kept = array();
+			$seen = array();
+			foreach ( $posts as $post ) {
+				$key = get_post_meta( $post->ID, 'ea_extra_service_event', true ) . '|' . get_post_meta( $post->ID, 'ea_extra_service_name', true ) . '|' . get_post_meta( $post->ID, 'ea_extra_service_event_date', true );
+				if ( ! isset( $sold[ $key ] ) ) {
+					$kept[] = $post; // Not traceable to a line (e.g. edited later): leave it alone.
+					continue;
+				}
+				$seen[ $key ] = ( isset( $seen[ $key ] ) ? $seen[ $key ] : 0 ) + 1;
+				if ( $seen[ $key ] <= $sold[ $key ] ) {
+					$kept[] = $post;
+				}
+			}
+			return $kept;
+		}
+	}
 	if ( ! function_exists( 'mep_attendee_extra_service_create' ) ) {
-		function mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service ) {
-			$order        = wc_get_order( $order_id );
+		/**
+		 * Record the extra services bought on one order line.
+		 *
+		 * This runs every time checkout_order_processed() runs for an order, and that
+		 * is more than once: the classic and Store API checkout hooks, the attendee
+		 * repair safety net and re-entering gateways all call it. Attendees are
+		 * deleted and rebuilt on each pass, but these posts were only ever inserted,
+		 * so each extra pass duplicated the order's services on the PDF ticket, the
+		 * reports, the exports and the service stock count. A service already
+		 * recorded for the same order line is now updated in place instead.
+		 *
+		 * @param int   $order_id             Order id.
+		 * @param int   $event_id             Event id.
+		 * @param array $_event_extra_service Services from the line's _event_extra_service meta.
+		 * @param int   $item_id              Order item id; 0 when unknown (admin bookings).
+		 */
+		function mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service, $item_id = 0 ) {
+			$order = wc_get_order( $order_id );
+			if ( ! $order ) {
+				return;
+			}
 			$order_status = $order->get_status();
+			$item_id      = absint( $item_id );
 			if ( is_array( $_event_extra_service ) && sizeof( $_event_extra_service ) > 0 ) {
 				foreach ( $_event_extra_service as $extra_serive ) {
 					if ( $extra_serive['service_name'] ) {
-						$uname    = 'Extra Service for ' . get_the_title( $event_id ) . ' Order #' . $order_id;
-						$new_post = array(
-							'post_title'    => $uname,
-							'post_content'  => '',
-							'post_category' => array(),
-							'tags_input'    => array(),
-							'post_status'   => 'publish',
-							'post_type'     => 'mep_extra_service'
-						);
-						$pid      = wp_insert_post( $new_post );
+						$event_date = isset( $extra_serive['event_date'] ) ? $extra_serive['event_date'] : '';
+						$pid        = mep_find_order_extra_service( $order_id, $event_id, $extra_serive['service_name'], $event_date, $item_id );
+						if ( ! $pid ) {
+							$uname    = 'Extra Service for ' . get_the_title( $event_id ) . ' Order #' . $order_id;
+							$new_post = array(
+								'post_title'    => $uname,
+								'post_content'  => '',
+								'post_category' => array(),
+								'tags_input'    => array(),
+								'post_status'   => 'publish',
+								'post_type'     => 'mep_extra_service'
+							);
+							$pid      = wp_insert_post( $new_post );
+						}
+						if ( ! $pid || is_wp_error( $pid ) ) {
+							continue;
+						}
 						update_post_meta( $pid, 'ea_extra_service_name', $extra_serive['service_name'] );
 						update_post_meta( $pid, 'ea_extra_service_qty', $extra_serive['service_qty'] );
 						update_post_meta( $pid, 'ea_extra_service_unit_price', $extra_serive['service_price'] );
@@ -1240,7 +1670,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 						update_post_meta( $pid, 'ea_extra_service_event', $event_id );
 						update_post_meta( $pid, 'ea_extra_service_order', $order_id );
 						update_post_meta( $pid, 'ea_extra_service_order_status', $order_status );
-						update_post_meta( $pid, 'ea_extra_service_event_date', $extra_serive['event_date'] );
+						update_post_meta( $pid, 'ea_extra_service_event_date', $event_date );
+						if ( $item_id ) {
+							update_post_meta( $pid, 'ea_extra_service_item_id', $item_id );
+						}
 					}
 				}
 			}
@@ -1301,7 +1734,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					)
 				)
 			);
-			$loop                     = new WP_Query( $args );
+			$loop = new WP_Query( mep_as_count_query_args( $args ) );
 			return $loop->post_count;
 		}
 	}
@@ -2192,12 +2625,43 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
+	if ( ! function_exists( 'mep_as_count_query_args' ) ) {
+		/**
+		 * Turn a WP_Query argument set into a count-only query.
+		 *
+		 * Several places in this plugin build a full WP_Query — usually with
+		 * `posts_per_page => -1` — and then read nothing but `post_count`. That
+		 * hydrates every matching post object and primes its meta and terms just
+		 * to arrive at a number. On an event with thousands of attendees, and
+		 * called once per ticket type per event date, it is the single most
+		 * expensive thing the plugin does.
+		 *
+		 * Passing the arguments through here keeps the query — every meta_query
+		 * clause, every filter hook that extends it — and only stops the result
+		 * from being hydrated.
+		 *
+		 * @param array $args WP_Query arguments.
+		 * @return array
+		 */
+		function mep_as_count_query_args( $args ) {
+			$args = is_array( $args ) ? $args : array();
+
+			$args['fields']                 = 'ids';
+			$args['no_found_rows']          = true;
+			$args['update_post_meta_cache'] = false;
+			$args['update_post_term_cache'] = false;
+			$args['ignore_sticky_posts']    = true;
+			$args['cache_results']          = false;
+
+			return $args;
+		}
+	}
 	if ( ! function_exists( 'mep_ticket_type_sold' ) ) {
 		function mep_ticket_type_sold( $event_id, $type = '', $date = '' ) {
 			$type             = ! empty( $type ) ? $type : '';
 			$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-			$order_status     = array_values( $_order_status );
+			$order_status     = array_values( array_filter( (array) $_order_status ) ?: array( 'processing', 'completed' ) );
 			if ( count( $order_status ) > 1 ) { // check if more then one tag
 				$order_status_filter['relation'] = 'OR';
 				foreach ( $order_status as $tag ) { // create a LIKE-comparison for every single tag
@@ -2234,7 +2698,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$order_status_filter
 				)
 			);
-			$loop        = new WP_Query( $args );
+			$loop = new WP_Query( mep_as_count_query_args( $args ) );
 			return $loop->post_count;
 		}
 	}
@@ -2833,6 +3297,49 @@ die();
 				$price[] = mep_get_ticket_type_price_by_name( stripslashes( $ticket ), $event_id );
 			}
 			return $price;
+		}
+	}
+	if ( ! function_exists( 'mep_cart_ticket_type' ) ) {
+		/**
+		 * Cart ticket data for the event being added, in the shape older addons expect.
+		 *
+		 * Deprecated: use MPWEM_Woocommerce::get_cart_ticket_info() and
+		 * ::get_cart_ticket_price().
+		 *
+		 * This function was dropped in the seat-plan rewrite (2025-11), which moved the
+		 * work into those two methods. Addon builds released before that still call it
+		 * from woocommerce_add_to_cart_validation — the seat plan addon below 2.3.x
+		 * calls it twice — and an undefined function on that filter is a fatal error
+		 * that blocks every add to cart on the site, with only a white screen to show
+		 * for it. Kept as a thin wrapper over the current pipeline so the old callers
+		 * and the free plugin agree on the tickets, including anything the
+		 * mep_cart_ticket_type_data_prepare filter adds to them (that is how the seat
+		 * addon puts seat_name on each ticket, which is exactly what it reads back).
+		 *
+		 * @param string $type        'ticket_type' ( default ), 'ticket_price' or 'validation_data'.
+		 * @param float  $total_price Running total the ticket prices are added to.
+		 * @param int    $product_id  Event id.
+		 * @return array|float Ticket rows, the new total, or the validation rows.
+		 */
+		function mep_cart_ticket_type( $type = 'ticket_type', $total_price = 0, $product_id = 0 ) {
+			$ticket_info = class_exists( 'MPWEM_Woocommerce' ) ? MPWEM_Woocommerce::get_cart_ticket_info( $product_id ) : array();
+			$ticket_info = is_array( $ticket_info ) ? $ticket_info : array();
+			if ( 'ticket_price' === $type ) {
+				$price = class_exists( 'MPWEM_Woocommerce' ) ? MPWEM_Woocommerce::get_cart_ticket_price( $ticket_info ) : 0;
+
+				return (float) $total_price + (float) $price;
+			}
+			if ( 'validation_data' === $type ) {
+				$validate = array();
+				foreach ( array_values( $ticket_info ) as $index => $info ) {
+					$validate[ $index ]['validation_ticket_qty'] = is_array( $info ) && array_key_exists( 'ticket_qty', $info ) ? (int) $info['ticket_qty'] : 0;
+					$validate[ $index ]['event_id']              = $product_id;
+				}
+
+				return $validate;
+			}
+
+			return $ticket_info;
 		}
 	}
 	if ( ! function_exists( 'mep_get_user_custom_field_ids' ) ) {
@@ -5199,6 +5706,12 @@ die();
 	/******************** Remove upper function after 2025********************** event_start_datetime*/
 	add_action( 'mpwem_expired_event_notice_after', 'mpwem_expired_event_notice_after' );
 	function mpwem_expired_event_notice_after( $event_id ) {
+		// An undated event has no start/end datetime by design. Without this guard the
+		// empty datetimes compare as long past and every undated event would advertise
+		// itself as "Expired".
+		if ( MPWEM_Global_Function::is_undated_event( $event_id ) ) {
+			return;
+		}
 		$start_datetime     = get_post_meta( $event_id, 'event_start_datetime', true );
 		$end_date           = get_post_meta( $event_id, 'event_expire_datetime', true );
 		$total_sold         = MPWEM_Functions::get_total_sold( $event_id );
@@ -5225,27 +5738,46 @@ die();
 
 		$formatted = MPWEM_Global_Function::date_format( $expired_datetime, 'full', $event_id );
 		?>
-		<div class="mpwem-expired-card">
-			<div class="mpwem-expired-title">
-				<?php if ( $is_expired ) : ?>
-					❌ <?php _e( 'Event Expired', 'mage-eventpress' ); ?>
-				<?php else : ?>
-					🚫 <?php _e( 'Registration Closed', 'mage-eventpress' ); ?>
-				<?php endif; ?>
-			</div>        
-			<div class="mpwem-expired-date">
-				<?php if ( $is_expired ) : ?>
-					<?php _e( 'This event expired on', 'mage-eventpress' ); ?>
-				<span class="mpwem-date-highlight">
-					<?php echo esc_html( $formatted ); ?>
+		<div class="mpwem-expired-card<?php echo $is_expired ? ' is-expired' : ' is-closed'; ?>" role="status" aria-live="polite">
+			<div class="mpwem-expired-card__inner">
+				<span class="mpwem-expired-card__icon" aria-hidden="true">
+					<?php if ( $is_expired ) : ?>
+						<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="3" y="4" width="18" height="18" rx="2"></rect>
+							<path d="M16 2v4M8 2v4M3 10h18"></path>
+							<path d="M10 14l4 4M14 14l-4 4"></path>
+						</svg>
+					<?php else : ?>
+						<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="5" y="11" width="14" height="10" rx="2"></rect>
+							<path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+						</svg>
+					<?php endif; ?>
 				</span>
-				<?php else : ?>
-					<?php _e( 'Registration for this event closed', 'mage-eventpress' ); ?>
-				<?php endif; ?>        
-			</div>
-			<div class="mpwem-total-sold-badge">
-				🎟 <?php _e( 'Total tickets sold', 'mage-eventpress' ); ?>:
-				<?php echo esc_html( $total_sold ); ?>
+				<div class="mpwem-expired-card__body">
+					<span class="mpwem-expired-status">
+						<?php echo $is_expired ? esc_html__( 'Expired', 'mage-eventpress' ) : esc_html__( 'Closed', 'mage-eventpress' ); ?>
+					</span>
+					<div class="mpwem-expired-title">
+						<?php if ( $is_expired ) : ?>
+							<?php esc_html_e( 'This event has ended', 'mage-eventpress' ); ?>
+						<?php else : ?>
+							<?php esc_html_e( 'Registration is closed', 'mage-eventpress' ); ?>
+						<?php endif; ?>
+					</div>
+					<div class="mpwem-expired-date">
+						<?php if ( $is_expired ) : ?>
+							<?php esc_html_e( 'Ended on', 'mage-eventpress' ); ?>
+							<span class="mpwem-date-highlight"><?php echo esc_html( $formatted ); ?></span>
+						<?php else : ?>
+							<?php esc_html_e( 'Ticket sales are no longer available for this event.', 'mage-eventpress' ); ?>
+						<?php endif; ?>
+					</div>
+					<div class="mpwem-total-sold-badge">
+						<?php esc_html_e( 'Tickets sold', 'mage-eventpress' ); ?>
+						<strong><?php echo esc_html( $total_sold ); ?></strong>
+					</div>
+				</div>
 			</div>
 		</div>
 		<?php
@@ -5470,12 +6002,7 @@ function mep_change_date_status() {
                         }
                     }
                 }
-                $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
-                $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
-                $url_date=$url_date?:$url_date_2;
-                $url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
-                $date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
-                $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+                $url_date = MPWEM_Functions::get_requested_date();
                 $all_dates   = MPWEM_Functions::get_dates( $event_id );
                 $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
                 $upcoming_date                           =isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';
@@ -5823,7 +6350,7 @@ function mep_change_date_status() {
                     )
                 );
             }
-            $loop = new WP_Query( $args );
+            $loop = new WP_Query( mep_as_count_query_args( $args ) );
             return $loop->post_count;
         }
     }
@@ -5833,7 +6360,10 @@ function mep_change_date_status() {
         $global_qty_status       = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
         $event_global_qty_status = get_post_meta( $event_id, 'enable_global_qty', true ) ? get_post_meta( $event_id, 'enable_global_qty', true ) : 'off';
         $recurring               = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-        if ( $recurring == 'no' && $global_qty_status == 'yes' && $event_global_qty_status == 'on' ) {
+        // mep_gq_type is 'global' ("Full Event Base") or 'date_wise' ("Particular Date Wise") -
+        // never 'yes'/'no' - so comparing against 'yes' here always evaluated false, making this
+        // Single Event override permanently dead regardless of the admin's Global Quantity setting.
+        if ( $recurring == 'no' && $global_qty_status == 'global' && $event_global_qty_status == 'on' ) {
             $total_seat = get_post_meta( $event_id, 'mep_gq_total_seat', true ) ? get_post_meta( $event_id, 'mep_gq_total_seat', true ) : $total_seat;
         }
         return $total_seat;
@@ -5887,9 +6417,12 @@ function mep_change_date_status() {
     }
     add_filter( 'mep_event_total_seat_count', 'mep_gq_modifiy_event_total_seat_label', 90, 2 );
     function mep_gq_modifiy_event_total_seat_label( $total_left, $post_id ) {
+        // enable_global_qty is 'on'/'off' (see save_global_quantity()) - never 'yes', so this
+        // comparison always evaluated false, same copy-paste mistake as
+        // mep_gq_modifiy_event_total_seat() above.
         $event_global_qty_status = get_post_meta( $post_id, 'enable_global_qty', true ) ? get_post_meta( $post_id, 'enable_global_qty', true ) : 'off';
         $count_datewise_gq       = mep_gq_check_datewise_data( $post_id );
-        $total_left_gq           = $event_global_qty_status == 'yes' || $count_datewise_gq > 0 ? 1 : $total_left;
+        $total_left_gq           = $event_global_qty_status == 'on' || $count_datewise_gq > 0 ? 1 : $total_left;
         return $total_left_gq;
     }
     add_filter( 'mep_total_available_seat', 'mep_gq_modifiy_event_ticket_type_total_seat', 90, 4 );

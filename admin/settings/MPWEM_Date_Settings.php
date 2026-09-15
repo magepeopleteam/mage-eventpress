@@ -14,14 +14,54 @@
 			public function date_time_tab( $event_id, $event_infos = [] ) {
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_date_settings" data-tab-item="#mpwem_date_settings">
-					<?php $this->setting_head( $event_id ); ?>
-					<?php $this->normal_date( $event_id ); ?>
-					<?php $this->particular_section( $event_id ); ?>
-					<?php $this->repeat_section( $event_id ); ?>
-					<?php $this->event_date_format( $event_id, $event_infos ); ?>
+					<?php $this->no_date_switch( $event_id ); ?>
+                    <div class="mpwem_date_required_area">
+						<?php $this->setting_head( $event_id ); ?>
+						<?php $this->normal_date( $event_id ); ?>
+						<?php $this->particular_section( $event_id ); ?>
+						<?php $this->repeat_section( $event_id ); ?>
+						<?php $this->event_date_format( $event_id, $event_infos ); ?>
+                    </div>
                 </div>
 				<?php
 				//echo '<pre>';print_r($meta_values);echo'</pre>';
+			}
+			/**
+			 * "Undated event" switch.
+			 *
+			 * Some events (open-ended announcements, permanent exhibitions, "coming soon"
+			 * listings) have no date at all, but a start/end date+time used to be required
+			 * before an event could be published. Turning this on drops that requirement:
+			 * the date fields are hidden and cleared on save, the ticket/registration box
+			 * is not rendered on the details page, and the event still appears in the
+			 * event lists (see MPWEM_Query). Defaults to "no", so every existing event
+			 * keeps behaving exactly as before.
+			 *
+			 * Lives in the shared Date & Time panel, so it shows in the Classic editor tab
+			 * and in the Modern wizard's Date step (which moves this same panel into place).
+			 */
+			public function no_date_switch( $event_id ) {
+				$no_date     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_no_date', 'no' );
+				$is_no_date  = $no_date === 'yes';
+				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				?>
+                <div class="_layout_default_xs_mp_zero mpwem_no_date_area" style="overflow: visible;">
+                    <div class="_bg_light_padding">
+                        <h4><?php esc_html_e( 'Undated Event', 'mage-eventpress' ); ?></h4>
+                        <span class="_mp_zero"><?php echo esc_html( sprintf( /* translators: %s: the site's label for events, e.g. "Events". */ __( 'Publish this %s without any date and time', 'mage-eventpress' ), $event_label ) ); ?></span>
+                    </div>
+                    <div class="_padding_bt">
+                        <div class="_justify_between_align_center_wrap">
+                            <label for="mpwem_event_no_date"><span class="_mr"><?php esc_html_e( 'This event has no date & time', 'mage-eventpress' ); ?></span></label>
+                            <label class="round_switch_label">
+                                <input type="checkbox" name="mep_event_no_date" id="mpwem_event_no_date" value="yes" data-close-target=".mpwem_date_required_area" <?php checked( $is_no_date ); ?>>
+                                <span class="round_switch"></span>
+                            </label>
+                        </div>
+                        <span class="label-text"><?php esc_html_e( 'Turn this on to publish the event without setting a date or time. The date & time fields below are ignored, and the ticket / registration section is hidden on the event details page. All other event information is still shown, and the event still appears in the event lists.', 'mage-eventpress' ); ?></span>
+                    </div>
+                </div>
+				<?php
 			}
 			public function setting_head( $event_id ) {
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );

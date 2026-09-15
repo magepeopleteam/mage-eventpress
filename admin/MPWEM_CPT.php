@@ -170,6 +170,25 @@
 					'show_in_rest'        => false,
 				);
 				register_post_type( 'mep_rsvp_responses', $rsvp_args );
+
+				// Enquiries submitted from Announcement-mode events. Private storage only:
+				// the records are read through Events -> Enquiries, never on the frontend.
+				register_post_type( 'mep_event_enquiry', array(
+					'labels'              => array(
+						'name'          => __( 'Enquiries', 'mage-eventpress' ),
+						'singular_name' => __( 'Enquiry', 'mage-eventpress' ),
+					),
+					'public'              => false,
+					'has_archive'         => false,
+					'exclude_from_search' => true,
+					'publicly_queryable'  => false,
+					'show_ui'             => false,
+					'show_in_menu'        => false,
+					'supports'            => array( 'title' ),
+					'capability_type'     => 'post',
+					'map_meta_cap'        => true,
+					'show_in_rest'        => false,
+				) );
 			}
 			public function posts_column( $columns ) {
 				unset( $columns['date'] );

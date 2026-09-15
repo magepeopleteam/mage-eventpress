@@ -19,7 +19,7 @@ function mep_event_analytics_admin_menu() {
 		'edit.php?post_type=mep_events',
 		__( 'Analytics', 'mage-eventpress' ),
 		'<span style="color:#32c1a4">Analytics</span>',
-		'manage_options',
+		MPWEM_Global_Function::get_shop_manager_capability(),
 		'mep_event_analytics_page',
 		'mep_event_analytics_page'
 	);
@@ -181,7 +181,7 @@ function mep_analytics_detect_source() {
 function mep_analytics_get_order_statuses() {
 	$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 	$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-	$order_status     = array_values( $_order_status );
+	$order_status     = array_values( array_filter( (array) $_order_status ) ?: array( 'processing', 'completed' ) );
 	return array_map( function( $s ) {
 		return strpos( $s, 'wc-' ) === 0 ? substr( $s, 3 ) : $s;
 	}, $order_status );
@@ -508,6 +508,9 @@ function mep_analytics_collect_from_orders( $events, $start_ts, $end_ts, $status
 add_action( 'wp_ajax_mep_get_analytics_data', 'mep_get_analytics_data' );
 function mep_get_analytics_data() {
 	check_ajax_referer( 'mep_analytics_nonce', 'nonce' );
+	if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+		wp_send_json_error( 'Unauthorized', 403 );
+	}
 
 	// Parse inputs
 	$start_date = isset( $_POST['start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['start_date'] ) ) : date( 'Y-m-d', strtotime( '-30 days' ) );
@@ -578,6 +581,9 @@ function mep_get_analytics_data() {
 add_action( 'wp_ajax_mep_export_analytics_csv', 'mep_export_analytics_csv' );
 function mep_export_analytics_csv() {
 	check_ajax_referer( 'mep_analytics_nonce', 'nonce' );
+	if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+		wp_die( 'Unauthorized', 403 );
+	}
 
 	$start_date = isset( $_POST['start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['start_date'] ) ) : date( 'Y-m-d', strtotime( '-30 days' ) );
 	$end_date   = isset( $_POST['end_date'] ) ? sanitize_text_field( wp_unslash( $_POST['end_date'] ) ) : date( 'Y-m-d' );

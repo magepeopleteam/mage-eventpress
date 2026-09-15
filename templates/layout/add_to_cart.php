@@ -31,7 +31,7 @@
 	<?php if ( is_admin() && str_contains( wp_get_referer(), 'backend_order' ) ) { ?>
 		<?php do_action( 'mpwem_bo_hidden', $event_id ); ?>
         <button type="submit" class="_button_theme">
-			<?php esc_html_e( 'Book Now ', 'mage-eventpress' ); ?>
+			<?php esc_html_e( 'Book Now', 'mage-eventpress' ); ?>
         </button>
 	<?php } else {
         // Use the WooCommerce checkout flow only when WooCommerce is active AND the

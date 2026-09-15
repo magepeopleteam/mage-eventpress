@@ -32,20 +32,28 @@ if ( ! class_exists( 'class_icon_popup' ) ) {
             <script>
                 jQuery(document).ready(function(){
                             // Global Icon Popup
-                            jQuery('.mep_global_icon_lib_btn').click(function (e) { 
+                            jQuery('.mep_global_icon_lib_btn').click(function (e) {
+                            e.preventDefault();
                             let remove_active_label 	= jQuery('#mep_global_icon_list_wrapper label').removeClass('selected');
                             let data_key 				= jQuery(this).attr('data-key');
                             jQuery("#mep_global_icon_list_wrapper").attr('data-key', data_key);
                             jQuery('#mep_search_icon').val('');
                             jQuery('.mep_global_icon_list_body label').show();
                             jQuery("#mep_global_icon_list_wrapper").mage_modal({
-                                escapeClose: false,
-                                clickClose: false,
+                                escapeClose: true,
+                                clickClose: true,
                                 showClose: false
                             });
-        
-                            // Selected Global Icon Action
-                            jQuery('#mep_global_icon_list_wrapper label').click(function (e) {
+                        });
+                        // End Global Icon Popup
+
+                        // Selected Global Icon Action
+                        // Delegated and bound once. It used to be bound inside the button
+                        // handler above, which added another copy to all 1,100+ labels every
+                        // time the library was opened, and picking an icon left the modal
+                        // standing - with escapeClose and clickClose both off there was then
+                        // no way back to the settings form to save the choice.
+                        jQuery(document).on('click', '#mep_global_icon_list_wrapper label', function (e) {
                                 e.stopImmediatePropagation();
                                 let selected_label 		= jQuery(this);
                                 let selected_val 		= jQuery('input', this).val();
@@ -55,10 +63,10 @@ if ( ! class_exists( 'class_icon_popup' ) ) {
                                 jQuery(selected_label).addClass('selected');
                                 jQuery('.mep_global_settings_icon[data-key="'+selected_data_key+'"]').val(selected_val);
                                 jQuery('.mep_global_settings_icon_preview[data-key="'+selected_data_key+'"]').append('<i class="'+selected_val+'"></i>');
-    
-                            });				
+                                if (jQuery.mage_modal && jQuery.mage_modal.isActive()) {
+                                    jQuery.mage_modal.close();
+                                }
                         });
-                        // End Global Icon Popup
                         
                         // Icon Filter 
                             jQuery('#mep_search_icon').keyup(function (e) { 

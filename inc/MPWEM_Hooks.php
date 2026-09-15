@@ -23,6 +23,7 @@
 				add_action( 'mpwem_time', [ $this, 'time' ], 10, 5 );
 				add_action( 'mpwem_registration', [ $this, 'registration' ], 10, 4 );
 				add_action( 'mpwem_registration_content', [ $this, 'registration_content' ], 10, 4 );
+				add_action( 'mpwem_announcement', [ $this, 'announcement' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_date_list', [ $this, 'event_date_list' ], 10, 3 );
 				add_action( 'mpwem_date_only', [ $this, 'date_only' ], 10, 2 );
@@ -47,6 +48,8 @@
 				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
 				add_action( 'wp_ajax_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
 				add_action( 'wp_ajax_nopriv_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
+				add_action( 'wp_ajax_mep_submit_enquiry', array( $this, 'mep_submit_enquiry' ) );
+				add_action( 'wp_ajax_nopriv_mep_submit_enquiry', array( $this, 'mep_submit_enquiry' ) );
 				/***********************/
 				add_action( 'mpwem_seat_status', [ $this, 'seat_status' ], 10, 3 );
 				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
@@ -78,12 +81,24 @@
 					} );
 				}
 				if ( $taxonomies ) {
+					$tax_key = sanitize_html_class( str_replace( 'mep_', '', (string) $taxonomy_name ) );
+					$tax_key = $tax_key ? $tax_key : 'tax';
+					$aria_labels = array(
+						'cat' => __( 'Categories', 'mage-eventpress' ),
+						'org' => __( 'Organizers', 'mage-eventpress' ),
+						'tag' => __( 'Tags', 'mage-eventpress' ),
+					);
+					$aria_label = isset( $aria_labels[ $tax_key ] ) ? $aria_labels[ $tax_key ] : __( 'Filter', 'mage-eventpress' );
 					?>
-                    <div class="mep-events-cats-list">
-                        <div class="mep-event-cat-controls">
-                            <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button>
+                    <div class="mep-events-cats-list mep-events-cats-list--<?php echo esc_attr( $tax_key ); ?>">
+                        <div class="mep-event-cat-controls" role="toolbar" aria-label="<?php echo esc_attr( $aria_label ); ?>">
+                            <button type="button" class="mep-cat-control mixitup-control-active" data-mixitup-control data-filter="all">
+                                <span class="mep-cat-control__text"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></span>
+                            </button>
 							<?php foreach ( $taxonomies as $_terms ) { ?>
-                                <button type="button" class="mep-cat-control" data-mixitup-control data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button>
+                                <button type="button" class="mep-cat-control" data-mixitup-control data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>">
+                                    <span class="mep-cat-control__text"><?php echo esc_html( $_terms->name ); ?></span>
+                                </button>
 							<?php } ?>
                         </div>
                     </div>
@@ -98,6 +113,7 @@
 			public function time( $event_id, $all_dates = [], $all_times = [], $date = '', $single = true ): void { require MPWEM_Functions::template_path( 'layout/time.php' ); }
 			public function registration( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/registration.php' ); }
 			public function registration_content( $event_id, $all_dates = [], $all_times = [], $date = '' ): void { require MPWEM_Functions::template_path( 'layout/registration_content.php' ); }
+			public function announcement( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/announcement.php' ); }
 			/*******************************/
 			public function event_date_list( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
 			public function date_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_only.php' ); }
@@ -389,9 +405,20 @@
 					// Fall back to featured image
 					$thumbnail_url = MPWEM_Global_Function::get_image_url( $event_id, '', 'full' );
 				}
+				$permalink = get_the_permalink( $event_id );
+				$thumb_alt = get_the_title( $event_id );
 				?>
                 <div class="mep_list_thumb mpwem_style">
-                    <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( $thumbnail_url ); ?>"></div>
+					<?php if ( $thumbnail_url ) { ?>
+						<img
+							class="mep_list_thumb_img"
+							src="<?php echo esc_url( $thumbnail_url ); ?>"
+							alt="<?php echo esc_attr( $thumb_alt ); ?>"
+							loading="lazy"
+							decoding="async"
+						/>
+					<?php } ?>
+                    <div data-href="<?php echo esc_url( $permalink ); ?>" data-bg-image="<?php echo esc_url( $thumbnail_url ); ?>"></div>
 					<?php do_action( 'mpwem_list_ribbon', $event_id ); ?>
 				</div>
 				<?php
@@ -421,30 +448,16 @@
                     </div>
 				<?php }
 			}
-			public function list_organizer( $event_infos ) {
-				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
-				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-				$hide_org_list          = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
-				if ( $hide_org_list == 'no' ) {
-					$organizer_name = is_array($event_infos) && array_key_exists( 'organizer_name', $event_infos ) ? $event_infos['organizer_name'] : '';
-					if ( $organizer_name ) {
-						$organizer_title      = is_array($event_infos) && array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
-						$icon_setting_sec     = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
-						$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-						$event_organizer_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
-						?>
-							<div class="list_content upcomming_organizer">
-								<span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span><?php echo esc_html( $organizer_title.' '.$organizer_name ); ?>
-							</div>
-					<?php }
-				}
-			}
+			public function list_organizer( $event_infos ): void { require MPWEM_Functions::template_path( 'layout/list_organizer.php' ); }
 			public function list_price( $event_infos ) {
 				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 				$show_price             = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
-				if ( $show_price == 'yes' ) {
-					$event_id         = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$event_id_for_mode = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$list_reg_status   = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+				// Announcement events sell nothing - printing "Price: 0.00" would be wrong.
+				if ( $show_price == 'yes' && 'announcement' !== $list_reg_status ) {
+					$event_id         = $event_id_for_mode;
 					$ticket_types     = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
 					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
 					?>
@@ -709,7 +722,7 @@
 				$mep_hide_event_hover_btn = is_array($event_list_setting_sec) && array_key_exists( 'mep_hide_event_hover_btn', $event_list_setting_sec ) ? $event_list_setting_sec['mep_hide_event_hover_btn'] : 'no';
 				if ( 'yes' == $mep_hide_event_hover_btn ) { ?>
                     <div class="item_hover_effect">
-                        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php esc_html_e( 'Book Now', 'mage-eventpress' ); ?></a>
+                        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php echo esc_html( MPWEM_Global_Function::is_bookable_event( $event_id ) ? __( 'Book Now', 'mage-eventpress' ) : __( 'View More', 'mage-eventpress' ) ); ?></a>
                     </div>
 				<?php }
 			}
@@ -766,10 +779,11 @@
 
                         //echo '<pre>';print_r($upcoming_date);echo '</pre>';
                         //echo '<pre>';print_r($available);echo '</pre>';
-						if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $available <= 0 ) {
+						$is_undated = MPWEM_Global_Function::is_undated_event( $event_id );
+						if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $available <= 0 && ! $is_undated ) {
 							?>
                             <div class="mepev-ribbon sold-out"><?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div><?php
-						} elseif ( $limited_availability_ribbon == 'yes' && $available > 0 && $available <= $limited_availability_threshold ) {
+						} elseif ( $limited_availability_ribbon == 'yes' && $available > 0 && $available <= $limited_availability_threshold && ! $is_undated ) {
 							?>
                             <div class="mepev-ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div><?php
 						}
@@ -925,6 +939,196 @@
 				} else {
 					wp_send_json_error( array( 'message' => esc_html__( 'Failed to submit RSVP. Please try again.', 'mage-eventpress' ) ) );
 				}
+			}
+			/**
+			 * Store an enquiry ("query") submitted from an Announcement-mode event.
+			 *
+			 * Saves a mep_event_enquiry post (listed under Events -> Enquiries) and emails
+			 * the per-event recipient, falling back to the site admin address.
+			 */
+			public function mep_submit_enquiry() {
+				check_ajax_referer( 'mep_enquiry_nonce', 'nonce' );
+
+				$event_id = isset( $_POST['event_id'] ) ? absint( $_POST['event_id'] ) : 0;
+				$name     = isset( $_POST['enquiry_name'] ) ? sanitize_text_field( wp_unslash( $_POST['enquiry_name'] ) ) : '';
+				$email    = isset( $_POST['enquiry_email'] ) ? sanitize_email( wp_unslash( $_POST['enquiry_email'] ) ) : '';
+				$phone    = isset( $_POST['enquiry_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['enquiry_phone'] ) ) : '';
+				$subject  = isset( $_POST['enquiry_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['enquiry_subject'] ) ) : '';
+				$message  = isset( $_POST['enquiry_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['enquiry_message'] ) ) : '';
+				// Honeypot - only a bot fills a field that is hidden from the page.
+				$honeypot = isset( $_POST['enquiry_website'] ) ? trim( (string) wp_unslash( $_POST['enquiry_website'] ) ) : '';
+
+				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event is no longer available.', 'mage-eventpress' ) ) );
+				}
+				if ( '' !== $honeypot ) {
+					// Answer as if it worked so the bot has nothing to tune against.
+					wp_send_json_success( array( 'message' => esc_html__( 'Thank you! Your enquiry has been sent.', 'mage-eventpress' ) ) );
+				}
+				if ( 'announcement' !== MPWEM_Global_Function::get_event_mode( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Enquiries are not accepted for this event.', 'mage-eventpress' ) ) );
+				}
+				$enquiry_status = get_post_meta( $event_id, 'mep_enquiry_status', true );
+				if ( '' !== $enquiry_status && 'on' !== $enquiry_status ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Enquiries are not accepted for this event.', 'mage-eventpress' ) ) );
+				}
+				if ( '' === $name || '' === $email || '' === $message ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please fill out all required fields.', 'mage-eventpress' ) ) );
+				}
+				if ( ! is_email( $email ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please enter a valid email address.', 'mage-eventpress' ) ) );
+				}
+
+				// Light flood control: one address may not spam the same event.
+				$recent = new WP_Query( array(
+					'post_type'      => 'mep_event_enquiry',
+					'post_status'    => 'publish',
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+					'date_query'     => array( array( 'after' => '1 minute ago' ) ),
+					'meta_query'     => array(
+						'relation' => 'AND',
+						array( 'key' => 'mep_enquiry_event_id', 'value' => $event_id, 'compare' => '=' ),
+						array( 'key' => 'mep_enquiry_email', 'value' => $email, 'compare' => '=' ),
+					),
+				) );
+				if ( $recent->have_posts() ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'You have just sent an enquiry for this event. Please wait a moment before sending another.', 'mage-eventpress' ) ) );
+				}
+
+				$event_title = get_the_title( $event_id );
+				if ( '' === $subject ) {
+					/* translators: %s: event name. */
+					$subject = sprintf( __( 'Enquiry about %s', 'mage-eventpress' ), $event_title );
+				}
+
+				$enquiry_id = wp_insert_post( array(
+					'post_type'    => 'mep_event_enquiry',
+					'post_status'  => 'publish',
+					/* translators: 1: sender name, 2: event name. */
+					'post_title'   => sprintf( __( '%1$s - %2$s', 'mage-eventpress' ), $name, $event_title ),
+					'post_content' => '',
+				), true );
+
+				if ( is_wp_error( $enquiry_id ) || ! $enquiry_id ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Your enquiry could not be sent. Please try again.', 'mage-eventpress' ) ) );
+				}
+
+				update_post_meta( $enquiry_id, 'mep_enquiry_event_id', $event_id );
+				update_post_meta( $enquiry_id, 'mep_enquiry_name', $name );
+				update_post_meta( $enquiry_id, 'mep_enquiry_email', $email );
+				update_post_meta( $enquiry_id, 'mep_enquiry_phone', $phone );
+				update_post_meta( $enquiry_id, 'mep_enquiry_subject', $subject );
+				update_post_meta( $enquiry_id, 'mep_enquiry_message', $message );
+				update_post_meta( $enquiry_id, 'mep_enquiry_status_flag', 'new' );
+
+				$recipient = MPWEM_Global_Function::get_enquiry_recipient( $event_id );
+				if ( $recipient ) {
+					$headers = array(
+						'Content-Type: text/html; charset=UTF-8',
+						'Reply-To: ' . $name . ' <' . $email . '>',
+					);
+					$email_body = $this->mep_build_enquiry_email_html( $event_id, $event_title, $name, $email, $phone, $subject, $message );
+					wp_mail(
+						apply_filters( 'mpwem_enquiry_email_recipient', $recipient, $event_id, $enquiry_id ),
+						apply_filters( 'mpwem_enquiry_email_subject', $subject, $event_id, $enquiry_id ),
+						apply_filters( 'mpwem_enquiry_email_body', $email_body, $event_id, $enquiry_id ),
+						$headers
+					);
+				}
+
+				do_action( 'mpwem_after_enquiry_submitted', $enquiry_id, $event_id );
+
+				$labels = MPWEM_Global_Function::get_enquiry_labels( $event_id );
+				wp_send_json_success( array( 'message' => esc_html( $labels['mep_enquiry_success_msg'] ) ) );
+			}
+			/**
+			 * Branded HTML notification for a submitted enquiry, styled with the
+			 * site's own MagePeople theme color (style_setting_sec.mpev_primary_color)
+			 * so it reads as part of the same product rather than a generic system email.
+			 */
+			private function mep_build_enquiry_email_html( $event_id, $event_title, $name, $email, $phone, $subject, $message ) {
+				$accent      = MPWEM_Global_Function::get_style_settings( 'mpev_primary_color', '#6046FF' );
+				$accent_tint = $this->mep_enquiry_email_tint( $accent, 0.08 );
+				$event_url   = get_permalink( $event_id );
+				$site_name   = get_bloginfo( 'name' );
+				$phone_out   = '' !== $phone ? $phone : __( '(not given)', 'mage-eventpress' );
+				$sent_at     = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+
+				$row = function ( $label, $value_html ) {
+					return '<tr>'
+						. '<td style="padding:9px 0;color:#6b7280;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;width:110px;vertical-align:top;">' . esc_html( $label ) . '</td>'
+						. '<td style="padding:9px 0;color:#111827;font-size:14px;line-height:1.5;">' . $value_html . '</td>'
+						. '</tr>';
+				};
+
+				$rows  = $row( __( 'Name', 'mage-eventpress' ), esc_html( $name ) );
+				$rows .= $row( __( 'Email', 'mage-eventpress' ), '<a href="' . esc_url( 'mailto:' . $email ) . '" style="color:' . esc_attr( $accent ) . ';text-decoration:none;">' . esc_html( $email ) . '</a>' );
+				$rows .= $row( __( 'Phone', 'mage-eventpress' ), esc_html( $phone_out ) );
+				$rows .= $row( __( 'Subject', 'mage-eventpress' ), esc_html( $subject ) );
+
+				$body  = '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>' . esc_html( $subject ) . '</title></head>';
+				$body .= '<body style="margin:0;padding:0;background:#f3f4f6;-webkit-text-size-adjust:100%;">';
+				$body .= '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;"><tr><td align="center">';
+				$body .= '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(17,24,39,0.08);">';
+
+				// Header band — plugin accent color.
+				$body .= '<tr><td style="background:' . esc_attr( $accent ) . ';padding:26px 32px;">'
+					. '<span style="display:block;color:#ffffff;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.85;">' . esc_html__( 'New Event Enquiry', 'mage-eventpress' ) . '</span>'
+					. '<span style="display:block;margin-top:6px;color:#ffffff;font-size:20px;font-weight:600;line-height:1.4;">' . esc_html( $event_title ) . '</span>'
+					. '</td></tr>';
+
+				// Intro + details card.
+				$body .= '<tr><td style="padding:28px 32px 8px;">'
+					. '<p style="margin:0 0 20px;color:#374151;font-size:14px;line-height:1.6;">' . esc_html__( 'Someone submitted an enquiry through your event page. Here are the details:', 'mage-eventpress' ) . '</p>'
+					. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' . esc_attr( $accent_tint ) . ';border-radius:10px;"><tr><td style="padding:18px 22px;">'
+					. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $rows . '</table>'
+					. '</td></tr></table>'
+					. '</td></tr>';
+
+				// Message quote block.
+				$body .= '<tr><td style="padding:20px 32px 8px;">'
+					. '<span style="display:block;margin:0 0 8px;color:#6b7280;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;">' . esc_html__( 'Message', 'mage-eventpress' ) . '</span>'
+					. '<div style="border-left:3px solid ' . esc_attr( $accent ) . ';background:#f9fafb;border-radius:0 8px 8px 0;padding:14px 18px;color:#1f2937;font-size:14px;line-height:1.65;">' . nl2br( esc_html( $message ) ) . '</div>'
+					. '</td></tr>';
+
+				// CTA button.
+				$body .= '<tr><td style="padding:26px 32px 30px;">'
+					. '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:8px;background:' . esc_attr( $accent ) . ';">'
+					. '<a href="' . esc_url( 'mailto:' . $email . '?subject=' . rawurlencode( __( 'Re:', 'mage-eventpress' ) . ' ' . $subject ) ) . '" style="display:inline-block;padding:12px 24px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;border-radius:8px;">' . esc_html__( 'Reply to Sender', 'mage-eventpress' ) . '</a>'
+					. '</td></tr></table>';
+				if ( $event_url ) {
+					$body .= '<p style="margin:14px 0 0;"><a href="' . esc_url( $event_url ) . '" style="color:' . esc_attr( $accent ) . ';font-size:13px;text-decoration:none;">' . esc_html__( 'View event page →', 'mage-eventpress' ) . '</a></p>';
+				}
+				$body .= '</td></tr>';
+
+				// Footer.
+				$body .= '<tr><td style="padding:18px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;">'
+					/* translators: 1: site name, 2: date/time. */
+					. '<p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.5;">' . sprintf( esc_html__( 'Sent via the enquiry form on %1$s on %2$s.', 'mage-eventpress' ), esc_html( $site_name ), esc_html( $sent_at ) ) . '</p>'
+					. '</td></tr>';
+
+				$body .= '</table></td></tr></table></body></html>';
+
+				return $body;
+			}
+			/**
+			 * Tint a hex color toward white for a soft, brand-matched card background
+			 * (rgba mixing keeps this readable across email clients, unlike CSS color-mix()).
+			 */
+			private function mep_enquiry_email_tint( $hex, $alpha ) {
+				$hex = ltrim( (string) $hex, '#' );
+				if ( 3 === strlen( $hex ) ) {
+					$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+				}
+				if ( 6 !== strlen( $hex ) || ! ctype_xdigit( $hex ) ) {
+					$hex = '6046FF';
+				}
+				$r = hexdec( substr( $hex, 0, 2 ) );
+				$g = hexdec( substr( $hex, 2, 2 ) );
+				$b = hexdec( substr( $hex, 4, 2 ) );
+				return 'rgba(' . $r . ', ' . $g . ', ' . $b . ', ' . $alpha . ')';
 			}
 			public function flush_meta_value_transients() {
 				MPWEM_Query::flush_post_meta_value_cache();

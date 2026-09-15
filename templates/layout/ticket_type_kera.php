@@ -150,8 +150,13 @@
 																		<?php if ( $ticket_details ) { ?>
                                                                             <p><?php echo esc_html( $ticket_details ); ?></p>
 																		<?php } ?>
-																		<?php if ( $mep_available_seat == 'on' ) { ?>
-                                                                            <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+																		<?php if ( $mep_available_seat == 'on' ) {
+																			$ticket_capacity = is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+																			$remaining_class = function_exists( 'mep_get_availability_class' )
+																				? mep_get_availability_class( $available, $ticket_capacity )
+																				: ( $available <= 10 ? 'remaining-low' : 'remaining-high' );
+																			?>
+                                                                            <div class="ticket-remaining xtra-item-left <?php echo esc_attr( $remaining_class ); ?>">
                                                                                 <i class="fa-solid fa-ticket"></i> <?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining', 'mage-eventpress' ); ?>
                                                                             </div>
 																		<?php } ?>

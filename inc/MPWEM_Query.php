@@ -49,6 +49,77 @@
 				$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_mep_pmv_%' OR option_name LIKE '_transient_timeout_mep_pmv_%'" );
 			}
 			/**
+			 * Raw-SQL fetch of published mep_events IDs whose upcoming/start
+			 * datetime compares against $now with $etype, using aliased LEFT
+			 * JOINs that filter meta_key in the ON clause. WP_Query's
+			 * meta_query can't do this: a top-level OR containing a nested
+			 * NOT EXISTS clause forces it to join wp_postmeta by post_id alone
+			 * (meta_key filtered only in WHERE) for every branch, so each of
+			 * the ~4 joins matches all ~75 meta rows for that post instead of
+			 * one — multiplying out to a full-table-scan-sized result per
+			 * post. Confirmed on production: this exact WP_Query shape was
+			 * the query examining 1.5B+ rows per execution (Cloudways slow
+			 * query report, Aug 2026); this raw-SQL form runs in ~1ms.
+			 */
+			/**
+			 * LEFT JOIN that exposes the "Undated Event" flag (mep_event_no_date).
+			 *
+			 * An undated event stores no start/upcoming/expiry datetime at all, so every
+			 * date comparison below excludes it. Rather than letting such an event vanish
+			 * from the site, it is matched unconditionally: it appears in BOTH the upcoming
+			 * ("new") and the expired ("old") list. Events saved before this flag existed
+			 * have no such meta row, so the LEFT JOIN yields NULL and nothing changes for
+			 * them.
+			 */
+			private static function undated_join() {
+				global $wpdb;
+				// Dedicated aliases so this can be dropped into any query without
+				// colliding with joins it already has. Each filters meta_key in the ON
+				// clause, so every join matches at most one row per post.
+				return " LEFT JOIN {$wpdb->postmeta} mp_nd ON p.ID = mp_nd.post_id AND mp_nd.meta_key = 'mep_event_no_date'"
+				     . " LEFT JOIN {$wpdb->postmeta} mp_nds ON p.ID = mp_nds.post_id AND mp_nds.meta_key = 'event_start_datetime'"
+				     . " LEFT JOIN {$wpdb->postmeta} mp_ndu ON p.ID = mp_ndu.post_id AND mp_ndu.meta_key = 'event_upcoming_datetime'";
+			}
+			/** SQL mirror of MPWEM_Global_Function::is_undated_event(). */
+			private static function undated_match() {
+				return "( mp_nd.meta_value = 'yes'"
+				     . " OR ( ( mp_nds.meta_value IS NULL OR mp_nds.meta_value = '' )"
+				     . " AND ( mp_ndu.meta_value IS NULL OR mp_ndu.meta_value = '' ) ) )";
+			}
+			private static function get_ids_by_upcoming_expiry( $etype, $compare_value, $include_undated = true ) {
+				global $wpdb;
+				$undated_join  = $include_undated ? self::undated_join() : '';
+				$undated_match = $include_undated ? self::undated_match() . ' OR' : '';
+				return array_map( 'intval', $wpdb->get_col( $wpdb->prepare(
+					"SELECT DISTINCT p.ID FROM {$wpdb->posts} p
+						LEFT JOIN {$wpdb->postmeta} pm_upc ON p.ID = pm_upc.post_id AND pm_upc.meta_key = 'event_upcoming_datetime'
+						LEFT JOIN {$wpdb->postmeta} pm_start ON p.ID = pm_start.post_id AND pm_start.meta_key = 'event_start_datetime'
+						{$undated_join}
+					 WHERE p.post_type = 'mep_events' AND p.post_status = 'publish' AND (
+						{$undated_match}
+						(pm_upc.meta_value IS NOT NULL AND pm_upc.meta_value != '' AND pm_upc.meta_value {$etype} %s)
+						OR
+						((pm_upc.meta_value IS NULL OR pm_upc.meta_value = '') AND pm_start.meta_value {$etype} %s)
+					 )",
+					$compare_value, $compare_value
+				) ) );
+			}
+			private static function get_ids_by_single_expiry_key( $meta_key, $etype, $compare_value, $include_undated = true ) {
+				global $wpdb;
+				// LEFT (not INNER) JOIN so the undated branch can match on its own. For an
+				// event that has the expiry meta this behaves exactly as the INNER JOIN did;
+				// for one that does not, NULL {$etype} %s is NULL, i.e. still no match.
+				$undated_join  = $include_undated ? self::undated_join() : '';
+				$undated_match = $include_undated ? ' OR ' . self::undated_match() : '';
+				return array_map( 'intval', $wpdb->get_col( $wpdb->prepare(
+					"SELECT DISTINCT p.ID FROM {$wpdb->posts} p
+						LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = %s
+						{$undated_join}
+					 WHERE p.post_type = 'mep_events' AND p.post_status = 'publish' AND ( pm.meta_value {$etype} %s{$undated_match} )",
+					$meta_key, $compare_value
+				) ) );
+			}
+			/**
 			 * Term IDs (for the given taxonomy) that have at least one published,
 			 * non-expired event, using the same expiry meta/fallback logic as
 			 * event_list_query()/event_query() so it stays consistent with what
@@ -60,46 +131,10 @@
 				$now                 = current_time( 'mysql' );
 
 				if ( $event_expire_on === 'event_upcoming_datetime' ) {
-					$expire_filter = array(
-						'relation' => 'OR',
-						array(
-							'key'     => 'event_upcoming_datetime',
-							'value'   => $now,
-							'compare' => '>',
-							'type'    => 'DATETIME'
-						),
-						array(
-							'relation' => 'AND',
-							array(
-								'relation' => 'OR',
-								array( 'key' => 'event_upcoming_datetime', 'compare' => 'NOT EXISTS' ),
-								array( 'key' => 'event_upcoming_datetime', 'value' => '', 'compare' => '=' )
-							),
-							array(
-								'key'     => 'event_start_datetime',
-								'value'   => $now,
-								'compare' => '>',
-								'type'    => 'DATETIME'
-							)
-						)
-					);
+					$event_ids = self::get_ids_by_upcoming_expiry( '>', $now );
 				} else {
-					$expire_filter = array(
-						'key'     => $event_expire_on,
-						'value'   => $now,
-						'compare' => '>',
-						'type'    => 'DATETIME'
-					);
+					$event_ids = self::get_ids_by_single_expiry_key( $event_expire_on, '>', $now );
 				}
-
-				$event_ids = get_posts( array(
-					'post_type'      => 'mep_events',
-					'post_status'    => 'publish',
-					'posts_per_page' => -1,
-					'fields'         => 'ids',
-					'no_found_rows'  => true,
-					'meta_query'     => array( $expire_filter ),
-				) );
 
 				if ( empty( $event_ids ) ) {
 					return array();
@@ -131,53 +166,21 @@
 				if($evnt_type=='today'){
 					$now                 = current_time( 'Y-m-d' );
 				}
-				$expire_filter = '';
-				if ( ! empty( $event_expire_on ) ) {
-					if ( $event_expire_on === 'event_upcoming_datetime' ) {
-						// Some selected-date recurring events never get event_upcoming_datetime populated.
-						// In that case fall back to the saved start datetime so expired events still appear.
-						$expire_filter = array(
-							'relation' => 'OR',
-							array(
-								'key'     => 'event_upcoming_datetime',
-								'value'   => $now,
-								'compare' => $etype,
-								'type'    => 'DATETIME'
-							),
-							array(
-								'relation' => 'AND',
-								array(
-									'relation' => 'OR',
-									array(
-										'key'     => 'event_upcoming_datetime',
-										'compare' => 'NOT EXISTS'
-									),
-									array(
-										'key'     => 'event_upcoming_datetime',
-										'value'   => '',
-										'compare' => '='
-									)
-								),
-								array(
-									'key'     => 'event_start_datetime',
-									'value'   => $now,
-									'compare' => $etype,
-									'type'    => 'DATETIME'
-								)
-							)
-						);
-					} else {
-						$expire_filter = array(
-							'key'     => $event_expire_on,
-							'value'   => $now,
-							'compare' => $etype,
-							'type'    => 'DATETIME'
-						);
-					}
+				global $wpdb;
+				$compare_value = ( $etype === 'LIKE' ) ? '%' . $wpdb->esc_like( $now ) . '%' : $now;
+
+				// Undated events belong in the upcoming and expired lists, but not in the
+				// "today" list - that one answers a question about a specific date.
+				$include_undated = ( $evnt_type !== 'today' );
+				if ( $event_expire_on === 'event_upcoming_datetime' ) {
+					// Some selected-date recurring events never get event_upcoming_datetime populated.
+					// In that case fall back to the saved start datetime so expired events still appear.
+					$all_ids = self::get_ids_by_upcoming_expiry( $etype, $compare_value, $include_undated );
+				} else {
+					$all_ids = self::get_ids_by_single_expiry_key( $event_expire_on, $etype, $compare_value, $include_undated );
 				}
-				$meta_query = array();
-				if ( ! empty( $expire_filter ) ) {
-					$meta_query[] = $expire_filter;
+				if ( empty( $all_ids ) ) {
+					$all_ids = array( 0 );
 				}
 
 				if ( $event_order_by === 'meta_value' || $event_order_by === 'meta_value_num' ) {
@@ -185,14 +188,6 @@
 					// list actually displays (with a start-datetime fallback) rather than
 					// event_start_datetime, so recurring / everyday events aren't shown out
 					// of order relative to their upcoming date. Matches event_query().
-					$all_ids = get_posts( array(
-						'post_type'      => array( 'mep_events' ),
-						'post_status'    => array( 'publish' ),
-						'posts_per_page' => -1,
-						'fields'         => 'ids',
-						'no_found_rows'  => true,
-						'meta_query'     => $meta_query,
-					) );
 					$all_ids = self::sort_ids_by_upcoming_datetime( $all_ids, $sort );
 					$args = array(
 						'post_type'      => array( 'mep_events' ),
@@ -212,8 +207,7 @@
 					'post_status'    => array( 'publish' ),
 					'order'          => $sort,
 					'orderby'        => $event_order_by,
-					'meta_key'       => 'event_start_datetime',
-					'meta_query'     => $meta_query,
+					'post__in'       => $all_ids,
 					//'tax_query'      => $tax_query
 				);
 				return new WP_Query( $args );
@@ -278,13 +272,18 @@
 						(pm_upc.meta_value IS NOT NULL AND pm_upc.meta_value != '' AND pm_upc.meta_value {$etype} %s)
 						OR
 						((pm_upc.meta_value IS NULL OR pm_upc.meta_value = '') AND pm_start.meta_value {$etype} %s)
+						OR " . self::undated_match() . "
 					)";
+					$sql_joins .= self::undated_join();
 					$where_args[] = $now;
 					$where_args[] = $now;
 				} else {
-					$sql_joins .= " INNER JOIN {$wpdb->postmeta} pm_exp ON p.ID = pm_exp.post_id AND pm_exp.meta_key = %s";
+					// LEFT JOIN: see get_ids_by_single_expiry_key() - it lets an undated event
+					// match on its own without changing the result for any dated event.
+					$sql_joins .= " LEFT JOIN {$wpdb->postmeta} pm_exp ON p.ID = pm_exp.post_id AND pm_exp.meta_key = %s";
+					$sql_joins .= self::undated_join();
 					$join_args[] = $event_expire_on;
-					$sql_where .= " AND pm_exp.meta_value {$etype} %s";
+					$sql_where .= " AND ( pm_exp.meta_value {$etype} %s OR " . self::undated_match() . " )";
 					$where_args[] = $now;
 				}
 
@@ -393,6 +392,15 @@
 					$vb = ! empty( $upcoming[ $b ] ) ? $upcoming[ $b ] : ( isset( $start[ $b ] ) ? $start[ $b ] : '' );
 					$ta = $va ? strtotime( $va ) : 0;
 					$tb = $vb ? strtotime( $vb ) : 0;
+					// Undated events have no datetime to sort by. Keep them together at the
+					// end in both directions instead of letting a 0 timestamp push them to
+					// the top of an ascending list.
+					if ( ! $ta || ! $tb ) {
+						if ( $ta === $tb ) {
+							return 0;
+						}
+						return $ta ? -1 : 1;
+					}
 					return ( $ta <=> $tb ) * $dir;
 				} );
 				return $ids;

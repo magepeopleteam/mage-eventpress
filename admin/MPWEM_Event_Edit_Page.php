@@ -412,7 +412,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						<p class="mpwem-taxonomy-card__help"><?php echo esc_html($help); ?></p>
 					<?php endif; ?>
 					<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url($manage_url); ?>" target="_blank" rel="noopener noreferrer">
-						<?php echo esc_html($manage_text); ?>
+						<span class="dashicons dashicons-external" aria-hidden="true"></span>
+						<span><?php echo esc_html($manage_text); ?></span>
 					</a>
 				</div>
 			</div>
@@ -511,6 +512,38 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 							</label>
 						</div>
 					</div>
+				</div>
+			</div>
+			<?php
+		}
+
+		private function is_seat_plan_addon_active(): bool
+		{
+			if (class_exists('MP_ESP_Admin_Meta')) {
+				return true;
+			}
+
+			if (! function_exists('is_plugin_active')) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+
+			return function_exists('is_plugin_active')
+				&& is_plugin_active('woocommerce-event-manager-addon-seat-plan/event_seat_plan.php');
+		}
+
+		private function render_seat_plan_panel(int $post_id): void
+		{
+			if (! $this->is_seat_plan_addon_active()) {
+				return;
+			}
+			?>
+			<div class="mpwem-card" id="mpwem_wizard_seat_plan_card">
+				<div class="mpwem-card__head">
+					<h2><?php esc_html_e('Seat Plan', 'mage-eventpress'); ?></h2>
+					<p><?php esc_html_e('Configure the seating layout attendees choose from at checkout.', 'mage-eventpress'); ?></p>
+				</div>
+				<div class="mpwem-card__body">
+					<?php do_action('mpwem_seat_plan_settings_mount', $post_id); ?>
 				</div>
 			</div>
 			<?php
@@ -791,7 +824,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						<div class="mpwem-taxonomy-card__meta">
 							<p class="mpwem-taxonomy-card__help"><?php esc_html_e('Type existing tags or add new ones. Separate each tag with a comma.', 'mage-eventpress'); ?></p>
 							<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=mep_tag&post_type=' . self::POST_TYPE)); ?>" target="_blank" rel="noopener noreferrer">
-								<?php esc_html_e('Manage tags', 'mage-eventpress'); ?>
+								<span class="dashicons dashicons-external" aria-hidden="true"></span>
+								<span><?php esc_html_e('Manage tags', 'mage-eventpress'); ?></span>
 							</a>
 						</div>
 					</div>
@@ -1300,6 +1334,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					['mpwem_admin'],
 					$this->get_asset_version('assets/admin/mpwem_event_edit.css')
 				);
+				wp_enqueue_style(
+					'mpwem-post-list-modern',
+					MPWEM_PLUGIN_URL . '/assets/admin/css/mpwem-post-list-modern.css',
+					[],
+					$this->get_asset_version('assets/admin/css/mpwem-post-list-modern.css')
+				);
 			} elseif ($is_classic) {
 				// The classic screen only gets the Manual Entry / Event Type
 				// enhancements (see the classic bootstrap in mpwem_event_edit.js),
@@ -1311,6 +1351,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit_classic.css',
 					['mpwem_admin'],
 					$this->get_asset_version('assets/admin/mpwem_event_edit_classic.css')
+				);
+				wp_enqueue_style(
+					'mpwem-post-list-modern',
+					MPWEM_PLUGIN_URL . '/assets/admin/css/mpwem-post-list-modern.css',
+					[],
+					$this->get_asset_version('assets/admin/css/mpwem-post-list-modern.css')
 				);
 			}
 
@@ -1330,7 +1376,31 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					'admin_nonce'   => wp_create_nonce('mpwem_admin_nonce'),
 					'create_nonce'  => wp_create_nonce(self::NONCE_ACTION_CREATE),
 					'term_nonce'    => wp_create_nonce('mpwem_add_event_taxonomy_term'),
+					'speaker_nonce' => wp_create_nonce('mpwem_speaker_list'),
 					'page_url'      => admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=' . self::PAGE_SLUG),
+					'speaker'       => [
+						'modalTitle'      => __('Add New Speaker', 'mage-eventpress'),
+						'modalSubtitle'   => __('Create a speaker profile and assign it to this event.', 'mage-eventpress'),
+						'nameLabel'       => __('Speaker Name', 'mage-eventpress'),
+						'namePlaceholder' => __('e.g. Alex Rivera', 'mage-eventpress'),
+						'roleLabel'       => __('Role / Title', 'mage-eventpress'),
+						'rolePlaceholder' => __('e.g. Keynote Speaker · CEO, TechVision', 'mage-eventpress'),
+						'descLabel'       => __('Description', 'mage-eventpress'),
+						'descPlaceholder' => __('Short biography shown on event pages…', 'mage-eventpress'),
+						'imageLabel'      => __('Featured Image', 'mage-eventpress'),
+						'imageSelect'     => __('Select Image', 'mage-eventpress'),
+						'imageChange'     => __('Change Image', 'mage-eventpress'),
+						'imageRemove'     => __('Remove', 'mage-eventpress'),
+						'statusLabel'     => __('Status', 'mage-eventpress'),
+						'statusPublish'   => __('Publish', 'mage-eventpress'),
+						'statusDraft'     => __('Draft', 'mage-eventpress'),
+						'cancel'          => __('Cancel', 'mage-eventpress'),
+						'save'            => __('Create Speaker', 'mage-eventpress'),
+						'saving'          => __('Creating…', 'mage-eventpress'),
+						'nameRequired'    => __('Please enter a speaker name.', 'mage-eventpress'),
+						'createError'     => __('Could not create speaker. Please try again.', 'mage-eventpress'),
+						'createSuccess'   => __('Speaker created successfully.', 'mage-eventpress'),
+					],
 				]
 			);
 		}
@@ -1397,8 +1467,17 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$can_publish  = $post_id && current_user_can('publish_post', $post_id);
 			$can_trash    = $post_id && current_user_can('delete_post', $post_id);
 
+			// Post-save confirmation flag (also mirrored in the redirect query string for JS).
+			$save_notice = '';
+			foreach (array('published', 'drafted', 'saved') as $notice_flag) {
+				if (isset($_GET[$notice_flag]) && (string) wp_unslash($_GET[$notice_flag]) === '1') {
+					$save_notice = $notice_flag;
+					break;
+				}
+			}
+
 		?>
-			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>" data-frontend-url="<?php echo esc_url($frontend_url); ?>">
+			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>" data-frontend-url="<?php echo esc_url($frontend_url); ?>" data-save-notice="<?php echo esc_attr($save_notice); ?>">
 				<div class="mpwem-event-wizard__skeleton" aria-hidden="true">
 					<div class="mpwem-skeleton-topbar">
 						<span class="mpwem-skeleton-line mpwem-skeleton-line--back"></span>
@@ -1575,6 +1654,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<input type="hidden" name="mpwem_post_status_action" id="mpwem_post_status_action" value="" />
 								<input type="hidden" name="mpwem_active_step" id="mpwem_active_step" value="basic" />
 								<input type="hidden" name="mpwem_quiet_save" id="mpwem_quiet_save" value="" />
+								<input type="hidden" name="mpwem_modern_editor_save" value="1" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>
 								<?php wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce'); ?>
 								<?php wp_nonce_field('mep_fw_nonce', 'mep_fw_nonce'); ?>
@@ -1596,7 +1676,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<input id="title" name="post_title" type="text" class="regular-text mpwem-input" value="<?php echo esc_attr($post ? $post->post_title : ''); ?>" required />
 															</label>
 
-															<div class="mpwem-field">
+															<div class="mpwem-field mpwem-field--description">
 																<span class="mpwem-field__label"><?php esc_html_e('Description', 'mage-eventpress'); ?></span>
 																<?php
 																wp_editor(
@@ -1606,6 +1686,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																		'textarea_name' => 'content',
 																		'textarea_rows' => 10,
 																		'media_buttons' => true,
+																		'tinymce'       => [
+																			'content_style' => 'body{padding:16px 18px!important;margin:0;box-sizing:border-box;}body.mce-content-body{padding:16px 18px!important;}p{margin:0 0 1em;}',
+																		],
 																	]
 																);
 																?>
@@ -1634,10 +1717,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page.', 'mage-eventpress'); ?></p>
 															</div>
-															<label class="mpwem-event-setting-card__switch">
-																<input type="checkbox" name="mep_event_enable_speaker" id="mpwem_enable_speaker_toggle" value="yes" data-no-mpwem-switch="1" <?php checked($speaker_is_enabled); ?> />
-																<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
-															</label>
+															<div class="mpwem-card__head-actions">
+																<label class="mpwem-event-setting-card__switch">
+																	<input type="checkbox" name="mep_event_enable_speaker" id="mpwem_enable_speaker_toggle" value="yes" data-no-mpwem-switch="1" <?php checked($speaker_is_enabled); ?> />
+																	<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
+																</label>
+															</div>
 														</div>
 														<div class="mpwem-card__body" id="mpwem_speaker_card_body"<?php echo $speaker_is_enabled ? '' : ' style="display:none;"'; ?>>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_speaker_mount"></div>
@@ -1645,12 +1730,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
-													<?php
-													$this->render_slug_card($post_id);
-													$this->render_category_card($post_id);
-													$this->render_organizer_card($post_id);
-													$this->render_tag_card($post_id);
-													?>
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
 															<h2><?php esc_html_e('Featured Image', 'mage-eventpress'); ?></h2>
@@ -1696,6 +1775,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<div class="mpwem-media-mount" id="mpwem_wizard_thumbnail_mount_basic"></div>
 														</div>
 													</div>
+													<?php
+													$this->render_slug_card($post_id);
+													$this->render_category_card($post_id);
+													$this->render_organizer_card($post_id);
+													$this->render_tag_card($post_id);
+													?>
 												</aside>
 											</div>
 										</section>
@@ -1721,7 +1806,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																?>
 																<input type="hidden" name="mep_reg_status" id="mep_reg_status" value="<?php echo esc_attr($current_mode); ?>" />
 																
-																<div class="mpwem-event-type-toggle" id="mpwem_event_mode_toggle" style="margin-top: 10px; grid-template-columns: repeat(3, 1fr);">
+																<div class="mpwem-event-type-toggle" id="mpwem_event_mode_toggle" style="margin-top: 10px; grid-template-columns: repeat(2, 1fr);">
 																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'on') ? 'is-active' : ''; ?>" data-value="on">
 																		<span class="dashicons dashicons-tickets-alt"></span>
 																		<div>
@@ -1751,6 +1836,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																			<small><?php esc_html_e('No Registration', 'mage-eventpress'); ?></small>
 																		</div>
 																	</div>
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'announcement') ? 'is-active' : ''; ?>" data-value="announcement">
+																		<span class="dashicons dashicons-megaphone"></span>
+																		<div>
+																			<strong><?php esc_html_e('Announcement', 'mage-eventpress'); ?></strong>
+																			<small><?php esc_html_e('Notice + Enquiry Form', 'mage-eventpress'); ?></small>
+																		</div>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -1768,6 +1860,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	<?php do_action('mpwem_before_extra_services_mount', $post_id); ?>
 																</div>
 																<div class="mpwem-panel-mount" id="mpwem_wizard_extra_services_mount"></div>
+															</div>
+														</div>
+														<?php $this->render_seat_plan_panel($post_id); ?>
+														<div class="mpwem-card" id="mpwem_wizard_tax_card" style="display:none;">
+															<div class="mpwem-card__head">
+																<h2><?php esc_html_e('Tax Settings', 'mage-eventpress'); ?></h2>
+																<p><?php esc_html_e('Configure how tax applies to this event\'s tickets.', 'mage-eventpress'); ?></p>
+															</div>
+															<div class="mpwem-card__body">
+																<div class="mpwem-panel-mount" id="mpwem_wizard_tax_mount"></div>
 															</div>
 														</div>
 														<div class="mpwem-ticket-modal" id="mpwem_ticket_editor_modal" aria-hidden="true">
@@ -1850,13 +1952,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	<?php esc_html_e('Free attendee registration. No WooCommerce needed.', 'mage-eventpress'); ?>
 																</p>
 															</div>
-															<div class="mpwem-mode-manual-item">
+															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
 																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
 																	<span class="dashicons dashicons-tickets-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
 																	<?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?>
 																</h4>
 																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
 																	<?php esc_html_e('Sell tickets and accept payments. Requires WooCommerce or custom payment method.', 'mage-eventpress'); ?>
+																</p>
+															</div>
+															<div class="mpwem-mode-manual-item">
+																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
+																	<span class="dashicons dashicons-megaphone" style="font-size: 18px; width: 18px; height: 18px;"></span>
+																	<?php esc_html_e('Announcement', 'mage-eventpress'); ?>
+																</h4>
+																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
+																	<?php esc_html_e('Publish a notice with an enquiry form instead of a ticket box. Works with or without a date.', 'mage-eventpress'); ?>
 																</p>
 															</div>
 														</div>
@@ -1953,7 +2064,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	$reg_form_status = 'on';
 																}
 																?>
-																<input type="checkbox" data-no-mpwem-switch="1" name="mep_event_reg_form_status" value="on" style="display:none;" <?php checked($reg_form_status, 'on'); ?> />
+														<?php if ($attendee_pro_active) : ?>
+														<input type="checkbox" data-no-mpwem-switch="1" name="mep_event_reg_form_status" value="on" style="display:none;" <?php checked($reg_form_status, 'on'); ?> />
+														<?php endif; ?>
 																<?php if (! $attendee_pro_active) : ?>
 																<div class="mpwem-pro-locked">
 																	<span class="dashicons dashicons-lock" aria-hidden="true"></span>
@@ -2256,8 +2369,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					}
 				}
 
-				// Date & Time step (applies to every event regardless of mode).
-				if ('' === $validation_error) {
+				// Date & Time step (applies to every event regardless of mode) - unless the
+				// event is marked "Undated" in the Date & Time step, in which case there is
+				// deliberately no date to validate and the fields are hidden in both editors.
+				$is_undated = isset($_POST['mep_event_no_date']) && $_POST['mep_event_no_date'];
+				if ('' === $validation_error && ! $is_undated) {
 					$recurring = isset($_POST['mep_enable_recurring']) ? sanitize_text_field(wp_unslash($_POST['mep_enable_recurring'])) : 'no';
 
 					if ('yes' === $recurring) {
@@ -2393,18 +2509,26 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$this->save_taxonomies($post_id);
 
-			$show_mm = isset($_POST['mpwem_show_mm']) ? 'on' : 'off';
-			update_post_meta($post_id, 'mpwem_show_mm', $show_mm);
+			if (class_exists('MPWEM_MM_Function')) {
+				update_post_meta($post_id, 'mpwem_show_mm', isset($_POST['mpwem_show_mm']) ? 'on' : 'off');
+			}
 
-			$reg_form_status = isset($_POST['mep_event_reg_form_status']) ? 'on' : 'off';
-			update_post_meta($post_id, 'mep_event_reg_form_status', $reg_form_status);
+			if (class_exists('MPWEM_Form_Settings')) {
+				$reg_form_status = isset($_POST['mep_event_reg_form_status']) ? 'on' : 'off';
+				update_post_meta($post_id, 'mep_event_reg_form_status', $reg_form_status);
+			}
+
+			if ($this->is_waitlist_addon_active()) {
+				$waitlist_status = isset($_POST['mep_show_waitlist']) ? 'on' : 'off';
+				update_post_meta($post_id, 'mep_show_waitlist', $waitlist_status);
+			}
 
 			do_action('mpwem_after_event_edit_save', $post_id);
 			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');
 
 			$redirect = $this->edit_url($post_id, $active_step ?: 'basic');
 			if (! $quiet_save) {
-				$redirect = add_query_arg([$notice_key => 1], $redirect);
+				$redirect = add_query_arg([$notice_key => '1'], $redirect);
 			}
 			wp_safe_redirect($redirect);
 			exit;

@@ -142,7 +142,9 @@
         const toastType = type || 'info';
         const iconClass = toastType === 'error'
             ? 'dashicons-warning'
-            : (toastType === 'warning' ? 'dashicons-info-outline' : 'dashicons-update-alt');
+            : (toastType === 'warning'
+                ? 'dashicons-info-outline'
+                : (toastType === 'success' ? 'dashicons-yes-alt' : 'dashicons-update-alt'));
 
         if ($toast.length === 0) {
             $toast = $(`
@@ -163,7 +165,7 @@
 
         const timer = window.setTimeout(function() {
             $toast.removeClass('show');
-        }, toastType === 'error' ? 4200 : (toastType === 'warning' ? 3600 : 2600));
+        }, toastType === 'error' ? 4200 : (toastType === 'warning' ? 3600 : (toastType === 'success' ? 3200 : 2600)));
 
         $toast.data('mpwemToastTimer', timer);
     }
@@ -260,6 +262,374 @@
         if ($panel.parent()[0] !== $mount[0]) {
             $panel.addClass('mpwem-embedded-panel').detach().appendTo($mount).show();
         }
+    }
+
+    function initSpeakerPicker($root) {
+        const $panels = $root.find('.mpwem_speaker_settings');
+        if (!$panels.length) {
+            return;
+        }
+
+        const cfg = getConfig();
+        const strings = cfg.speaker || {};
+        let speakerModalSaving = false;
+        let speakerMediaFrame = null;
+
+        const escapeHtml = function(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        };
+
+        const updateCount = function($panel) {
+            const count = $panel.find('.mpwem-speaker-option input[type="checkbox"]:checked').length;
+            const $badge = $panel.find('[data-speaker-count]');
+            if ($badge.length) {
+                $badge.text(count + ' selected');
+            }
+        };
+
+        const getSpeakerModal = function() {
+            return document.getElementById('mpwem-event-speaker-modal');
+        };
+
+        const setSpeakerImagePreview = function(url, id) {
+            const preview = document.getElementById('mpwem-event-speaker-image-preview');
+            const removeBtn = document.getElementById('mpwem-event-speaker-image-remove');
+            const selectBtn = document.getElementById('mpwem-event-speaker-image-select');
+            const idInput = document.getElementById('mpwem-event-speaker-image-id');
+            if (!preview || !idInput) {
+                return;
+            }
+            idInput.value = String(id || 0);
+            if (url) {
+                preview.classList.add('has-image');
+                preview.innerHTML = '<img src="' + escapeHtml(url) + '" alt="" />';
+                if (removeBtn) {
+                    removeBtn.hidden = false;
+                }
+                if (selectBtn) {
+                    selectBtn.textContent = strings.imageChange || 'Change Image';
+                }
+            } else {
+                preview.classList.remove('has-image');
+                preview.innerHTML = '<span class="dashicons dashicons-format-image"></span>';
+                if (removeBtn) {
+                    removeBtn.hidden = true;
+                }
+                if (selectBtn) {
+                    selectBtn.textContent = strings.imageSelect || 'Select Image';
+                }
+            }
+        };
+
+        const setSpeakerModalStatus = function(message, type) {
+            const status = document.getElementById('mpwem-event-speaker-modal-status');
+            if (!status) {
+                return;
+            }
+            if (!message) {
+                status.hidden = true;
+                status.textContent = '';
+                status.className = 'mpwem-speaker-modal__status';
+                return;
+            }
+            status.hidden = false;
+            status.textContent = message;
+            status.className = 'mpwem-speaker-modal__status is-' + (type || 'error');
+        };
+
+        const closeSpeakerModal = function() {
+            const modal = getSpeakerModal();
+            if (!modal) {
+                return;
+            }
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('mpwem-speaker-modal-open');
+            speakerModalSaving = false;
+        };
+
+        const resetSpeakerModalForm = function() {
+            const form = document.getElementById('mpwem-event-speaker-create-form');
+            if (form) {
+                form.reset();
+            }
+            setSpeakerImagePreview('', 0);
+            setSpeakerModalStatus('', '');
+            const saveBtn = document.getElementById('mpwem-event-speaker-save-btn');
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.textContent = strings.save || 'Create Speaker';
+            }
+        };
+
+        const openSpeakerMedia = function() {
+            if (typeof wp === 'undefined' || !wp.media) {
+                return;
+            }
+            if (!speakerMediaFrame) {
+                speakerMediaFrame = wp.media({
+                    title: strings.imageSelect || 'Select Image',
+                    button: { text: strings.imageSelect || 'Select Image' },
+                    library: { type: 'image' },
+                    multiple: false
+                });
+                speakerMediaFrame.on('select', function() {
+                    const attachment = speakerMediaFrame.state().get('selection').first().toJSON();
+                    const url = (attachment.sizes && attachment.sizes.thumbnail)
+                        ? attachment.sizes.thumbnail.url
+                        : attachment.url;
+                    setSpeakerImagePreview(url, attachment.id);
+                });
+            }
+            speakerMediaFrame.open();
+        };
+
+        const ensureSpeakerSelectGrid = function($panel) {
+            let $select = $panel.find('.mpwem-speaker-select').first();
+            if (!$select.length) {
+                $panel.find('.mpwem-speaker-select__empty-state').remove();
+                $select = $(
+                    '<div class="mpwem-speaker-select">' +
+                        '<div class="mpwem-speaker-select__grid"></div>' +
+                    '</div>'
+                );
+                $panel.find('.mpwem-speaker-picker').append($select);
+            }
+            return $select.find('.mpwem-speaker-select__grid').first();
+        };
+
+        const appendSpeakerOption = function($panel, data) {
+            const id = parseInt(data.id, 10) || 0;
+            if (!id) {
+                return;
+            }
+            if ($panel.find('.mpwem-speaker-option input[value="' + id + '"]').length) {
+                $panel.find('.mpwem-speaker-option input[value="' + id + '"]').prop('checked', true).trigger('change');
+                return;
+            }
+
+            const name = data.name || '';
+            const role = data.role || '';
+            const imageUrl = data.image_url || '';
+            const initial = name ? name.charAt(0).toUpperCase() : '?';
+            const avatarHtml = imageUrl
+                ? '<img src="' + escapeHtml(imageUrl) + '" alt="" />'
+                : '<span class="mpwem-speaker-option__initial">' + escapeHtml(initial) + '</span>';
+
+            const $option = $(
+                '<label class="mpwem-speaker-option is-selected">' +
+                    '<input type="checkbox" name="mep_event_speakers_list[]" value="' + id + '" checked="checked" data-no-mpwem-switch="1" />' +
+                    '<span class="mpwem-speaker-option__avatar' + (imageUrl ? ' has-image' : '') + '" aria-hidden="true">' +
+                        avatarHtml +
+                        '<span class="mpwem-speaker-option__check"><span class="dashicons dashicons-yes"></span></span>' +
+                    '</span>' +
+                    '<span class="mpwem-speaker-option__meta">' +
+                        '<span class="mpwem-speaker-option__name">' + escapeHtml(name) + '</span>' +
+                        (role ? '<span class="mpwem-speaker-option__role">' + escapeHtml(role) + '</span>' : '') +
+                    '</span>' +
+                '</label>'
+            );
+
+            const $grid = ensureSpeakerSelectGrid($panel);
+            $grid.prepend($option);
+            updateCount($panel);
+        };
+
+        const submitSpeakerForm = function(event) {
+            event.preventDefault();
+            if (speakerModalSaving) {
+                return;
+            }
+
+            const nameInput = document.getElementById('mpwem-event-speaker-name');
+            const name = nameInput ? nameInput.value.trim() : '';
+            if (!name) {
+                setSpeakerModalStatus(strings.nameRequired || 'Please enter a speaker name.', 'error');
+                if (nameInput) {
+                    nameInput.focus();
+                }
+                return;
+            }
+
+            speakerModalSaving = true;
+            setSpeakerModalStatus('', '');
+            const saveBtn = document.getElementById('mpwem-event-speaker-save-btn');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.textContent = strings.saving || 'Creating…';
+            }
+
+            const body = new FormData();
+            body.append('action', 'mpwem_speaker_create');
+            body.append('nonce', cfg.speaker_nonce || '');
+            body.append('name', name);
+            body.append('excerpt', (document.getElementById('mpwem-event-speaker-role') || {}).value || '');
+            body.append('description', (document.getElementById('mpwem-event-speaker-desc') || {}).value || '');
+            body.append('image_id', (document.getElementById('mpwem-event-speaker-image-id') || {}).value || '0');
+            body.append('status', (document.getElementById('mpwem-event-speaker-status') || {}).value || 'publish');
+
+            fetch(cfg.ajax_url || window.ajaxurl || '', {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: body
+            })
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(json) {
+                    if (!json || !json.success) {
+                        const msg = (json && json.data) ? json.data : (strings.createError || 'Could not create speaker.');
+                        throw new Error(typeof msg === 'string' ? msg : (strings.createError || 'Could not create speaker.'));
+                    }
+                    const data = json.data || {};
+                    $panels.each(function() {
+                        appendSpeakerOption($(this), data);
+                    });
+                    closeSpeakerModal();
+                    if (typeof showToast === 'function') {
+                        showToast(data.message || strings.createSuccess || 'Speaker created successfully.', 'success');
+                    }
+                })
+                .catch(function(err) {
+                    setSpeakerModalStatus(err.message || strings.createError || 'Could not create speaker.', 'error');
+                    speakerModalSaving = false;
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.textContent = strings.save || 'Create Speaker';
+                    }
+                });
+        };
+
+        const ensureSpeakerModal = function() {
+            let modal = getSpeakerModal();
+            if (modal) {
+                return modal;
+            }
+
+            modal = document.createElement('div');
+            modal.id = 'mpwem-event-speaker-modal';
+            modal.className = 'mpwem-speaker-modal';
+            modal.setAttribute('aria-hidden', 'true');
+            modal.innerHTML =
+                '<div class="mpwem-speaker-modal__backdrop" data-event-speaker-modal-close="1"></div>' +
+                '<div class="mpwem-speaker-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem-event-speaker-modal-title">' +
+                    '<button type="button" class="mpwem-speaker-modal__close" data-event-speaker-modal-close="1" aria-label="' + escapeHtml(strings.cancel || 'Cancel') + '">' +
+                        '<span class="dashicons dashicons-no-alt"></span>' +
+                    '</button>' +
+                    '<div class="mpwem-speaker-modal__header">' +
+                        '<span class="mpwem-speaker-modal__icon dashicons dashicons-groups" aria-hidden="true"></span>' +
+                        '<div>' +
+                            '<h2 id="mpwem-event-speaker-modal-title">' + escapeHtml(strings.modalTitle || 'Add New Speaker') + '</h2>' +
+                            '<p>' + escapeHtml(strings.modalSubtitle || 'Create a speaker profile and assign it to this event.') + '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<form id="mpwem-event-speaker-create-form" class="mpwem-speaker-modal__form" novalidate>' +
+                        '<div class="mpwem-speaker-modal__grid">' +
+                            '<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+                                '<label for="mpwem-event-speaker-name">' + escapeHtml(strings.nameLabel || 'Speaker Name') + ' <span>*</span></label>' +
+                                '<input type="text" id="mpwem-event-speaker-name" name="name" required maxlength="200" placeholder="' + escapeHtml(strings.namePlaceholder || '') + '" />' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+                                '<label for="mpwem-event-speaker-role">' + escapeHtml(strings.roleLabel || 'Role / Title') + '</label>' +
+                                '<input type="text" id="mpwem-event-speaker-role" name="excerpt" maxlength="200" placeholder="' + escapeHtml(strings.rolePlaceholder || '') + '" />' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field mpwem-speaker-modal__field--full">' +
+                                '<label for="mpwem-event-speaker-desc">' + escapeHtml(strings.descLabel || 'Description') + '</label>' +
+                                '<textarea id="mpwem-event-speaker-desc" name="description" rows="4" placeholder="' + escapeHtml(strings.descPlaceholder || '') + '"></textarea>' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field">' +
+                                '<label>' + escapeHtml(strings.imageLabel || 'Featured Image') + '</label>' +
+                                '<div class="mpwem-speaker-modal__image">' +
+                                    '<div class="mpwem-speaker-modal__preview" id="mpwem-event-speaker-image-preview">' +
+                                        '<span class="dashicons dashicons-format-image"></span>' +
+                                    '</div>' +
+                                    '<div class="mpwem-speaker-modal__image-actions">' +
+                                        '<button type="button" class="button" id="mpwem-event-speaker-image-select">' + escapeHtml(strings.imageSelect || 'Select Image') + '</button>' +
+                                        '<button type="button" class="button-link-delete" id="mpwem-event-speaker-image-remove" hidden>' + escapeHtml(strings.imageRemove || 'Remove') + '</button>' +
+                                        '<input type="hidden" id="mpwem-event-speaker-image-id" name="image_id" value="0" />' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="mpwem-speaker-modal__field">' +
+                                '<label for="mpwem-event-speaker-status">' + escapeHtml(strings.statusLabel || 'Status') + '</label>' +
+                                '<select id="mpwem-event-speaker-status" name="status">' +
+                                    '<option value="publish">' + escapeHtml(strings.statusPublish || 'Publish') + '</option>' +
+                                    '<option value="draft">' + escapeHtml(strings.statusDraft || 'Draft') + '</option>' +
+                                '</select>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="mpwem-speaker-modal__status" id="mpwem-event-speaker-modal-status" hidden></div>' +
+                        '<div class="mpwem-speaker-modal__actions">' +
+                            '<button type="button" class="button" data-event-speaker-modal-close="1">' + escapeHtml(strings.cancel || 'Cancel') + '</button>' +
+                            '<button type="submit" class="button button-primary" id="mpwem-event-speaker-save-btn">' + escapeHtml(strings.save || 'Create Speaker') + '</button>' +
+                        '</div>' +
+                    '</form>' +
+                '</div>';
+
+            document.body.appendChild(modal);
+
+            modal.addEventListener('click', function(event) {
+                if (event.target.closest('[data-event-speaker-modal-close]')) {
+                    closeSpeakerModal();
+                }
+            });
+            document.getElementById('mpwem-event-speaker-image-select').addEventListener('click', openSpeakerMedia);
+            document.getElementById('mpwem-event-speaker-image-remove').addEventListener('click', function() {
+                setSpeakerImagePreview('', 0);
+            });
+            document.getElementById('mpwem-event-speaker-create-form').addEventListener('submit', submitSpeakerForm);
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+                    closeSpeakerModal();
+                }
+            });
+
+            return modal;
+        };
+
+        const openSpeakerModal = function() {
+            const modal = ensureSpeakerModal();
+            resetSpeakerModalForm();
+            modal.classList.add('is-open');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('mpwem-speaker-modal-open');
+            window.setTimeout(function() {
+                const nameInput = document.getElementById('mpwem-event-speaker-name');
+                if (nameInput) {
+                    nameInput.focus();
+                }
+            }, 30);
+        };
+
+        $panels.each(function() {
+            const $panel = $(this);
+            updateCount($panel);
+
+            // Classic editor still uses the nested enable toggle; the modern
+            // wizard card owns enable/disable and strips this control's name.
+            if ($panel.hasClass('mpwem-embedded-panel')) {
+                $panel.find('#mep_event_enable_speaker').removeAttr('name');
+                $panel.find('#mpwem-speaker-fields').show();
+            }
+        });
+
+        $root.off('click.mpwemSpeakerAdd', '[data-mpwem-speaker-add]')
+            .on('click.mpwemSpeakerAdd', '[data-mpwem-speaker-add]', function(event) {
+                event.preventDefault();
+                openSpeakerModal();
+            });
+
+        $root.off('change.mpwemSpeakerSelect', '.mpwem-speaker-option input[type="checkbox"]')
+            .on('change.mpwemSpeakerSelect', '.mpwem-speaker-option input[type="checkbox"]', function() {
+                const $option = $(this).closest('.mpwem-speaker-option');
+                $option.toggleClass('is-selected', $(this).is(':checked'));
+                updateCount($option.closest('.mpwem_speaker_settings'));
+            });
     }
 
     function normalizePanelLabel(text) {
@@ -472,6 +842,18 @@
         
         // Mount into Tickets Step
         mountPanel($root, '#mpwem_ticket_pricing_settings', 'mpwem_wizard_tickets_mount');
+
+        // Only rendered by the legacy hook when WooCommerce "Enable taxes" is on.
+        mountPanel($root, '#mp_event_tax_settings', 'mpwem_wizard_tax_mount');
+        const $taxMount = $('#mpwem_wizard_tax_mount');
+        if ($taxMount.children().length) {
+            const $taxPanel = $taxMount.children('.mp_tab_item').first();
+            // Our card head already shows "Tax Settings" - hide the legacy
+            // tab title/description and the inner banner that repeat it.
+            $taxPanel.children('h3, p').hide();
+            $taxPanel.find('section.bg-light').first().hide();
+            $('#mpwem_wizard_tax_card').show();
+        }
 
         const $ticketPricingPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
         decorateMinMaxSettings($root);
@@ -2585,14 +2967,14 @@
 
             $mount.addClass('mpwem-display-section ' + section.className);
             if (!$mount.children('.mpwem-display-section__head').length) {
+                const $badge = $('<span class="mpwem-display-section__badge" aria-hidden="true"></span>')
+                    .append($('<span class="dashicons"></span>').addClass(section.icon || 'dashicons-admin-generic'));
+                const $headMain = $('<div class="mpwem-display-section__head-main"></div>')
+                    .append($badge)
+                    .append($('<h3></h3>').text(section.title))
+                    .append($('<p></p>').text(section.desc));
                 $mount.prepend(
-                    $('<div class="mpwem-display-section__head"></div>')
-                        .append($('<div class="mpwem-display-section__head-main"></div>')
-                        .append($('<span class="mpwem-display-section__badge" aria-hidden="true"></span>')
-                        .append($('<span class="dashicons"></span>')
-                        .addClass(section.icon || 'dashicons-admin-generic')))
-                        .append($('<h3></h3>').text(section.title))
-                        .append($('<p></p>').text(section.desc)))
+                    $('<div class="mpwem-display-section__head"></div>').append($headMain)
                 );
             }
 
@@ -2651,19 +3033,29 @@
                 };
 
                 $toggle.off('change.mpwemSectionToggle').on('change.mpwemSectionToggle', function() {
-                    syncAttendeeFormToggle($(this).is(':checked'), true);
+                    const isExpanded = $(this).is(':checked');
+                    syncAttendeeFormToggle(isExpanded, true);
+                    if (isExpanded && typeof window.mepFbEventBuilderInit === 'function') {
+                        window.setTimeout(function() {
+                            window.mepFbEventBuilderInit(true);
+                        }, 240);
+                    }
                 });
 
                 syncAttendeeFormToggle(isInitiallyEnabled, false);
+                // A selected/saved form is configuration, not the enabled state. Keep
+                // disabled sections closed and initialize the builder only when the
+                // persisted status checkbox is on.
+                if (isInitiallyEnabled && $root.find('.mpwem-step[data-step-key="display"]').hasClass('is-active')) {
+                    window.setTimeout(function() {
+                        if (typeof window.mepFbEventBuilderInit === 'function') {
+                            window.mepFbEventBuilderInit(true);
+                        }
+                    }, 80);
+                }
             }
 
-            if (
-                section.className === 'mpwem-display-section--seo' ||
-                section.className === 'mpwem-display-section--email' ||
-                section.className === 'mpwem-display-section--email-reminder' ||
-                section.className === 'mpwem-display-section--pdf-custom-text' ||
-                section.className === 'mpwem-display-section--settings'
-            ) {
+            if (section.className === 'mpwem-display-section--email') {
                 const $head = $mount.children('.mpwem-display-section__head').first();
                 let $body = $mount.children('.mpwem-display-section__body').first();
 
@@ -2674,20 +3066,99 @@
                     $mount.append($body);
                 }
 
-                if ($head.length && !$head.find('.mpwem-display-toggle-wrap').length) {
+                const $status = $body.find('input[type="checkbox"][name="mep_event_cc_email_status"]').first();
+                const $statusSwitch = $status.closest('.mpev-switch');
+                if ($head.length && $statusSwitch.length && !$head.find('input[name="mep_event_cc_email_status"]').length) {
+                    $statusSwitch.addClass('mpwem-display-toggle-wrap').attr('aria-label', 'Use event-specific email message');
+                    $head.append($statusSwitch);
+                    $body.find('.mpwem-email-status-row').hide();
+                }
+
+                const syncEmailToggle = function(isEnabled, useAnimation) {
+                    $mount.toggleClass('is-collapsed', !isEnabled);
+                    $mount.toggleClass('is-expanded', isEnabled);
+                    $status.prop('checked', isEnabled).val(isEnabled ? 'on' : 'off').attr('aria-expanded', isEnabled ? 'true' : 'false');
+
+                    if (useAnimation) {
+                        $body.stop(true, true)[isEnabled ? 'slideDown' : 'slideUp'](220);
+                    } else {
+                        $body.toggle(isEnabled);
+                    }
+                };
+
+                $status.off('change.mpwemEmailToggle').on('change.mpwemEmailToggle', function() {
+                    syncEmailToggle($(this).is(':checked'), true);
+                });
+
+                syncEmailToggle($status.is(':checked'), false);
+            }
+
+            if (section.className === 'mpwem-display-section--seo') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>').append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                const $status = $body.find('select[name="mep_rich_text_status"]').first();
+                if ($head.length && $status.length && !$head.find('.mpwem-display-toggle-wrap').length) {
                     $head.append(
-                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap" aria-label="Toggle section"></label>')
+                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap" aria-label="Enable SEO and schema settings"></label>')
                             .append('<input type="checkbox" class="mpwem-switch-input mpwem-display-toggle" />')
                             .append('<span class="mpwem-switch-slider"></span>')
                     );
                 }
 
                 const $toggle = $head.find('.mpwem-display-toggle').first();
-                const syncSimpleToggle = function(isExpanded, useAnimation) {
-                    $mount.toggleClass('is-collapsed', !isExpanded);
-                    $mount.toggleClass('is-expanded', isExpanded);
-                    $toggle.prop('checked', isExpanded).attr('aria-expanded', isExpanded ? 'true' : 'false');
+                const syncSeoToggle = function(isEnabled, useAnimation) {
+                    $status.val(isEnabled ? 'enable' : 'disable').trigger('change.mpwemCanonicalStatus');
+                    $toggle.prop('checked', isEnabled).attr('aria-expanded', isEnabled ? 'true' : 'false');
+                    $mount.toggleClass('is-collapsed', !isEnabled).toggleClass('is-expanded', isEnabled);
+                    if (useAnimation) {
+                        $body.stop(true, true)[isEnabled ? 'slideDown' : 'slideUp'](220);
+                    } else {
+                        $body.toggle(isEnabled);
+                    }
+                };
 
+                $toggle.off('change.mpwemSeoToggle').on('change.mpwemSeoToggle', function() {
+                    syncSeoToggle($(this).is(':checked'), true);
+                });
+                syncSeoToggle($status.val() !== 'disable', false);
+            }
+
+            if (
+                section.className === 'mpwem-display-section--email-reminder' ||
+                section.className === 'mpwem-display-section--pdf-custom-text' ||
+                section.className === 'mpwem-display-section--settings'
+            ) {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>').append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                const bodyId = ($mount.attr('id') || section.className) + '-body';
+                $body.attr('id', bodyId);
+                if ($head.length && !$head.find('.mpwem-display-disclosure').length) {
+                    $head.append(
+                        $('<button type="button" class="mpwem-display-disclosure" aria-expanded="false"></button>')
+                            .attr('aria-controls', bodyId)
+                            .attr('aria-label', 'Expand ' + section.title)
+                            .append('<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>')
+                    );
+                }
+
+                const $button = $head.find('.mpwem-display-disclosure').first();
+                const syncDisclosure = function(isExpanded, useAnimation) {
+                    $button.attr('aria-expanded', isExpanded ? 'true' : 'false')
+                        .attr('aria-label', (isExpanded ? 'Collapse ' : 'Expand ') + section.title);
+                    $mount.toggleClass('is-collapsed', !isExpanded).toggleClass('is-expanded', isExpanded);
                     if (useAnimation) {
                         $body.stop(true, true)[isExpanded ? 'slideDown' : 'slideUp'](220);
                     } else {
@@ -2695,11 +3166,10 @@
                     }
                 };
 
-                $toggle.off('change.mpwemSectionToggle').on('change.mpwemSectionToggle', function() {
-                    syncSimpleToggle($(this).is(':checked'), true);
+                $button.off('click.mpwemDisclosure').on('click.mpwemDisclosure', function() {
+                    syncDisclosure($(this).attr('aria-expanded') !== 'true', true);
                 });
-
-                syncSimpleToggle(false, false);
+                syncDisclosure(false, false);
             }
 
             if (section.className === 'mpwem-display-section--settings') {
@@ -5227,6 +5697,23 @@
             if (stepKey === 'date') {
                 enhanceDateStep($root);
             }
+            // Attendee Form (PRO formBuilder) must init only when Advanced is painted —
+            // building while the step is display:none leaves an empty canvas.
+            if (stepKey === 'display') {
+                // Initialize Attendee Form only when its persisted status is enabled.
+                // A saved form selection must not silently turn the feature back on.
+                window.requestAnimationFrame(function() {
+                    window.setTimeout(function() {
+                        const $attendeeMount = $root.find('#mpwem_wizard_attendee_form_mount').first();
+                        const $status = $attendeeMount.find('input[name="mep_event_reg_form_status"]').first();
+                        const attendeeFormEnabled = !$status.length || $status.is(':checked');
+                        if (attendeeFormEnabled && typeof window.mepFbEventBuilderInit === 'function') {
+                            window.mepFbEventBuilderInit(true);
+                        }
+                        $(document).trigger('mpwem:display-step-active', [$root, $panel]);
+                    }, 120);
+                });
+            }
         }
 
         // Legacy hook: #mpwem_event_edit_sidebar may be rendered by add-on panels
@@ -5275,6 +5762,7 @@
             
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-cards-container, #mpwem_ticket_summary, .mpwem_settings_area, .mpwem-ticket-footer').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__item').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__divider').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
@@ -5296,6 +5784,7 @@
             $('#mpwem_wizard_ticket_details_section').find('#mpwem_ticket_summary').hide();
             
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area .mpwem-ticket-cards-container').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area .mpwem_settings_area').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area ._bg_light_padding').show();
@@ -5315,12 +5804,29 @@
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
             $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
+        } else if (mode === 'announcement') {
+            const $details = $('#mpwem_wizard_ticket_details_section');
+            $details.show();
+            // Everything that belongs to selling or RSVP is irrelevant here.
+            $details.find('.mpwem-ticket-settings-head').hide();
+            $details.find('.mpwem-ticket-warnings').hide();
+            $details.find('.mpwem-ticket-editor-section, .mpwem-extra-service-section').hide();
+            $details.find('#mpwem_ticket_summary').hide();
+            $details.find('.mpwem-ticket-action-bar__item, .mpwem-ticket-action-bar__divider').hide();
+            $details.find('.mpwem-ticket-global-card').hide();
+            $details.find('.mpwem-rsvp-settings-area').hide();
+            $('#mpwem_wizard_extra_services_card').hide();
+            $('#mpwem_wizard_pricing_help_card').hide();
+            $('#mpwem_wizard_tickets_sidebar').show();
+            // ...and the announcement + enquiry form settings take their place.
+            $details.find('.mpwem-announcement-settings-area').show();
         } else {
             $('#mpwem_wizard_ticket_details_section').hide();
             $('#mpwem_wizard_extra_services_card').hide();
             $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
         }
 
         // Show/hide legacy registration closed message setting card
@@ -5926,6 +6432,15 @@
         options = options || {};
         const focus = options.focus !== false;
 
+        // "Undated Event": the whole date area is hidden and cleared on save, so there
+        // is nothing here to validate. Mirrors the server-side skip in
+        // MPWEM_Event_Edit_Page::handle_save().
+        const $noDate = $root.find('input[name="mep_event_no_date"]').first();
+        if ($noDate.length && $noDate.is(':checked')) {
+            $root.find('.mpwem-field-error').removeClass('mpwem-field-error');
+            return true;
+        }
+
         const type = ($root.find('select[name="mep_enable_recurring"]').first().val() || 'no').toString();
         const findByName = function(name) {
             return $root.find('[name="' + name + '"]').filter(function() {
@@ -6211,6 +6726,14 @@
             return;
         }
 
+        // WordPress does not guarantee that dynamically mounted wp_editor
+        // instances copy their current Visual value back to the textarea when
+        // the form is submitted through jQuery. Synchronize every editor before
+        // validation and before both full and quiet saves.
+        if (window.tinymce && typeof window.tinymce.triggerSave === 'function') {
+            window.tinymce.triggerSave();
+        }
+
         if ((action || '') !== 'trash') {
             // Required-field checks (title/venue/virtual details/date/display)
             // only apply when actually publishing, matching the server-side
@@ -6342,10 +6865,56 @@
         const syncSpeakerToggle = function() {
             const $toggle = $root.find('#mpwem_enable_speaker_toggle');
             if (!$toggle.length) return;
-            $root.find('#mpwem_speaker_card_body').toggle($toggle.is(':checked'));
+            const enabled = $toggle.is(':checked');
+            $root.find('#mpwem_speaker_card_body').toggle(enabled);
+            // Card-head toggle owns the saved value in the modern editor; strip
+            // the nested panel control so we never submit two same-named fields.
+            const $nested = $root.find('#mpwem_wizard_speaker_mount #mep_event_enable_speaker');
+            if ($nested.length) {
+                $nested.prop('checked', enabled).attr('value', enabled ? 'yes' : 'no').removeAttr('name');
+            }
+            $root.find('#mpwem_wizard_speaker_mount #mpwem-speaker-fields').toggle(enabled);
         };
         $root.on('change', '#mpwem_enable_speaker_toggle', syncSpeakerToggle);
         syncSpeakerToggle();
+        initSpeakerPicker($root);
+
+        // Description editor: keep visual padding inside the TinyMCE content area.
+        (function padDescriptionEditor() {
+            const applyPadding = function(editor) {
+                if (!editor || !editor.getBody) {
+                    return;
+                }
+                const body = editor.getBody();
+                if (!body) {
+                    return;
+                }
+                body.style.padding = '16px 18px';
+                body.style.margin = '0';
+                body.style.boxSizing = 'border-box';
+            };
+
+            if (window.tinymce) {
+                const existing = window.tinymce.get('mpwem_wizard_content');
+                if (existing) {
+                    if (existing.initialized) {
+                        applyPadding(existing);
+                    } else {
+                        existing.on('init', function() {
+                            applyPadding(existing);
+                        });
+                    }
+                }
+                window.tinymce.on('AddEditor', function(event) {
+                    if (!event || !event.editor || event.editor.id !== 'mpwem_wizard_content') {
+                        return;
+                    }
+                    event.editor.on('init', function() {
+                        applyPadding(event.editor);
+                    });
+                });
+            }
+        })();
 
         // Clear the required-field highlight as soon as the user fills the field.
         $root.on('input change', '.mpwem-field-error', function() {
@@ -6408,42 +6977,58 @@
 
         // Show a success popup with a "Preview" button right after a
         // publish/update/save redirect (see $notice_key in handle_save()).
+        // Prefer the server-rendered data-save-notice attribute so the modal
+        // still appears if the query string is altered before JS runs.
         (function() {
-            let params;
-            try {
-                params = new URLSearchParams(window.location.search);
-            } catch (e) {
-                return;
-            }
-
             const successMessages = {
                 published: ['Event published', 'Your event is live. Attendees can now view and register for it.'],
                 drafted: ['Event switched to draft', 'Your event is saved as a draft and is not visible to the public yet.'],
                 saved: ['Event saved', 'Your changes have been saved successfully.']
             };
 
-            let noticeKey = '';
-            for (const key in successMessages) {
-                if (params.get(key) === '1') {
-                    noticeKey = key;
-                    break;
-                }
+            let noticeKey = ($root.attr('data-save-notice') || '').toString();
+            if (!successMessages[noticeKey]) {
+                noticeKey = '';
+            }
+
+            let params = null;
+            try {
+                params = new URLSearchParams(window.location.search);
+            } catch (e) {
+                params = null;
+            }
+
+            if (!noticeKey && params) {
+                Object.keys(successMessages).some(function(key) {
+                    const val = params.get(key);
+                    if (val === '1' || val === 'true') {
+                        noticeKey = key;
+                        return true;
+                    }
+                    return false;
+                });
             }
             if (!noticeKey) return;
 
             // Strip the notice param so refreshing the page doesn't re-show the popup.
-            params.delete(noticeKey);
-            const cleanedSearch = params.toString();
-            const cleanedUrl = window.location.pathname + (cleanedSearch ? '?' + cleanedSearch : '') + window.location.hash;
-            if (window.history && window.history.replaceState) {
-                window.history.replaceState(null, '', cleanedUrl);
+            if (params) {
+                params.delete(noticeKey);
+                const cleanedSearch = params.toString();
+                const cleanedUrl = window.location.pathname + (cleanedSearch ? '?' + cleanedSearch : '') + window.location.hash;
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState(null, '', cleanedUrl);
+                }
             }
+            $root.removeAttr('data-save-notice');
 
-            const previewUrl = ($root.data('frontend-url') || '').toString();
-            const [title, message] = successMessages[noticeKey];
+            const previewUrl = ($root.attr('data-frontend-url') || $root.data('frontendUrl') || '').toString();
+            const pair = successMessages[noticeKey];
+            const title = pair[0];
+            const message = pair[1];
             window.setTimeout(function() {
                 showSaveSuccessModal(title, message, previewUrl);
-            }, 400);
+                showNotice($root, message, 'success');
+            }, 500);
         })();
 
         try {
@@ -6505,13 +7090,13 @@
             }
         });
 
-        // Topbar "Save" Button Handler
+        // Topbar "Save as Draft" — keep status as draft and show the drafted notice.
         $root.on('click', '.mpwem-wizard-save-draft', function(e) {
             e.preventDefault();
             if (!validateDateWiseGlobalQty($root)) {
                 return;
             }
-            submitEventForm($root, '');
+            submitEventForm($root, 'draft');
         });
 
         $root.on('click', '.mpwem-status-actions__primary', function(e) {
@@ -6614,6 +7199,7 @@
         try {
             enhanceVenueGrid($classicRoot);
             enhanceEventType($classicRoot, { skipTicketSync: true });
+            initSpeakerPicker($classicRoot);
         } catch (error) {
             if (window.console && window.console.error) {
                 window.console.error('MPWEM classic venue/event-type enhancement failed.', error);

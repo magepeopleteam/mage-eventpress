@@ -7,6 +7,10 @@
 (function($) {
     'use strict';
 
+    // Colour shipped as the "Event Background Color" default. An install still on this
+    // value is treated as "not configured", so it keeps the automatic per-event palette.
+    var MEP_CAL_DEFAULT_EVENT_COLOR = '#3a87ad';
+
     // Store calendar instances
     var calendars = {};
     var stockRequestCache = {};
@@ -476,7 +480,7 @@
         var expiredTextColor = $el.data('expired-text-color') || settings.mep_cal_expired_text_color || '#ffffff';
         var expiredOpacity = $el.data('expired-opacity') || settings.mep_cal_expired_opacity || '0.6';
         var locale = resolveCalendarLocaleCode(settings.mep_cal_locale || '');
-        var explicitEventColor = String($el.data('event-color') || '').trim();
+        var explicitEventColor = resolveConfiguredEventColor($el);
 
         // Build header toolbar
         var headerLeftParts = [];
@@ -1251,7 +1255,7 @@
         }
 
         var isTimeGrid = isTimeGridViewType(info.view.type);
-        var baseColor = explicitEventColor || props.paletteAccent || info.event.backgroundColor || props.defaultBackgroundColor || '#3a87ad';
+        var baseColor = explicitEventColor || props.paletteAccent || info.event.backgroundColor || props.defaultBackgroundColor || MEP_CAL_DEFAULT_EVENT_COLOR;
 
         if (!explicitEventColor) {
             baseColor = props.paletteAccent || getEventPaletteColor(info.event, baseColor);
@@ -1336,9 +1340,51 @@
         }
     }
 
+    /**
+     * Resolve the event colour the site owner configured.
+     *
+     * A shortcode `event_color` attribute wins, otherwise the Calendar Settings
+     * "Event Background Color" is used. That setting used to be written into a CSS
+     * variable no rule consumed, so events kept the automatic per-event hue below and
+     * the configured colour never appeared. Installs still on the shipped default stay
+     * on the automatic palette so their calendars look unchanged.
+     *
+     * @param {jQuery} $el Calendar container.
+     * @returns {string} Normalized hex colour, or '' to use the automatic palette.
+     */
+    function resolveConfiguredEventColor($el) {
+        var shortcodeColor = normalizeHexColor($el && $el.data ? $el.data('event-color') : '');
+
+        return shortcodeColor || resolveSettingsEventColor();
+    }
+
+    /**
+     * The "Event Background Color" from Calendar Settings, or '' when it is still the
+     * shipped default.
+     *
+     * @returns {string}
+     */
+    function resolveSettingsEventColor() {
+        var settings = (typeof mepCalendar !== 'undefined' && mepCalendar.settings) ? mepCalendar.settings : {};
+        var settingColor = normalizeHexColor(settings.mep_cal_event_color || '');
+
+        if (settingColor && settingColor !== MEP_CAL_DEFAULT_EVENT_COLOR) {
+            return settingColor;
+        }
+
+        return '';
+    }
+
     function getEventPaletteColor(event, fallbackColor) {
         var props = event && event.extendedProps ? event.extendedProps : {};
-        var seed = String(
+        var configuredColor = resolveSettingsEventColor();
+        var seed;
+
+        if (configuredColor) {
+            return configuredColor;
+        }
+
+        seed = String(
             (props.eventId || event.id || '') +
             '|' +
             (event.title || '') +
@@ -1354,7 +1400,7 @@
     }
 
     function buildSoftEventPalette(color) {
-        var accent = normalizeHexColor(color) || '#3a87ad';
+        var accent = normalizeHexColor(color) || MEP_CAL_DEFAULT_EVENT_COLOR;
 
         return {
             accent: accent,
@@ -1790,7 +1836,7 @@
 
     function buildDayEventsPopoverItem(event) {
         var props = event && event.extendedProps ? event.extendedProps : {};
-        var accent = props.paletteAccent || getEventPaletteColor(event, event.backgroundColor || '#3a87ad');
+        var accent = props.paletteAccent || getEventPaletteColor(event, event.backgroundColor || MEP_CAL_DEFAULT_EVENT_COLOR);
         var timeText = getEventSummaryTimeText(event);
         var url = event && event.url ? String(event.url) : '';
         var wrapperTag = url ? 'a' : 'div';

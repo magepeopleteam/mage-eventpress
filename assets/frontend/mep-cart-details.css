@@ -1,0 +1,80 @@
+/* Event cart / checkout details — classic + Woo Blocks */
+.mep-cart-details,
+.wc-block-components-product-details .mep-cart-details,
+.wc-block-components-product-metadata .mep-cart-details,
+.wc-block-components-product-details__value .mep-cart-details {
+	display: block !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	margin: 8px 0 0 !important;
+	padding: 0 !important;
+	font-size: 13px !important;
+	line-height: 1.5 !important;
+	color: #2c2c34 !important;
+	text-align: left !important;
+	white-space: normal !important;
+}
+
+.mep-cart-details *,
+.wc-block-components-product-details__value .mep-cart-details * {
+	white-space: normal !important;
+	box-sizing: border-box;
+}
+
+.mep-cart-details__section {
+	display: block !important;
+	margin: 0 0 12px !important;
+	padding: 12px !important;
+	background: #f7f7f9 !important;
+	border: 1px solid #ececf1 !important;
+	border-radius: 10px;
+}
+
+.mep-cart-details-table {
+	width: 100% !important;
+	border-collapse: collapse !important;
+	margin: 0 !important;
+	table-layout: auto !important;
+}
+
+.mep-cart-details-table td {
+	vertical-align: top !important;
+	word-break: break-word !important;
+}
+
+.mep-cart-details .mep-ticket-mode-badge,
+.wc-block-components-product-details__value .mep-ticket-mode-badge {
+	display: inline-block !important;
+	margin-left: 6px !important;
+	padding: 2px 7px !important;
+	border-radius: 999px !important;
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	line-height: 1.4 !important;
+	vertical-align: middle !important;
+}
+
+.mep-cart-details .mep-ticket-mode-badge--inperson {
+	background: #eef6ff !important;
+	color: #1d4f91 !important;
+}
+
+.mep-cart-details .mep-ticket-mode-badge--online {
+	background: #eefaf3 !important;
+	color: #1b6b45 !important;
+}
+
+/* Soften WC Blocks label crowding above our card */
+.wc-block-components-product-details__name {
+	display: block !important;
+	margin-bottom: 6px !important;
+}
+
+.mep-cart-details br,
+.wc-block-components-product-details__value br,
+.wc-block-components-product-metadata br {
+	display: block !important;
+	content: "" !important;
+	margin: 0 0 6px !important;
+	line-height: 1.55 !important;
+}

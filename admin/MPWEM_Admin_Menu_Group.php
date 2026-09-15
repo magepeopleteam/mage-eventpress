@@ -210,11 +210,20 @@
 			'parent_label' => __( 'Settings', 'mage-eventpress' ),
 			'landing_slug' => 'mep_event_settings_page',
 			'capability'   => 'manage_options',
-			'children'     => array(
+			/**
+			 * Slugs nested inside the Settings flyout.
+			 *
+			 * Filterable so add-ons can nest their own settings page here instead of
+			 * adding another top-level Events item — EventPress Pro uses it to place
+			 * "PDF Template Override" directly under "Template Override".
+			 *
+			 * @param string[] $children Submenu page slugs, in display order.
+			 */
+			'children'     => (array) apply_filters( 'mpwem_settings_group_children', array(
 				'mep_event_settings_page', // Event Settings (now also hosts the Status tab)
 				'mep_calendar_settings',   // Calendar Settings
 				'mpwem_quick_setup',       // Quick Setup
 				'mep_template_override',    // Template Override
-			),
+			) ),
 		) );
 	} );

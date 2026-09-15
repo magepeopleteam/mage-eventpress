@@ -20,7 +20,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 				'edit.php?post_type=mep_events',
 				__( 'RSVP Responses', 'mage-eventpress' ),
 				__( 'RSVP Responses', 'mage-eventpress' ),
-				'manage_options',
+				MPWEM_Global_Function::get_shop_manager_capability(),
 				'event-rsvp-responses',
 				array( $this, 'render_page' )
 			);
@@ -34,7 +34,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			wp_enqueue_script( 'mpwem-rsvp-admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_rsvp_admin.js', array( 'jquery' ), time(), true );
 			wp_localize_script( 'mpwem-rsvp-admin', 'mep_rsvp_ajax', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'mep_rsvp_nonce' ),
+				'nonce'    => wp_create_nonce( 'mpwem_rsvp_admin_nonce' ),
 				'i18n'     => array(
 					'loading'          => __( 'Loading responses…', 'mage-eventpress' ),
 					'updating'         => __( 'Updating…', 'mage-eventpress' ),
@@ -69,21 +69,26 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			?>
 			<div class="wrap mep-rsvp-admin-wrap">
 
-				<div class="mep-rsvp-header">
-					<div class="mep-rsvp-title-group">
-						<h1 class="mep-rsvp-title">
+				<header class="bde-hero">
+					<div class="bde-hero-copy">
+						<span class="bde-eyebrow">
 							<span class="dashicons dashicons-groups"></span>
-							<?php esc_html_e( 'RSVP Responses', 'mage-eventpress' ); ?>
-						</h1>
-						<p class="mep-rsvp-subtitle"><?php esc_html_e( 'Track attendees, manage check-ins, and export RSVP data.', 'mage-eventpress' ); ?></p>
+							<?php esc_html_e( 'Attendee tools', 'mage-eventpress' ); ?>
+						</span>
+						<h1 class="bde-title"><?php esc_html_e( 'RSVP Responses', 'mage-eventpress' ); ?></h1>
+						<p class="bde-subtitle"><?php esc_html_e( 'Track attendees, manage check-ins, and export RSVP data.', 'mage-eventpress' ); ?></p>
 					</div>
-					<div class="mep-rsvp-header-actions">
+					<div class="bde-hero-actions">
+						<div class="bde-hero-badge">
+							<span class="dashicons dashicons-yes-alt"></span>
+							<span><?php esc_html_e( 'RSVP tracking', 'mage-eventpress' ); ?></span>
+						</div>
 						<a href="#" class="mep-rsvp-btn mep-rsvp-btn-outline mep-export-rsvp-csv">
 							<span class="dashicons dashicons-download"></span>
 							<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
 						</a>
 					</div>
-				</div>
+				</header>
 
 				<div class="mep-rsvp-stats">
 					<div class="mep-rsvp-stat-card mep-rsvp-stat-total">
@@ -214,7 +219,10 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function ajax_fetch_rsvps() {
-			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
+			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
+			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+				wp_send_json_error( 'Permission denied.' );
+			}
 
 			$paged    = isset( $_POST['paged'] ) ? intval( $_POST['paged'] ) : 1;
 			$search   = isset( $_POST['search'] ) ? sanitize_text_field( $_POST['search'] ) : '';
@@ -285,6 +293,8 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 					'compare' => '=',
 				);
 			}
+			// found_posts gives the total without fetching a row per match.
+			$checkin_count_args['posts_per_page'] = 1;
 			$checked_in_posts = new WP_Query( $checkin_count_args );
 			$total_checked_in = $checked_in_posts->found_posts;
 
@@ -361,8 +371,8 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function ajax_checkin_rsvp() {
-			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
-			if ( ! current_user_can( 'manage_options' ) ) {
+			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
+			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
 
@@ -377,8 +387,8 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function ajax_bulk_action() {
-			check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
-			if ( ! current_user_can( 'manage_options' ) ) {
+			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
+			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
 
@@ -403,7 +413,8 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function export_csv() {
-			if ( isset( $_GET['mep_export_rsvps'] ) && current_user_can( 'manage_options' ) ) {
+			if ( isset( $_GET['mep_export_rsvps'] ) && current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+
 
 				$args = array(
 					'post_type'      => 'mep_rsvp_responses',

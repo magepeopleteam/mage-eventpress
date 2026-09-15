@@ -446,10 +446,156 @@
 	div.superSlider .slideIndicatorItem { border: 3px solid #DDD; margin: 5px; background-color: #DDD; width: 75px; overflow: hidden; position: relative; }
 	div.superSlider .slideIndicatorItem.activeSlide { border-color: var(--color_active); background-color: var(--color_active); }
 	/*******Icon indicator***************/
-	div.superSlider .iconIndicator { position: absolute; z-index: 111; top: calc(50% - 15px); font-size: 30px; cursor: pointer; color: #FFF; }
+	/* z-index only needs to clear slide layers (0/1); keep below site sticky headers (~100+) */
+	div.superSlider .iconIndicator { position: absolute; z-index: 5; top: calc(50% - 15px); font-size: 30px; cursor: pointer; color: #FFF; }
 	div.superSlider .iconIndicator:hover { color: #FFF; }
 	div.superSlider .iconIndicator.prevItem { left: 20px; }
 	div.superSlider .iconIndicator.nextItem { right: 20px; }
+	/************* Style Two — full-bleed feature + bottom-right controls ***************/
+	div.mpwem_slider_area.is-style-2,
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 {
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+	}
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 {
+		display: block;
+		width: 100%;
+	}
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 > .dFlex {
+		display: block !important;
+		width: 100%;
+		position: relative;
+	}
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 .sliderAllItem {
+		width: 100% !important;
+		min-width: 100%;
+		border-radius: 12px;
+	}
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 .sliderShowcase {
+		display: none !important;
+	}
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 .sliderItem,
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 .sliderItem .bg_image_area,
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 .sliderItem [data-bg-image] {
+		width: 100%;
+		height: 100%;
+		min-height: inherit;
+	}
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 .sliderItem [data-bg-image] {
+		background-size: cover !important;
+		background-position: center center !important;
+		background-repeat: no-repeat;
+	}
+	div.mpwem_slider_area.is-style-2 .superSlider.is-style-2 .sliderItem [data-bg-image]:hover {
+		-ms-transform: none;
+		transform: none;
+	}
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_controls {
+		position: absolute;
+		right: 16px;
+		bottom: 16px;
+		z-index: 20;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-align-items: center;
+		align-items: center;
+		gap: 8px;
+	}
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_btn {
+		width: 44px;
+		height: 44px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		display: -webkit-inline-flex;
+		display: inline-flex;
+		-webkit-align-items: center;
+		align-items: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+		background: rgba(255, 255, 255, 0.92);
+		color: #111113;
+		box-shadow: 0 8px 24px rgba(17, 17, 19, 0.16);
+		cursor: pointer;
+		font-size: 15px;
+		line-height: 1;
+		transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+	}
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_btn:hover,
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_btn:focus-visible {
+		background: #111113;
+		color: #fff;
+		outline: none;
+		transform: translateY(-1px);
+	}
+	/* Override default mid-side icon placement when used as Style Two controls */
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_controls .iconIndicator {
+		position: static !important;
+		top: auto !important;
+		left: auto !important;
+		right: auto !important;
+		font-size: 15px !important;
+		color: inherit !important;
+	}
+	div.mpwem_slider_area.is-style-2 .sliderItem[data-target-popup] {
+		cursor: zoom-in;
+	}
+	div.mpwem_slider_area.is-style-2 .post_thumb.is-style-2 {
+		position: relative;
+		overflow: hidden;
+		border-radius: 12px;
+		width: 100%;
+	}
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_feature {
+		display: block;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: zoom-in;
+		position: relative;
+	}
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_feature img {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+	div.mpwem_slider_area.is-style-2 .mpwem_slider_style2_feature_zoom {
+		position: absolute;
+		right: 16px;
+		bottom: 16px;
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		display: -webkit-inline-flex;
+		display: inline-flex;
+		-webkit-align-items: center;
+		align-items: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+		background: rgba(255, 255, 255, 0.92);
+		color: #111113;
+		box-shadow: 0 8px 24px rgba(17, 17, 19, 0.16);
+		pointer-events: none;
+	}
+	/* Single-image Style Two: feature button already shows zoom; hide duplicate control row */
+	div.mpwem_slider_area.is-style-2 .post_thumb.is-style-2 .mpwem_slider_style2_controls {
+		display: none;
+	}
+	/* Keep popup markup in DOM without taking layout space */
+	div.mpwem_slider_area.is-style-2 .post_thumb.is-style-2 > .superSlider {
+		position: absolute;
+		width: 0;
+		height: 0;
+		overflow: visible;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+	}
 	/*************popup slider***************/
 	div.mpwem_style [data-target-popup] { cursor: pointer; }
 	div.superSlider .sliderPopup div.superSlider { display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; -webkit-flex-direction: column; flex-direction: column; -webkit-align-items: center; align-items: center; height: 100%; width: 100%; overflow: hidden; margin: 0; position: relative; }

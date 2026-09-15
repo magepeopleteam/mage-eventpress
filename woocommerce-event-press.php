@@ -3,7 +3,7 @@
 	 * Plugin Name: Event Booking Manager for WooCommerce
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
-	 * Version: 5.4.0
+	 * Version: 5.7.0
 	 * Author: MagePeople Team
 	 * Author URI: http://www.mage-people.com/
 	 * Text Domain: mage-eventpress
@@ -22,8 +22,19 @@
 		define('MPWEM_PLUGIN_URL', plugins_url() . '/' . plugin_basename(dirname(__FILE__)));
 	}
 	if (!defined('MPWEM_PLUGIN_VERSION')) {
-		define('MPWEM_PLUGIN_VERSION', '5.4.0');
+		define('MPWEM_PLUGIN_VERSION', '5.7.0');
 	}
+
+	// Declare High-Performance Order Storage support. WooCommerce hides the HPOS toggle
+	// behind an incompatibility warning for every order-touching plugin that stays silent,
+	// so this has to be stated explicitly. All order reads/writes in this plugin go through
+	// the WC_Order CRUD API (see mep_get_order_meta_map() for the modules that used to read
+	// orders with get_post_meta( $order_id )), which works under either storage engine.
+	add_action( 'before_woocommerce_init', function () {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	} );
 
 	// WooCommerce Fallback Stub Functions to prevent Fatal Errors when WooCommerce is inactive.
 	// We hook this to plugins_loaded so that WooCommerce (if active or being activated) has loaded first,

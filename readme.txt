@@ -17,7 +17,7 @@ Sell event tickets with WooCommerce. Event registration, recurring events, RSVP,
 
 **Evently (Event Booking Manager for WooCommerce)** lets you create events, sell tickets, and manage attendees right inside WooCommerce — using the store, checkout, and payment gateways you already have.
 
-No new payment system to configure. No locked-down checkout. Evently works with **every WooCommerce payment gateway** — Stripe, PayPal, Klarna, bank transfer, cash on delivery, and 100+ local gateways — completely free. Custom payment method also posible like paypal,stripe and offline payment as Pro feature 
+No new payment system to configure. No locked-down checkout. Evently works with **every WooCommerce payment gateway** — Stripe, PayPal, Klarna, bank transfer, cash on delivery, and 100+ local gateways — completely free. Custom payment methods are also possible — Offline Payment is included for free, while PayPal and Stripe as custom payment methods are a Pro feature.
 
 Perfect for conferences, workshops, classes, concerts, tours, webinars, and community meetups — in-person or virtual and Hybrid 
 
@@ -41,6 +41,10 @@ We are not limiting you here; the free version features most of the basic event 
 Effortlessly set up repeating events—daily, weekly, or custom schedules. Whether you're running tours, appointments, or classes, Evently helps you sell tickets for recurring dates smoothly.
 ### 📅 Sell Tickets for Multiple Fixed Dates from a Single Event
 With Evently, you can add multiple specific dates to a single event and let your customers select their preferred date/time before booking. Perfect for sessions, workshops, or performances with set schedules.
+### 🚫 Publish Events Without a Date
+Undated Events let you publish an event with no date or time at all — ideal for open-ended announcements or "coming soon" listings where you don't yet have a fixed schedule.
+### 📢 Announcement Mode
+Collect interest before you sell tickets. Publish an event as a notice with an enquiry form instead of a ticket box. Every enquiry lands in a dedicated dashboard where you can search, filter by event/status, and export responses to CSV — completely free.
 ### 📝 Build a Professional Event Registration Form
 Stand out with a customizable and dynamic attendee registration form. Apply conditional logic, such as showing a school name field only when the ticket type is “Child”. Designed for both flexibility and professionalism, even under tight deadlines.
 When you need to create something highly effective but have limited time available, [Evently](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for. With the Evently, you can implement these features and make your event a success.
@@ -53,21 +57,29 @@ When you need to create something highly effective but have limited time availab
 
 ✔ **Responsive & SEO-Friendly Design:** Events display beautifully across all devices. Built with SEO best practices to help your event pages rank better.
 
+✔ **Automatic Event Schema Markup:** Evently automatically generates structured Event data (name, dates, status, attendance mode) so your events are eligible for rich results in Google Search.
+
 ✔ **Multilingual & Translation Ready:** Translate your event content into any language. Fully compatible with translation plugins.
 
 ✔ **Custom Shortcodes:** Use available shortcodes to display and customize events on any page or post with ease.
 
 ✔ **Event Name & Description Fields:** Add meaningful event names and detailed descriptions for a better user experience and clarity.
 
+✔ **Collapsible Long Descriptions:** Long event descriptions automatically get a "Read More" control at a word limit you choose — content only collapses between complete blocks, so interactive elements never break.
+
 ✔ **Multi-Level Event Management:** Manage ticket types, quantities, pricing, event categories, and organizers — all from the backend dashboard.
 
-✔ **Google Maps Integration:** Display event venues using Google Maps to help attendees find the location easily.
+✔ **Speaker Management:** Add speaker profiles with photos once, then assign them across as many events as you like — perfect for conferences and panel-style events.
+
+✔ **Google Maps Integration:** Display event venues using Google Maps to help attendees find the location easily. Works with a no-API-key Iframe map, or a more precise API-based map if you provide a key.
 
 ✔ **Flexible Date & Time Options:** Add start/end dates, set recurring schedules, and allow multi-date time selection for your events.
 
 ✔ **One-Click Event Reset:** Reset event data with just a single click if you need to start fresh.
 
 ✔ **Custom Event Templates:** Choose from multiple pre-designed event templates. Assign different templates for different events.
+
+✔ **Classic or Modern Editor:** Build your event in the modern step-by-step editor, or switch to the classic WordPress editor with a single click — whichever you prefer.
 
 ✔ **WooCommerce Compatibility:**  Works natively with WooCommerce. Sell event tickets and other products independently or together — no conflict.
 
@@ -83,7 +95,21 @@ When you need to create something highly effective but have limited time availab
 
 ✔ **Multiple Event Types – Online, Offline & Hybrid:** Create in-person, virtual, or hybrid events, each with the right venue or joining details.
 
-✔ **RSVP Events:** Turn any event into a free RSVP instead of paid ticketing — let attendees confirm their attendance without payment, capture their details, and review all responses from the dashboard.
+✔ **RSVP Events:** Turn any event into a free RSVP instead of paid ticketing — let attendees confirm their attendance without payment, capture their details, and review all responses from the dashboard. Filter RSVP responses by event or status, search by name/email, and export everything to CSV — free.
+
+✔ **Extra Services / Add-ons:** Let attendees attach optional paid extras — meals, merchandise, upgrades — to their ticket at checkout, with an optional shared quantity cap across the whole event.
+
+✔ **Early Bird Pricing:** End your early-bird discount either on a fixed date or automatically once a set number of orders come in.
+
+✔ **Custom Confirmation Emails:** Set your own sender name/address, subject line, and rich-text email body, with dynamic variables like {name}, {event}, {ticket_type}, {order_id}, and {event_date} — plus control which order statuses trigger the email.
+
+✔ **Brand Colors & Icon Customization:** Set your own primary/secondary colors with a live preview, and swap the icons used for date, time, location, organizer, and every social-share button.
+
+✔ **Image Slider & Carousel:** Display event galleries as a slider (multiple layouts and indicator styles) or an autoplay carousel.
+
+✔ **Low-Stock Alerts:** Show a low-stock warning and "Limited Availability" badge to customers as seats run out, plus an automatic email alert to the admin.
+
+✔ **Custom Booking Confirmation Page:** Redirect customers to any page of your choice after booking, using the `[mep_booking_confirmation]` shortcode, instead of sending them back to the event page.
 
 ✔ **Multiple Event List Layouts:** Display events as grid, list, minimal, timeline, native, or title-only styles, with optional pagination and carousel.
 
@@ -109,7 +135,7 @@ The Automatic email function can be set up based on payment status. A PDF ticket
 
 
 * **Event Attendee Dashboard**
-The Event Attendee list can be viewed from the dashboard, with attendee details information captured during event registration.
+The Event Attendee list can be viewed from the dashboard, with attendee details captured during event registration.
 
 * **Edit Attendee Information:**
 Admins can edit each attendee’s information and change any event date via bulk attendee edit.
@@ -122,6 +148,12 @@ Admins can send event update notifications to all attendees via email directly f
 
 * **Event Sales Report:**
 View detailed event-wise sales reports with the Event Manager Pro version.
+
+* **Event Backend Order:**
+The Pro version has a built-in backend order flow to book or purchase event registration tickets without navigating to the frontend.
+
+* **Event Waitlist:**
+Our waitlist feature adds a waitlist form to your event page when tickets sell out.
 
 
 
@@ -139,10 +171,6 @@ The Event Calendar addon will improve the display of the event calendar feature 
 
 👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
 The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying quantity
-👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈 
-Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. 
-👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
-This book event dashboard addon will add a feature to purchase tickets from the WordPress admin panel. 
 
 👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
 This is must much-needed add-on if someone likes to duplicate any event.
@@ -161,6 +189,12 @@ This plugin allows you to sell tickets with different seat plans. You can map ou
 
 👉[Frontend Event Submit Addon](https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/)👈
 This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts.
+
+👉**Category Based Ticket Type**👈
+Add different ticket types based on categories for better organization and flexible event pricing options.
+
+👉**Mage WP Login Page Designer**👈
+Create your event registration login page with a customizable design feature. This add-on improves branding and user experience beyond the default login screen.
 
 
 ### 📋 Shortcodes included with Woocommerce Events Manager

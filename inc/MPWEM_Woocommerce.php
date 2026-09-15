@@ -32,6 +32,8 @@
 				add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ) );
 				add_filter( 'woocommerce_get_item_data', array( $this, 'get_item_data' ), 20, 2 );
 				add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 10, 90 );
+				add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'validate_event_booking' ), 11, 2 );
+				add_action( 'woocommerce_store_api_validate_add_to_cart', array( $this, 'store_api_validate_add_to_cart' ) );
 				add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_redirect' ) );
 				/**********************************************/
 				add_action( 'woocommerce_check_cart_items', array( $this, 'check_cart_items' ) );
@@ -77,6 +79,18 @@
 					$recurring_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['recurring_event_date'] ) ) : [];
 					$time_slot_text = isset( $_POST['time_slot_name'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_name'] ) ) : '';
 					$ticket_info    = self::get_cart_ticket_info( $product_id );
+					// Refuse before anything below holds seats or stores uploads. This filter is
+					// the one step every add-to-cart passes through: WooCommerce 11 skips
+					// woocommerce_add_to_cart_validation for direct WC()->cart->add_to_cart()
+					// calls (order again, other plugins), and the Store API applies this filter
+					// before it validates anything.
+					$rejection = self::is_store_api_request() ? self::get_store_api_rejection( $product_id ) : '';
+					if ( '' === $rejection ) {
+						$rejection = self::get_booking_rejection( $product_id, $ticket_info );
+					}
+					if ( '' !== $rejection ) {
+						throw self::booking_exception( $rejection );
+					}
 					$ticket_price   = self::get_cart_ticket_price( $ticket_info );
 					$ex_infos       = self::get_cart_ex_info( $product_id );
 					$ex_price       = self::get_cart_ex_price( $ex_infos );
@@ -248,10 +262,42 @@
 			 * payment flows too, which woocommerce_after_checkout_validation never sees.
 			 */
 			public function check_cart_items() {
+				self::remove_ticketless_event_items();
 				self::validate_cart_seat_availability();
 			}
 			public function after_checkout_validation( $posted ) {
 				self::validate_cart_seat_availability();
+			}
+			/**
+			 * Takes event lines that carry no ticket out of the cart before they can be ordered.
+			 *
+			 * The add-to-cart guards stop new ones, but a cart saved before those guards
+			 * existed can still hold one, and before_calculate_totals() prices it at 0.00.
+			 * check_cart_items() runs on the cart page, in the classic checkout and in the
+			 * Store API's validate_cart() (block and express checkout), and the error notice
+			 * stops the order in each - the same way WooCommerce drops an item that is no
+			 * longer available.
+			 */
+			private static function remove_ticketless_event_items() {
+				if ( ! function_exists( 'WC' ) || is_null( WC()->cart ) ) {
+					return;
+				}
+				foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+					$event_id = is_array( $values ) && array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0;
+					if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' ) {
+						continue;
+					}
+					$ticket_info = array_key_exists( 'event_ticket_info', $values ) ? $values['event_ticket_info'] : array();
+					if ( self::has_ticket_selection( $ticket_info ) ) {
+						continue;
+					}
+					WC()->cart->remove_cart_item( $cart_item_key );
+					wc_add_notice( sprintf(
+					/* translators: %s: event name. */
+						__( '%s was removed from your cart because no tickets were selected for it. Please choose your tickets on the event page.', 'mage-eventpress' ),
+						esc_html( get_the_title( $event_id ) )
+					), 'error' );
+				}
 			}
 			/**
 			 * Rejects a cart asking for more tickets than are still available.
@@ -481,6 +527,173 @@
 					}
 				}
 				return $passed;
+			}
+			/**
+			 * Refuses an event booking before WooCommerce builds a cart line for it.
+			 *
+			 * Resolves the event from the product id WooCommerce passes, not from
+			 * $_REQUEST['add-to-cart'], which the Store API and order again never set. Covers
+			 * the classic form and AJAX handlers, the Store API and order again;
+			 * add_cart_item_data() repeats the check for the direct add_to_cart() calls this
+			 * filter no longer sees. Runs just after add_to_cart_validation() so that check
+			 * keeps receiving the result it always did.
+			 *
+			 * @param bool $passed     Validation result so far.
+			 * @param int  $product_id Product being added.
+			 * @return bool
+			 */
+			public function validate_event_booking( $passed, $product_id = 0 ) {
+				if ( ! $passed ) {
+					return $passed;
+				}
+				$event_id = self::resolve_event_for_product( absint( $product_id ) );
+				if ( ! $event_id ) {
+					return $passed;
+				}
+				$rejection = self::get_booking_rejection( $event_id, self::get_cart_ticket_info( $event_id ) );
+				if ( '' === $rejection ) {
+					return $passed;
+				}
+				wc_add_notice( $rejection, 'error' );
+				return false;
+			}
+			/**
+			 * Keeps event products out of the Store API cart.
+			 *
+			 * EventPress books through the event page form, which posts the ticket rows, the
+			 * date and the registration answers as form fields. Store API add-item carries
+			 * none of those, so an event line added there is a booking nobody made. A site
+			 * with its own Store API booking flow can opt back in through the
+			 * mep_store_api_allow_event_add_to_cart filter; every ticket check still applies.
+			 *
+			 * The Store API applies woocommerce_add_cart_item_data before it fires this action,
+			 * so add_cart_item_data() normally refuses first, before any seat is held. This
+			 * catches a call that check cannot recognise as a Store API request, such as an
+			 * internal rest_do_request().
+			 *
+			 * @param WC_Product $product Product being added.
+			 * @return void
+			 * @throws Exception For an event product.
+			 */
+			public function store_api_validate_add_to_cart( $product ) {
+				if ( ! is_a( $product, 'WC_Product' ) ) {
+					return;
+				}
+				$event_id  = self::resolve_event_for_product( $product->get_parent_id() ? $product->get_parent_id() : $product->get_id() );
+				$rejection = $event_id ? self::get_store_api_rejection( $event_id ) : '';
+				if ( '' !== $rejection ) {
+					throw self::booking_exception( $rejection );
+				}
+			}
+			/**
+			 * Why the Store API may not add this event's product, or '' once a site opts in.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return string
+			 */
+			private static function get_store_api_rejection( $event_id ) {
+				if ( apply_filters( 'mep_store_api_allow_event_add_to_cart', false, $event_id ) ) {
+					return '';
+				}
+				return __( 'Tickets for this event can only be booked from the event page.', 'mage-eventpress' );
+			}
+			/**
+			 * Whether this request is a Store API call, whichever URL form reached it.
+			 *
+			 * WC()->is_store_api_request() only matches a /wp-json/ URL, so a site whose REST
+			 * API answers on ?rest_route= would slip past it. The matched route covers both.
+			 *
+			 * @return bool
+			 */
+			private static function is_store_api_request() {
+				if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! isset( $GLOBALS['wp'] ) || ! is_object( $GLOBALS['wp'] ) ) {
+					return false;
+				}
+				$route = isset( $GLOBALS['wp']->query_vars['rest_route'] ) ? (string) $GLOBALS['wp']->query_vars['rest_route'] : '';
+				return 0 === strpos( ltrim( $route, '/' ), 'wc/store/' );
+			}
+			/**
+			 * An exception both add-to-cart paths report as a refusal.
+			 *
+			 * WC_Cart::add_to_cart() catches any Exception and shows its message as a notice.
+			 * The Store API answers only a RouteException with a proper 4xx - anything else
+			 * leaves as a 500 "unknown server error".
+			 *
+			 * @param string $message Reason shown to the customer.
+			 * @return Exception
+			 */
+			private static function booking_exception( $message ) {
+				$route_exception = '\Automattic\WooCommerce\StoreApi\Exceptions\RouteException';
+				if ( class_exists( $route_exception ) ) {
+					return new $route_exception( 'mep_event_booking_rejected', esc_html( $message ), 400 );
+				}
+				return new Exception( esc_html( $message ) );
+			}
+			/**
+			 * Why an event booking may not go into the cart, or '' when it may.
+			 *
+			 * An event line is charged the sum of the tickets on it, so a line without a
+			 * ticket is a free booking of nothing. That is what a bare
+			 * ?add-to-cart=<helper product>, a Store API add-item or an order again used to
+			 * produce - for draft and expired events too. It is the missing ticket that is
+			 * refused, never a zero price: a free ticket type chosen on the event page books
+			 * as before. An addon with its own booking flow can adjust the verdict through the
+			 * mep_event_booking_rejection filter.
+			 *
+			 * @param int   $event_id    Event post ID.
+			 * @param mixed $ticket_info Ticket rows from get_cart_ticket_info().
+			 * @return string Reason for the customer, or '' when the booking may proceed.
+			 */
+			private static function get_booking_rejection( $event_id, $ticket_info ) {
+				$rejection = '';
+				if ( ! self::is_event_on_sale( $event_id ) ) {
+					$rejection = __( 'Sorry, this event is not available for booking.', 'mage-eventpress' );
+				} elseif ( ! self::has_ticket_selection( $ticket_info ) ) {
+					$rejection = __( 'Please select at least one ticket on the event page before booking.', 'mage-eventpress' );
+				}
+				return (string) apply_filters( 'mep_event_booking_rejection', $rejection, $event_id, $ticket_info );
+			}
+			/**
+			 * Whether the event can be booked right now.
+			 *
+			 * Matches what the event page offers: a published event (its editors may still
+			 * test-book a draft or private one) in a ticket-selling or RSVP mode, with at
+			 * least one date that has not passed its booking cut-off. The dates come from
+			 * MPWEM_Functions::get_dates(), the list the booking form is built from, so the
+			 * expiry setting, buffer time and recurring rules agree with the page.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return bool
+			 */
+			private static function is_event_on_sale( $event_id ) {
+				if ( get_post_type( $event_id ) !== 'mep_events' ) {
+					return false;
+				}
+				if ( get_post_status( $event_id ) !== 'publish' && ! current_user_can( 'edit_post', $event_id ) ) {
+					return false;
+				}
+				if ( ! MPWEM_Global_Function::is_bookable_event( $event_id ) ) {
+					return false;
+				}
+				$dates = MPWEM_Functions::get_dates( $event_id );
+				return is_array( $dates ) && sizeof( $dates ) > 0;
+			}
+			/**
+			 * Whether ticket rows hold at least one ticket actually chosen.
+			 *
+			 * @param mixed $ticket_info Ticket rows, as get_cart_ticket_info() builds them.
+			 * @return bool
+			 */
+			private static function has_ticket_selection( $ticket_info ) {
+				if ( ! is_array( $ticket_info ) ) {
+					return false;
+				}
+				foreach ( $ticket_info as $ticket ) {
+					if ( is_array( $ticket ) && ! empty( $ticket['ticket_name'] ) && isset( $ticket['ticket_qty'] ) && (int) $ticket['ticket_qty'] > 0 ) {
+						return true;
+					}
+				}
+				return false;
 			}
 			public function add_to_cart_redirect( $wc_get_cart_url ) {
 				$redirect_status = mep_get_option( 'mep_event_direct_checkout', 'general_setting_sec', 'yes' );
@@ -1148,6 +1361,40 @@
 					do_action( 'mep_after_event_booking', $order_id, $order->get_status() );
 				}
 			}
+			/**
+			 * Ticket type names a visitor may book, decoded the same way posted names are.
+			 *
+			 * The event page leaves out ticket types the organiser switched off and any that
+			 * mpwem_ticket_permission withholds (templates/layout/ticket_type.php). Checking
+			 * only that a posted name existed let a switched-off type - typically a 0.00 staff
+			 * or complimentary ticket - be booked by posting its name. The ticket rows and the
+			 * attendee rows are both checked against this one list, so they cannot disagree.
+			 *
+			 * @param int $post_id Event post ID.
+			 * @return string[]
+			 */
+			private static function get_bookable_ticket_names( $post_id ) {
+				$names        = [];
+				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
+				if ( ! is_array( $ticket_types ) ) {
+					return $names;
+				}
+				foreach ( $ticket_types as $ticket_type ) {
+					if ( ! is_array( $ticket_type ) ) {
+						continue;
+					}
+					$enabled = array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
+					if ( 'yes' !== $enabled || ! apply_filters( 'mpwem_ticket_permission', true, $ticket_type ) ) {
+						continue;
+					}
+					$name = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+					$name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+					if ( $name ) {
+						$names[] = $name;
+					}
+				}
+				return $names;
+			}
 			public static function get_cart_ticket_info( $post_id ) {
 				$ticket_info = [];
 				$start_date  = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
@@ -1157,17 +1404,7 @@
 				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
 				$total_price = 0;
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
-					$event_ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
-					$valid_ticket_names = [];
-					if ( is_array( $event_ticket_types ) && sizeof( $event_ticket_types ) > 0 ) {
-						foreach ( $event_ticket_types as $t_type ) {
-							$t_name = is_array($t_type) && array_key_exists( 'option_name_t', $t_type ) ? $t_type['option_name_t'] : '';
-							$t_name = html_entity_decode( urldecode( $t_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-							if ( $t_name ) {
-								$valid_ticket_names[] = $t_name;
-							}
-						}
-					}
+					$valid_ticket_names = self::get_bookable_ticket_names( $post_id );
 					foreach ( $names as $key => $name ) {
 						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
 						$ticket_name               = explode( '_', $name );
@@ -1264,17 +1501,7 @@
 					$same_attendee = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' );
 					$count         = 0;
 
-					$event_ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
-					$valid_ticket_names = [];
-					if ( is_array( $event_ticket_types ) && sizeof( $event_ticket_types ) > 0 ) {
-						foreach ( $event_ticket_types as $t_type ) {
-							$t_name = is_array($t_type) && array_key_exists( 'option_name_t', $t_type ) ? $t_type['option_name_t'] : '';
-							$t_name = html_entity_decode( urldecode( $t_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-							if ( $t_name ) {
-								$valid_ticket_names[] = $t_name;
-							}
-						}
-					}
+					$valid_ticket_names = self::get_bookable_ticket_names( $post_id );
 
 					foreach ( $names as $key => $name ) {
 						$current_qty=$qty[ $key ];

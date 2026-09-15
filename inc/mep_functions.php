@@ -1325,6 +1325,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					do_action( 'mep_attendee_upload_file_save', $event_id, $_user_info, $_field );
 				}
 			} // End User Form builder data update loop
+
+			// Callers (the Pro "Sync Attendee Data" tool) need the new id to tell a real insert
+			// from a failed one; without it every successful sync was reported as a failure.
+			return $pid;
 		}
 	}
 	if ( ! function_exists( 'mep_rsvp_attendee_create' ) ) {

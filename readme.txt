@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.1
+Stable tag: 5.7.2
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,10 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.2 =
+* Fix: Corrected event dates and times on the Horizon theme's single-event page (hero section and "You Might Also Like" cards) ignoring the site's Settings > General Date Format / Time Format — they were hardcoded to a US-style date, so EU-format sites (e.g. Copenhagen, d.m.Y) saw "September 17, 2026" instead of "17.09.2026". Horizon pages now honor the same date/time settings, including any per-event custom format override, as every other theme layout.
+  17 September 2026*
 
 = 5.7.1 =
 * Security Fix: Refused event bookings that carry no real ticket selection — a request that bypassed the normal ticket fields (a bare add-to-cart link, a direct Store API call, or a plugin adding the event product programmatically) could previously check out at $0.00 instead of being rejected.

@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.6.4
+Stable tag: 5.7.2
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -287,6 +287,37 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 5.7.2 =
+* Fix: Corrected event dates and times on the Horizon theme's single-event page (hero section and "You Might Also Like" cards) ignoring the site's Settings > General Date Format / Time Format — they were hardcoded to a US-style date, so EU-format sites (e.g. Copenhagen, d.m.Y) saw "September 17, 2026" instead of "17.09.2026". Horizon pages now honor the same date/time settings, including any per-event custom format override, as every other theme layout.
+  17 September 2026*
+
+= 5.7.1 =
+* Security Fix: Refused event bookings that carry no real ticket selection — a request that bypassed the normal ticket fields (a bare add-to-cart link, a direct Store API call, or a plugin adding the event product programmatically) could previously check out at $0.00 instead of being rejected.
+* Fix: Corrected extra services being duplicated on the PDF ticket, in reports/exports, and in stock counts whenever an order was reprocessed (e.g. by the attendee-repair cron or a re-entered gateway) — each extra pass added another copy instead of updating the existing record.
+* Fix: Corrected mep_attendee_create() not returning the new attendee's ID, which caused the Pro "Sync Attendee Data" tool to report failure — and create duplicate attendees on retry — even though the attendee had already been created successfully.
+* Fix: Corrected a fatal error in attendee processing whenever no WooCommerce cart existed, affecting gateway webhooks (e.g. Stripe 3-D Secure, PayPal), the REST API, WP-CLI, the Book an Event admin screen, and the 5.7.0 attendee-repair cron; on multi-event orders this had also stopped later events in the same order from getting an attendee at all.
+* Fix: Restored the mep_cart_ticket_type() function for older Seat Plan add-on builds that still call it directly, which had fatally broken every add-to-cart on sites running that combination.
+* Improvement: Added "Hide Category in List" and "Larger List Layout" options to Event List Settings, so sites that found the 5.5.0 card redesign's category badge or smaller List-view thumbnails a regression can restore the previous look.
+* Improvement: The PDF ticket settings screen now shows a live, ticket-accurate preview (organizer row, facts grid, stub with price/QR, attendee/billing panels, etc.) when the G-Sound theme is selected, including the configured background image.
+  15 September 2026*
+
+= 5.7.0 =
+* Feature: Added Undated Events — a per-event switch to publish events with no date at all (open-ended announcements, permanent exhibits, "coming soon" listings), hiding the date/ticket UI and skipping date validation appropriately.
+* Feature: Added Announcement Mode — a fourth event mode, alongside Ticket-Selling, RSVP, and Listing-Only, that replaces the ticket box with an enquiry form. Submissions are managed under a new Events → Enquiries screen (filter, search, mark read, delete, CSV export) and emailed to a per-event recipient or the site admin, with honeypot and flood-control protection.
+* Feature: Enquiry notification emails are now sent as a responsive, branded HTML template using the site's configured theme color, instead of plain text.
+* Feature: The remaining-seats indicator threshold is now configurable in General Settings — choose a fixed seat count (previous behavior) or a percentage of ticket capacity, so small and large events both show accurate availability colors. The low-stock warning and admin alert email follow the same setting.
+* Security Fix: Corrected seat oversell across every checkout path (classic, block, and express). Ticket-type availability was only ever validated for the last ticket type in the cart, compared against the wrong (event-total) capacity, and was never validated at all on block or express checkout — allowing an event to be sold well past its capacity.
+* Fix: Block and Express checkout orders were fatalling before creating any attendee record, so those orders were paid but silently produced no attendee data and inflated the event's apparent seat availability.
+* Feature: Added an automatic repair system that rebuilds missing attendee records for past block/express-checkout orders via a one-time background backfill, plus a live safety net that heals any future order as it reaches a paid status.
+* Fix: Corrected invalid Event JSON-LD structured data — the default event status, the previous-reschedule date, and all emitted dates/times were wrong or improperly timezoned; the schema is now also exposed through a new mpwem_event_schema filter.
+* Fix: An event line item could check out priced at $0 when its stored ticket-price meta was missing, such as on a cart carried over from a plugin update or an "order again."
+* Fix: Attendee-record creation failures are now logged with a reason instead of being silently discarded, so a failed booking can actually be diagnosed.
+* Fix: Corrected the demo data importer's use of a function deprecated since WordPress 6.2, which had spammed a deprecation notice per imported item.
+* Fix: Corrected the Availability Indicator settings screen showing both the fixed-seat and percentage threshold fields at once instead of only the active mode's fields.
+* Fix: The PDF Admin Copy Email field on the modern Email Settings screen can now actually be cleared; it previously reverted to the site admin address on every save.
+* Fix: Guarded the options framework's use of jQuery UI Sortable so its absence no longer breaks every other control (color picker, image select, range inputs) on the same settings screen.
+  10 September 2026*
+
 = 5.6.4 =
 * Fix: Booking several dates of the same recurring event in one order now takes a seat from every one of them. The guard that stops an attendee record being written twice counted the records already made for the order and the event without looking at the date, so once the first date had its attendee every later date in the same order was treated as already handled and got no record at all — only the first date lost a seat, and the rest went on showing full availability.
 * Fix: "Add to cart" no longer does nothing on events that use a custom attendee form. The hidden block the attendee rows are cloned from sits inside the booking form and its fields were marked required; a browser will not submit a form holding a required field it cannot show an error on, and it tells the visitor nothing, so the button simply went dead and switching the attendee form off was the only way to take a booking. Fields nobody can see are now kept out of validation, while a required field the visitor can see still raises the normal error against it.
@@ -306,23 +337,29 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
   1 September 2026*
 
 = 5.6.1 =
-* Security: Restricted the RSVP responses screen to shop managers, and the payment-gateway settings and credential modals to administrators; both were reachable by lower-privileged roles.
 * Performance: Rebuilt the Event Orders screen to page in SQL. It previously loaded every order on the site into memory to show twenty rows, which exhausted memory on stores with real order history.
 * Fix: Event bookings are no longer lost on orders created outside the WooCommerce checkout — PayPal Express and similar flows bypass it, and the booking meta and attendee record went with them.
 * Fix: The confirmation email is now sent when the trigger status was never explicitly saved, and the email settings screen no longer contradicts what is actually sent.
 * Fix: Event list layouts show every organizer instead of only the first.
-* Fix: Attendee form validation errors are shown on the front end instead of failing silently.
-* Fix: Calendar Settings saved in admin now reach the front end, and recurring weekday events no longer drift to the wrong day or lose their extra dates.
-* Fix: The full event description always renders, and interactive blocks inside it survive the "read more" treatment.
-* Fix: Modern admin event lists show event IDs again.
-* Fix: Advanced and global settings on the modern settings screens persist correctly.
-* Fix: The attendee form's disabled state is preserved when the event is edited.
-* Fix: Order meta is HPOS-safe, and event line-item meta is shared consistently between the order and the booking.
-* Fix: The duplicate-cart notice is translatable and now returns shoppers to the cart.
-* Fix: Registered the mpwem_global script handle so scripts depending on it load again.
-* Improvement: Settings flyout children can be filtered, so add-ons can nest their own pages under Settings.
-* Improvement: Refreshed the translation template and stopped exposing icon slugs as translatable strings.
   31 August 2026*
+
+= 5.6.0 =
+* Security Fix: Restricted the payment gateway settings save handler and credential modals to Administrators — a Contributor-level user could previously overwrite or read live PayPal/Stripe credentials and other site-wide payment settings.
+* Security Fix: Added a missing capability check to the RSVP responses AJAX handler and moved admin RSVP endpoints onto a dedicated nonce — a logged-in Subscriber could previously read every RSVP submission (name, email, phone) on the site using the nonce issued to the public RSVP form.
+* Fix: Corrected recurring calendar events drifting onto the wrong weekday from the second month onward.
+* Fix: Corrected events with multiple added dates showing only their first date on the calendar, and events whose first date had passed being dropped from the calendar entirely.
+* Fix: Corrected Calendar Settings colors (header, today highlight, borders, buttons, events) and the Language setting having no effect on the frontend.
+* Fix: Corrected admin "Book an Event" orders omitting attendee details (ticket type, price, registration-form fields, extra services, location) from order emails, and made order meta reachable under High-Performance Order Storage.
+* Fix: Corrected the admin script handle registration so scripts that depend on it (e.g. the Pro admin bundle) load on every admin screen instead of only this plugin's own pages.
+* Fix: Event descriptions are now always rendered in full instead of being truncated out of the page, keeping hidden content available to search engines, screen readers, and interactive blocks.
+* Fix: Corrected the Modern Editor's Advanced and Global settings not being saved.
+* Fix: Corrected the attendee registration form's disabled state being lost after certain Modern Editor interactions.
+* Fix: The "event already added to cart" notice is now translatable, and shoppers are redirected to the cart when a duplicate add-to-cart is rejected instead of the page silently reloading with no message.
+* Fix: Regenerated the translation template (POT) against the current version and stopped exposing 1,000+ FontAwesome icon slugs as translatable strings, which had been crowding out real UI strings (e.g. "Book") in translation tools.
+* Fix: Corrected inline validation feedback not appearing for malformed attendee field values (e.g. email) in the Horizon theme's booking drawer.
+* Fix: Modern admin event lists show event IDs again.
+* Improvement: Added a mpwem_settings_group_children filter so add-ons can nest their own settings pages under Events → Settings instead of registering a separate top-level menu.
+  27 August 2026*
 
 = 5.5.0 =
 * Fix: Corrected a critical performance issue where the event list's expiry filtering built a database query WordPress could not optimize, causing full-table scans against post meta on sites with a large postmeta table. Rewrote it as a targeted, indexed lookup.

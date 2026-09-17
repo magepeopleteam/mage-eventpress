@@ -70,13 +70,14 @@
 	}
 	$end_dt = is_array( $event_infos ) && ! empty( $event_infos['event_end_datetime'] ) ? $event_infos['event_end_datetime'] : '';
 
-	$date_txt = $start_dt ? date_i18n( 'F j, Y', strtotime( $start_dt ) ) : '';
-	$time_fmt = get_option( 'time_format' );
+	// Date/time must follow WP Settings > General (and any per-event override),
+	// never a hardcoded format. MPWEM_Global_Function::date_format() resolves both.
+	$date_txt = $start_dt ? MPWEM_Global_Function::date_format( $start_dt, 'date', $event_id ) : '';
 	$time_txt = '';
 	if ( $start_dt ) {
-		$time_txt = date_i18n( $time_fmt, strtotime( $start_dt ) );
+		$time_txt = MPWEM_Global_Function::date_format( $start_dt, 'time', $event_id );
 		if ( $end_dt ) {
-			$time_txt .= ' – ' . date_i18n( $time_fmt, strtotime( $end_dt ) );
+			$time_txt .= ' – ' . MPWEM_Global_Function::date_format( $end_dt, 'time', $event_id );
 		}
 	}
 ?>

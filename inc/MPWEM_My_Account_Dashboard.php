@@ -314,7 +314,7 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 							<a href="<?php echo esc_url( $order->get_view_order_url() ); ?>" class="mpwem-order-number">
 								#<?php echo esc_html( $order_id ); ?>
 							</a>
-							<span class="mpwem-order-date"><?php echo esc_html( $order->get_date_created()->date_i18n( 'M j, Y' ) ); ?></span>
+							<span class="mpwem-order-date"><?php echo esc_html( $order->get_date_created() ? $order->get_date_created()->date_i18n( get_option( 'date_format' ) ) : '' ); ?></span>
 						</div>
 					</td>
 					<td class="mpwem-col-event" data-label="<?php esc_attr_e( 'Event Details', 'mage-eventpress' ); ?>">
@@ -325,7 +325,7 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 								</a>
 								<span class="mpwem-event-date">
 									<i class="dashicons dashicons-calendar-alt"></i>
-									<?php echo esc_html( date_i18n( 'M j, Y g:i a', strtotime( get_post_meta($first_attendee_id,'ea_event_date',true) ) ) ); ?>
+									<?php echo esc_html( MPWEM_Global_Function::date_format( get_post_meta( $first_attendee_id, 'ea_event_date', true ), 'full', $event_id ) ); ?>
 								</span>
 							</div>
 						</div>

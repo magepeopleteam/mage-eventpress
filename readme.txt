@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.2
+Stable tag: 5.7.3
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,12 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.3 =
+* Security Fix: The Event Lists admin AJAX handler (mpwem_load_event_list) checked only the generic "edit_posts" capability, then queried by whatever status was requested. A Contributor could request status=private, draft, or trash (or omit status) and receive other authors' private, draft, and trashed events, including venue, ticket type, price, and — via the search parameter — private event body text the standard listing withholds from them. The query is now scoped to the requesting user's own events unless they hold the same capability WordPress itself requires to see that content across other authors.
+* Security Fix: Completed the fix from CVE-2026-16064. The Quick Edit action (mpwem_quick_edit_event) correctly stopped a Contributor editing another author's event, but never checked whether they were allowed to change an event's status; a Contributor could still publish, schedule, or privatize their own event through this action, a capability the role does not otherwise have. It now requires the same per-object publish capability the plugin's own event editor already checks before accepting such a status change.
+* Credit: Both issues were reported by Artus KG via WPScan/Jetpack's coordinated disclosure program.
+  17 September 2026*
 
 = 5.7.2 =
 * Fix: Corrected event dates and times on the Horizon theme's single-event page (hero section and "You Might Also Like" cards) ignoring the site's Settings > General Date Format / Time Format — they were hardcoded to a US-style date, so EU-format sites (e.g. Copenhagen, d.m.Y) saw "September 17, 2026" instead of "17.09.2026". Horizon pages now honor the same date/time settings, including any per-event custom format override, as every other theme layout.

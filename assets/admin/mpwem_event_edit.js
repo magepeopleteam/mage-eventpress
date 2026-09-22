@@ -4909,6 +4909,9 @@
             '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="15:00">3:00 PM</button>' +
             '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="18:00">6:00 PM</button>' +
             '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="20:00">8:00 PM</button>' +
+            // End of day: minutes step by 5 and the field is keyboard-locked, so without
+            // this a sale could not end at 11:59 PM (the day before a new price starts).
+            '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="23:59">11:59 PM</button>' +
             '  </div>' +
             '  <div class="mpwem-custom-time-picker__foot">' +
             '    <button type="button" class="mpwem-custom-time-picker__now">Now</button>' +

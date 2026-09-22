@@ -1680,7 +1680,9 @@
 }
 
 body.mep_events_page_mep_event_settings_page #wpcontent { padding-left: 0; }
-body.mep_events_page_mep_event_settings_page #wpbody-content { padding-bottom: 0; }
+/* Keep core's #wpbody-content padding-bottom: it reserves the space for the
+   absolutely positioned #wpfooter. Zeroing it laid "Version x.y" over the end
+   of the last settings card. */
 /* Core admin notices sit outside the modern shell; hide them and use .mep-gs__saved-banner. */
 body.mep_events_page_mep_event_settings_page > #wpwrap .notice,
 body.mep_events_page_mep_event_settings_page > #wpwrap .updated,

@@ -95,6 +95,11 @@
 	}
 
 	// Ticket/WooCommerce mode (default layout)
+	// $date is the occurrence the caller asked for: the event page passes the
+	// upcoming (or ?date=) one, the get_mpwem_ticket date switch passes the one the
+	// visitor picked. Keep it - $date is reassigned below, and it must stay the same
+	// occurrence as $user_date (the cart date) or sold seats come from another date.
+	$requested_date = $date;
 	$all_dates = MPWEM_Functions::get_dates( $event_id );
 	$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$user_date = strpos($date, ':') === false ? $date . ' 00:00' : $date;
@@ -109,7 +114,10 @@
     $all_dates   = MPWEM_Functions::get_dates( $event_id );
     $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
 	$upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');
-    $date                    = $url_date ?: $upcoming_date;
+    // get_requested_date() only reads $_GET, so it is empty on the (POST) AJAX date
+    // switch; falling back straight to $upcoming_date sized the seat map, sold counts
+    // and the Add to Cart button for the upcoming date on every other date.
+    $date                    = $url_date ?: ( $requested_date ?: $upcoming_date );
 
 	// Block booking for a past/expired selected occurrence (e.g. opened from a calendar
 	// link pointing at a date that has already passed). Mirrors the calendar's expiry rule

@@ -5947,7 +5947,7 @@ die();
     }
 
     add_action( 'wp_ajax_mep_change_date_status','mep_change_date_status' );
-    add_action( 'wp_ajax_mep_change_date_status', 'mep_change_date_status');
+    add_action( 'wp_ajax_nopriv_mep_change_date_status', 'mep_change_date_status');
 function mep_change_date_status() {
 
     $post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
@@ -5968,7 +5968,7 @@ function mep_change_date_status() {
 }
 
     add_action( 'wp_ajax_mep_change_time_status','mep_change_time_status' );
-    add_action( 'wp_ajax_mep_change_time_status', 'mep_change_time_status');
+    add_action( 'wp_ajax_nopriv_mep_change_time_status', 'mep_change_time_status');
     function mep_change_time_status() {
         $event_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
         if ($event_id > 0) {
@@ -6006,7 +6006,9 @@ function mep_change_date_status() {
                 $all_dates   = MPWEM_Functions::get_dates( $event_id );
                 $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
                 $upcoming_date                           =isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';
-                if (MPWEM_Global_Function::check_time_exit_date($upcoming_date)) {
+                // strtotime() first: get_mep_datetime() builds a DateTime without a
+                // try/catch, and date_parse() above accepts strings DateTime rejects.
+                if (MPWEM_Global_Function::check_time_exit_date($upcoming_date) && false !== strtotime($upcoming_date)) {
                     echo get_mep_datetime($upcoming_date, 'time');
                 }
             }

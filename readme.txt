@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.3
+Stable tag: 5.7.4
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,10 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.4 =
+* Fix: Event bookings could not be paid with most payment gateways - only Cash on Delivery worked, and checkout ended with WooCommerce's generic "There was an error processing your order". The "Clear Cart After Order" setting emptied the cart as soon as the order was created, before WooCommerce took payment. WooCommerce then re-checked which gateways were available against the empty cart, so a gateway that checks the order total (for example an M-Pesa minimum amount) dropped out and was never asked to take payment, and gateways that read the cart while paying (such as WooPay) failed. The cart is now cleared only after payment is complete or the customer reaches the order confirmation page, so every gateway works with the setting on, and a failed payment keeps the customer's cart so they can try again.
+  22 September 2026*
 
 = 5.7.3 =
 * Security Fix: The Event Lists admin AJAX handler (mpwem_load_event_list) checked only the generic "edit_posts" capability, then queried by whatever status was requested. A Contributor could request status=private, draft, or trash (or omit status) and receive other authors' private, draft, and trashed events, including venue, ticket type, price, and — via the search parameter — private event body text the standard listing withholds from them. The query is now scoped to the requesting user's own events unless they hold the same capability WordPress itself requires to see that content across other authors.

@@ -2650,7 +2650,10 @@ div.event_date_list_area .date-list-item {
 	width: 100%;
 	max-width: 100%;
 	box-sizing: border-box;
-	padding: 12px 5px 12px 28px !important;
+	/* Wrap instead of truncating: a date plus a time range does not fit the
+	   sidebar on one line, and the ellipsis cut off the times. Right padding
+	   keeps wrapped text clear of the ::after chevron, as the mobile rule does. */
+	padding: 12px 34px 12px 28px !important;
 	margin: 0 !important;
 	border: 1px solid var(--mep-sched-border);
 	border-radius: var(--mep-sched-radius);
@@ -2659,9 +2662,9 @@ div.event_date_list_area .date-list-item {
 	font-size: 13px !important;
 	font-weight: 600 !important;
 	line-height: 1.4 !important;
-	white-space: nowrap !important;
+	white-space: normal !important;
+	overflow-wrap: anywhere;
 	overflow: hidden;
-	text-overflow: ellipsis;
 	text-decoration: none !important;
 	box-shadow: 0 2px 8px rgba(26, 26, 31, 0.04);
 	transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, color 0.18s ease;

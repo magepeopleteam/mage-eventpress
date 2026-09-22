@@ -375,15 +375,27 @@
 				$rows = $wpdb->get_results(
 					"SELECT post_id, meta_key, meta_value FROM {$wpdb->postmeta}
 					 WHERE post_id IN ($in)
-					   AND meta_key IN ('event_upcoming_datetime','event_start_datetime')"
+					   AND meta_key IN ('event_upcoming_datetime','event_start_datetime','mep_enable_recurring')"
 				);
-				$upcoming = array();
-				$start    = array();
+				$upcoming  = array();
+				$start     = array();
+				$recurring = array();
 				foreach ( $rows as $r ) {
 					if ( $r->meta_key === 'event_upcoming_datetime' ) {
 						$upcoming[ (int) $r->post_id ] = $r->meta_value;
+					} elseif ( $r->meta_key === 'mep_enable_recurring' ) {
+						$recurring[ (int) $r->post_id ] = $r->meta_value;
 					} else {
 						$start[ (int) $r->post_id ] = $r->meta_value;
+					}
+				}
+				// A single event's card shows its start date (list_upcoming_date_only),
+				// but its event_upcoming_datetime follows the "Expire On" setting - the
+				// last day's end under "Event End Time" - so a multi-day course sorted
+				// by when it finishes, not by the date printed on it.
+				foreach ( $start as $id => $start_datetime ) {
+					if ( empty( $recurring[ $id ] ) || $recurring[ $id ] === 'no' ) {
+						$upcoming[ $id ] = $start_datetime;
 					}
 				}
 				$dir = ( strtoupper( $sort ) === 'DESC' ) ? -1 : 1;

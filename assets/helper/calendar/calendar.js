@@ -15,6 +15,8 @@
     var calendars = {};
     var stockRequestCache = {};
     var tooltipPointerState = {};
+    var tooltipHideTimers = {};
+    var tooltipEvents = {};
 
     function normalizeCalendarLocaleCode(value) {
         var locale = String(value || '').trim();
@@ -619,7 +621,7 @@
 
             eventMouseLeave: function(info) {
                 toggleCalendarEventHoverState(info, false);
-                hideTooltipEl(calId);
+                scheduleTooltipHide(calId);
             },
 
             // Add event content customization
@@ -748,7 +750,7 @@
 
             eventMouseLeave: function(info) {
                 toggleCalendarEventHoverState(info, false);
-                hideTooltipEl(calId);
+                scheduleTooltipHide(calId);
             },
 
             datesSet: function() {
@@ -805,6 +807,54 @@
             return match[1];
         }
         return isoStr;
+    }
+
+    /**
+     * A single event with extra dates arrives as its overall range (one bar from
+     * the first session to the last) plus one entry per session, the first of
+     * which repeats the range's start. The range bar put a course on days it does
+     * not meet and, held to one cell by the month CSS, pushed the real sessions
+     * out of view. Drop a multi-day entry when single-day entries of the same
+     * event fall inside it, and drop exact duplicates.
+     */
+    function normalizeCalendarEvents(events) {
+        if (!Array.isArray(events)) {
+            return [];
+        }
+        var dayKey = function(value) {
+            return typeof value === 'string' ? value.slice(0, 10) : '';
+        };
+        var byEvent = {};
+        events.forEach(function(event) {
+            var eventId = event && event.extendedProps ? event.extendedProps.eventId : '';
+            if (eventId) {
+                (byEvent[eventId] = byEvent[eventId] || []).push(event);
+            }
+        });
+        var seen = {};
+        return events.filter(function(event) {
+            if (!event) {
+                return false;
+            }
+            var eventId = event.extendedProps ? event.extendedProps.eventId : '';
+            var start = dayKey(event.start);
+            var end = dayKey(event.end || event.start);
+            if (eventId && !event.allDay && start && end > start) {
+                var holdsSession = byEvent[eventId].some(function(other) {
+                    var otherStart = dayKey(other.start);
+                    return other !== event && otherStart === dayKey(other.end || other.start) && otherStart >= start && otherStart <= end;
+                });
+                if (holdsSession) {
+                    return false;
+                }
+            }
+            var key = [event.id, event.start, event.end].join('|');
+            if (seen[key]) {
+                return false;
+            }
+            seen[key] = true;
+            return true;
+        });
     }
 
     /**
@@ -879,7 +929,7 @@
             timeout: 30000,
             success: function(response) {
                 if (response.success && response.data) {
-                    successCallback(response.data);
+                    successCallback(normalizeCalendarEvents(response.data));
                 } else {
                     successCallback([]);
                 }
@@ -896,6 +946,10 @@
     function showTooltip(event, jsEvent, calId) {
         var $tooltip = $('#' + calId + '-tooltip');
         if (!$tooltip.length) return;
+
+        clearTimeout(tooltipHideTimers[calId]);
+        tooltipEvents[calId] = event;
+        bindTooltipHover($tooltip, calId);
 
         var props = event.extendedProps || {};
         tooltipPointerState[calId] = {
@@ -1917,7 +1971,44 @@
      * Hide tooltip
      */
     function hideTooltipEl(calId) {
+        clearTimeout(tooltipHideTimers[calId]);
         $('#' + calId + '-tooltip').hide();
+    }
+
+    /**
+     * Hiding on the event's mouseleave closed the tooltip before the pointer
+     * could reach it. Wait briefly, and keep it open while it is hovered.
+     */
+    function scheduleTooltipHide(calId) {
+        clearTimeout(tooltipHideTimers[calId]);
+        tooltipHideTimers[calId] = setTimeout(function() {
+            hideTooltipEl(calId);
+        }, 300);
+    }
+
+    /**
+     * Once per tooltip: stay open while hovered, and a click opens the event
+     * like clicking the event itself (unless the calendar's click action is "none").
+     */
+    function bindTooltipHover($tooltip, calId) {
+        if ($tooltip.data('mepCalHoverBound')) {
+            return;
+        }
+        $tooltip.data('mepCalHoverBound', true)
+            .on('mouseenter', function() {
+                clearTimeout(tooltipHideTimers[calId]);
+            })
+            .on('mouseleave', function() {
+                scheduleTooltipHide(calId);
+            })
+            .on('click', function() {
+                var event = tooltipEvents[calId];
+                var settings = (window.mepCalendar && mepCalendar.settings) || {};
+                var clickAction = $('#' + calId).data('event-click') || settings.mep_cal_event_click || 'navigate';
+                if (event && event.url && clickAction !== 'none') {
+                    window.location.href = event.url;
+                }
+            });
     }
 
     /**

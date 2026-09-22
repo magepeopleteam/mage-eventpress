@@ -378,6 +378,24 @@
 					'posts_per_page' => $per_page,
 					'paged'          => $page,
 				);
+				// Published events are public; anything else (draft/private/trash) may
+				// only be browsed across every author by someone who could also see it
+				// in the core post list — otherwise scope the query to their own events,
+				// the same restriction WordPress itself applies outside this handler.
+				$post_type_object  = get_post_type_object( 'mep_events' );
+				$can_edit_others   = $post_type_object && current_user_can( $post_type_object->cap->edit_others_posts );
+				$can_read_private  = $post_type_object && current_user_can( $post_type_object->cap->read_private_posts );
+				$restrict_to_owner = false;
+				foreach ( array_diff( $post_status, array( 'publish' ) ) as $status_to_check ) {
+					if ( 'private' === $status_to_check ) {
+						$restrict_to_owner = $restrict_to_owner || ! $can_read_private;
+					} else {
+						$restrict_to_owner = $restrict_to_owner || ! $can_edit_others;
+					}
+				}
+				if ( $restrict_to_owner ) {
+					$args['author'] = get_current_user_id();
+				}
 				if ( $search !== '' ) {
 					$args['s'] = $search;
 				}
@@ -524,11 +542,18 @@
 				if ( ! current_user_can( 'edit_post', $post_id ) ) {
 					wp_send_json_error( array( 'message' => 'You do not have permission to edit this event' ) );
 				}
+				$requested_status = sanitize_text_field( wp_unslash( $_POST['post_status'] ) );
+				// Moving a post to a live/visible status is a separate, higher
+				// capability than editing it — the same per-object check the
+				// plugin's own event editor applies before writing this status.
+				if ( in_array( $requested_status, array( 'publish', 'private', 'future' ), true ) && ! current_user_can( 'publish_post', $post_id ) ) {
+					wp_send_json_error( array( 'message' => 'You do not have permission to change this event status' ) );
+				}
 				// Update post data
 				$post_data = array(
 					'ID'          => $post_id,
 					'post_title'  => sanitize_text_field( wp_unslash( $_POST['post_title'] ) ),
-					'post_status' => sanitize_text_field( wp_unslash( $_POST['post_status'] ) )
+					'post_status' => $requested_status,
 				);
 				$result    = wp_update_post( $post_data );
 				if ( is_wp_error( $result ) ) {

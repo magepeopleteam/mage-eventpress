@@ -3138,7 +3138,11 @@ tr.payment_tabs_html { display: none !important; }
 
 				$first_tab = ! empty( $visible_tabs ) ? array_key_first( $visible_tabs ) : '';
 				$label     = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
-				$has_pro   = mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' );
+				// Paid features ship as the bundled PRO plugin or as separate add-ons (Form
+				// Builder, PDF Tickets, Seat Plan...). Each adds its license row through
+				// mep_license_page_addon_list, so an add-on-only site is paid too; checking
+				// the bundled PRO file alone showed those sites "Free plan active".
+				$has_pro   = mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) || has_action( 'mep_license_page_addon_list' );
 
 				$tab_meta = array();
 				foreach ( $visible_tabs as $id => $cfg ) {

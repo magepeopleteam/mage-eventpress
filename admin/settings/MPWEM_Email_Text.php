@@ -31,7 +31,7 @@
 							<div class="_justify_between_align_center_wrap mpwem-email-status-row">
 								<div>
 									<h5><?php esc_html_e( 'Use Event-Specific Email Message', 'mage-eventpress' ); ?></h5>
-									<span class="label-text"><?php esc_html_e( 'Use this event message instead of the global confirmation email body.', 'mage-eventpress' ); ?></span>
+									<span class="label-text"><?php esc_html_e( 'Use this event message instead of the global body, in both the confirmation email and the PDF ticket email.', 'mage-eventpress' ); ?></span>
 								</div>
 								<label class="mpev-switch">
 									<input type="hidden" name="mep_event_cc_email_status" value="off" />

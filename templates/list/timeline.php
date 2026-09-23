@@ -26,7 +26,7 @@
 ?>
 <div class="timeline__item mep-event-list-loop"
      data-title="<?php echo esc_attr( $title ); ?>"
-     data-date="<?php echo esc_attr( $upcoming_date ? date( 'Y-m-d', strtotime( $upcoming_date ) ) : '' ); ?>"
+     data-date="<?php echo esc_attr( MPWEM_Global_Function::get_list_display_date( $event_infos ) ? date( 'Y-m-d', strtotime( MPWEM_Global_Function::get_list_display_date( $event_infos ) ) ) : '' ); ?>"
      data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
      data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>">
     <div class="timeline__content">

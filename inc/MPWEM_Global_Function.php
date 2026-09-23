@@ -168,6 +168,43 @@
 				$date_format = $format == 'M d , yy' ? 'M  j, Y' : $date_format;
 				return  mep_rec_get_datepicker_php_format( $format) ;
 			}
+			/**
+			 * The date an event-list card should show and sort by.
+			 *
+			 * Not the same thing as $event_infos['upcoming_date']. For a non-recurring
+			 * event MPWEM_Functions::get_upcoming_date_time() deliberately returns the
+			 * "Expire On" meta - under "Event End Time" that is the LAST session's end -
+			 * and writes it to event_upcoming_datetime, because expiry filtering needs a
+			 * multi-day course to stay listed until it actually finishes. Printing that
+			 * on the card is wrong: a course running 29-30 Sep is announced as starting
+			 * on the 30th, and sorts as if it began then.
+			 *
+			 * So a card follows the event's start date, and only a genuinely recurring
+			 * event follows its next occurrence. Keep every list template and
+			 * MPWEM_Hooks::list_sort_date() on this one helper - they drifted apart once
+			 * already, which is why the grid showed the 29th while the list showed the 30th.
+			 *
+			 * @param array $event_infos Event info bundle from MPWEM_Functions::get_all_info().
+			 *
+			 * @return string
+			 */
+			public static function get_list_display_date( $event_infos ): string {
+				if ( ! is_array( $event_infos ) ) {
+					return '';
+				}
+				$recurring = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming  = array_key_exists( 'upcoming_date', $event_infos ) ? (string) $event_infos['upcoming_date'] : '';
+				if ( 'no' !== $recurring ) {
+					return $upcoming;
+				}
+				$start = array_key_exists( 'event_start_datetime', $event_infos ) ? (string) $event_infos['event_start_datetime'] : '';
+				if ( '' === trim( $start ) ) {
+					// Older events may only carry the date half.
+					$start = array_key_exists( 'event_start_date', $event_infos ) ? (string) $event_infos['event_start_date'] : '';
+				}
+
+				return '' !== trim( $start ) ? $start : $upcoming;
+			}
 			public static function date_format( $date, $format = 'date', $post_id = '' ) {
 				if ( $date ) {
                     $format=$format?:'date';

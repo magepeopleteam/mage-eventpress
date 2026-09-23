@@ -12,6 +12,10 @@
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos        = ( is_array( $event_infos ) && sizeof( $event_infos ) > 0 ) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
 	$upcoming_date      = is_array( $event_infos ) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	// The big date badge and data-date must show when the event STARTS, like the
+	// grid card does (MPWEM_Hooks::list_sort_date). $upcoming_date follows the
+	// "Expire On" meta for non-recurring events, i.e. the last session's end.
+	$display_date       = MPWEM_Global_Function::get_list_display_date( $event_infos );
 	$available_seat     = is_array( $event_infos ) && array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
 	$taxonomy_category  = is_array( $event_infos ) && array_key_exists( 'category_tax', $event_infos ) ? $event_infos['category_tax'] : '';
 	$taxonomy_organizer = is_array( $event_infos ) && array_key_exists( 'organizer_tax', $event_infos ) ? $event_infos['organizer_tax'] : '';
@@ -25,15 +29,15 @@
 		$category_parts = array_map( 'trim', explode( ',', $taxonomy_category ) );
 		$first_category = $category_parts[0] ?? '';
 	}
-	$date_month = $upcoming_date ? date_i18n( 'M', strtotime( $upcoming_date ) ) : '';
-	$date_day   = $upcoming_date ? date_i18n( 'd', strtotime( $upcoming_date ) ) : '';
-	$date_year  = $upcoming_date ? date_i18n( 'Y', strtotime( $upcoming_date ) ) : '';
+	$date_month = $display_date ? date_i18n( 'M', strtotime( $display_date ) ) : '';
+	$date_day   = $display_date ? date_i18n( 'd', strtotime( $display_date ) ) : '';
+	$date_year  = $display_date ? date_i18n( 'Y', strtotime( $display_date ) ) : '';
 ?>
     <div class="filter_item mep-event-list-loop mep_event_list_item mep_event_minimal_list mix <?php echo esc_attr( $org_class . ' ' . $cat_class ); ?>"
          data-title="<?php echo esc_attr( $title ); ?>"
          data-city-name="<?php echo esc_attr( is_array( $event_infos ) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
          data-state="<?php echo esc_attr( is_array( $event_infos ) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"
-         data-date="<?php echo esc_attr( $upcoming_date ? date( 'Y-m-d', strtotime( $upcoming_date ) ) : '' ); ?>"
+         data-date="<?php echo esc_attr( $display_date ? date( 'Y-m-d', strtotime( $display_date ) ) : '' ); ?>"
          data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
          data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
     >

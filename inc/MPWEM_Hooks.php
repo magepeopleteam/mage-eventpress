@@ -577,8 +577,9 @@
 				<?php }
 			}
 			public function list_sort_date( $event_infos ) {
-				$recurring_event = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
-				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
+				// Shared with every list template so the grid badge and the list badge
+				// can never disagree again - see MPWEM_Global_Function::get_list_display_date().
+				$upcoming_date = MPWEM_Global_Function::get_list_display_date( $event_infos );
 				if ( $upcoming_date ) {
 					?>
                     <div class="mep-ev-start-date">

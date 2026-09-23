@@ -5093,6 +5093,18 @@ div.mpwem_related_area div.slick-track {
 	gap: 0;
 }
 
+/* Slick sizes the track with an inline pixel width wide enough for every slide.
+   A site-level `.slick-track { width: 100% !important; }` — a common hand-written
+   override, and !important beats an inline style — collapses it to the viewport
+   width, so the flex slides shrink to a few pixels each and the track's negative
+   transform parks them all outside the clipped list: heading and arrows visible
+   over an empty strip. max-content keeps the track at least as wide as its slides
+   whatever width is forced on it. */
+div.mpwem_related_area div.related_item div.slick-track {
+	min-width: -webkit-max-content;
+	min-width: max-content;
+}
+
 div.mpwem_related_area div.related_navigation {
 	display: -webkit-inline-flex;
 	display: inline-flex;

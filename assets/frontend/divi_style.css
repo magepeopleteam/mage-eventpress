@@ -3584,6 +3584,14 @@
   gap: 0;
 }
 
+/* See mpwem_style.css: keeps the slick track as wide as its slides when a
+   site-level `.slick-track { width: 100% !important; }` overrides slick's
+   inline width and blanks the carousel. */
+#mage-container.mage div.mpwem_related_area div.related_item div.slick-track {
+  min-width: -webkit-max-content;
+  min-width: max-content;
+}
+
 #mage-container.mage div.mpwem_related_area .related_title {
   display: flex;
   align-items: flex-end;

@@ -490,7 +490,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return;
 			}
 
-			$waitlist_enabled = get_post_meta($post_id, 'mep_show_waitlist', true) === 'on';
+			// The frontend (mepw_get_waitlist_status) treats a missing meta as on, so
+			// reading it as === 'on' showed the switch off on every event nobody had
+			// saved yet while the waitlist was in fact running. Mirror the resolver.
+			$waitlist_enabled = metadata_exists('post', $post_id, 'mep_show_waitlist')
+				? get_post_meta($post_id, 'mep_show_waitlist', true) !== 'off'
+				: true;
 			?>
 			<div class="mpwem-display-section mpwem-display-section--waitlist is-expanded">
 				<div class="mpwem-display-section__head">

@@ -4884,9 +4884,11 @@
         $picker = $(
             '<div id="mpwem_custom_time_picker" class="mpwem-custom-time-picker" role="dialog" aria-modal="false" aria-label="Choose time">' +
             '  <div class="mpwem-custom-time-picker__preview" aria-live="polite">' +
-            '    <span class="mpwem-custom-time-picker__preview-hour">12</span>' +
+            // Hour and minute are typeable: the chips only step by 5, so any other
+            // minute (e.g. 10:07 or 11:59) is entered here.
+            '    <input type="text" class="mpwem-custom-time-picker__preview-hour" data-time-part="hour" inputmode="numeric" maxlength="2" autocomplete="off" aria-label="Hour" value="12">' +
             '    <span class="mpwem-custom-time-picker__preview-colon">:</span>' +
-            '    <span class="mpwem-custom-time-picker__preview-minute">00</span>' +
+            '    <input type="text" class="mpwem-custom-time-picker__preview-minute" data-time-part="minute" inputmode="numeric" maxlength="2" autocomplete="off" aria-label="Minute" value="00">' +
             '    <span class="mpwem-custom-time-picker__preview-period">AM</span>' +
             '  </div>' +
             '  <div class="mpwem-custom-time-picker__period" role="group" aria-label="AM or PM">' +
@@ -4909,8 +4911,7 @@
             '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="15:00">3:00 PM</button>' +
             '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="18:00">6:00 PM</button>' +
             '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="20:00">8:00 PM</button>' +
-            // End of day: minutes step by 5 and the field is keyboard-locked, so without
-            // this a sale could not end at 11:59 PM (the day before a new price starts).
+            // End of day, one click: a sale ending the day before a new price starts.
             '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="23:59">11:59 PM</button>' +
             '  </div>' +
             '  <div class="mpwem-custom-time-picker__foot">' +
@@ -4970,8 +4971,11 @@
         if (!state) return;
 
         const parts = toPickerParts(state.hour, state.minute);
-        $picker.find('.mpwem-custom-time-picker__preview-hour').text(String(parts.hour12).padStart(2, '0'));
-        $picker.find('.mpwem-custom-time-picker__preview-minute').text(String(parts.minute).padStart(2, '0'));
+        // Leave the field being typed in alone, or "5" would be rewritten to "05"
+        // before the second digit arrives.
+        const focused = document.activeElement;
+        $picker.find('.mpwem-custom-time-picker__preview-hour').not(focused).val(String(parts.hour12).padStart(2, '0'));
+        $picker.find('.mpwem-custom-time-picker__preview-minute').not(focused).val(String(parts.minute).padStart(2, '0'));
         $picker.find('.mpwem-custom-time-picker__preview-period').text(parts.period);
 
         $picker.find('[data-time-hour]').removeClass('is-selected').filter('[data-time-hour="' + parts.hour12 + '"]').addClass('is-selected');
@@ -5081,6 +5085,52 @@
             $picker.data('mpwemState', state);
             renderCustomTimePicker($picker);
             applyCustomTimePickerValue($picker, false);
+        });
+
+        $(document).on('focus', '.mpwem-custom-time-picker [data-time-part]', function() {
+            this.select();
+        });
+
+        $(document).on('input', '.mpwem-custom-time-picker [data-time-part]', function() {
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            const digits = this.value.replace(/\D/g, '').slice(0, 2);
+            if (this.value !== digits) this.value = digits;
+            if (!state || digits === '') return;
+
+            const value = parseInt(digits, 10);
+            const parts = toPickerParts(state.hour, state.minute);
+            let next;
+            if ($(this).data('time-part') === 'hour') {
+                if (value < 1 || value > 12) return;
+                next = fromPickerParts(value, parts.minute, parts.period);
+            } else {
+                if (value > 59) return;
+                next = fromPickerParts(parts.hour12, value, parts.period);
+            }
+            state.hour = next.hour;
+            state.minute = next.minute;
+            $picker.data('mpwemState', state);
+            renderCustomTimePicker($picker);
+            applyCustomTimePickerValue($picker, false);
+        });
+
+        // Leaving the field (or an out-of-range entry) snaps it back to the real value.
+        $(document).on('blur', '.mpwem-custom-time-picker [data-time-part]', function() {
+            const $picker = $('#mpwem_custom_time_picker');
+            setTimeout(function() {
+                renderCustomTimePicker($picker);
+            }, 0);
+        });
+
+        $(document).on('keydown', '.mpwem-custom-time-picker [data-time-part]', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyCustomTimePickerValue($('#mpwem_custom_time_picker'), true);
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                closeCustomTimePicker();
+            }
         });
 
         $(document).on('click', '.mpwem-custom-time-picker__period-btn', function(e) {

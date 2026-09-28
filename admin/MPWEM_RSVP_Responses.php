@@ -5,6 +5,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 	class MPWEM_RSVP_Responses {
+		/**
+		 * Capability required to manage the site-wide RSVP response list.
+		 *
+		 * EventPress events use WordPress' standard post capabilities. Requiring
+		 * edit_others_posts therefore admits Administrators, Editors, WooCommerce
+		 * Shop Managers, and equivalent event-manager roles while continuing to
+		 * exclude Authors and Contributors who can only manage their own content.
+		 */
+		private static function capability() {
+			return apply_filters( 'mpwem_rsvp_manager_capability', 'edit_others_posts' );
+		}
+
+		private static function is_rsvp_response( $post_id ) {
+			return $post_id > 0 && 'mep_rsvp_responses' === get_post_type( $post_id );
+		}
 
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
@@ -20,7 +35,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 				'edit.php?post_type=mep_events',
 				__( 'RSVP Responses', 'mage-eventpress' ),
 				__( 'RSVP Responses', 'mage-eventpress' ),
-				MPWEM_Global_Function::get_shop_manager_capability(),
+				self::capability(),
 				'event-rsvp-responses',
 				array( $this, 'render_page' )
 			);
@@ -61,6 +76,10 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function render_page() {
+			if ( ! current_user_can( self::capability() ) ) {
+				wp_die( esc_html__( 'You do not have permission to view RSVP responses.', 'mage-eventpress' ) );
+			}
+
 			$events = get_posts( array(
 				'post_type'      => 'mep_events',
 				'posts_per_page' => -1,
@@ -220,7 +239,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 
 		public function ajax_fetch_rsvps() {
 			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
-			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+			if ( ! current_user_can( self::capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
 
@@ -372,14 +391,14 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 
 		public function ajax_checkin_rsvp() {
 			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
-			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+			if ( ! current_user_can( self::capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
 
 			$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 			$status  = isset( $_POST['status'] ) ? intval( $_POST['status'] ) : 0;
 
-			if ( $post_id ) {
+			if ( self::is_rsvp_response( $post_id ) ) {
 				update_post_meta( $post_id, 'mep_checkin', $status ? 'Yes' : 'No' );
 				wp_send_json_success( 'Status updated' );
 			}
@@ -388,13 +407,18 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 
 		public function ajax_bulk_action() {
 			check_ajax_referer( 'mpwem_rsvp_admin_nonce', 'nonce' );
-			if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+			if ( ! current_user_can( self::capability() ) ) {
 				wp_send_json_error( 'Permission denied.' );
 			}
 
-			$action = isset( $_POST['bulk_action'] ) ? sanitize_text_field( $_POST['bulk_action'] ) : '';
+			$action = isset( $_POST['bulk_action'] ) ? sanitize_key( wp_unslash( $_POST['bulk_action'] ) ) : '';
 			$ids    = isset( $_POST['ids'] ) && is_array( $_POST['ids'] ) ? array_map( 'intval', $_POST['ids'] ) : array();
 
+			if ( ! in_array( $action, array( 'checkin', 'uncheckin', 'delete' ), true ) ) {
+				wp_send_json_error( 'Invalid bulk action.' );
+			}
+
+			$ids = array_filter( $ids, array( __CLASS__, 'is_rsvp_response' ) );
 			if ( empty( $ids ) ) {
 				wp_send_json_error( 'No items selected.' );
 			}
@@ -413,7 +437,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 		}
 
 		public function export_csv() {
-			if ( isset( $_GET['mep_export_rsvps'] ) && current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
+			if ( isset( $_GET['mep_export_rsvps'] ) && current_user_can( self::capability() ) ) {
 
 
 				$args = array(

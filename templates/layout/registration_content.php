@@ -103,6 +103,24 @@
 	$all_dates = MPWEM_Functions::get_dates( $event_id );
 	$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$user_date = strpos($date, ':') === false ? $date . ' 00:00' : $date;
+	// A date-only ?date= link, or a midnight ?date= timestamp, names the day but not the
+	// show. Left at 00:00 it matched no attendee of (say) the 19:00 show, so the seat map
+	// showed that show's sold seats as free, and the cart booked the seat for 00:00, where
+	// no availability check counted it. Use the day's first start time instead; 00:00 stays
+	// only when the day has no times or really has a midnight show.
+	$user_ts = strtotime( $user_date );
+	if ( $user_ts && '00:00' === date( 'H:i', $user_ts ) ) {
+		$day_starts = array();
+		foreach ( (array) MPWEM_Functions::get_times( $event_id, $all_dates, $user_date ) as $day_time ) {
+			$day_start = ! empty( $day_time['start']['time'] ) ? strtotime( $day_time['start']['time'] ) : false;
+			if ( $day_start ) {
+				$day_starts[] = date( 'H:i', $day_start );
+			}
+		}
+		if ( $day_starts && ! in_array( '00:00', $day_starts, true ) ) {
+			$user_date = date( 'Y-m-d', $user_ts ) . ' ' . $day_starts[0];
+		}
+	}
 	$event_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 	// $date      = empty( $date ) || $event_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 // echo $date;
@@ -118,6 +136,12 @@
     // switch; falling back straight to $upcoming_date sized the seat map, sold counts
     // and the Add to Cart button for the upcoming date on every other date.
     $date                    = $url_date ?: ( $requested_date ?: $upcoming_date );
+    // Same day with no time of its own: count sold seats for the show $user_date books.
+    $date_ts = $date ? strtotime( $date ) : false;
+    $user_ts = strtotime( $user_date );
+    if ( $date_ts && $user_ts && '00:00' === date( 'H:i', $date_ts ) && '00:00' !== date( 'H:i', $user_ts ) && date( 'Y-m-d', $date_ts ) === date( 'Y-m-d', $user_ts ) ) {
+        $date = $user_date;
+    }
 
 	// Block booking for a past/expired selected occurrence (e.g. opened from a calendar
 	// link pointing at a date that has already passed). Mirrors the calendar's expiry rule

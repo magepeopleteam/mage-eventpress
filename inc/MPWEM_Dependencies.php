@@ -290,6 +290,27 @@
 			 * lose icons/styles. Use the mpwem_force_load_frontend_assets filter
 			 * to force-load on a page this misses once the setting is enabled.
 			 */
+			/**
+			 * Cache-busting version for one of the plugin's own asset files.
+			 *
+			 * The plugin version alone is not enough: these files are served with
+			 * `Cache-Control: max-age=31536000` on most hosts, so a stylesheet fixed
+			 * inside an existing release keeps its `?ver=` and every browser that has
+			 * already seen the old copy goes on using it for a year - the fix looks
+			 * like it never shipped. Appending the file's mtime changes the URL
+			 * whenever the file really changes, and nothing else.
+			 *
+			 * @param string $relative_path Path below the plugin directory, e.g. 'assets/frontend/mpwem_style.css'.
+			 *
+			 * @return string
+			 */
+			public static function asset_version( string $relative_path ): string {
+				$file = MPWEM_PLUGIN_DIR . '/' . ltrim( $relative_path, '/' );
+				$time = is_readable( $file ) ? filemtime( $file ) : false;
+
+				return $time ? MPWEM_PLUGIN_VERSION . '.' . $time : MPWEM_PLUGIN_VERSION;
+			}
+
 			public function should_load_frontend_assets() {
 				$only_on_event_pages = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_assets_only_on_event_pages', 'no' );
 				if ( $only_on_event_pages !== 'yes' ) {
@@ -348,17 +369,17 @@
 				wp_enqueue_script( 'filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), MPWEM_PLUGIN_VERSION, true );
 
 				if ($is_divi) {
-					wp_enqueue_style( 'divi_style', MPWEM_PLUGIN_URL . '/assets/frontend/divi_style.css', array(), MPWEM_PLUGIN_VERSION );
+					wp_enqueue_style( 'divi_style', MPWEM_PLUGIN_URL . '/assets/frontend/divi_style.css', array(), self::asset_version( 'assets/frontend/divi_style.css' ) );
 				} else {
-					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), MPWEM_PLUGIN_VERSION );
+					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), self::asset_version( 'assets/frontend/mpwem_style.css' ) );
 				}
 				wp_enqueue_style(
 					'mep_event_list_modern',
 					MPWEM_PLUGIN_URL . '/assets/frontend/mep-event-list-modern.css',
 					array( $is_divi ? 'divi_style' : 'mpwem_style' ),
-					MPWEM_PLUGIN_VERSION
+					self::asset_version( 'assets/frontend/mep-event-list-modern.css' )
 				);
-				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
+				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), self::asset_version( 'assets/frontend/mpwem_script.js' ), true );
 				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array(
 					'url'             => admin_url( 'admin-ajax.php' ),
 					'nonce'           => wp_create_nonce( 'mpwem_nonce' ),

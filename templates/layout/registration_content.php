@@ -95,9 +95,32 @@
 	}
 
 	// Ticket/WooCommerce mode (default layout)
+	// $date is the occurrence the caller asked for: the event page passes the
+	// upcoming (or ?date=) one, the get_mpwem_ticket date switch passes the one the
+	// visitor picked. Keep it - $date is reassigned below, and it must stay the same
+	// occurrence as $user_date (the cart date) or sold seats come from another date.
+	$requested_date = $date;
 	$all_dates = MPWEM_Functions::get_dates( $event_id );
 	$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$user_date = strpos($date, ':') === false ? $date . ' 00:00' : $date;
+	// A date-only ?date= link, or a midnight ?date= timestamp, names the day but not the
+	// show. Left at 00:00 it matched no attendee of (say) the 19:00 show, so the seat map
+	// showed that show's sold seats as free, and the cart booked the seat for 00:00, where
+	// no availability check counted it. Use the day's first start time instead; 00:00 stays
+	// only when the day has no times or really has a midnight show.
+	$user_ts = strtotime( $user_date );
+	if ( $user_ts && '00:00' === date( 'H:i', $user_ts ) ) {
+		$day_starts = array();
+		foreach ( (array) MPWEM_Functions::get_times( $event_id, $all_dates, $user_date ) as $day_time ) {
+			$day_start = ! empty( $day_time['start']['time'] ) ? strtotime( $day_time['start']['time'] ) : false;
+			if ( $day_start ) {
+				$day_starts[] = date( 'H:i', $day_start );
+			}
+		}
+		if ( $day_starts && ! in_array( '00:00', $day_starts, true ) ) {
+			$user_date = date( 'Y-m-d', $user_ts ) . ' ' . $day_starts[0];
+		}
+	}
 	$event_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 	// $date      = empty( $date ) || $event_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 // echo $date;
@@ -109,7 +132,16 @@
     $all_dates   = MPWEM_Functions::get_dates( $event_id );
     $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
 	$upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');
-    $date                    = $url_date ?: $upcoming_date;
+    // get_requested_date() only reads $_GET, so it is empty on the (POST) AJAX date
+    // switch; falling back straight to $upcoming_date sized the seat map, sold counts
+    // and the Add to Cart button for the upcoming date on every other date.
+    $date                    = $url_date ?: ( $requested_date ?: $upcoming_date );
+    // Same day with no time of its own: count sold seats for the show $user_date books.
+    $date_ts = $date ? strtotime( $date ) : false;
+    $user_ts = strtotime( $user_date );
+    if ( $date_ts && $user_ts && '00:00' === date( 'H:i', $date_ts ) && '00:00' !== date( 'H:i', $user_ts ) && date( 'Y-m-d', $date_ts ) === date( 'Y-m-d', $user_ts ) ) {
+        $date = $user_date;
+    }
 
 	// Block booking for a past/expired selected occurrence (e.g. opened from a calendar
 	// link pointing at a date that has already passed). Mirrors the calendar's expiry rule

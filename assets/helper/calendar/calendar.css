@@ -833,7 +833,10 @@
 	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
 	padding: 0;
 	overflow: hidden;
-	pointer-events: none;
+	/* Hoverable and clickable: it stays open while the pointer is on it
+	   and a click opens the event (calendar.js bindTooltipHover). */
+	pointer-events: auto;
+	cursor: pointer;
 	animation: mepCalTooltipIn 0.2s ease;
 }
 
@@ -1272,15 +1275,21 @@
 	align-items: stretch !important;
 }
 
+/* Spacing only. Forcing these harnesses to position: static with auto offsets
+   also overrode FullCalendar's own placement of multi-day bars and of the
+   hidden "+more" harnesses, so its measure/place pass never settled and a
+   month with multi-day events froze the page. Dot events keep their static
+   stacking through the :has(> .fc-daygrid-dot-event) rule below. */
 .mep-calendar-container.fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event-harness,
 .mep-calendar-container.fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event-harness-abs {
-	position: static !important;
-	inset: auto !important;
-	top: auto !important;
-	right: auto !important;
-	bottom: auto !important;
-	left: auto !important;
 	margin: 2px 0 0 !important;
+}
+
+/* The day's events area is a flex column in a fixed-height cell that is meant
+   to scroll. Without this, cards shrank to fit instead, so a busy day showed
+   squashed, overlapping cards (worse with a theme's larger event text). */
+.mep-calendar-container.fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event-harness {
+	flex-shrink: 0 !important;
 }
 
 .mep-calendar-container.fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event .fc-event-title,

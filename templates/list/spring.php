@@ -34,7 +34,7 @@
      data-title="<?php echo esc_attr( $title ); ?>"
      data-city-name="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
      data-state="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"
-     data-date="<?php echo esc_attr( $upcoming_date ? date( 'Y-m-d', strtotime( $upcoming_date ) ) : '' ); ?>"
+     data-date="<?php echo esc_attr( MPWEM_Global_Function::get_list_display_date( $event_infos ) ? date( 'Y-m-d', strtotime( MPWEM_Global_Function::get_list_display_date( $event_infos ) ) ) : '' ); ?>"
      data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
      data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
 >

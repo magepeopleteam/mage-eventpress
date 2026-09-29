@@ -25,7 +25,7 @@
 			$title     = get_the_title( $_event_id );
 			$link      = get_permalink( $_event_id );
 			$start     = is_array( $info ) && ! empty( $info['upcoming_date'] ) ? $info['upcoming_date'] : ( is_array( $info ) && ! empty( $info['event_start_datetime'] ) ? $info['event_start_datetime'] : '' );
-			$date_txt  = $start ? date_i18n( get_option( 'date_format' ), strtotime( $start ) ) : '';
+			$date_txt  = $start ? MPWEM_Global_Function::date_format( $start, 'date', $_event_id ) : '';
 			$loc       = is_array( $info ) && ! empty( $info['full_address'] ) && is_array( $info['full_address'] ) ? implode( ', ', $info['full_address'] ) : '';
 			$cats      = get_the_terms( $_event_id, 'mep_cat' );
 			$cat_name  = ( is_array( $cats ) && ! empty( $cats ) ) ? $cats[0]->name : __( 'Event', 'mage-eventpress' );

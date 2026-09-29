@@ -382,6 +382,9 @@
 	div.mpwem_related_area {margin: 0 0 var(--dmp) 0;}
 	div.mpwem_related_area div.related_item,
 	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;}
+	/* Hold the track at its slides' width when a site-level
+	   `.slick-track { width: 100% !important; }` overrides slick's inline width. */
+	div.mpwem_related_area div.related_item div.slick-track {min-width: -webkit-max-content;min-width: max-content;}
 	div.mpwem_related_area .related_title {padding: var(--dmp_xs);}
 	div.mpwem_related_area div.related_navigation {display: -webkit-flex;display: flex;}
 	div.mpwem_related_area div.related_navigation button {margin: 0 0 0 var(--dmp_xxs);}

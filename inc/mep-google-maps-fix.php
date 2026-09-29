@@ -15,7 +15,8 @@ class MEP_GoogleMaps_Fix {
     
     public function __construct() {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
+        // No front-end stylesheet: assets/css/mep-google-maps-enhanced.css was never
+        // shipped, so enqueueing it only produced a 404 on every event page.
         add_action('admin_footer', array($this, 'add_admin_inline_styles'));
         
         // Fix coordinate saving
@@ -63,20 +64,6 @@ class MEP_GoogleMaps_Fix {
                     'api_error' => __('Google Maps API error', 'mage-eventpress')
                 )
             ));
-        }
-    }
-    
-    /**
-     * Enqueue frontend assets
-     */
-    public function enqueue_frontend_assets() {
-        if (is_singular('mep_events') || is_post_type_archive('mep_events')) {
-            wp_enqueue_style(
-                'mep-google-maps-enhanced-frontend',
-                MPWEM_PLUGIN_URL . '/assets/css/mep-google-maps-enhanced.css',
-                array(),
-                '1.0.0'
-            );
         }
     }
     

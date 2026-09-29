@@ -490,7 +490,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return;
 			}
 
-			$waitlist_enabled = get_post_meta($post_id, 'mep_show_waitlist', true) === 'on';
+			// The frontend (mepw_get_waitlist_status) treats a missing meta as on, so
+			// reading it as === 'on' showed the switch off on every event nobody had
+			// saved yet while the waitlist was in fact running. Mirror the resolver.
+			$waitlist_enabled = metadata_exists('post', $post_id, 'mep_show_waitlist')
+				? get_post_meta($post_id, 'mep_show_waitlist', true) !== 'off'
+				: true;
 			?>
 			<div class="mpwem-display-section mpwem-display-section--waitlist is-expanded">
 				<div class="mpwem-display-section__head">
@@ -573,15 +578,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				<div class="mpwem-display-section__head">
 					<div class="mpwem-display-section__head-main">
 						<h3><?php esc_html_e('Review & Rating', 'mage-eventpress'); ?></h3>
-						<p><?php esc_html_e('Show the review form for this event when the Review & Rating addon is active.', 'mage-eventpress'); ?></p>
+						<p><?php esc_html_e('Show reviews and allow eligible attendees to leave feedback for this event.', 'mage-eventpress'); ?></p>
 					</div>
 				</div>
 				<div class="mpwem-display-section__body">
 					<div class="mpwem-event-setting-card__item">
 						<div class="mpwem-event-setting-card__item-head">
 							<div class="mpwem-event-setting-card__copy">
-								<h3><?php esc_html_e('Show Review Form', 'mage-eventpress'); ?></h3>
-								<p><?php esc_html_e('Turn this off to hide the "Write a Review" button for this event.', 'mage-eventpress'); ?></p>
+								<h3><?php esc_html_e('Show Reviews & Ratings', 'mage-eventpress'); ?></h3>
+								<p><?php esc_html_e('Turn this off to hide the complete reviews section and its submission form for this event.', 'mage-eventpress'); ?></p>
 							</div>
 							<label class="mpwem-event-setting-card__switch">
 								<input type="checkbox" name="mep_show_review" value="on" data-no-mpwem-switch="1" <?php checked($review_enabled); ?> />

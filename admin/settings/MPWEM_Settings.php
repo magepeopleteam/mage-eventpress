@@ -88,6 +88,25 @@
 				$timestamp = strtotime( trim( $date . ' ' . $time ) );
 				return $timestamp ? date( 'Y-m-d H:i:s', $timestamp ) : '';
 			}
+			/**
+			 * Latest end among the main date row and the extra dates. Extra dates are
+			 * saved in the order they were entered, so end() of that list was not always
+			 * the last session: entered newest-first, an event expired - and dropped out
+			 * of the lists - after its first session.
+			 */
+			private static function latest_end_datetime( $event_end_datetime, $more_dates ) {
+				$latest = $event_end_datetime;
+				foreach ( (array) $more_dates as $more_date ) {
+					if ( ! is_array( $more_date ) ) {
+						continue;
+					}
+					$end = self::to_datetime( $more_date['event_more_end_date'] ?? '', $more_date['event_more_end_time'] ?? '' );
+					if ( $end && ( ! $latest || strtotime( $end ) > strtotime( $latest ) ) ) {
+						$latest = $end;
+					}
+				}
+				return $latest;
+			}
 			public function save_settings( $post_id ) {
 				if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mpwem_type_nonce'] ) ), 'mpwem_type_nonce' ) || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || ! current_user_can( 'edit_post', $post_id ) ) {
 					return;
@@ -294,8 +313,7 @@
 						}
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
-						$md                    = is_array( $more_dates ) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
-						$event_expire_datetime = is_array( $md ) && sizeof( $md ) > 0 ? self::to_datetime( $md['event_more_end_date'], $md['event_more_end_time'] ) : $event_end_datetime;
+						$event_expire_datetime = self::latest_end_datetime( $event_end_datetime, $more_dates );
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
 					} elseif ( $date_type == 'yes' ) {
 						$start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
@@ -328,8 +346,7 @@
 						}
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
-						$md                    = is_array( $more_dates ) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
-						$event_expire_datetime = ( is_array( $md ) && sizeof( $md ) > 0 ) ? self::to_datetime( $md['event_more_end_date'], $md['event_more_end_time'] ) : $event_end_datetime;
+						$event_expire_datetime = self::latest_end_datetime( $event_end_datetime, $more_dates );
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
 					} else {
 						$start_date = isset( $_POST['event_start_date_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date_everyday'] ) ) : '';

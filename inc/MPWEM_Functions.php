@@ -220,15 +220,31 @@
 				}
 				return MPWEM_Global_Function::get_wc_raw_price( $price );
 			}
+			/**
+			 * Comparable form of an extra service name.
+			 *
+			 * Older editor saves stored names HTML-encoded ("6 St&uuml;ck"), but the
+			 * booking form prints them through esc_attr(), so the browser posts the
+			 * decoded text ("6 Stück"). Comparing the raw strings silently dropped the
+			 * service from the cart; decode both sides before comparing.
+			 *
+			 * @param string $name Stored or posted extra service name.
+			 * @return string
+			 */
+			public static function normalize_ex_service_name( $name ) {
+				$name = html_entity_decode( (string) $name, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+				return trim( str_replace( "'", "", $name ) );
+			}
 			public static function get_ex_price_by_name( $ticket_name, $post_id, $ticket_types = [] ) {
 				$ticket_types = (is_array( $ticket_types ) && count( $ticket_types ) > 0) ? $ticket_types : MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
 				$price        = 0;
 				$ticket_name  = explode( '_', $ticket_name )[0];
-				$ticket_name  = str_replace( "'", "", $ticket_name );
+				$ticket_name  = self::normalize_ex_service_name( $ticket_name );
 				if ( is_array( $ticket_types ) && count( $ticket_types ) > 0 ) {
 					foreach ( $ticket_types as $ticket_type ) {
 						$name = is_array($ticket_type) && array_key_exists( 'option_name', $ticket_type ) ? $ticket_type['option_name'] : '';
-						$name = str_replace( "'", "", $name );
+						$name = self::normalize_ex_service_name( $name );
 						if ( $ticket_name == $name ) {
 							$price = is_array($ticket_type) && array_key_exists( 'option_price', $ticket_type ) ? $ticket_type['option_price'] : 0;
 						}

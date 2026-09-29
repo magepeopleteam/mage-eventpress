@@ -473,6 +473,9 @@
 				
 
                 $event_id                = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
+				// get_all_info() below does not carry the list settings, so keep them before $event_infos is replaced;
+				// otherwise "Hide End Time in List" is never seen by these cards.
+				$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : MPWEM_Global_Function::data_sanitize( get_option( 'event_list_setting_sec' ) );
                 $event_infos = MPWEM_Functions::get_all_info($event_id);
                 $all_dates = MPWEM_Functions::get_dates($event_id);
                 $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
@@ -500,7 +503,6 @@
 					$icon_setting_sec        = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_date_icon         = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'mi mi-clock';
-					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
@@ -565,11 +567,14 @@
 					$icon_setting_sec = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$time_icon        = is_array($icon_setting_sec) && array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
 					$end_time         = is_array($event_infos) && array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
+					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					?>
                     <div class="list_content upcomming_time_only">
                         <span class="<?php echo esc_attr( $time_icon ); ?>"></span><?php
 							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'time' ) );
-							if ( $end_time && MPWEM_Global_Function::check_time_exit_date( $end_time ) ) {
+							if ( $end_time && $hide_only_end_time_list == 'no' && MPWEM_Global_Function::check_time_exit_date( $end_time ) ) {
 								echo ' - ' . esc_html( MPWEM_Global_Function::date_format( $end_time, 'time' ) );
 							}
 						?>

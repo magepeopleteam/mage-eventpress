@@ -35,12 +35,30 @@
 				return plugin_basename( dirname( __DIR__ ) . '/woocommerce-event-press.php' );
 			}
 
+			/**
+			 * The Appneck SDK's own deactivation-survey action + nonce, so the
+			 * modal's JS can fetch its dynamically-configured questions and post
+			 * answers straight to it (op=questions / op=submit — see
+			 * DeactivationSurvey::handle_ajax() in the SDK). Null when the SDK
+			 * didn't bootstrap (e.g. loaded a copy too old to expose it), in
+			 * which case the modal simply skips the survey section.
+			 */
+			private function survey(): ?\Appneck\Sdk\Admin\DeactivationSurvey {
+				if ( empty( $GLOBALS['my_plugin_sdk'] ) || ! is_object( $GLOBALS['my_plugin_sdk'] )
+					|| ! method_exists( $GLOBALS['my_plugin_sdk'], 'deactivation_survey' ) ) {
+					return null;
+				}
+
+				return $GLOBALS['my_plugin_sdk']->deactivation_survey();
+			}
+
 			public function enqueue( $hook ): void {
 				if ( 'plugins.php' !== $hook || ! current_user_can( 'activate_plugins' ) ) {
 					return;
 				}
-				$css = MPWEM_PLUGIN_DIR . '/assets/admin/mpwem-deactivation.css';
-				$js  = MPWEM_PLUGIN_DIR . '/assets/admin/mpwem-deactivation.js';
+				$css    = MPWEM_PLUGIN_DIR . '/assets/admin/mpwem-deactivation.css';
+				$js     = MPWEM_PLUGIN_DIR . '/assets/admin/mpwem-deactivation.js';
+				$survey = $this->survey();
 				wp_enqueue_style(
 					'mpwem-deactivation',
 					MPWEM_PLUGIN_URL . '/assets/admin/mpwem-deactivation.css',
@@ -62,11 +80,9 @@
 						'action'         => self::AJAX_ACTION,
 						'nonce'          => wp_create_nonce( self::NONCE ),
 						'basename'       => self::plugin_basename(),
-						// Reused so the optional feedback step can submit through
-						// Appsero's own existing endpoint instead of opening its
-						// separate survey popup — see mpwem-deactivation.js.
-						'appseroAction'  => dirname( self::plugin_basename() ) . '_submit-uninstall-reason',
-						'appseroNonce'   => wp_create_nonce( 'appsero-security-nonce' ),
+						'surveyAction'   => $survey ? $survey->action() : '',
+						'surveyNonce'    => $survey ? wp_create_nonce( $survey->action() ) : '',
+						'surveyMaxLength' => class_exists( '\Appneck\Sdk\Survey' ) ? \Appneck\Sdk\Survey::TEXT_AREA_MAX_LENGTH : 2000,
 						'i18n'           => array(
 							'cleaning'           => esc_html__( 'Deleting data…', 'mage-eventpress' ),
 							'finishing'          => esc_html__( 'Finishing up…', 'mage-eventpress' ),
@@ -76,6 +92,8 @@
 							'deactivate'         => esc_html__( 'Deactivate', 'mage-eventpress' ),
 							'deleteAndDeactivate' => esc_html__( 'Delete & Deactivate', 'mage-eventpress' ),
 							'submitting'         => esc_html__( 'Deactivating…', 'mage-eventpress' ),
+							'surveyLoading'      => esc_html__( 'Loading…', 'mage-eventpress' ),
+							'tellUsMore'         => esc_html__( 'Optional – tell us more', 'mage-eventpress' ),
 						),
 					)
 				);
@@ -125,23 +143,15 @@
 								<p class="mpwem-deact-error" role="alert" aria-live="polite" hidden></p>
 							</div>
 
-							<div class="mpwem-deact-reason">
+							<div class="mpwem-deact-reason" hidden>
 								<p class="mpwem-deact-intro"><?php esc_html_e( 'Optional: what\'s the main reason you\'re deactivating?', 'mage-eventpress' ); ?></p>
-								<div class="mpwem-deact-reason-list">
-									<?php foreach ( $this->deactivation_reasons() as $reason ) : ?>
-										<label class="mpwem-deact-reason-option">
-											<input type="radio" name="mpwem_deact_reason" value="<?php echo esc_attr( $reason['id'] ); ?>" data-placeholder="<?php echo esc_attr( $reason['placeholder'] ); ?>">
-											<span><?php echo esc_html( $reason['text'] ); ?></span>
-										</label>
-									<?php endforeach; ?>
-								</div>
-								<textarea class="mpwem-deact-reason-detail" rows="3" placeholder="<?php esc_attr_e( 'Tell us more (optional)', 'mage-eventpress' ); ?>"></textarea>
+								<div class="mpwem-deact-questions" data-mpwem-survey-fields></div>
 								<p class="mpwem-deact-reason-note">
 									<?php
 									printf(
-										/* translators: %s: "Learn more" link to the Appsero privacy policy. */
-										esc_html__( 'Shared with Appsero to help us improve. %s', 'mage-eventpress' ),
-										'<a href="' . esc_url( 'https://appsero.com/privacy-policy' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more', 'mage-eventpress' ) . '</a>'
+										/* translators: %s: "Learn more" link to the Appneck privacy policy. */
+										esc_html__( 'Shared with Appneck to help us improve. %s', 'mage-eventpress' ),
+										'<a href="' . esc_url( 'https://appneck.com/privacy-policy/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more', 'mage-eventpress' ) . '</a>'
 									);
 									?>
 								</p>
@@ -163,49 +173,6 @@
 			}
 
 			/**
-			 * Reason list for the optional feedback step shown after "Deactivate
-			 * only". Kept id-compatible with Appsero's own reason list (see
-			 * lib/appsero/src/Insights.php::get_uninstall_reasons()) so the
-			 * "reason_id" this modal submits through Appsero's existing endpoint
-			 * lands in the same shape their dashboard already expects — this is
-			 * what lets us fold their separate survey popup into this one.
-			 */
-			private function deactivation_reasons(): array {
-				return array(
-					array(
-						'id'          => 'could-not-understand',
-						'text'        => __( "Couldn't understand how to use it", 'mage-eventpress' ),
-						'placeholder' => __( 'Would you like us to assist you?', 'mage-eventpress' ),
-					),
-					array(
-						'id'          => 'found-better-plugin',
-						'text'        => __( 'Found a better plugin', 'mage-eventpress' ),
-						'placeholder' => __( 'Which plugin?', 'mage-eventpress' ),
-					),
-					array(
-						'id'          => 'not-have-that-feature',
-						'text'        => __( 'Missing a specific feature', 'mage-eventpress' ),
-						'placeholder' => __( 'Could you tell us more about that feature?', 'mage-eventpress' ),
-					),
-					array(
-						'id'          => 'is-not-working',
-						'text'        => __( 'Not working', 'mage-eventpress' ),
-						'placeholder' => __( "Could you tell us a bit more what's not working?", 'mage-eventpress' ),
-					),
-					array(
-						'id'          => 'did-not-work-as-expected',
-						'text'        => __( "Didn't work as expected", 'mage-eventpress' ),
-						'placeholder' => __( 'What did you expect?', 'mage-eventpress' ),
-					),
-					array(
-						'id'          => 'other',
-						'text'        => __( 'Other', 'mage-eventpress' ),
-						'placeholder' => __( 'Could you tell us a bit more?', 'mage-eventpress' ),
-					),
-				);
-			}
-
-			/**
 			 * The plugin's custom post types whose posts are removed on a full cleanup.
 			 */
 			private function post_types(): array {
@@ -224,6 +191,12 @@
 			 * Steps (driven by the modal JS):
 			 *   step=count  -> return how many posts/products will be removed (for the bar).
 			 *   step=batch  -> delete one chunk; when nothing is left, finalize terms/options/files.
+			 *
+			 * The "why are you deactivating" survey does NOT go through this endpoint —
+			 * its questions are fetched from, and its answers submitted straight to, the
+			 * Appneck SDK's own deactivation-survey AJAX action (see enqueue()'s
+			 * 'surveyAction'/'surveyNonce' and mpwem-deactivation.js), so responses land
+			 * on the Appneck server exactly as they would from the SDK's own popup.
 			 *
 			 * Batching keeps each request small so sites with thousands of events (and their
 			 * linked hidden products) never hit a PHP timeout mid-delete.

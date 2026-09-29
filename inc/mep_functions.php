@@ -2,8 +2,6 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	}
-	appsero_init_tracker_mage_eventpress();
-
 
 if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
 	function mep_prevent_serialized_input( $value ) {

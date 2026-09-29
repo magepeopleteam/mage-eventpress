@@ -3,16 +3,26 @@
 	 * Plugin Name: Event Booking Manager for WooCommerce
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
-	 * Version: 5.7.4
+	 * Version: 5.7.5
 	 * Author: MagePeople Team
 	 * Author URI: http://www.mage-people.com/
 	 * Text Domain: mage-eventpress
 	 * Domain Path: /languages/
 	 */
 	
-	if (!defined('ABSPATH')) { 
+	if (!defined('ABSPATH')) {
 		die;
 	} // Cannot access pages directly.
+
+	require_once __DIR__ . '/vendor/appneck/wordpress-sdk/appneck-wordpress-sdk/appneck-sdk.php';
+	appneck_sdk_load_latest();
+
+	$GLOBALS['my_plugin_sdk'] = \Appneck\Sdk\Sdk::bootstrap(
+		'pk_kPwWvzEZBtD3hCWNQtOFMdcIPEnXcxyA',  // your API key
+		'sk_pW81mYkN7UbGmF7sw7fMxMp0WdTajG2wa5OcpAOViNTYUqBN', // your product secret
+		'https://appneck.com',                  // the Appneck server URL
+		__FILE__                                // so the SDK can hook activation/deactivation
+	);
 
 	include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 	if (!defined('MPWEM_PLUGIN_DIR')) {
@@ -22,7 +32,7 @@
 		define('MPWEM_PLUGIN_URL', plugins_url() . '/' . plugin_basename(dirname(__FILE__)));
 	}
 	if (!defined('MPWEM_PLUGIN_VERSION')) {
-		define('MPWEM_PLUGIN_VERSION', '5.7.4');
+		define('MPWEM_PLUGIN_VERSION', '5.7.5');
 	}
 
 	// Declare High-Performance Order Storage support. WooCommerce hides the HPOS toggle
@@ -228,14 +238,6 @@
 	 */
 	if ( is_admin() ) {
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woo_Installer.php';
-	}
-
-	function appsero_init_tracker_mage_eventpress() {
-		if (!class_exists('Appsero\\Client')) {
-			require_once __DIR__ . '/lib/appsero/src/Client.php';
-		}
-		$client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'Event Manager For Woocommerce ', __FILE__);
-		$client->insights()->init();
 	}
 
 	// add_action('activated_plugin', 'mep_event_activation_redirect');

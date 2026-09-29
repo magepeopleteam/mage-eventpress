@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.4
+Stable tag: 5.7.5
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -223,10 +223,10 @@ Every release is tested against the latest WordPress and WooCommerce versions. F
 
 
 
-## Privacy Policy 
-This Plugin uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon the user's confirmation to troubleshoot problems faster & make product improvements.
-Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users. Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
-Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
+## Privacy Policy
+This Plugin uses [Appneck](https://appneck.com) SDK to collect some telemetry data upon the user's confirmation to troubleshoot problems faster & make product improvements.
+Appneck SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users. Integrating Appneck SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+Learn more about how [Appneck collects and uses this data](https://appneck.com/privacy-policy/).
 
 
 == Installation ==
@@ -286,6 +286,12 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.5 =
+* Improvement: Replaced the Appsero telemetry SDK with Appneck across the plugin — activation/deactivation tracking and the opt-in telemetry notice now run on Appneck, and the readme and in-admin privacy notices have been updated to match.
+* Improvement: The "why are you deactivating?" prompt on the Plugins screen now shows the same live, product-configured questions as Appneck's own survey (instead of a fixed local list) and submits answers straight to Appneck, so the feedback actually reaches us.
+* Fix: The deactivation modal could grow taller than the screen once those survey questions loaded, with no way to scroll up or down to reach the rest of it. The modal now scrolls its own contents while keeping the title bar and Deactivate/Cancel buttons in view.
+  29 September 2026*
 
 = 5.7.4 =
 * Fix: Event bookings could not be paid with most payment gateways - only Cash on Delivery worked, and checkout ended with WooCommerce's generic "There was an error processing your order". The "Clear Cart After Order" setting emptied the cart as soon as the order was created, before WooCommerce took payment. WooCommerce then re-checked which gateways were available against the empty cart, so a gateway that checks the order total (for example an M-Pesa minimum amount) dropped out and was never asked to take payment, and gateways that read the cart while paying (such as WooPay) failed. The cart is now cleared only after payment is complete or the customer reaches the order confirmation page, so every gateway works with the setting on, and a failed payment keeps the customer's cart so they can try again.

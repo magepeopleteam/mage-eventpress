@@ -2704,7 +2704,11 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 	if ( ! function_exists( 'mep_extra_service_sold' ) ) {
 		function mep_extra_service_sold( $event_id, $type, $date ) {
-			$type  = ! empty( $type ) ? html_entity_decode( $type ) : '';
+			// Sold records carry the name in whichever spelling the booking saved:
+			// HTML-encoded ("St&uuml;ck") or decoded ("Stück"). Count both.
+			$type    = ! empty( $type ) ? (string) $type : '';
+			$decoded = html_entity_decode( $type, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+			$type    = array_values( array_unique( array( $type, $decoded, htmlentities( $decoded, ENT_QUOTES | ENT_HTML401, 'UTF-8', false ) ) ) );
 			$args  = array(
 				'post_type'      => 'mep_extra_service',
 				'posts_per_page' => - 1,
@@ -2720,7 +2724,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 						array(
 							'key'     => 'ea_extra_service_name',
 							'value'   => $type,
-							'compare' => '='
+							'compare' => 'IN'
 						),
 						array(
 							'key'     => 'ea_extra_service_event_date',

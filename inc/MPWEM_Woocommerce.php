@@ -1453,21 +1453,25 @@
 				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
 				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
+					// Normalized name => name exactly as stored on the event.
 					$valid_ex_names = [];
 					if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) {
 						foreach ( $ticket_types as $t_type ) {
 							$t_name = is_array($t_type) && array_key_exists( 'option_name', $t_type ) ? $t_type['option_name'] : '';
-							$t_name = str_replace( "'", "", $t_name );
-							if ( $t_name ) {
-								$valid_ex_names[] = $t_name;
+							$t_key  = MPWEM_Functions::normalize_ex_service_name( $t_name );
+							if ( $t_key && ! isset( $valid_ex_names[ $t_key ] ) ) {
+								$valid_ex_names[ $t_key ] = $t_name;
 							}
 						}
 					}
 					foreach ( $names as $key => $name ) {
 						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
 						$ex_name = explode( '_', $name )[0];
-						$ex_name = str_replace( "'", "", $ex_name );
-						if ( $name && $current_qty > 0 && in_array( $ex_name, $valid_ex_names ) ) {
+						$ex_name = MPWEM_Functions::normalize_ex_service_name( $ex_name );
+						if ( $name && $current_qty > 0 && isset( $valid_ex_names[ $ex_name ] ) ) {
+							// Keep the stored spelling so order meta and the sold-count
+							// records match what earlier bookings saved for this service.
+							$name = $valid_ex_names[ $ex_name ];
 							$ticket_info[ $key ]['service_name']  = $name;
 							$ticket_info[ $key ]['service_price'] = MPWEM_Functions::get_ex_price_by_name( $name, $post_id, $ticket_types );
 							$ticket_info[ $key ]['service_qty']   = $current_qty;

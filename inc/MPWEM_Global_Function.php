@@ -472,6 +472,7 @@
 				return max( $price, 0 );
 			}
 			public static function get_wc_raw_price( $price ) {
+				$price = self::normalize_price( $price );
 				if ( ! self::has_woocommerce() ) {
 					return (float) $price;
 				}
@@ -683,8 +684,42 @@
 				$opts = self::get_native_currency_settings();
 				return (string) $opts['mep_currency_position'];
 			}
+			/** Convert an editor-entered amount to a locale-independent decimal string. */
+			public static function normalize_price( $amount ): string {
+				$amount = trim( (string) $amount );
+				$amount = preg_replace( '/[\s\x{00a0}\x{202f}]/u', '', $amount );
+				if ( preg_match( '/^-?[.,]\d+$/', $amount ) ) {
+					$amount = str_replace( array( '-.', '-,' ), array( '-0.', '-0,' ), $amount );
+					if ( '.' === $amount[0] || ',' === $amount[0] ) {
+						$amount = '0' . $amount;
+					}
+				}
+				if ( ! preg_match( '/^-?\d[\d.,]*$/', $amount ) ) {
+					return '0';
+				}
+				$comma = strrpos( $amount, ',' );
+				$dot   = strrpos( $amount, '.' );
+				if ( false !== $comma && false !== $dot ) {
+					$decimal = $comma > $dot ? ',' : '.';
+				} else {
+					$decimal = false !== $comma ? ',' : ( false !== $dot ? '.' : '' );
+				}
+				$thousands = self::has_woocommerce()
+					? wc_get_price_thousand_separator()
+					: self::get_native_currency_settings()['mep_currency_thousand_sep'];
+				if ( $thousands && $decimal === $thousands && preg_match( '/^-?\d{1,3}(?:' . preg_quote( $thousands, '/' ) . '\d{3})+$/', $amount ) ) {
+					return str_replace( $thousands, '', $amount );
+				}
+				if ( '' !== $decimal ) {
+					$last  = strrpos( $amount, $decimal );
+					$whole = preg_replace( '/[.,]/', '', substr( $amount, 0, $last ) );
+					$cents = substr( $amount, $last + 1 );
+					$amount = $whole . '.' . $cents;
+				}
+				return $amount;
+			}
 			public static function mep_format_price( $amount ): string {
-				$amount = (float) $amount;
+				$amount = (float) self::normalize_price( $amount );
 				if ( self::has_woocommerce() ) {
 					return wc_price( $amount );
 				}

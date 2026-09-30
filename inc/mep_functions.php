@@ -1332,7 +1332,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 	}
 	if ( ! function_exists( 'mep_rsvp_attendee_create' ) ) {
-		function mep_rsvp_attendee_create( $event_id, $user_info = array() ) {
+		function mep_rsvp_attendee_create( $event_id, $user_info = array(), $extra_meta = array() ) {
 			$uname      = isset( $user_info['user_name'] ) ? sanitize_text_field( $user_info['user_name'] ) : '';
 			$email      = isset( $user_info['user_email'] ) ? sanitize_email( $user_info['user_email'] ) : '';
 			$phone      = isset( $user_info['user_phone'] ) ? sanitize_text_field( $user_info['user_phone'] ) : '';
@@ -1380,6 +1380,36 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $pid, 'ea_website', '' );
 			update_post_meta( $pid, 'ea_vegetarian', '' );
 			update_post_meta( $pid, 'ea_tshirtsize', '' );
+
+			$reserved_meta = array(
+				'ea_name', 'ea_email', 'ea_phone', 'ea_ticket_qty', 'ea_event_name',
+				'ea_event_id', 'ea_event_date', 'ea_order_status', 'ea_ticket_no',
+				'ea_ticket_type', 'ea_ticket_price', 'ea_ticket_order_amount',
+				'ea_payment_method', 'ea_order_id', 'ea_user_id', 'ea_flag',
+			);
+			foreach ( (array) $extra_meta as $meta_key => $meta_value ) {
+				$meta_key = sanitize_key( $meta_key );
+				if ( ! $meta_key || in_array( $meta_key, $reserved_meta, true ) ) {
+					continue;
+				}
+				if ( '_mep_rsvp_form_fields' === $meta_key ) {
+					$clean_fields = array();
+					foreach ( (array) $meta_value as $field ) {
+						if ( is_array( $field ) && ! empty( $field['label'] ) ) {
+							$clean_fields[] = array(
+								'label' => sanitize_text_field( $field['label'] ),
+								'value' => sanitize_textarea_field( $field['value'] ?? '' ),
+							);
+						}
+					}
+					$meta_value = $clean_fields;
+				} elseif ( ! is_scalar( $meta_value ) ) {
+					continue;
+				} else {
+					$meta_value = sanitize_textarea_field( $meta_value );
+				}
+				update_post_meta( $pid, $meta_key, $meta_value );
+			}
 
 			return $pid;
 		}

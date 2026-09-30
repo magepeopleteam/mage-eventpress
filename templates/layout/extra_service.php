@@ -65,7 +65,7 @@
 										<?php MPWEM_Custom_Layout::qty_input($input_data); ?>
 									</div>
 									<div class="ticket-price">
-										<?php echo wc_price($ticket_price_) . MPWEM_Global_Function::price_suffix( $event_id, $ticket_price_ ); ?>
+										<?php echo wc_price( $ticket_price ) . MPWEM_Global_Function::price_suffix( $event_id, $ticket_price ); ?>
 									</div>
 								</div>
                             </div>

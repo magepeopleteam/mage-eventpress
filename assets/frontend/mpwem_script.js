@@ -1489,10 +1489,12 @@ document.querySelectorAll('li').forEach(function(li) {
             type: 'POST',
             data: $form.serialize(),
             success: function(response) {
-                if (response.success) {
-                    $msg.text(response.data.message).addClass('success').show();
-                    $form.find('input[type="text"], input[type="email"]').val('');
-                    $form.find('input[type="number"]').val(1);
+			if (response.success) {
+				$msg.text(response.data.message).addClass('success').show();
+				$form.find('input[type="text"], input[type="email"], textarea, select').val('');
+				$form.find('input[type="hidden"][data-field-name]').val('');
+				$form.find('.mep-fb-choice-option').removeClass('active selected').attr('aria-pressed', 'false');
+				$form.find('input[type="number"]').val(1);
                 } else {
                     const errorMsg = response.data && response.data.message ? response.data.message : 'An error occurred. Please try again.';
                     $msg.text(errorMsg).addClass('error').show();
@@ -1608,12 +1610,23 @@ document.querySelectorAll('li').forEach(function(li) {
         return $('<span>').text(str == null ? '' : String(str)).html();
     }
 
-    // Helper: present the resolved event datetime, dropping a meaningless midnight time
-    // (e.g. "2026-07-22 00:00" → "2026-07-22") so only real times are shown.
+    // The stored occurrence uses Y-m-d H:i for checkout; visitors need a readable date.
     function mepNativeFormatEventDate(raw) {
         raw = $.trim(raw || '');
         if (!raw) { return ''; }
-        return raw.replace(/\s+00:00(:00)?$/, '');
+        var parts = raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::\d{2})?)?$/);
+        if (!parts) { return raw; }
+        var date = new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3]), Number(parts[4] || 0), Number(parts[5] || 0));
+        if (date.getFullYear() !== Number(parts[1]) || date.getMonth() !== Number(parts[2]) - 1 || date.getDate() !== Number(parts[3])) {
+            return raw;
+        }
+        var locale = document.documentElement.lang || navigator.language || 'en';
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        if (parts[4] && (Number(parts[4]) !== 0 || Number(parts[5]) !== 0)) {
+            options.hour = 'numeric';
+            options.minute = '2-digit';
+        }
+        return new Intl.DateTimeFormat(locale, options).format(date);
     }
 
     // Helper: collect ticket data from the registration form
@@ -1680,7 +1693,7 @@ document.querySelectorAll('li').forEach(function(li) {
     // Helper: format a number as currency using the JS constants set by php
     function mepNativeFormatPrice(amount) {
         if (typeof mpwem_price_format === 'function') {
-            return mpwem_price_format(amount);
+            return mpwem_price_format(amount).replace(/&nbsp;|\u00a0|\u202f/g, ' ');
         }
         var symbol   = (typeof mpwem_currency_symbol !== 'undefined')   ? mpwem_currency_symbol   : '$';
         var position = (typeof mpwem_currency_position !== 'undefined') ? mpwem_currency_position : 'left';

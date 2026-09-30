@@ -186,6 +186,13 @@
 					update_post_meta( $post_id, 'mep_rsvp_email_label', $mep_rsvp_email_label );
 					update_post_meta( $post_id, 'mep_rsvp_phone_label', $mep_rsvp_phone_label );
 					update_post_meta( $post_id, 'mep_rsvp_qty_label', $mep_rsvp_qty_label );
+					if ( isset( $_POST['mep_rsvp_form_present'] ) ) {
+						$mep_rsvp_use_attendee_form = isset( $_POST['mep_rsvp_use_attendee_form'] ) ? 'on' : 'off';
+						update_post_meta( $post_id, 'mep_rsvp_use_attendee_form', $mep_rsvp_use_attendee_form );
+						if ( 'on' === $mep_rsvp_use_attendee_form ) {
+							update_post_meta( $post_id, 'mep_event_reg_form_status', 'on' );
+						}
+					}
 
 					// Announcement mode: the notice shown instead of a ticket box, plus the
 					// enquiry ("query") form that goes with it. Text fields only - the body
@@ -217,7 +224,7 @@
 					$new_ticket_type      = array();
 					$names                = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];
 					$details              = isset( $_POST['option_details_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_details_t'] ) ) : [];
-					$ticket_price         = isset( $_POST['option_price_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price_t'] ) ) : [];
+					$ticket_price         = isset( $_POST['option_price_t'] ) ? array_map( [ 'MPWEM_Global_Function', 'normalize_price' ], array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price_t'] ) ) ) : [];
 					$qty                  = isset( $_POST['option_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t'] ) ) : [];
 					$dflt_qty             = isset( $_POST['option_default_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_default_qty_t'] ) ) : [];
 					$rsv                  = isset( $_POST['option_rsv_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_rsv_t'] ) ) : [];
@@ -254,7 +261,7 @@
 					/**********Extra service**********/
 					$new_extra_service = array();
 					$extra_names       = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
-					$extra_price       = isset( $_POST['option_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price'] ) ) : [];
+					$extra_price       = isset( $_POST['option_price'] ) ? array_map( [ 'MPWEM_Global_Function', 'normalize_price' ], array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price'] ) ) ) : [];
 					$extra_qty         = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 					$extra_qty_type    = isset( $_POST['option_qty_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_type'] ) ) : [];
 					$extra_count       = count( $extra_names );

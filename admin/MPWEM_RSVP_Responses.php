@@ -21,6 +21,35 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			return $post_id > 0 && 'mep_rsvp_responses' === get_post_type( $post_id );
 		}
 
+		private static function get_form_fields( $post_id ) {
+			$fields = get_post_meta( $post_id, '_mep_rsvp_form_fields', true );
+			if ( ! is_array( $fields ) ) {
+				return array();
+			}
+
+			$clean = array();
+			foreach ( $fields as $field ) {
+				if ( ! is_array( $field ) || empty( $field['label'] ) ) {
+					continue;
+				}
+				$clean[] = array(
+					'label' => sanitize_text_field( $field['label'] ),
+					'value' => sanitize_textarea_field( $field['value'] ?? '' ),
+				);
+			}
+			return $clean;
+		}
+
+		private static function format_form_fields( $post_id ) {
+			$formatted = array();
+			foreach ( self::get_form_fields( $post_id ) as $field ) {
+				if ( '' !== $field['value'] ) {
+					$formatted[] = $field['label'] . ': ' . $field['value'];
+				}
+			}
+			return implode( ' | ', $formatted );
+		}
+
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -213,6 +242,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 									<th class="column-event"><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></th>
 									<th class="column-event-date"><?php esc_html_e( 'Event Date', 'mage-eventpress' ); ?></th>
 									<th class="column-qty"><?php esc_html_e( 'Qty', 'mage-eventpress' ); ?></th>
+									<th class="column-form-fields"><?php esc_html_e( 'Form Fields', 'mage-eventpress' ); ?></th>
 									<th class="column-status"><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></th>
 									<th class="column-date"><?php esc_html_e( 'Submitted', 'mage-eventpress' ); ?></th>
 									<th class="column-actions"><?php esc_html_e( 'Actions', 'mage-eventpress' ); ?></th>
@@ -221,7 +251,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 							</thead>
 							<tbody id="mep-rsvp-table-body">
 								<tr>
-									<td colspan="8" class="mep-rsvp-loading">
+									<td colspan="9" class="mep-rsvp-loading">
 										<span class="mep-rsvp-spinner"></span>
 										<?php esc_html_e( 'Loading responses…', 'mage-eventpress' ); ?>
 									</td>
@@ -367,8 +397,9 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 						'id'            => $id,
 						'name'          => $name,
 						'email'         => $email,
-						'phone'         => $phone,
-						'qty'           => $qty,
+							'phone'         => $phone,
+							'qty'           => $qty,
+							'form_fields'   => self::get_form_fields( $id ),
 						'event_name'    => $event_name,
 						'event_date'    => $event_date,
 						'date'          => get_the_date(),
@@ -494,7 +525,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 				header( 'Content-Disposition: attachment; filename=rsvp_responses_' . date( 'Y-m-d' ) . '.csv' );
 
 				$output = fopen( 'php://output', 'w' );
-				fputcsv( $output, array( 'ID', 'Name', 'Email', 'Phone', 'Quantity', 'Event', 'Event Date', 'Check-in Status', 'Date' ), ',', '"', '\\' );
+				fputcsv( $output, array( 'ID', 'Name', 'Email', 'Phone', 'Quantity', 'Event', 'Event Date', 'Check-in Status', 'Date', 'Form Fields' ), ',', '"', '\\' );
 
 				if ( $query->have_posts() ) {
 					while ( $query->have_posts() ) {
@@ -519,7 +550,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 						$checkin_str = ( 'Yes' === $checkin ) ? 'Checked In' : 'Not Checked In';
 						$event_date  = get_post_meta( $id, 'ea_event_date', true );
 
-						fputcsv( $output, array( $id, $name, $email, $phone, $qty, $event_name, $event_date, $checkin_str, get_the_date() ), ',', '"', '\\' );
+						fputcsv( $output, array( $id, $name, $email, $phone, $qty, $event_name, $event_date, $checkin_str, get_the_date(), self::format_form_fields( $id ) ), ',', '"', '\\' );
 					}
 				}
 				wp_reset_postdata();

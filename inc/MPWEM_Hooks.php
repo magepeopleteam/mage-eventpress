@@ -802,8 +802,112 @@
 				$phone      = isset( $_POST['rsvp_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_phone'] ) ) : '';
 				$event_date = isset( $_POST['rsvp_date'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_date'] ) ) : '';
 				$ticket_qty = isset( $_POST['rsvp_qty'] ) ? absint( $_POST['rsvp_qty'] ) : 1;
+				$extra_meta = array();
+				$form_fields = array();
+				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) || 'rsvp' !== MPWEM_Global_Function::get_event_mode( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event is not accepting RSVP responses.', 'mage-eventpress' ) ) );
+				}
+				$use_attendee_form = $event_id
+					&& 'on' === get_post_meta( $event_id, 'mep_rsvp_use_attendee_form', true )
+					&& class_exists( 'MPWEM_Form_Builder' )
+					&& method_exists( 'MPWEM_Layout', 'get_rsvp_form_array' );
 
-				if ( ! $event_id || empty( $name ) || empty( $email ) || empty( $phone ) ) {
+				if ( $use_attendee_form ) {
+					$form_array  = MPWEM_Layout::get_rsvp_form_array( $event_id );
+					$use_attendee_form = ! empty( $form_array );
+					$field_values = array();
+					$reserved_meta = array(
+						'ea_name', 'ea_email', 'ea_phone', 'ea_ticket_qty', 'ea_event_name',
+						'ea_event_id', 'ea_event_date', 'ea_order_status', 'ea_ticket_no',
+						'ea_ticket_type', 'ea_ticket_price', 'ea_ticket_order_amount',
+						'ea_payment_method', 'ea_order_id', 'ea_user_id', 'ea_flag',
+					);
+
+					foreach ( $form_array as $field ) {
+						if ( ! is_array( $field ) || empty( $field['name'] ) || in_array( $field['type'] ?? '', array( 'title', 'file' ), true ) ) {
+							continue;
+						}
+
+						$field_name = sanitize_key( $field['name'] );
+						$raw_value  = isset( $_POST[ $field_name ] ) ? wp_unslash( $_POST[ $field_name ] ) : '';
+						$raw_values = is_array( $raw_value ) ? $raw_value : array( $raw_value );
+						$values     = array();
+						foreach ( $raw_values as $raw_item ) {
+							if ( is_scalar( $raw_item ) ) {
+								$values[] = 'textarea' === ( $field['type'] ?? '' )
+									? sanitize_textarea_field( $raw_item )
+									: sanitize_text_field( $raw_item );
+							}
+						}
+						$values = array_values( array_filter( $values, 'strlen' ) );
+						$value  = 'checkbox' === ( $field['type'] ?? '' ) ? implode( ', ', $values ) : ( $values[0] ?? '' );
+						if ( 'email' === ( $field['type'] ?? '' ) ) {
+							$value = sanitize_email( $value );
+						} elseif ( 'user_website' === $field_name ) {
+							$value = esc_url_raw( $value );
+						}
+
+						$field_type = $field['type'] ?? '';
+						if ( in_array( $field_type, array( 'select', 'radio', 'checkbox', 'gender', 'vegetarian' ), true ) ) {
+							if ( 'gender' === $field_type ) {
+								$allowed_values = array( 'Male', 'Female' );
+							} elseif ( 'vegetarian' === $field_type ) {
+								$allowed_values = array( 'Yes', 'No' );
+							} else {
+								$allowed_values = array_values( array_filter( array_map( 'trim', explode( ',', (string) ( $field['data'] ?? '' ) ) ), 'strlen' ) );
+							}
+							$selected_values = array_values( array_filter( array_map( 'trim', explode( ',', $value ) ), 'strlen' ) );
+							$selected_values = array_values( array_intersect( $selected_values, $allowed_values ) );
+							$value = 'checkbox' === $field_type ? implode( ', ', $selected_values ) : ( $selected_values[0] ?? '' );
+						}
+						$field_values[ $field_name ] = $value;
+					}
+
+					foreach ( $form_array as $field ) {
+						if ( ! is_array( $field ) || empty( $field['name'] ) || in_array( $field['type'] ?? '', array( 'title', 'file' ), true ) ) {
+							continue;
+						}
+
+						$field_name = sanitize_key( $field['name'] );
+						$value      = $field_values[ $field_name ] ?? '';
+						$is_visible = true;
+						if ( ! empty( $field['parent_id'] ) && '' !== (string) ( $field['parent_value'] ?? '' ) ) {
+							$parent_value = $field_values[ sanitize_key( $field['parent_id'] ) ] ?? '';
+							$is_visible   = in_array( (string) $field['parent_value'], array_map( 'trim', explode( ',', (string) $parent_value ) ), true );
+						}
+						$is_required = $is_visible && ( ! empty( $field['required'] ) || in_array( $field_name, array( 'user_name', 'user_email' ), true ) );
+						if ( $is_required && '' === $value ) {
+							/* translators: %s: RSVP field label. */
+							wp_send_json_error( array( 'message' => sprintf( esc_html__( '%s is required.', 'mage-eventpress' ), esc_html( $field['label'] ?? $field_name ) ) ) );
+						}
+						if ( 'email' === ( $field['type'] ?? '' ) && '' !== $value && ! is_email( $value ) ) {
+							wp_send_json_error( array( 'message' => esc_html__( 'Please enter a valid email address.', 'mage-eventpress' ) ) );
+						}
+
+						if ( 'user_name' === $field_name ) {
+							$name = $value;
+						} elseif ( 'user_email' === $field_name ) {
+							$email = $value;
+						} elseif ( 'user_phone' === $field_name ) {
+							$phone = $value;
+						}
+
+						$d_name = sanitize_key( $field['d_name'] ?? '' );
+						if ( $is_visible && $d_name && 0 === strpos( $d_name, 'ea_' ) && ! in_array( $d_name, $reserved_meta, true ) ) {
+							$extra_meta[ $d_name ] = $value;
+						}
+						if ( $is_visible && ! in_array( $field_name, array( 'user_name', 'user_email', 'user_phone' ), true ) ) {
+							$form_fields[] = array(
+								'label' => sanitize_text_field( $field['label'] ?? $field_name ),
+								'value' => $value,
+							);
+						}
+					}
+				}
+
+				$ticket_qty = max( 1, min( 10, $ticket_qty ) );
+
+				if ( ! $event_id || empty( $name ) || empty( $email ) || ( ! $use_attendee_form && empty( $phone ) ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'Please fill out all required fields.', 'mage-eventpress' ) ) );
 				}
 
@@ -929,7 +1033,11 @@
 					'user_ticket_qty' => $ticket_qty,
 				);
 
-				$attendee_id = mep_rsvp_attendee_create( $event_id, $user_info );
+				if ( $form_fields ) {
+					$extra_meta['_mep_rsvp_form_fields'] = $form_fields;
+				}
+
+				$attendee_id = mep_rsvp_attendee_create( $event_id, $user_info, $extra_meta );
 
 				if ( $attendee_id ) {
 					// Send confirmation email

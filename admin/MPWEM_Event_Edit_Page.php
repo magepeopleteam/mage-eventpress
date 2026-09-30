@@ -2519,7 +2519,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			if (class_exists('MPWEM_Form_Settings')) {
-				$reg_form_status = isset($_POST['mep_event_reg_form_status']) ? 'on' : 'off';
+				$reg_form_status = isset($_POST['mep_event_reg_form_status']) || isset($_POST['mep_rsvp_use_attendee_form']) ? 'on' : 'off';
 				update_post_meta($post_id, 'mep_event_reg_form_status', $reg_form_status);
 			}
 

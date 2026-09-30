@@ -741,6 +741,51 @@
 					default:            return '<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $symbol . '</span>' . $number . '</span>';
 				}
 			}
+			/**
+			 * Text printed after an event price, e.g. "+ VAT" (General Settings > Price Suffix).
+			 *
+			 * Follows WooCommerce's own price suffix rule: while WooCommerce taxes are
+			 * on, only events whose Tax Status is Taxable get it. Never appended to a
+			 * zero price, which prints as "Free".
+			 *
+			 * @param int        $event_id Event ID; 0 skips the tax status check.
+			 * @param float|null $amount   The price it follows; null when unknown.
+			 * @param bool       $plain    Plain text, for places that strip HTML.
+			 *
+			 * @return string Suffix with a leading space, or '' when it does not apply.
+			 */
+			public static function price_suffix( $event_id = 0, $amount = null, $plain = false ): string {
+				$text = trim( (string) self::get_settings( 'general_setting_sec', 'mep_price_suffix', '' ) );
+				$show = '' !== $text && ( null === $amount || (float) $amount > 0 );
+				if ( $show && $event_id && self::has_woocommerce() && function_exists( 'wc_tax_enabled' ) && wc_tax_enabled() ) {
+					$product = wc_get_product( self::get_post_info( $event_id, 'link_wc_product', $event_id ) );
+					$show    = ! $product || $product->is_taxable();
+				}
+				if ( '' === $text || ! apply_filters( 'mpwem_show_price_suffix', $show, $event_id, $amount ) ) {
+					return '';
+				}
+				return $plain ? ' ' . $text : ' <small class="mpwem_price_suffix">' . esc_html( $text ) . '</small>';
+			}
+			/**
+			 * Price suffix for the cart, checkout, order screens and emails.
+			 *
+			 * Off when "Price Suffix in Cart & Orders" is disabled, and for VAT-exempt
+			 * customers, who are not charged the tax it announces.
+			 *
+			 * @param int        $event_id Event ID.
+			 * @param float|null $amount   The price it follows.
+			 *
+			 * @return string
+			 */
+			public static function order_price_suffix( $event_id, $amount = null ): string {
+				if ( 'yes' !== self::get_settings( 'general_setting_sec', 'mep_price_suffix_in_orders', 'yes' ) ) {
+					return '';
+				}
+				if ( self::has_woocommerce() && function_exists( 'wc_tax_enabled' ) && wc_tax_enabled() && function_exists( 'WC' ) && WC()->customer && WC()->customer->get_is_vat_exempt() ) {
+					return '';
+				}
+				return self::price_suffix( $event_id, $amount );
+			}
 		}
 		new MPWEM_Global_Function();
 	}

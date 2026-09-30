@@ -463,7 +463,8 @@
 					?>
                     <div class="list_price">
 						<div class="list_price_label"><?php echo esc_html( $show_price_label ) ?></div>
-                    	<div class="list_price_value"><?php echo wp_kses_post( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) ); ?></div>
+						<?php $list_min_price = MPWEM_Functions::get_min_price( $event_id ); ?>
+						<div class="list_price_value"><?php echo wp_kses_post( wc_price( $list_min_price ) . MPWEM_Global_Function::price_suffix( $event_id, $list_min_price ) ); ?></div>
 					</div>
 					<?php
 				}

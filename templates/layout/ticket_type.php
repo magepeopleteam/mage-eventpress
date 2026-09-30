@@ -243,7 +243,7 @@
 														mep_display_limited_availability_ribbon( $event_id, $ticket_name, $available );
 													}
 												?>
-												<?php echo MPWEM_Global_Function::mep_format_price( $ticket_price_ ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+												<?php echo MPWEM_Global_Function::mep_format_price( $ticket_price_ ) . MPWEM_Global_Function::price_suffix( $event_id, $ticket_price_ ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
                                             </div>
                                         </div>
 										<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>

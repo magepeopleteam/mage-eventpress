@@ -50,6 +50,7 @@
 				// Old dashboard - Replaced by MPWEM_My_Account_Dashboard
 				// add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
 				add_filter( 'woocommerce_cart_item_price', array( $this, 'cart_item_price' ), 10, 4 );
+				add_filter( 'woocommerce_order_formatted_line_subtotal', array( $this, 'order_line_subtotal_suffix' ), 10, 2 );
 			}
 			/**
 			 * Make event-linked WooCommerce products purchasable.
@@ -206,7 +207,7 @@
 													$line_total  = (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'];
 													$ticket_text = '<tr>'
 														. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $ticket['ticket_name'] ) . $_badge . '</td>'
-														. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket['ticket_price'] ) . ' &times; ' . esc_html( $ticket['ticket_qty'] ) . '</td>'
+														. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket['ticket_price'] ) . MPWEM_Global_Function::order_price_suffix( $eid, $ticket['ticket_price'] ) . ' &times; ' . esc_html( $ticket['ticket_qty'] ) . '</td>'
 														. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $line_total ) . '</td>'
 														. '</tr>';
 													echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $ticket, $eid );
@@ -237,7 +238,7 @@
 											$ex_total = (float) $extra_service['service_price'] * (float) $extra_service['service_qty'];
 											echo '<tr>'
 												. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $extra_service['service_name'] ) . '</td>'
-												. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $extra_service['service_price'] ) . ' &times; ' . esc_html( $extra_service['service_qty'] ) . '</td>'
+												. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $extra_service['service_price'] ) . MPWEM_Global_Function::order_price_suffix( $eid, $extra_service['service_price'] ) . ' &times; ' . esc_html( $extra_service['service_qty'] ) . '</td>'
 												. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $ex_total ) . '</td>'
 												. '</tr>';
 										} ?>
@@ -1051,7 +1052,7 @@
 					}
 					if ( is_array( $event_extra_service ) && sizeof( $event_extra_service ) > 0 ) {
 						foreach ( $event_extra_service as $extra_service ) {
-							$service_type_name = $extra_service['service_name'] . " - " . wc_price( $extra_service['service_price'] ) . ' x ' . $extra_service['service_qty'] . ' = ';
+							$service_type_name = $extra_service['service_name'] . " - " . wc_price( $extra_service['service_price'] ) . MPWEM_Global_Function::order_price_suffix( $eid, $extra_service['service_price'] ) . ' x ' . $extra_service['service_qty'] . ' = ';
 							$service_type_val  = wc_price( (float) $extra_service['service_price'] * (float) $extra_service['service_qty']  );
 							$item->add_meta_data( $service_type_name, $service_type_val );
 						}
@@ -1579,7 +1580,7 @@
 								$line_total   = (float) $ticket_price * (float) $ticket_qty;
 								$ticket_text  = '<table cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:0 0 10px;"><tr>'
 									. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $ticket_name ) . '</td>'
-									. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket_price ) . ' &times; ' . esc_html( $ticket_qty ) . '</td>'
+									. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket_price ) . MPWEM_Global_Function::order_price_suffix( $post_id, $ticket_price ) . ' &times; ' . esc_html( $ticket_qty ) . '</td>'
 									. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $line_total ) . '</td>'
 									. '</tr></table>';
 								echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
@@ -1690,9 +1691,27 @@
 					if ( ! array_key_exists( 'event_tp', $cart_item ) || '' === $cart_item['event_tp'] || null === $cart_item['event_tp'] ) {
 						return $price;
 					}
-					$price = wc_price( $cart_item['event_tp']);
+					$price = wc_price( $cart_item['event_tp'] ) . MPWEM_Global_Function::order_price_suffix( $cart_item['event_id'], $cart_item['event_tp'] );
 				}
 				return $price;
+			}
+			/**
+			 * Price suffix on the Price column of event lines in order emails,
+			 * the thank-you page and My Account > Orders.
+			 *
+			 * The line's own tax decides, not the event's current settings: with
+			 * WooCommerce taxes on, a line that was charged no tax (VAT-exempt
+			 * customer, non-taxable event) gets no suffix.
+			 */
+			public function order_line_subtotal_suffix( $subtotal, $item ) {
+				$event_id = is_a( $item, 'WC_Order_Item_Product' ) ? (int) $item->get_meta( 'event_id' ) : 0;
+				if ( ! $event_id || 'yes' !== MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_price_suffix_in_orders', 'yes' ) ) {
+					return $subtotal;
+				}
+				if ( wc_tax_enabled() && (float) $item->get_subtotal_tax() <= 0 ) {
+					return $subtotal;
+				}
+				return $subtotal . MPWEM_Global_Function::price_suffix( 0, $item->get_subtotal() );
 			}
 		}
 		new MPWEM_Woocommerce();

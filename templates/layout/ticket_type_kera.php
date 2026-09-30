@@ -208,7 +208,7 @@
 																		?>
                                                                     </div>
                                                                     <div class="ticket-price">
-                                                                        <?php echo wc_price( MPWEM_Global_Function::normalize_price( $ticket_price_ ) ); ?>
+                                                                        <?php echo wc_price( $ticket_price ) . MPWEM_Global_Function::price_suffix( $event_id, $ticket_price ); ?>
                                                                     </div>
                                                                 </div>
 																<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>

@@ -19,6 +19,9 @@ body.mpwem-deact-lock {
 	background: #fff;
 	width: 100%;
 	max-width: 560px;
+	max-height: calc(100vh - 40px);
+	display: flex;
+	flex-direction: column;
 	border-radius: 8px;
 	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
 	overflow: hidden;
@@ -29,6 +32,7 @@ body.mpwem-deact-lock {
 	to   { transform: translateY(0); opacity: 1; }
 }
 .mpwem-deact-head {
+	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -53,6 +57,10 @@ body.mpwem-deact-lock {
 	color: #d63638;
 }
 .mpwem-deact-body {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 	padding: 18px 20px;
 }
 .mpwem-deact-intro {
@@ -121,6 +129,7 @@ body.mpwem-deact-lock {
 	font-weight: 600;
 }
 .mpwem-deact-foot {
+	flex: 0 0 auto;
 	display: flex;
 	justify-content: flex-end;
 	gap: 10px;
@@ -176,6 +185,72 @@ body.mpwem-deact-lock {
 	margin: 0;
 	font-size: 12px;
 	color: #757575;
+}
+
+/* Dynamic survey fields, fetched from and submitted to the Appneck SDK's
+   own deactivation-survey endpoint (see mpwem-deactivation.js). */
+.mpwem-deact-questions {
+	margin-bottom: 10px;
+}
+.mpwem-deact-survey-loading {
+	margin: 0 0 10px;
+	font-size: 13px;
+	color: #757575;
+}
+.mpwem-deact-question {
+	margin-bottom: 14px;
+}
+.mpwem-deact-question fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+.mpwem-deact-question legend {
+	padding: 0;
+	margin-bottom: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1d2327;
+}
+.mpwem-deact-question .mpwem-deact-reason-option {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 6px;
+}
+.mpwem-deact-question .mpwem-deact-reason-option--select,
+.mpwem-deact-question .mpwem-deact-reason-option--text {
+	border: 0;
+	padding: 0;
+	cursor: default;
+}
+.mpwem-deact-question .mpwem-deact-reason-option--select span,
+.mpwem-deact-question .mpwem-deact-reason-option--text span {
+	font-weight: 600;
+	color: #1d2327;
+}
+.mpwem-deact-question fieldset .mpwem-deact-reason-option {
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 6px;
+}
+.mpwem-deact-rating {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.mpwem-deact-rating .mpwem-deact-reason-option {
+	flex-direction: row;
+	width: auto;
+}
+.mpwem-deact-followup {
+	margin: 4px 0 6px 24px;
+}
+.mpwem-deact-followup textarea {
+	width: 100%;
+	box-sizing: border-box;
+	resize: vertical;
+	min-height: 50px;
 }
 
 /* Progress */

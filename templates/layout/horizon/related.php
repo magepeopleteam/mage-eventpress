@@ -68,7 +68,7 @@
 						<div class="horizon_related_price_wrap">
 							<?php if ( $price_html ) : ?>
 								<span class="horizon_related_price_label"><?php esc_html_e( 'From', 'mage-eventpress' ); ?></span>
-								<span class="horizon_related_price"><?php echo wp_kses_post( $price_html ); ?></span>
+								<span class="horizon_related_price"><?php echo wp_kses_post( $price_html . MPWEM_Global_Function::price_suffix( $_event_id, $min_price ) ); ?></span>
 							<?php else : ?>
 								<span class="horizon_related_price horizon_related_price--empty"><?php esc_html_e( 'See tickets', 'mage-eventpress' ); ?></span>
 							<?php endif; ?>

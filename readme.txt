@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.4
+Stable tag: 5.7.5
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,10 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.5 =
+* New: Price Suffix setting (Events > Settings > General). Text such as "+ VAT" is shown after ticket and extra service prices on the event page, the event list "Price Starts" figure, related event cards and the calendar. A second switch, "Price Suffix in Cart & Orders" (on by default), also adds it to the cart and checkout ticket details and to the ticket, extra service and Price lines of order pages and order emails. Event prices are printed by the plugin itself, so WooCommerce's own "Price display suffix" never reached them. The suffix is never added to totals or to free tickets, and while WooCommerce taxes are on it only shows on events whose Tax Status is Taxable, and not for VAT-exempt customers or order lines that were charged no tax. Leave the field empty (the default) to keep prices as they are.
+  30 September 2026*
 
 = 5.7.4 =
 * Fix: Event bookings could not be paid with most payment gateways - only Cash on Delivery worked, and checkout ended with WooCommerce's generic "There was an error processing your order". The "Clear Cart After Order" setting emptied the cart as soon as the order was created, before WooCommerce took payment. WooCommerce then re-checked which gateways were available against the empty cart, so a gateway that checks the order total (for example an M-Pesa minimum amount) dropped out and was never asked to take payment, and gateways that read the cart while paying (such as WooPay) failed. The cart is now cleared only after payment is complete or the customer reaches the order confirmation page, so every gateway works with the setting on, and a failed payment keeps the customer's cart so they can try again.

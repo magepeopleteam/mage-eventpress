@@ -1627,6 +1627,26 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'              => 'mep_price_suffix',
+								'label'             => __( 'Price Suffix', 'mage-eventpress' ),
+								'desc'              => __( 'Text shown after event prices, e.g. "+ VAT". Leave empty to turn it off. When WooCommerce taxes are on, it only shows on events whose Tax Status is Taxable.', 'mage-eventpress' ),
+								'type'              => 'text',
+								'default'           => '',
+								'placeholder'       => '+ VAT',
+								'sanitize_callback' => 'sanitize_text_field'
+							),
+							array(
+								'name'    => 'mep_price_suffix_in_orders',
+								'label'   => __( 'Price Suffix in Cart & Orders', 'mage-eventpress' ),
+								'desc'    => __( 'Also show the price suffix in the cart, checkout, order pages and order emails.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
 								'name'        => 'mep_ticket_expire_time',
 								'label'       => __( 'Stop Sales Before Event (Minutes)', 'mage-eventpress' ),
 								'desc'        => __( 'Minutes before the event when ticket sales close. Use 0 for no limit.', 'mage-eventpress' ),

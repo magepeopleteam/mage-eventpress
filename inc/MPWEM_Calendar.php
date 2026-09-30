@@ -1080,6 +1080,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			}
 
 			$stock_info = $this->get_stock_info( $event_id, $event_date );
+			$min_price  = $show_price === 'yes' ? MPWEM_Functions::get_min_price( $event_id ) : 0;
 
 			wp_send_json_success(
 				array(
@@ -1089,7 +1090,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					'reservedSeats'  => $stock_info['reserved'],
 					'ticketTypes'    => $stock_info['ticket_types'],
 					'stockLoaded'    => 'yes',
-					'minPriceHtml'   => $show_price === 'yes' && function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) ) : '',
+					'minPriceHtml'   => $show_price === 'yes' && function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( $min_price ) ) . MPWEM_Global_Function::price_suffix( $event_id, $min_price, true ) : '',
 				)
 			);
 		}
@@ -1179,7 +1180,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					'categories'             => $normalized_categories,
 					'thumbnail'              => $thumbnail ? $thumbnail : '',
 					'minPrice'               => $min_price,
-					'minPriceHtml'           => $show_price === 'yes' && function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( $min_price ) ) : '',
+					'minPriceHtml'           => $show_price === 'yes' && function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( $min_price ) ) . MPWEM_Global_Function::price_suffix( $event_id, $min_price, true ) : '',
 					'totalSeats'             => $total_seats,
 					'availableSeats'         => $available_seats,
 					'soldSeats'              => $total_sold,
@@ -1592,7 +1593,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					'reserved'  => $rsv,
 					'available' => $available,
 					'price'     => $price,
-					'priceHtml' => function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( $price ) ) : $this->normalize_text_value( $price ),
+					'priceHtml' => ( function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( $price ) ) : $this->normalize_text_value( $price ) ) . MPWEM_Global_Function::price_suffix( $event_id, $price, true ),
 				);
 			}
 
@@ -1636,7 +1637,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					'reserved'  => 0,
 					'available' => 0,
 					'price'     => $price,
-					'priceHtml' => function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( $price ) ) : $this->normalize_text_value( $price ),
+					'priceHtml' => ( function_exists( 'wc_price' ) ? $this->normalize_text_value( wc_price( $price ) ) : $this->normalize_text_value( $price ) ) . MPWEM_Global_Function::price_suffix( $event_id, $price, true ),
 				);
 			}
 

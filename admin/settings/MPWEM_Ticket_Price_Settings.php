@@ -1087,7 +1087,7 @@
                     <td class="mpwem-ticket-card__group mpwem-ticket-card__price">
                         <label class="mpwem-card-label"><?php esc_html_e( 'Price', 'mage-eventpress' ); ?></label>
                         <div class="mpwem-card-input-wrapper mpwem-card-input-wrapper--currency">
-                            <input type="number" size="4" pattern="[0-9]*" step="0.001" class="mpwem-card-input" name="option_price_t[]" placeholder="0.00" value="<?php echo esc_attr( $option_price ); ?>"/>
+							<input type="text" inputmode="decimal" class="mpwem-card-input" name="option_price_t[]" placeholder="0.00" value="<?php echo esc_attr( $option_price ); ?>"/>
                         </div>
                     </td>
 
@@ -1213,7 +1213,7 @@
                         <div class="mpwem-ticket-card__group mpwem-ticket-card__price">
                             <label class="mpwem-card-label"><?php esc_html_e( 'PRICE', 'mage-eventpress' ); ?></label>
                             <div class="mpwem-card-input-wrapper mpwem-card-input-wrapper--currency">
-                                <input type="number" class="mpwem-card-input" name="option_price[]" placeholder="0.00" value="<?php echo esc_attr( $option_price ); ?>"/>
+                                <input type="text" inputmode="decimal" class="mpwem-card-input" name="option_price[]" placeholder="0.00" value="<?php echo esc_attr( $option_price ); ?>"/>
                             </div>
                         </div>
 

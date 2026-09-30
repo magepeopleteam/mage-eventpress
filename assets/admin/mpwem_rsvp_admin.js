@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
     }
 
     function fetchRSVPs() {
-        const loadingHtml = '<tr><td colspan="8" class="mep-rsvp-loading"><span class="mep-rsvp-spinner"></span>' +
+		const loadingHtml = '<tr><td colspan="9" class="mep-rsvp-loading"><span class="mep-rsvp-spinner"></span>' +
             escapeHtml(i18n.loading || 'Loading responses…') + '</td></tr>';
         $('#mep-rsvp-table-body').html(loadingHtml);
         $('#mep-result-count').text(i18n.loading || 'Loading…');
@@ -53,14 +53,14 @@ jQuery(document).ready(function($) {
                 updateStats(response.data);
             } else {
                 $('#mep-rsvp-table-body').html(
-                    '<tr><td colspan="8" class="mep-rsvp-error">' +
+					'<tr><td colspan="9" class="mep-rsvp-error">' +
                     escapeHtml(i18n.error_load || 'Could not load RSVP responses.') +
                     '</td></tr>'
                 );
             }
         }).fail(function() {
             $('#mep-rsvp-table-body').html(
-                '<tr><td colspan="8" class="mep-rsvp-error">' +
+				'<tr><td colspan="9" class="mep-rsvp-error">' +
                 escapeHtml(i18n.error_load || 'Could not load RSVP responses.') +
                 '</td></tr>'
             );
@@ -85,16 +85,26 @@ jQuery(document).ready(function($) {
         $('#mep-result-count').text(resultTpl.replace('%d', totalFiltered));
     }
 
-    function renderTable(rsvps) {
+	function renderTable(rsvps) {
         let html = '';
         if (!rsvps || rsvps.length === 0) {
-            html = '<tr><td colspan="8" class="mep-rsvp-empty"><div class="mep-rsvp-empty-inner">' +
+			html = '<tr><td colspan="9" class="mep-rsvp-empty"><div class="mep-rsvp-empty-inner">' +
                 '<span class="dashicons dashicons-groups"></span>' +
                 '<p>' + escapeHtml(i18n.no_results || 'No RSVP responses found.') + '</p>' +
                 '<small>' + escapeHtml(i18n.no_results_hint || 'Try adjusting your filters or search.') + '</small>' +
                 '</div></td></tr>';
         } else {
-            rsvps.forEach(function(rsvp) {
+			rsvps.forEach(function(rsvp) {
+				let formFields = '';
+				if (Array.isArray(rsvp.form_fields) && rsvp.form_fields.length) {
+					formFields = '<dl class="mep-rsvp-form-fields">';
+					rsvp.form_fields.forEach(function(field) {
+						formFields += '<dt>' + escapeHtml(field.label) + '</dt><dd>' + escapeHtml(field.value || '—') + '</dd>';
+					});
+					formFields += '</dl>';
+				} else {
+					formFields = '<span aria-hidden="true">—</span>';
+				}
                 const checkinBtnClass = rsvp.is_checked_in ? 'mep-btn-checkin is-checked' : 'mep-btn-checkin';
                 const checkinBtnText = rsvp.is_checked_in
                     ? '<span class="dashicons dashicons-yes-alt"></span> ' + escapeHtml(i18n.checked_in || 'Checked In')
@@ -127,7 +137,8 @@ jQuery(document).ready(function($) {
                     '</td>' +
                     '<td class="column-event"><span class="mep-rsvp-event-name">' + escapeHtml(rsvp.event_name || '—') + '</span></td>' +
                     '<td class="column-event-date">' + escapeHtml(rsvp.event_date || '—') + '</td>' +
-                    '<td class="column-qty"><span class="mep-rsvp-qty-pill">' + escapeHtml(rsvp.qty) + '</span></td>' +
+					'<td class="column-qty"><span class="mep-rsvp-qty-pill">' + escapeHtml(rsvp.qty) + '</span></td>' +
+					'<td class="column-form-fields">' + formFields + '</td>' +
                     '<td class="column-status">' + statusBadge + '</td>' +
                     '<td class="column-date">' + escapeHtml(rsvp.date) + '</td>' +
                     '<td class="column-actions">' +

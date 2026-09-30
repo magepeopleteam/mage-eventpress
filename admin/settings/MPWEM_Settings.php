@@ -186,6 +186,13 @@
 					update_post_meta( $post_id, 'mep_rsvp_email_label', $mep_rsvp_email_label );
 					update_post_meta( $post_id, 'mep_rsvp_phone_label', $mep_rsvp_phone_label );
 					update_post_meta( $post_id, 'mep_rsvp_qty_label', $mep_rsvp_qty_label );
+					if ( isset( $_POST['mep_rsvp_form_present'] ) ) {
+						$mep_rsvp_use_attendee_form = isset( $_POST['mep_rsvp_use_attendee_form'] ) ? 'on' : 'off';
+						update_post_meta( $post_id, 'mep_rsvp_use_attendee_form', $mep_rsvp_use_attendee_form );
+						if ( 'on' === $mep_rsvp_use_attendee_form ) {
+							update_post_meta( $post_id, 'mep_event_reg_form_status', 'on' );
+						}
+					}
 
 					// Announcement mode: the notice shown instead of a ticket box, plus the
 					// enquiry ("query") form that goes with it. Text fields only - the body

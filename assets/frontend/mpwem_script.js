@@ -1489,10 +1489,12 @@ document.querySelectorAll('li').forEach(function(li) {
             type: 'POST',
             data: $form.serialize(),
             success: function(response) {
-                if (response.success) {
-                    $msg.text(response.data.message).addClass('success').show();
-                    $form.find('input[type="text"], input[type="email"]').val('');
-                    $form.find('input[type="number"]').val(1);
+			if (response.success) {
+				$msg.text(response.data.message).addClass('success').show();
+				$form.find('input[type="text"], input[type="email"], textarea, select').val('');
+				$form.find('input[type="hidden"][data-field-name]').val('');
+				$form.find('.mep-fb-choice-option').removeClass('active selected').attr('aria-pressed', 'false');
+				$form.find('input[type="number"]').val(1);
                 } else {
                     const errorMsg = response.data && response.data.message ? response.data.message : 'An error occurred. Please try again.';
                     $msg.text(errorMsg).addClass('error').show();

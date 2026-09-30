@@ -12186,3 +12186,28 @@ msgstr ""
 #: woocommerce-event-press.php:343
 msgid "Upgrade to PRO Version"
 msgstr ""
+
+#: admin/MPWEM_RSVP_Responses.php:245
+msgid "Form Fields"
+msgstr ""
+
+#: admin/settings/MPWEM_Ticket_Price_Settings.php:1532
+msgid "Use the Attendee Form fields for RSVP"
+msgstr ""
+
+#: admin/settings/MPWEM_Ticket_Price_Settings.php:1537
+msgid "Manage these fields in Advanced > Attendee Form. Name and email are always required for RSVP responses."
+msgstr ""
+
+#: admin/settings/MPWEM_Ticket_Price_Settings.php:1539
+msgid "Activate Event Booking Manager PRO to build a dynamic RSVP form."
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:808
+msgid "This event is not accepting RSVP responses."
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:881
+#, php-format
+msgid "%s is required."
+msgstr ""

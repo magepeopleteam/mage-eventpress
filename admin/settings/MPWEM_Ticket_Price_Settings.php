@@ -1386,8 +1386,10 @@
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				$name_label  = is_array($event_infos) && array_key_exists( 'mep_rsvp_name_label', $event_infos ) ? $event_infos['mep_rsvp_name_label'] : '';
 				$email_label = is_array($event_infos) && array_key_exists( 'mep_rsvp_email_label', $event_infos ) ? $event_infos['mep_rsvp_email_label'] : '';
-				$phone_label = is_array($event_infos) && array_key_exists( 'mep_rsvp_phone_label', $event_infos ) ? $event_infos['mep_rsvp_phone_label'] : '';
-				$qty_label   = is_array($event_infos) && array_key_exists( 'mep_rsvp_qty_label', $event_infos ) ? $event_infos['mep_rsvp_qty_label'] : '';
+				$phone_label        = is_array($event_infos) && array_key_exists( 'mep_rsvp_phone_label', $event_infos ) ? $event_infos['mep_rsvp_phone_label'] : '';
+				$qty_label          = is_array($event_infos) && array_key_exists( 'mep_rsvp_qty_label', $event_infos ) ? $event_infos['mep_rsvp_qty_label'] : '';
+				$use_attendee_form  = is_array( $event_infos ) && ! empty( $event_infos['mep_rsvp_use_attendee_form'] ) ? $event_infos['mep_rsvp_use_attendee_form'] : 'off';
+				$form_builder_active = class_exists( 'MPWEM_Form_Builder' );
 				?>
                 <style>
                 .mpwem-rsvp-card {
@@ -1522,8 +1524,24 @@
                                 <p class="mpwem-rsvp-card__header-sub"><?php esc_html_e( 'Configure RSVP Registration Field Labels', 'mage-eventpress' ); ?></p>
                             </div>
                         </div>
-                        <div class="mpwem-rsvp-card__body">
-                            <p class="mpwem-rsvp-section-title"><?php esc_html_e( 'Field Labels', 'mage-eventpress' ); ?></p>
+						<div class="mpwem-rsvp-card__body">
+							<input type="hidden" name="mep_rsvp_form_present" value="1" />
+							<div class="mpwem-rsvp-field" style="margin-bottom: 20px;">
+								<label class="mpwem-rsvp-label" for="mep_rsvp_use_attendee_form">
+									<input type="checkbox" id="mep_rsvp_use_attendee_form" name="mep_rsvp_use_attendee_form" value="on" <?php checked( $use_attendee_form, 'on' ); ?> <?php disabled( ! $form_builder_active ); ?> />
+									<?php esc_html_e( 'Use the Attendee Form fields for RSVP', 'mage-eventpress' ); ?>
+								</label>
+								<p class="description">
+									<?php
+									if ( $form_builder_active ) {
+										esc_html_e( 'Manage these fields in Advanced > Attendee Form. Name and email are always required for RSVP responses.', 'mage-eventpress' );
+									} else {
+										esc_html_e( 'Activate Event Booking Manager PRO to build a dynamic RSVP form.', 'mage-eventpress' );
+									}
+									?>
+								</p>
+							</div>
+							<p class="mpwem-rsvp-section-title"><?php esc_html_e( 'Field Labels', 'mage-eventpress' ); ?></p>
                             <div class="mpwem-rsvp-grid">
                                 <div class="mpwem-rsvp-field">
                                     <label class="mpwem-rsvp-label"><?php esc_html_e( 'Full Name Label', 'mage-eventpress' ); ?></label>

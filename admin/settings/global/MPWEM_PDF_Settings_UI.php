@@ -47,6 +47,7 @@
 
 				$known = array_merge(
 					array(
+						'mep_pdf_customer_download',
 						'mep_pdf_lib',
 						'mep_pdf_theme',
 						'mep_pdf_extra_service_theme',
@@ -81,6 +82,7 @@
 						</div>
 					</div>
 
+					<?php self::render_access_card( $by ); ?>
 					<?php self::render_design_card( $by ); ?>
 					<?php self::render_company_card( $by ); ?>
 					<?php self::render_billing_card( $by ); ?>
@@ -103,6 +105,44 @@
 				</div>
 				<div style="display:none;"><?php submit_button(); ?></div>
 				</form>
+				<?php
+			}
+
+			/**
+			 * Global on/off for customer-facing PDF ticket downloads.
+			 *
+			 * The field is registered by the PRO PDF Ticket add-on; without it there is
+			 * nothing to switch, so the card is skipped instead of saving a dead option.
+			 *
+			 * @param array $by Fields by name.
+			 */
+			private static function render_access_card( $by ) {
+				if ( ! isset( $by['mep_pdf_customer_download'] ) ) {
+					return;
+				}
+				?>
+				<div class="mep-pdf__card">
+					<div class="mep-pdf__card-head">
+						<span class="mep-pdf__card-icon mep-pdf__card-icon--amber"><i class="fas fa-user-lock"></i></span>
+						<div>
+							<h3 class="mep-pdf__card-title"><?php esc_html_e( 'Customer Access', 'mage-eventpress' ); ?></h3>
+							<p class="mep-pdf__card-desc"><?php esc_html_e( 'Choose whether customers can download PDF tickets themselves.', 'mage-eventpress' ); ?></p>
+						</div>
+					</div>
+					<div class="mep-pdf__card-body">
+						<?php
+						self::render_toggle_row(
+							$by['mep_pdf_customer_download'],
+							'mep_pdf_customer_download',
+							__( 'Allow Customer PDF Download', 'mage-eventpress' ),
+							__( 'Turn off to remove the Download Ticket buttons and block the download link for customers and guests. Admins and shop managers can still download from the backend. PDF ticket emails are set under Email Settings.', 'mage-eventpress' ),
+							'yes',
+							'no',
+							'yes'
+						);
+						?>
+					</div>
+				</div>
 				<?php
 			}
 

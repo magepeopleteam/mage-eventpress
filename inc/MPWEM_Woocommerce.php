@@ -71,13 +71,25 @@
 				}
 				return $is_purchasable;
 			}
+			/**
+			 * The occurrence the visitor is booking, from the first posted mep_event_start_date[].
+			 *
+			 * The booking form normally posts a full 'Y-m-d H:i', but a cached page or a stale
+			 * link can still post a date-only or midnight value. Resolve that to the day's
+			 * real start time here so the cart, order, e-mails and PDF ticket never print
+			 * "12:00 AM" for a 2 PM show.
+			 */
+			public static function get_posted_event_date( $event_id ) {
+				$start_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['mep_event_start_date'] ) ) : [];
+				$start_date = (string) current( $start_date );
+				return MPWEM_Functions::resolve_occurrence_datetime( $event_id, $start_date );
+			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 				$linked_event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
 				if ( get_post_type( $product_id ) == 'mep_events' ) {
 					$recurring      = MPWEM_Global_Function::get_post_info( $product_id, 'mep_enable_recurring', 'no' );
-					$start_date     = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-					$start_date     = current( $start_date );
+					$start_date     = self::get_posted_event_date( $product_id );
 					$location       = isset( $_POST['mep_event_location_cart'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_location_cart'] ) ) : '';
 					$recurring_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['recurring_event_date'] ) ) : [];
 					$time_slot_text = isset( $_POST['time_slot_name'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_name'] ) ) : '';
@@ -501,8 +513,7 @@
 					$not_in_the_cart = apply_filters( 'mep_check_product_into_cart', true, $wc_product_id );
 					if ( ! $not_in_the_cart ) {
 						// Check if it's a date conflict
-						$current_event_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-						$current_event_date = ! empty( $current_event_date ) ? current( $current_event_date ) : '';
+						$current_event_date = self::get_posted_event_date( $event_id );
 						
 						// Check cart for same event with different date
 						$has_date_conflict = false;
@@ -1408,8 +1419,7 @@
 			}
 			public static function get_cart_ticket_info( $post_id ) {
 				$ticket_info = [];
-				$start_date  = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-				$start_date  = current( $start_date );
+				$start_date  = self::get_posted_event_date( $post_id );
 				$names       = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
 				$qty         = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
@@ -1449,8 +1459,7 @@
 			public static function get_cart_ex_info( $post_id ) {
 				$ticket_info  = [];
 				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
-				$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-				$start_date   = current( $start_date );
+				$start_date   = self::get_posted_event_date( $post_id );
 				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
 				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
@@ -1497,8 +1506,7 @@
 				$attendee_info = [];
 				$names         = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
-					$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-					$start_date   = current( $start_date );
+					$start_date   = self::get_posted_event_date( $post_id );
 					$qty          = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 					$submit_infos = [];
 					$form_array   = MPWEM_Layout::get_form_array( $post_id );

@@ -744,6 +744,38 @@
 				}
 				return $times;
 			}
+			/**
+			 * Turn a midnight occurrence into the show it really names.
+			 *
+			 * A date-only value ('Y-m-d') or a 'Y-m-d 00:00' value names the day but not the
+			 * show. Booked as-is it prints "12:00 AM" on the cart, order, e-mail and ticket
+			 * for an event that really starts at 2 PM. Use the day's first start time
+			 * instead. The value is returned untouched when it already carries a real time,
+			 * when the day has no start times, or when the day genuinely has a 00:00 show.
+			 *
+			 * @param int          $event_id  Event ID.
+			 * @param string       $date      Occurrence as posted/requested ('Y-m-d' or 'Y-m-d H:i').
+			 * @param array|string $all_dates Optional get_dates() result, to save a lookup.
+			 *
+			 * @return string
+			 */
+			public static function resolve_occurrence_datetime( $event_id, $date, $all_dates = [] ) {
+				$timestamp = $date ? strtotime( $date ) : false;
+				if ( ! $timestamp || '00:00' !== date( 'H:i', $timestamp ) ) {
+					return $date;
+				}
+				$day_starts = [];
+				foreach ( (array) self::get_times( $event_id, $all_dates, $date ) as $day_time ) {
+					$day_start = ! empty( $day_time['start']['time'] ) ? strtotime( $day_time['start']['time'] ) : false;
+					if ( $day_start ) {
+						$day_starts[] = date( 'H:i', $day_start );
+					}
+				}
+				if ( $day_starts && ! in_array( '00:00', $day_starts, true ) ) {
+					return date( 'Y-m-d', $timestamp ) . ' ' . $day_starts[0];
+				}
+				return $date;
+			}
 			//==========================//
 			public static function get_location( $event_id, $key = '' ) {
 				static $mep_location_cache = array();

@@ -3957,7 +3957,11 @@
     function shouldKeepNativeSelect($select) {
         const name = ($select.attr('name') || '').toString();
 
-        return $select.closest('#mp_event_custom_form_table, .mp_event_custom_form_table').length > 0
+        // Ticket / extra-service tables scroll sideways, which clips the absolutely
+        // positioned custom dropdown to one row. Add-on columns (e.g. Membership Plan)
+        // must stay native so every option can be reached.
+        return $select.closest('.mpwem_ticket_table, .mpwem_extra_service_table').length > 0
+            || $select.closest('#mp_event_custom_form_table, .mp_event_custom_form_table').length > 0
             || $select.closest('#mpwem_wizard_attendee_form_mount table, .mpwem-display-section--attendee-form table').length > 0
             || $select.closest('.mep_condition_item, .mep_conditional_form_hidden, .conditional_form_area').length > 0
             || name === 'mep_event_reg_form_id'

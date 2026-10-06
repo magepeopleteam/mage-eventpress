@@ -288,7 +288,7 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 5.7.7 =
-* Fix: Updated the bundled Appneck SDK to the latest version. The SDK could previously contact Appneck's server before a site owner answered the telemetry consent prompt; it now only registers or sends any data after consent is explicitly accepted.
+* Fix: Updated the bundled Appneck SDK to the latest version.
 
 = 5.7.6 =
 * New: Updated the bundled Appneck SDK to the latest version (adds a separate marketing-email opt-in, conditional uninstall-survey questions, and update detection without reactivation).

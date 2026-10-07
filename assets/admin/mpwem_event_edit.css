@@ -11371,6 +11371,19 @@ code {
     line-height: 1;
 }
 
+/* Add-on selects (e.g. Membership Plan) stay native in these tables; size them like Qty Box. */
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table select.formControl,
+#mpwem_extra_service_editor_modal .mpwem-ticket-modal__mount .mpwem_extra_service_table select.formControl {
+    min-width: 190px;
+    padding-right: 34px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%2364748b' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px 14px;
+    font-size: 13px;
+    line-height: 1;
+}
+
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-ticket-card__sale-period {
     min-width: 0;
 }

@@ -804,31 +804,27 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					// calendar. So only single events are pre-filtered by their one datetime;
 					// recurring events are always loaded and the per-instance loop below drops
 					// any past/expired occurrence (respecting hide_expired / show_expired_events).
-					$single_event_clause = array(
-						'relation' => 'OR',
-						array( 'key' => 'mep_enable_recurring', 'value' => 'no', 'compare' => '=' ),
-						array( 'key' => 'mep_enable_recurring', 'compare' => 'NOT EXISTS' ),
-					);
+					//
+					// A Single Event can also carry "Add More Date" rows. Its one stored
+					// datetime only describes the first occurrence, so filtering on it alone
+					// dropped the whole event from the calendar as soon as that first date
+					// passed, hiding its remaining dates. Those events are loaded too.
+					//
+					// These conditions are OR-ed, but never inside one WP_Query: a nested OR
+					// meta_query makes WP_Meta_Query LEFT JOIN wp_postmeta once per clause with
+					// no meta_key in the ON clause, so MySQL builds (meta rows per event)^N rows.
+					// A real event has 100+ meta rows, so that query never finished and the
+					// calendar always came back empty. Resolve the candidate IDs with one cheap
+					// query per condition and hand the union to the main query as post__in.
+					$candidate_ids = $this->get_upcoming_candidate_ids( $datetime_filter );
 
-					$meta_query[] = array(
-						'relation' => 'OR',
-						array(
-							'relation' => 'AND',
-							$single_event_clause,
-							$datetime_filter,
-						),
-						array( 'key' => 'mep_enable_recurring', 'value' => array( 'yes', 'everyday' ), 'compare' => 'IN' ),
-						// A Single Event can also carry "Add More Date" rows. Its one stored
-						// datetime only describes the first occurrence, so filtering on it here
-						// dropped the whole event from the calendar as soon as that first date
-						// passed, hiding its remaining dates. Load those events and let the
-						// per-instance loop below decide which occurrences are expired.
-						array(
-							'relation' => 'AND',
-							$single_event_clause,
-							array( 'key' => 'mep_event_more_date', 'value' => 'a:0:{}', 'compare' => '!=' ),
-						),
-					);
+					if ( isset( $args['post__in'] ) ) {
+						// "specific" source: keep the editor's chosen order.
+						$candidate_ids = array_values( array_intersect( $args['post__in'], $candidate_ids ) );
+					}
+
+					// An empty post__in is ignored by WP_Query; array( 0 ) matches nothing.
+					$args['post__in'] = ! empty( $candidate_ids ) ? $candidate_ids : array( 0 );
 				} else {
 					$meta_query[] = $datetime_filter;
 				}
@@ -1049,6 +1045,46 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			}
 
 			wp_send_json_success( $events );
+		}
+
+		/**
+		 * IDs of the published events the "upcoming" calendar query has to load: events whose stored
+		 * datetime is still in the future, recurring events, and events carrying "Add More Date" rows.
+		 *
+		 * One WP_Query per condition (a single meta clause joins wp_postmeta once, with the meta_key
+		 * filter applied early) instead of one query with the conditions OR-ed together, which makes
+		 * WP_Meta_Query join wp_postmeta once per clause and multiply the rows of each event.
+		 *
+		 * @param array $datetime_filter meta_query clause comparing the expiry datetime with "now".
+		 * @return int[]
+		 */
+		private function get_upcoming_candidate_ids( $datetime_filter ) {
+			$conditions = array(
+				$datetime_filter,
+				array( 'key' => 'mep_enable_recurring', 'value' => array( 'yes', 'everyday' ), 'compare' => 'IN' ),
+				array( 'key' => 'mep_event_more_date', 'value' => 'a:0:{}', 'compare' => '!=' ),
+			);
+
+			$ids = array();
+			foreach ( $conditions as $condition ) {
+				$query = new WP_Query(
+					array(
+						'post_type'              => 'mep_events',
+						'post_status'            => 'publish',
+						'posts_per_page'         => -1,
+						'fields'                 => 'ids',
+						'orderby'                => 'none',
+						'no_found_rows'          => true,
+						'ignore_sticky_posts'    => true,
+						'update_post_meta_cache' => false,
+						'update_post_term_cache' => false,
+						'meta_query'             => array( $condition ),
+					)
+				);
+				$ids   = array_merge( $ids, array_map( 'intval', (array) $query->posts ) );
+			}
+
+			return array_values( array_unique( $ids ) );
 		}
 
 		private function get_expire_mode() {

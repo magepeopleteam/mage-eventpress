@@ -35,6 +35,9 @@
 		define('MPWEM_PLUGIN_VERSION', '5.7.7');
 	}
 
+	// Legacy Appsero tracking opt-in -> Appneck consent (so old opt-ins are not asked twice).
+	require_once MPWEM_PLUGIN_DIR . '/inc/mep_appneck_consent_migration.php';
+
 	// Declare High-Performance Order Storage support. WooCommerce hides the HPOS toggle
 	// behind an incompatibility warning for every order-touching plugin that stays silent,
 	// so this has to be stated explicitly. All order reads/writes in this plugin go through

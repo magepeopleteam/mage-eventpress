@@ -12004,7 +12004,7 @@ msgstr ""
 
 #: inc/MPWEM_Event_List.php:183
 msgid "Search by title…"
-msgstr ""
+msgstr "Nach Titel suchen…"
 
 #: inc/MPWEM_Layout.php:23
 msgid "Event unavailable"

@@ -781,6 +781,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$temp_body = str_replace( "{event_datetime}", $t_date_time, $temp_body );
 					$temp_body = str_replace( "{order_id}", $order_id, $temp_body );
 					$temp_body = str_replace( "{payment_method}", $payment_method, $temp_body );
+					$virtual_tags = mep_get_virtual_email_tags( $event_id, array( isset( $ticket['ticket_name'] ) ? $ticket['ticket_name'] : '' ) );
+					$temp_body    = str_replace( array_keys( $virtual_tags ), array_values( $virtual_tags ), $temp_body );
 
 					$final_output .= $temp_body . "<br><hr><br>";
 				}
@@ -824,6 +826,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$email_body = str_replace( "{order_id}", $order_id, $email_body );
 				$email_body = str_replace( "{payment_method}", $payment_method, $email_body );
 				$email_body = str_replace( "{amount_paid}", $amount_paid, $email_body );
+				$virtual_tags = mep_get_virtual_email_tags( $event_id, array( $ticket_type ) );
+				$email_body   = str_replace( array_keys( $virtual_tags ), array_values( $virtual_tags ), $email_body );
 
 				return $email_body;
 			}
@@ -1007,10 +1011,16 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$form_name   = ! empty( $global_email_form_name ) ? $global_email_form_name : $site_name;
 			$email_sub   = mep_get_confirmation_email_subject();
 			$email_body = mep_resolve_confirmation_email_body( $event_id, $global_email_text );
+			// A body that places {virtual_details} itself must not get them appended again.
+			$places_virtual_details = false !== strpos( (string) $email_body, '{virtual_details}' );
 			// Dynamic Content Replace
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter
-			$email_body = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id, $event_ticket_info_arr );
+			$virtual_append_removed = $places_virtual_details && remove_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10 );
+			$email_body             = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id, $event_ticket_info_arr );
+			if ( $virtual_append_removed ) {
+				add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 4 );
+			}
 			// ✨ Format email body properly
 			$email_body = wpautop( $email_body );        // Add paragraphs
 			$email_body = wp_kses_post( $email_body );   // Secure the content
@@ -3700,6 +3710,71 @@ die();
 
 			// All tickets are In Person for a hybrid event — suppress the email.
 			return false;
+		}
+	}
+
+	if ( ! function_exists( 'mep_event_virtual_access_allowed' ) ) {
+		/**
+		 * Whether a booking may receive the event's virtual access details.
+		 *
+		 * Online events always qualify and in-person events never do. A hybrid event
+		 * qualifies only when one of the booked tickets is an Online ticket, the same
+		 * rule the confirmation email uses to append the details. When the tickets are
+		 * unknown (previews, test sends) a hybrid event qualifies.
+		 *
+		 * @param int   $event_id     Event post ID.
+		 * @param array $ticket_names Booked ticket names (option_name_t values).
+		 * @return bool
+		 */
+		function mep_event_virtual_access_allowed( $event_id, $ticket_names = array() ) {
+			$event_type = get_post_meta( $event_id, 'mep_event_type', true ) ?: 'offline';
+			if ( 'online' === $event_type ) {
+				return true;
+			}
+			if ( 'hybrid' !== $event_type ) {
+				return false;
+			}
+			$ticket_names = array_filter( array_map( 'strval', (array) $ticket_names ), 'strlen' );
+			if ( empty( $ticket_names ) ) {
+				return true;
+			}
+			$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+			if ( is_array( $ticket_types ) ) {
+				foreach ( $ticket_types as $t ) {
+					if ( ! empty( $t['option_name_t'] ) && in_array( (string) $t['option_name_t'], $ticket_names, true ) && isset( $t['option_ticket_mode_t'] ) && 'online' === $t['option_ticket_mode_t'] ) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_virtual_email_tags' ) ) {
+		/**
+		 * Values for the {virtual_link} and {virtual_details} email placeholders.
+		 *
+		 * {virtual_link} is the bare join URL from the "Virtual event link" field, so it
+		 * can be used as plain text or inside href="". {virtual_details} is the rich
+		 * "Virtual event details" content. Both are empty when the booking may not
+		 * receive them (see mep_event_virtual_access_allowed()).
+		 *
+		 * @param int   $event_id     Event post ID.
+		 * @param array $ticket_names Booked ticket names, when known.
+		 * @return array Placeholder => value.
+		 */
+		function mep_get_virtual_email_tags( $event_id, $ticket_names = array() ) {
+			$tags = array(
+				'{virtual_link}'    => '',
+				'{virtual_details}' => '',
+			);
+			if ( $event_id > 0 && mep_event_virtual_access_allowed( $event_id, $ticket_names ) ) {
+				$tags['{virtual_link}']    = esc_url( (string) get_post_meta( $event_id, 'mep_event_virtual_link', true ) );
+				$tags['{virtual_details}'] = wp_kses_post( html_entity_decode( (string) get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) ) );
+			}
+
+			return apply_filters( 'mep_virtual_email_tags', $tags, $event_id, $ticket_names );
 		}
 	}
 

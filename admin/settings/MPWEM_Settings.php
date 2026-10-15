@@ -540,6 +540,9 @@
 					update_post_meta( $post_id, '_stock', $seat );
 					$mp_event_virtual_type_des = isset( $_POST['mp_event_virtual_type_des'] ) ? wp_kses_post( wp_unslash( $_POST['mp_event_virtual_type_des'] ) ) : '';
 					update_post_meta( $post_id, 'mp_event_virtual_type_des', $mp_event_virtual_type_des );
+					if ( isset( $_POST['mep_event_virtual_link'] ) ) {
+						update_post_meta( $post_id, 'mep_event_virtual_link', esc_url_raw( trim( wp_unslash( $_POST['mep_event_virtual_link'] ) ) ) );
+					}
 					$mep_show_upcoming_event = isset( $_POST['mep_show_upcoming_event'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_show_upcoming_event'] ) ) : '';
 					update_post_meta( $post_id, 'mep_show_upcoming_event', $mep_show_upcoming_event );
 					/*******************************/

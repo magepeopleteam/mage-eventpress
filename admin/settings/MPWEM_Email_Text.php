@@ -50,6 +50,8 @@
                                 <li><span class="_min_200"><?php esc_html_e( 'Full DateTime', 'mage-eventpress' ); ?></span><code>{event_datetime}</code></li>
                                 <li><span class="_min_200"><?php esc_html_e( 'Payment Method', 'mage-eventpress' ); ?></span><code>{payment_method}</code></li>
                                 <li><span class="_min_200"><?php esc_html_e( 'Amount Paid', 'mage-eventpress' ); ?></span><code>{amount_paid}</code></li>
+                                <li><span class="_min_200"><?php esc_html_e( 'Virtual Event Link', 'mage-eventpress' ); ?></span><code>{virtual_link}</code></li>
+                                <li><span class="_min_200"><?php esc_html_e( 'Virtual Event Details', 'mage-eventpress' ); ?></span><code>{virtual_details}</code></li>
                             </ul>
                             <div class="_mt">
 								<?php

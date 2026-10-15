@@ -2308,7 +2308,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mep_confirmation_email_text',
 								'label'   => __( 'Confirmation Email Body', 'mage-eventpress' ),
-								'desc'    => __( 'Email content. Placeholders: <b>{name}</b>, <b>{event}</b>, <b>{ticket_type}</b>, <b>{order_id}</b>, <b>{event_date}</b>, <b>{event_time}</b>, <b>{event_datetime}</b>, <b>{payment_method}</b>, <b>{amount_paid}</b>', 'mage-eventpress' ),
+								'desc'    => __( 'Email content. Placeholders: <b>{name}</b>, <b>{event}</b>, <b>{ticket_type}</b>, <b>{order_id}</b>, <b>{event_date}</b>, <b>{event_time}</b>, <b>{event_datetime}</b>, <b>{payment_method}</b>, <b>{amount_paid}</b>, <b>{virtual_link}</b>, <b>{virtual_details}</b>', 'mage-eventpress' ),
 								'type'    => 'wysiwyg',
 								'default' => 'Hi {name},<br><br>Thanks for joining the event.<br><br>Here are the event details:<br><br>Event Name: {event}<br><br>Ticket Type: {ticket_type}<br><br>Event Date: {event_date}<br><br>Start Time: {event_time}<br><br>Full DateTime: {event_datetime}<br><br>Payment Method: {payment_method}<br><br>Amount Paid: {amount_paid}<br><br>Thanks',
 							),

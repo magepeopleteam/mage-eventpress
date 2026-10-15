@@ -6175,10 +6175,11 @@
 
         const $virtualSection = $('#mpev-online-event');
         if (needsVirtual) {
-            const virtualVal = getVirtualDetailsValue();
+            // A join link alone is enough to run an online event.
+            const virtualVal = getVirtualDetailsValue() || $.trim(($('#mep_event_virtual_link').val() || '').toString());
             $virtualSection.toggleClass('mpwem-field-error', virtualVal === '');
             if (virtualVal === '') {
-                messages.push('Virtual event details are required for online events.');
+                messages.push('Virtual event details or link are required for online events.');
                 if (!$firstInvalid.length) $firstInvalid = $virtualSection;
             }
         } else {
@@ -7064,7 +7065,7 @@
             const errorMessages = {
                 title: 'Event title is required.',
                 venue: 'Location/Venue is required for in-person events.',
-                virtual: 'Virtual event details are required for online events.',
+                virtual: 'Virtual event details or link are required for online events.',
                 tickets: 'Please add at least one ticket type.',
                 ticket_fields: 'Each ticket type needs a name, price and capacity.',
                 extra_service: 'Each extra service with a name needs a price and available quantity.',

@@ -2320,6 +2320,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				}
 				$venue_value   = isset($_POST['mep_location_venue']) ? trim(sanitize_text_field(wp_unslash($_POST['mep_location_venue']))) : '';
 				$virtual_value = isset($_POST['mp_event_virtual_type_des']) ? trim(wp_strip_all_tags(wp_unslash($_POST['mp_event_virtual_type_des']))) : '';
+				// A join link alone is enough to run an online event.
+				if ('' === $virtual_value && isset($_POST['mep_event_virtual_link'])) {
+					$virtual_value = trim(esc_url_raw(wp_unslash($_POST['mep_event_virtual_link'])));
+				}
 
 				if ('' === $post_title) {
 					$validation_error = 'title';

@@ -310,7 +310,7 @@
 					$status = array();
 				}
 
-				$vars = array( '{name}', '{event}', '{ticket_type}', '{order_id}', '{event_date}', '{event_time}', '{event_datetime}', '{payment_method}', '{amount_paid}', '{virtual_link}', '{virtual_details}' );
+				$vars = array( '{name}', '{event}', '{ticket_type}', '{order_id}', '{event_date}', '{event_time}', '{event_datetime}', '{payment_method}', '{amount_paid}', '{virtual_link}', '{virtual_details}', '{calendar_ics_url}', '{google_calendar_url}' );
 				?>
 				<div class="mep-em__grid">
 					<div class="mep-em__col-main">
@@ -441,7 +441,7 @@
 					? mep_get_pdf_email_statuses()
 					: (array) $get( 'mep_pdf_email_status', array() );
 
-				$vars = array( '{customer_name}', '{event_name}', '{event_venue}', '{event_date}', '{order_id}', '{payment_method}', '{amount_paid}', '{virtual_link}', '{virtual_details}' );
+				$vars = array( '{customer_name}', '{event_name}', '{event_venue}', '{event_date}', '{order_id}', '{payment_method}', '{amount_paid}', '{virtual_link}', '{virtual_details}', '{calendar_ics_url}', '{google_calendar_url}' );
 				?>
 				<div class="mep-em__grid">
 					<div class="mep-em__col-main">

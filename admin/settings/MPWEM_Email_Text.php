@@ -52,6 +52,8 @@
                                 <li><span class="_min_200"><?php esc_html_e( 'Amount Paid', 'mage-eventpress' ); ?></span><code>{amount_paid}</code></li>
                                 <li><span class="_min_200"><?php esc_html_e( 'Virtual Event Link', 'mage-eventpress' ); ?></span><code>{virtual_link}</code></li>
                                 <li><span class="_min_200"><?php esc_html_e( 'Virtual Event Details', 'mage-eventpress' ); ?></span><code>{virtual_details}</code></li>
+                                <li><span class="_min_200"><?php esc_html_e( 'Add to Calendar (.ics) URL', 'mage-eventpress' ); ?></span><code>{calendar_ics_url}</code></li>
+                                <li><span class="_min_200"><?php esc_html_e( 'Google Calendar URL', 'mage-eventpress' ); ?></span><code>{google_calendar_url}</code></li>
                             </ul>
                             <div class="_mt">
 								<?php

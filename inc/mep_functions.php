@@ -781,6 +781,9 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$temp_body = str_replace( "{event_datetime}", $t_date_time, $temp_body );
 					$temp_body = str_replace( "{order_id}", $order_id, $temp_body );
 					$temp_body = str_replace( "{payment_method}", $payment_method, $temp_body );
+					$ticket_names = array( isset( $ticket['ticket_name'] ) ? $ticket['ticket_name'] : '' );
+					$virtual_tags = array_merge( mep_get_virtual_email_tags( $event_id, $ticket_names ), mep_get_calendar_email_tags( $event_id, $raw_date, $ticket_names ) );
+					$temp_body    = str_replace( array_keys( $virtual_tags ), array_values( $virtual_tags ), $temp_body );
 
 					$final_output .= $temp_body . "<br><hr><br>";
 				}
@@ -824,6 +827,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$email_body = str_replace( "{order_id}", $order_id, $email_body );
 				$email_body = str_replace( "{payment_method}", $payment_method, $email_body );
 				$email_body = str_replace( "{amount_paid}", $amount_paid, $email_body );
+				$virtual_tags = array_merge( mep_get_virtual_email_tags( $event_id, array( $ticket_type ) ), mep_get_calendar_email_tags( $event_id, $event_date_time, array( $ticket_type ) ) );
+				$email_body   = str_replace( array_keys( $virtual_tags ), array_values( $virtual_tags ), $email_body );
 
 				return $email_body;
 			}
@@ -1007,10 +1012,16 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$form_name   = ! empty( $global_email_form_name ) ? $global_email_form_name : $site_name;
 			$email_sub   = mep_get_confirmation_email_subject();
 			$email_body = mep_resolve_confirmation_email_body( $event_id, $global_email_text );
+			// A body that places {virtual_details} itself must not get them appended again.
+			$places_virtual_details = false !== strpos( (string) $email_body, '{virtual_details}' );
 			// Dynamic Content Replace
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter
-			$email_body = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id, $event_ticket_info_arr );
+			$virtual_append_removed = $places_virtual_details && remove_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10 );
+			$email_body             = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id, $event_ticket_info_arr );
+			if ( $virtual_append_removed ) {
+				add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 4 );
+			}
 			// ✨ Format email body properly
 			$email_body = wpautop( $email_body );        // Add paragraphs
 			$email_body = wp_kses_post( $email_body );   // Secure the content
@@ -3700,6 +3711,339 @@ die();
 
 			// All tickets are In Person for a hybrid event — suppress the email.
 			return false;
+		}
+	}
+
+	if ( ! function_exists( 'mep_event_virtual_access_allowed' ) ) {
+		/**
+		 * Whether a booking may receive the event's virtual access details.
+		 *
+		 * Online events always qualify and in-person events never do. A hybrid event
+		 * qualifies only when one of the booked tickets is an Online ticket, the same
+		 * rule the confirmation email uses to append the details. When the tickets are
+		 * unknown (previews, test sends) a hybrid event qualifies.
+		 *
+		 * @param int   $event_id     Event post ID.
+		 * @param array $ticket_names Booked ticket names (option_name_t values).
+		 * @return bool
+		 */
+		function mep_event_virtual_access_allowed( $event_id, $ticket_names = array() ) {
+			$event_type = get_post_meta( $event_id, 'mep_event_type', true ) ?: 'offline';
+			if ( 'online' === $event_type ) {
+				return true;
+			}
+			if ( 'hybrid' !== $event_type ) {
+				return false;
+			}
+			$ticket_names = array_filter( array_map( 'strval', (array) $ticket_names ), 'strlen' );
+			if ( empty( $ticket_names ) ) {
+				return true;
+			}
+			$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+			if ( is_array( $ticket_types ) ) {
+				foreach ( $ticket_types as $t ) {
+					if ( ! empty( $t['option_name_t'] ) && in_array( (string) $t['option_name_t'], $ticket_names, true ) && isset( $t['option_ticket_mode_t'] ) && 'online' === $t['option_ticket_mode_t'] ) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_virtual_email_tags' ) ) {
+		/**
+		 * Values for the {virtual_link} and {virtual_details} email placeholders.
+		 *
+		 * {virtual_link} is the bare join URL from the "Virtual event link" field, so it
+		 * can be used as plain text or inside href="". {virtual_details} is the rich
+		 * "Virtual event details" content. Both are empty when the booking may not
+		 * receive them (see mep_event_virtual_access_allowed()).
+		 *
+		 * @param int   $event_id     Event post ID.
+		 * @param array $ticket_names Booked ticket names, when known.
+		 * @return array Placeholder => value.
+		 */
+		function mep_get_virtual_email_tags( $event_id, $ticket_names = array() ) {
+			$tags = array(
+				'{virtual_link}'    => '',
+				'{virtual_details}' => '',
+			);
+			if ( $event_id > 0 && mep_event_virtual_access_allowed( $event_id, $ticket_names ) ) {
+				$tags['{virtual_link}']    = esc_url( (string) get_post_meta( $event_id, 'mep_event_virtual_link', true ) );
+				$tags['{virtual_details}'] = wp_kses_post( html_entity_decode( (string) get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) ) );
+			}
+
+			return apply_filters( 'mep_virtual_email_tags', $tags, $event_id, $ticket_names );
+		}
+	}
+
+	if ( ! function_exists( 'mep_calendar_occurrence_start' ) ) {
+		/**
+		 * Booked occurrence start as 'Y-m-d H:i' (site time), or '' when unusable.
+		 * A date without a time gets the event's start time instead of midnight.
+		 */
+		function mep_calendar_occurrence_start( $event_id, $start ) {
+			$start = trim( (string) $start );
+			if ( '' === $start ) {
+				return '';
+			}
+			if ( false === strpos( $start, ':' ) ) {
+				$start = trim( $start . ' ' . get_post_meta( $event_id, 'event_start_time', true ) );
+			}
+			$start_ts = strtotime( $start );
+
+			return $start_ts ? date( 'Y-m-d H:i', $start_ts ) : '';
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_event_occurrence_end' ) ) {
+		/**
+		 * End of the occurrence starting at $start ('Y-m-d H:i', site time).
+		 *
+		 * The main date row and each extra date row keep their own end. A repeated
+		 * (everyday) event stores the last day of the series as its end date, so its
+		 * occurrences - and anything else unmatched - keep the first row's length of
+		 * day instead. Falls back to one hour.
+		 */
+		function mep_get_event_occurrence_end( $event_id, $start ) {
+			$start_ts = strtotime( (string) $start );
+			if ( ! $start_ts ) {
+				return '';
+			}
+			$rows = array(
+				array(
+					get_post_meta( $event_id, 'event_start_date', true ),
+					get_post_meta( $event_id, 'event_start_time', true ),
+					get_post_meta( $event_id, 'event_end_date', true ),
+					get_post_meta( $event_id, 'event_end_time', true ),
+				),
+			);
+			$more = get_post_meta( $event_id, 'mep_event_more_date', true );
+			foreach ( is_array( $more ) ? $more : array() as $row ) {
+				if ( is_array( $row ) ) {
+					$rows[] = array(
+						isset( $row['event_more_start_date'] ) ? $row['event_more_start_date'] : '',
+						isset( $row['event_more_start_time'] ) ? $row['event_more_start_time'] : '',
+						isset( $row['event_more_end_date'] ) ? $row['event_more_end_date'] : '',
+						isset( $row['event_more_end_time'] ) ? $row['event_more_end_time'] : '',
+					);
+				}
+			}
+			if ( 'everyday' !== get_post_meta( $event_id, 'mep_enable_recurring', true ) ) {
+				foreach ( $rows as $row ) {
+					$row_start = strtotime( trim( $row[0] . ' ' . $row[1] ) );
+					$row_end   = strtotime( trim( $row[2] . ' ' . $row[3] ) );
+					if ( $row_start && $row_end > $row_start && date( 'Y-m-d H:i', $row_start ) === date( 'Y-m-d H:i', $start_ts ) ) {
+						return date( 'Y-m-d H:i', $row_end );
+					}
+				}
+			}
+			$length = 0;
+			if ( $rows[0][1] && $rows[0][3] ) {
+				$length = strtotime( '2000-01-01 ' . $rows[0][3] ) - strtotime( '2000-01-01 ' . $rows[0][1] );
+				if ( $length < 0 ) {
+					$length += DAY_IN_SECONDS; // Runs past midnight.
+				}
+			}
+
+			return date( 'Y-m-d H:i', $start_ts + ( $length > 0 ? $length : HOUR_IN_SECONDS ) );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_calendar_event_data' ) ) {
+		/**
+		 * Calendar entry for one occurrence: title, site-time and UTC start/end,
+		 * location and description lines.
+		 *
+		 * @param int    $event_id     Event post ID.
+		 * @param string $start        Occurrence start (any strtotime() format).
+		 * @param bool   $with_virtual Include the join link; only for bookings allowed to see it.
+		 * @return array Empty when the event or the start is unusable.
+		 */
+		function mep_get_calendar_event_data( $event_id, $start, $with_virtual = false ) {
+			$event = get_post( $event_id );
+			$start = $event ? mep_calendar_occurrence_start( $event_id, $start ) : '';
+			if ( ! $event || 'mep_events' !== $event->post_type || '' === $start ) {
+				return array();
+			}
+			$end        = mep_get_event_occurrence_end( $event_id, $start );
+			$event_type = get_post_meta( $event_id, 'mep_event_type', true ) ?: 'offline';
+			$link       = $with_virtual ? esc_url_raw( (string) get_post_meta( $event_id, 'mep_event_virtual_link', true ) ) : '';
+			$location   = '';
+			if ( 'online' !== $event_type && class_exists( 'MPWEM_Functions' ) ) {
+				$location = implode( ', ', array_filter( array_map( 'trim', array_map( 'strval', (array) MPWEM_Functions::get_location( $event_id ) ) ) ) );
+			}
+			if ( '' === $location && $link ) {
+				$location = $link;
+			}
+			$lines = array_filter( array(
+				wp_trim_words( wp_strip_all_tags( strip_shortcodes( $event->post_content ) ), 40 ),
+				get_permalink( $event ),
+				$link ? sprintf( /* translators: %s: join URL */ __( 'Join online: %s', 'mage-eventpress' ), $link ) : '',
+			) );
+
+			return apply_filters( 'mep_calendar_event_data', array(
+				'title'       => html_entity_decode( get_the_title( $event ), ENT_QUOTES, 'UTF-8' ),
+				'start'       => $start,
+				'end'         => $end,
+				'start_utc'   => get_gmt_from_date( $start . ':00', 'Ymd\THis\Z' ),
+				'end_utc'     => get_gmt_from_date( $end . ':00', 'Ymd\THis\Z' ),
+				'location'    => $location,
+				'description' => array_values( $lines ),
+				'url'         => get_permalink( $event ),
+			), $event_id, $start, $with_virtual );
+		}
+	}
+
+	if ( ! function_exists( 'mep_event_ics_signature' ) ) {
+		/** Signs an .ics link so it cannot be pointed at another event, date or access level. */
+		function mep_event_ics_signature( $event_id, $start, $with_virtual ) {
+			return substr( hash_hmac( 'sha256', 'mep_ics|' . (int) $event_id . '|' . $start . '|' . ( $with_virtual ? 1 : 0 ), wp_salt( 'auth' ) ), 0, 20 );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_event_ics_url' ) ) {
+		/**
+		 * Signed download URL of an .ics file for one occurrence, served by this site
+		 * (Apple Calendar, Outlook and any other calendar app). Works with plain and
+		 * pretty permalinks.
+		 */
+		function mep_get_event_ics_url( $event_id, $start, $with_virtual = false ) {
+			$start = mep_calendar_occurrence_start( $event_id, $start );
+			if ( (int) $event_id <= 0 || '' === $start ) {
+				return '';
+			}
+			$args = array(
+				'mep_ics' => (int) $event_id,
+				'start'   => date( 'YmdHi', strtotime( $start ) ),
+			);
+			if ( $with_virtual ) {
+				$args['v'] = 1;
+			}
+			$args['key'] = mep_event_ics_signature( $args['mep_ics'], $args['start'], $with_virtual );
+
+			return add_query_arg( $args, home_url( '/' ) );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_event_google_calendar_url' ) ) {
+		/** Google Calendar "add event" URL for one occurrence, with the times in UTC. */
+		function mep_get_event_google_calendar_url( $event_id, $start, $with_virtual = false ) {
+			$data = mep_get_calendar_event_data( $event_id, $start, $with_virtual );
+			if ( empty( $data ) ) {
+				return '';
+			}
+
+			return 'https://calendar.google.com/calendar/render?' . http_build_query( array(
+				'action'   => 'TEMPLATE',
+				'text'     => $data['title'],
+				'dates'    => $data['start_utc'] . '/' . $data['end_utc'],
+				// esc_url() strips encoded line breaks, so the lines are joined by spaces.
+				'details'  => implode( ' ', $data['description'] ),
+				'location' => $data['location'],
+			), '', '&', PHP_QUERY_RFC3986 );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_calendar_email_tags' ) ) {
+		/**
+		 * Values for the {calendar_ics_url} and {google_calendar_url} email placeholders,
+		 * for the booked occurrence. The join link is included only for bookings that
+		 * may see it (see mep_event_virtual_access_allowed()).
+		 *
+		 * @param int    $event_id     Event post ID.
+		 * @param string $start        Booked occurrence start.
+		 * @param array  $ticket_names Booked ticket names, when known.
+		 * @return array Placeholder => value.
+		 */
+		function mep_get_calendar_email_tags( $event_id, $start, $ticket_names = array() ) {
+			$tags = array(
+				'{calendar_ics_url}'    => '',
+				'{google_calendar_url}' => '',
+			);
+			if ( $event_id > 0 && '' !== trim( (string) $start ) ) {
+				$with_virtual                  = mep_event_virtual_access_allowed( $event_id, $ticket_names ) && '' !== (string) get_post_meta( $event_id, 'mep_event_virtual_link', true );
+				$tags['{calendar_ics_url}']    = esc_url( mep_get_event_ics_url( $event_id, $start, $with_virtual ) );
+				$tags['{google_calendar_url}'] = esc_url( mep_get_event_google_calendar_url( $event_id, $start, $with_virtual ) );
+			}
+
+			return apply_filters( 'mep_calendar_email_tags', $tags, $event_id, $start, $ticket_names );
+		}
+	}
+
+	if ( ! function_exists( 'mep_ics_text' ) ) {
+		/** RFC 5545 TEXT value: plain text with \ ; , and line breaks escaped. */
+		function mep_ics_text( $text ) {
+			$text = wp_strip_all_tags( html_entity_decode( (string) $text, ENT_QUOTES, 'UTF-8' ) );
+
+			return str_replace( array( '\\', ';', ',', "\r\n", "\n", "\r" ), array( '\\\\', '\;', '\,', '\n', '\n', '\n' ), $text );
+		}
+	}
+
+	if ( ! function_exists( 'mep_ics_line' ) ) {
+		/** One content line folded at 75 octets without splitting a UTF-8 character. */
+		function mep_ics_line( $line ) {
+			$out   = '';
+			$limit = 75;
+			while ( strlen( $line ) > $limit ) {
+				$chunk = function_exists( 'mb_strcut' ) ? mb_strcut( $line, 0, $limit, 'UTF-8' ) : substr( $line, 0, $limit );
+				$out  .= $chunk . "\r\n ";
+				$line  = substr( $line, strlen( $chunk ) );
+				$limit = 74; // The leading space of a continuation line counts.
+			}
+
+			return $out . $line . "\r\n";
+		}
+	}
+
+	add_action( 'template_redirect', 'mep_maybe_serve_event_ics', 1 );
+	if ( ! function_exists( 'mep_maybe_serve_event_ics' ) ) {
+		/** Serves the .ics file behind mep_get_event_ics_url(). */
+		function mep_maybe_serve_event_ics() {
+			if ( ! isset( $_GET['mep_ics'], $_GET['start'], $_GET['key'] ) ) {
+				return;
+			}
+			$event_id     = absint( $_GET['mep_ics'] );
+			$start        = preg_replace( '/[^0-9]/', '', (string) wp_unslash( $_GET['start'] ) );
+			$with_virtual = ! empty( $_GET['v'] );
+			$key          = (string) wp_unslash( $_GET['key'] );
+			$start_dt     = 12 === strlen( $start ) ? DateTime::createFromFormat( 'YmdHi', $start ) : false;
+			if ( ! $start_dt || ! hash_equals( mep_event_ics_signature( $event_id, $start, $with_virtual ), $key ) ) {
+				wp_die( esc_html__( 'This calendar link is not valid.', 'mage-eventpress' ), '', array( 'response' => 403 ) );
+			}
+			// The signature proves the link came from one of this site's emails, so a
+			// private event still works; a deleted one does not.
+			$event = get_post( $event_id );
+			$data  = $event && ! in_array( $event->post_status, array( 'trash', 'auto-draft' ), true ) ? mep_get_calendar_event_data( $event_id, $start_dt->format( 'Y-m-d H:i' ), $with_virtual ) : array();
+			if ( empty( $data ) ) {
+				wp_die( esc_html__( 'This event is no longer available.', 'mage-eventpress' ), '', array( 'response' => 404 ) );
+			}
+			$host = wp_parse_url( home_url(), PHP_URL_HOST );
+			$ics  = mep_ics_line( 'BEGIN:VCALENDAR' )
+				. mep_ics_line( 'VERSION:2.0' )
+				. mep_ics_line( 'PRODID:-//' . mep_ics_text( get_bloginfo( 'name' ) ) . '//Event Booking Manager//EN' )
+				. mep_ics_line( 'CALSCALE:GREGORIAN' )
+				. mep_ics_line( 'METHOD:PUBLISH' )
+				. mep_ics_line( 'BEGIN:VEVENT' )
+				. mep_ics_line( 'UID:mep-' . $event_id . '-' . $start . '@' . $host )
+				. mep_ics_line( 'DTSTAMP:' . gmdate( 'Ymd\THis\Z' ) )
+				. mep_ics_line( 'DTSTART:' . $data['start_utc'] )
+				. mep_ics_line( 'DTEND:' . $data['end_utc'] )
+				. mep_ics_line( 'SUMMARY:' . mep_ics_text( $data['title'] ) )
+				. mep_ics_line( 'DESCRIPTION:' . mep_ics_text( implode( "\n\n", $data['description'] ) ) )
+				. ( '' !== $data['location'] ? mep_ics_line( 'LOCATION:' . mep_ics_text( $data['location'] ) ) : '' )
+				. mep_ics_line( 'URL:' . esc_url_raw( $data['url'] ) )
+				. mep_ics_line( 'END:VEVENT' )
+				. mep_ics_line( 'END:VCALENDAR' );
+			$filename = sanitize_file_name( ( $event->post_name ? $event->post_name : 'event' ) . '-' . $start_dt->format( 'Y-m-d' ) . '.ics' );
+			nocache_headers();
+			header( 'Content-Type: text/calendar; charset=utf-8' );
+			header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+			header( 'X-Robots-Tag: noindex, nofollow' );
+			echo $ics; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- iCalendar body, escaped per RFC 5545 above.
+			exit;
 		}
 	}
 

@@ -556,6 +556,9 @@
 								if ( $start_date_time && $more_end_date_time && strtotime( $more_end_date_time ) > $now ) {
 									$all_dates[ $count ]['time'] = $start_date_time;
 									$all_dates[ $count ]['end']  = $more_end_date_time;
+									// 'end' spans to the last date (whole-course summary); keep this row's own end
+									// so per-date views (date list, time slot) don't show it as a multi-day range.
+									$all_dates[ $count ]['occurrence_end'] = $end_date_time;
 								}
 							}else{
 								if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now ) {
@@ -671,7 +674,7 @@
 								$times[0]['start']['label'] = '';
 								$times[0]['start']['time']  = date( 'H:i', strtotime( $dates['time'] ) );
 								$times[0]['end']['label']   = '';
-								$times[0]['end']['time']    = date( 'H:i', strtotime( $dates['end'] ) );
+								$times[0]['end']['time']    = date( 'H:i', strtotime( array_key_exists( 'occurrence_end', $dates ) ? $dates['occurrence_end'] : $dates['end'] ) );
 							}
 						}
 					} else {

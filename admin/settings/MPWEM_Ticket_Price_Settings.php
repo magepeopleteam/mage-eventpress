@@ -181,7 +181,7 @@
 									<div id="mep-modal-tab-woo" class="mep-modal-tab-content">
 										<div class="mpwem-pm-card">
 											<h4 class="mpwem-pm-card__title"><?php esc_html_e( 'WooCommerce Payment', 'mage-eventpress' ); ?></h4>
-											<div class="mpwem-woo-warning-notice" style="display: <?php echo $wc_active ? 'none' : 'block'; ?>; background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); margin-bottom: 10px;">
+											<div class="mpwem-woo-warning-notice" style="display: <?php echo $wc_active ? 'none' : 'block'; ?>; background: #fffbeb; color: #92400e; padding: 15px; border-left: 4px solid #f59e0b; border-radius: var(--mpwem-radius); margin-bottom: 10px;">
 												<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
 													<div style="width: 100%;">
 														<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'Notice: WooCommerce is Not Activated', 'mage-eventpress' ); ?></strong>
@@ -293,7 +293,7 @@
 																			$progress.hide();
 																			$btn.show();
 																			$warningText.show();
-																			$notice.css({ 'background': '#fff3cd', 'border-left': '4px solid #ffeeba', 'padding': '15px' });
+																			$notice.css({ 'background': '#fffbeb', 'border-left': '4px solid #f59e0b', 'padding': '15px' });
 																		}, 5000);
 																	}
 																},
@@ -308,7 +308,7 @@
 																		$progress.hide();
 																		$btn.show();
 																		$warningText.show();
-																		$notice.css({ 'background': '#fff3cd', 'border-left': '4px solid #ffeeba', 'padding': '15px' });
+																		$notice.css({ 'background': '#fffbeb', 'border-left': '4px solid #f59e0b', 'padding': '15px' });
 																	}, 5000);
 																}
 															});
@@ -736,114 +736,117 @@
 					   stack ABOVE this modal when opened from the Custom Payment tab. */
 					.mep-gw-modal { z-index: 1000001 !important; }
 					.mpwem-pm-dialog {
-						background: #fff; border-radius: 14px;
-						width: 640px; max-width: 94vw; max-height: 92vh;
+						background: #fff; border-radius: 18px;
+						width: 680px; max-width: 94vw; max-height: 92vh;
 						display: flex; flex-direction: column; overflow: hidden;
-						box-shadow: 0 24px 64px rgba(0,0,0,0.30);
+						box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45);
 						animation: mpwemPmIn .22s ease;
 					}
 					@keyframes mpwemPmIn { from { transform: translateY(12px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
 					.mpwem-pm-header {
-						display: flex; align-items: center; justify-content: space-between; gap: 16px;
+						display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
 						padding: 20px 24px;
-						background: linear-gradient(135deg, #2271b1 0%, #135e96 100%);
-						color: #fff;
+						background: #fff;
+						border-bottom: 1px solid #eef1f5;
+						color: #16213a;
 					}
-					.mpwem-pm-header__title { display: flex; align-items: center; gap: 14px; }
+					.mpwem-pm-header__title { display: flex; align-items: flex-start; gap: 14px; }
 					.mpwem-pm-header__icon {
-						width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
-						background: rgba(255,255,255,0.18);
+						width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+						background: var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12));
+						color: var(--mpwem-primary, #2563eb);
 						display: flex; align-items: center; justify-content: center;
-						font-size: 22px; line-height: 1;
+						font-size: 19px; line-height: 1;
 					}
-					.mpwem-pm-header h3 { margin: 0; font-size: 18px; font-weight: 700; color: #fff; line-height: 1.2; }
-					.mpwem-pm-header p { margin: 3px 0 0; font-size: 12.5px; color: rgba(255,255,255,0.85); }
+					.mpwem-pm-header h3 { margin: 0; font-size: 15.5px; font-weight: 700; color: #16213a; line-height: 1.3; }
+					.mpwem-pm-header p { margin: 4px 0 0; font-size: 12.5px; color: #64748b; }
 					.mpwem-pm-close {
-						background: rgba(255,255,255,0.18); border: none; border-radius: 50%;
-						width: 34px; height: 34px; flex-shrink: 0;
-						font-size: 22px; line-height: 1; color: #fff; cursor: pointer;
-						display: flex; align-items: center; justify-content: center; transition: background .2s;
+						background: transparent; border: none; border-radius: 8px;
+						width: 30px; height: 30px; flex-shrink: 0;
+						font-size: 20px; line-height: 1; color: #94a3b8; cursor: pointer;
+						display: flex; align-items: center; justify-content: center; transition: background .15s ease, color .15s ease;
 					}
-					.mpwem-pm-close:hover { background: rgba(255,255,255,0.34); }
+					.mpwem-pm-close:hover { background: #f1f5f9; color: #334155; }
 
 					/* Tabs */
 					.mpwem-pm-tabs {
-						display: flex; gap: 6px; padding: 14px 24px 0;
-						background: #f6f7f9; border-bottom: 1px solid #e2e4e7;
+						display: flex; gap: 22px; padding: 0 24px;
+						background: #fff; border-bottom: 1px solid #eef1f5;
 					}
 					.mpwem-pm-tabs .mep-modal-tab-btn {
 						display: inline-flex; align-items: center; gap: 7px;
 						background: transparent; border: none; cursor: pointer;
-						padding: 11px 16px; margin: 0; font-size: 13.5px; font-weight: 600;
-						color: #646970; border-bottom: 3px solid transparent;
-						border-radius: 8px 8px 0 0; transition: color .2s, border-color .2s, background .2s;
+						padding: 12px 2px; margin: 0 0 -1px; font-size: 13.5px; font-weight: 650;
+						color: #64748b; border-bottom: 2px solid transparent;
+						border-radius: 0; transition: color .15s ease, border-color .15s ease;
 					}
-					.mpwem-pm-tabs .mep-modal-tab-btn .dashicons { font-size: 17px; width: 17px; height: 17px; }
-					.mpwem-pm-tabs .mep-modal-tab-btn:hover { color: #2271b1; background: #eef5fb; }
-					.mpwem-pm-tabs .mep-modal-tab-btn.active { color: #2271b1; border-bottom-color: #2271b1; background: #fff; }
+					.mpwem-pm-tabs .mep-modal-tab-btn .dashicons { font-size: 15px; width: 15px; height: 15px; }
+					.mpwem-pm-tabs .mep-modal-tab-btn:hover { color: #334155; background: transparent; }
+					.mpwem-pm-tabs .mep-modal-tab-btn.active { color: var(--mpwem-primary, #2563eb); border-bottom-color: var(--mpwem-primary, #2563eb); background: transparent; }
 
 					/* Body */
-					.mpwem-pm-body { padding: 20px 24px; overflow-y: auto; flex: 1; background: #f6f7f9; }
+					.mpwem-pm-body { padding: 22px 24px; overflow-y: auto; flex: 1; background: #fff; }
 
 					/* Cards */
 					.mpwem-pm-card {
-						background: #fff; border: 1px solid #e2e4e7; border-radius: 10px;
-						padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+						background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+						padding: 18px; margin-bottom: 16px; box-shadow: none;
 					}
 					.mpwem-pm-card:last-child { margin-bottom: 0; }
-					.mpwem-pm-card__title { margin: 0 0 2px; font-size: 14.5px; font-weight: 700; color: #1d2327; }
-					.mpwem-pm-card__sub { margin: 4px 0 14px; font-size: 12.5px; color: #6b7280; line-height: 1.5; }
+					.mpwem-pm-card__title { margin: 0 0 2px; font-size: 14px; font-weight: 700; color: #1e293b; }
+					.mpwem-pm-card__sub { margin: 4px 0 14px; font-size: 12.5px; color: #64748b; line-height: 1.5; }
 					.mpwem-pm-card__title + .mpwem-pm-field,
 					.mpwem-pm-card__title + .mpwem-pm-checks { margin-top: 14px; }
 
 					/* Toggle row (enable WooCommerce) */
 					.mpwem-pm-toggle-row {
 						display: flex; align-items: center; justify-content: space-between; gap: 16px;
-						margin-top: 14px; padding: 14px 16px; cursor: pointer;
-						background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
+						margin-top: 14px; padding: 0; cursor: pointer;
+						background: transparent; border: none; border-radius: 0;
 					}
 					.mpwem-pm-toggle-row__text { display: flex; flex-direction: column; }
-					.mpwem-pm-toggle-row__label { font-size: 13.5px; font-weight: 600; color: #111827; }
-					.mpwem-pm-toggle-row__sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
+					.mpwem-pm-toggle-row__label { font-size: 13.5px; font-weight: 650; color: #1e293b; }
+					.mpwem-pm-toggle-row__sub { font-size: 12px; color: #64748b; margin-top: 2px; }
 
 					/* Switch */
-					.mpwem-pm-switch { position: relative; display: inline-block; width: 46px; height: 25px; flex-shrink: 0; }
+					.mpwem-pm-switch { position: relative; display: inline-block; width: 38px; height: 21px; flex-shrink: 0; }
 					.mpwem-pm-switch input { opacity: 0; width: 0; height: 0; }
-					.mpwem-pm-switch__slider { position: absolute; inset: 0; cursor: pointer; background: #cbd5e1; border-radius: 25px; transition: .3s; }
-					.mpwem-pm-switch__slider:before { content: ""; position: absolute; height: 19px; width: 19px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
-					.mpwem-pm-switch input:checked + .mpwem-pm-switch__slider { background: #2271b1; }
-					.mpwem-pm-switch input:checked + .mpwem-pm-switch__slider:before { transform: translateX(21px); }
+					.mpwem-pm-switch__slider { position: absolute; inset: 0; cursor: pointer; background: #cbd5e1; border-radius: 999px; transition: .2s; }
+					.mpwem-pm-switch__slider:before { content: ""; position: absolute; height: 17px; width: 17px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+					.mpwem-pm-switch input:checked + .mpwem-pm-switch__slider { background: var(--mpwem-primary, #2563eb); }
+					.mpwem-pm-switch input:checked + .mpwem-pm-switch__slider:before { transform: translateX(17px); }
 
 					/* Fields */
 					.mpwem-pm-field { margin-bottom: 14px; }
 					.mpwem-pm-field:last-child { margin-bottom: 0; }
-					.mpwem-pm-label { display: block; font-size: 12.5px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+					.mpwem-pm-label { display: block; font-size: 12.5px; font-weight: 650; color: #1e293b; margin-bottom: 6px; }
 					.mpwem-pm-control {
 						width: 100%; max-width: 320px; box-sizing: border-box;
-						border: 1px solid #d1d5db; border-radius: 7px; padding: 8px 12px; font-size: 13px; background: #fff;
+						border: 1px solid #d8dbe0; border-radius: 9px; padding: 9px 12px; font-size: 13px; background: #fff;
 					}
-					.mpwem-pm-control:focus { border-color: #2271b1; box-shadow: 0 0 0 1px #2271b1; outline: none; }
+					.mpwem-pm-control:focus { border-color: var(--mpwem-primary, #2563eb); box-shadow: 0 0 0 3px var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12)); outline: none; }
 
 					/* Check rows */
 					.mpwem-pm-checks { display: flex; flex-direction: column; gap: 10px; }
 					.mpwem-pm-checks--inline { flex-direction: row; flex-wrap: wrap; gap: 10px 18px; }
-					.mpwem-pm-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: #374151; }
-					.mpwem-pm-check input { margin: 0; }
+					.mpwem-pm-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: #334155; }
+					.mpwem-pm-check input { margin: 0; accent-color: var(--mpwem-primary, #2563eb); }
 
 					/* Custom gateways */
 					.mpwem-pm-gateway {
 						display: flex; align-items: center; justify-content: space-between; gap: 14px;
-						padding: 14px 16px; margin-top: 12px;
-						background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
+						padding: 12px 0; margin-top: 0;
+						background: transparent; border: none; border-radius: 0;
 					}
+					.mpwem-pm-gateway + .mpwem-pm-gateway { border-top: 1px solid #f1f5f9; }
 					.mpwem-pm-gateway__main { display: flex; align-items: center; gap: 14px; }
-					.mpwem-pm-gateway__icon { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-					.mpwem-pm-gateway__name { display: block; font-size: 14px; font-weight: 600; color: #1d2327; margin-bottom: 3px; }
-					.mpwem-pm-gateway__enable { font-size: 12.5px; color: #555; }
+					.mpwem-pm-gateway__icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+					.mpwem-pm-gateway__name { display: block; font-size: 13.5px; font-weight: 650; color: #1e293b; margin-bottom: 0; }
+					.mpwem-pm-gateway__enable { font-size: 12.5px; color: #64748b; }
 					.mpwem-pm-pro-badge {
-						background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff;
-						padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 11px;
-						text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;
+						background: #fef3c7; color: #92400e;
+						padding: 3px 9px; border-radius: 999px; font-weight: 700; font-size: 10.5px;
+						text-transform: uppercase; letter-spacing: 0.04em; box-shadow: none; user-select: none;
 					}
 
 					/* Confirmation page row */
@@ -853,28 +856,28 @@
 					.mpwem-pm-confirm-row__control { flex-shrink: 0; width: 240px; }
 					.mpwem-pm-confirm-row__control .mpwem-pm-control { max-width: 100%; }
 					select#mep_confirmation_page_id {
-						border: 1px solid #ddd;
-						border-radius: 5px;
+						border: 1px solid #d8dbe0;
+						border-radius: 9px;
 					}
 
 					/* Accordions (WooCommerce tab) */
 					.mpwem-pm-acc {
-						background: #fff; border: 1px solid #e2e4e7; border-radius: 10px;
-						margin-bottom: 14px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+						background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+						margin-bottom: 14px; overflow: hidden; box-shadow: none;
 					}
 					.mpwem-pm-acc:last-child { margin-bottom: 0; }
-					.mpwem-pm-acc.is-open { border-color: #2271b1; }
+					.mpwem-pm-acc.is-open { border-color: #e2e8f0; }
 					.mpwem-pm-acc__bar {
 						display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
-						background: #f6f7f9; border: none; border-bottom: 1px solid transparent;
-						padding: 14px 18px; cursor: pointer; text-align: left; transition: background .2s, color .2s;
+						background: #f8fafc; border: none; border-bottom: 1px solid transparent;
+						padding: 13px 16px; cursor: pointer; text-align: left; transition: background .15s ease;
 					}
-					.mpwem-pm-acc__bar:hover { background: #eef5fb; }
-					.mpwem-pm-acc.is-open .mpwem-pm-acc__bar { background: #eef5fb; border-bottom-color: #e2e4e7; }
-					.mpwem-pm-acc__title { font-size: 14px; font-weight: 700; color: #1d2327; }
-					.mpwem-pm-acc.is-open .mpwem-pm-acc__title { color: #2271b1; }
-					.mpwem-pm-acc__arrow { color: #50575e; transition: transform .2s ease; }
-					.mpwem-pm-acc.is-open .mpwem-pm-acc__arrow { transform: rotate(180deg); color: #2271b1; }
+					.mpwem-pm-acc__bar:hover { background: #f1f5f9; }
+					.mpwem-pm-acc.is-open .mpwem-pm-acc__bar { background: #f8fafc; border-bottom-color: transparent; }
+					.mpwem-pm-acc__title { font-size: 13px; font-weight: 650; color: #1e293b; }
+					.mpwem-pm-acc.is-open .mpwem-pm-acc__title { color: #1e293b; }
+					.mpwem-pm-acc__arrow { color: #94a3b8; transition: transform .18s ease; }
+					.mpwem-pm-acc.is-open .mpwem-pm-acc__arrow { transform: rotate(180deg); color: #94a3b8; }
 					.mpwem-pm-acc__panel { padding: 16px 18px; }
 
 					/* WooCommerce Payment Methods manager embedded in the accordion */
@@ -888,12 +891,12 @@
 					#mep-payment-settings-modal .button-primary,
 					#mep-payment-settings-modal button.mep-gw-save-btn {
 						display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-						height: auto; min-height: 34px; margin: 0;
-						padding: 7px 16px; border-radius: 8px;
-						font-size: 13px; font-weight: 600; line-height: 1.4; text-decoration: none;
-						border: 1px solid #d1d5db; background: #fff; color: #374151;
+						height: auto; min-height: 0; margin: 0;
+						padding: 10px 18px; border-radius: 9px;
+						font-size: 13px; font-weight: 650; line-height: 1.3; text-decoration: none;
+						border: 1px solid #d8dbe0; background: #fff; color: #334155;
 						box-shadow: none; cursor: pointer;
-						transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .12s ease;
+						transition: background .15s ease, border-color .15s ease, color .15s ease;
 					}
 					#mep-payment-settings-modal .button .dashicons,
 					#mep-payment-settings-modal .button-secondary .dashicons {
@@ -901,41 +904,42 @@
 					}
 					#mep-payment-settings-modal .button:hover,
 					#mep-payment-settings-modal .button-secondary:hover {
-						background: #f3f4f6; border-color: #9ca3af; color: #111827; transform: translateY(-1px);
+						background: #f8fafc; border-color: #c2c7d0; color: #1e293b;
 					}
 					/* Primary / call-to-action buttons */
 					#mep-payment-settings-modal .button-primary,
 					#mep-payment-settings-modal button.mep-gw-save-btn {
-						background: linear-gradient(135deg, #2271b1 0%, #135e96 100%);
-						border-color: #135e96; color: #fff;
-						box-shadow: 0 2px 6px rgba(34,113,177,0.25);
+						background: var(--mpwem-btn-primary-bg, #2563eb);
+						border-color: var(--mpwem-btn-primary-bg, #2563eb); color: var(--mpwem-btn-primary-text, #fff);
+						box-shadow: 0 6px 16px -6px rgba(37, 99, 235, 0.4);
 						text-shadow: none;
 					}
 					#mep-payment-settings-modal .button-primary:hover,
 					#mep-payment-settings-modal button.mep-gw-save-btn:hover {
-						background: linear-gradient(135deg, #1f6aa6 0%, #0f5388 100%);
-						border-color: #0f5388; color: #fff;
-						box-shadow: 0 4px 12px rgba(34,113,177,0.35); transform: translateY(-1px);
+						filter: brightness(0.95);
+						box-shadow: 0 6px 16px -6px rgba(37, 99, 235, 0.4);
 					}
 					#mep-payment-settings-modal .button:focus,
 					#mep-payment-settings-modal .button-secondary:focus,
 					#mep-payment-settings-modal .button-primary:focus,
 					#mep-payment-settings-modal button.mep-gw-save-btn:focus {
-						outline: none; box-shadow: 0 0 0 3px rgba(34,113,177,0.18);
+						outline: none; box-shadow: 0 0 0 3px var(--mpwem-primary-soft, rgba(37, 99, 235, 0.18));
 					}
 					#mep-payment-settings-modal .button:disabled,
 					#mep-payment-settings-modal .button-primary:disabled,
 					#mep-payment-settings-modal button.mep-gw-save-btn:disabled {
 						opacity: .6; cursor: not-allowed; transform: none; box-shadow: none;
 					}
-					/* Configure + Open in WooCommerce — light purple outline */
+					/* Configure + Open in WooCommerce — soft accent outline */
 					#mep-payment-settings-modal button.mep-gw-configure-btn,
 					#mep-payment-settings-modal a.mep-wc-pm-wc-link {
 						display: inline-flex; align-items: center; justify-content: center; gap: 6px;
 						height: auto; min-height: 0; margin: 0;
-						padding: 8px 14px; border-radius: 10px;
-						font-size: 13px; font-weight: 600; line-height: 1.3; text-decoration: none;
-						border: 1px solid #c7d2fe; background: #f5f7ff; color: #4f46e5;
+						padding: 8px 14px; border-radius: 9px;
+						font-size: 13px; font-weight: 650; line-height: 1.3; text-decoration: none;
+						border: 1px solid var(--mpwem-primary-soft-border, rgba(37, 99, 235, 0.35));
+						background: var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12));
+						color: var(--mpwem-primary, #2563eb);
 						box-shadow: none; cursor: pointer;
 						transition: background .15s ease, border-color .15s ease, color .15s ease;
 					}
@@ -946,7 +950,7 @@
 					#mep-payment-settings-modal button.mep-gw-configure-btn:focus,
 					#mep-payment-settings-modal a.mep-wc-pm-wc-link:hover,
 					#mep-payment-settings-modal a.mep-wc-pm-wc-link:focus {
-						background: #eef2ff; border-color: #a5b4fc; color: #4338ca;
+						background: rgba(37, 99, 235, 0.18); border-color: rgba(37, 99, 235, 0.45); color: #1d4ed8;
 						outline: none; box-shadow: none; text-decoration: none;
 					}
 					#mep-payment-settings-modal a.mep-wc-pm-wc-link .dashicons {
@@ -956,9 +960,9 @@
 					/* Footer */
 					.mpwem-pm-footer {
 						display: flex; align-items: center; justify-content: flex-end; gap: 10px;
-						padding: 15px 24px; border-top: 1px solid #e2e4e7; background: #fff;
+						padding: 16px 24px; border-top: 1px solid #eef1f5; background: #fff;
 					}
-					.mpwem-pm-save-status { display: inline-flex; align-items: center; gap: 4px; margin-right: auto; font-size: 13.5px; color: #0f5132; }
+					.mpwem-pm-save-status { display: inline-flex; align-items: center; gap: 4px; margin-right: auto; font-size: 13.5px; color: #15803d; }
 
 					@media (max-width: 600px) {
 						.mpwem-pm-confirm-row { flex-direction: column; }

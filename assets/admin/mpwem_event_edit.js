@@ -1408,7 +1408,7 @@
         $editBtn.on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            openTicketModal($root, 'list', index);
+            openInlineTicketEdit($root, index);
         });
 
         const $deleteBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--danger" title="Delete"></button>')
@@ -1587,22 +1587,20 @@
         return $card;
     }
 
-    function closeInlineTicketAdd($root, opts) {
-        opts = opts || {};
-        const $card = getInlineTicketAddCard($root);
-        const $row = $card.data('mpwemInlineAddRow');
-
-        if (!opts.save && $row && $row.length && $row.closest('body').length) {
-            $row.remove();
-        }
-
-        $card.removeData('mpwemInlineAddRow').removeClass('is-open').empty();
-
-        if (opts.save) {
-            storeSavedTicketSummarySnapshot($root);
-            renderTicketSummary($root);
-        }
-    }
+    const TICKET_ROW_FIELD_NAMES = [
+        'option_name_t[]',
+        'option_price_t[]',
+        'option_qty_t[]',
+        'option_qty_t_type[]',
+        'option_details_t[]',
+        'option_default_qty_t[]',
+        'option_rsv_t[]',
+        'option_ticket_mode_t[]',
+        'option_sale_start_date[]',
+        'option_sale_start_time[]',
+        'option_sale_end_date[]',
+        'option_sale_end_time[]'
+    ];
 
     function syncRealFieldValue($el, val) {
         $el.val(val);
@@ -1619,7 +1617,46 @@
         }
     }
 
-    function renderInlineTicketAddForm($root, $row) {
+    function captureTicketRowFieldValues($row) {
+        const values = {};
+        TICKET_ROW_FIELD_NAMES.forEach(function(name) {
+            const $field = $row.find('[name="' + name + '"]').first();
+            if ($field.length) {
+                values[name] = ($field.val() || '').toString();
+            }
+        });
+        return values;
+    }
+
+    function closeInlineTicketAdd($root, opts) {
+        opts = opts || {};
+        const $card = getInlineTicketAddCard($root);
+        const $row = $card.data('mpwemInlineAddRow');
+        const mode = $card.data('mpwemInlineAddMode') || 'add';
+        const original = $card.data('mpwemInlineAddOriginal');
+
+        if (!opts.save) {
+            if (mode === 'edit' && $row && $row.length && original) {
+                Object.keys(original).forEach(function(name) {
+                    const $field = $row.find('[name="' + name + '"]').first();
+                    if ($field.length) {
+                        syncRealFieldValue($field, original[name]);
+                    }
+                });
+            } else if ($row && $row.length && $row.closest('body').length) {
+                $row.remove();
+            }
+        }
+
+        $card.removeData('mpwemInlineAddRow mpwemInlineAddMode mpwemInlineAddOriginal').removeClass('is-open').empty();
+
+        storeSavedTicketSummarySnapshot($root);
+        renderTicketSummary($root);
+    }
+
+    function renderInlineTicketAddForm($root, $row, opts) {
+        opts = opts || {};
+        const isEdit = opts.mode === 'edit';
         const context = getTicketModalContext($root);
         const $card = getInlineTicketAddCard($root);
         $card.empty().addClass('is-open');
@@ -1642,8 +1679,8 @@
 
         $card.append(
             $('<div class="mpwem-ticket-add__head"></div>')
-                .append($('<h3></h3>').text('Add New Ticket Type'))
-                .append($('<p></p>').text('The essentials are up front. Everything else is one click away.'))
+                .append($('<h3></h3>').text(isEdit ? 'Edit Ticket Type' : 'Add New Ticket Type'))
+                .append($('<p></p>').text(isEdit ? 'Update the essentials, or open More options for everything else.' : 'The essentials are up front. Everything else is one click away.'))
         );
 
         const $body = $('<div class="mpwem-ticket-add__body"></div>');
@@ -1788,7 +1825,7 @@
 
         const $footer = $('<div class="mpwem-ticket-add__footer"></div>');
         const $cancelBtn = $('<button type="button" class="button"></button>').text('Cancel');
-        const $saveBtn = $('<button type="button" class="button button-primary mpwem-ticket-add__save"></button>').text('Save Ticket Type');
+        const $saveBtn = $('<button type="button" class="button button-primary mpwem-ticket-add__save"></button>').text(isEdit ? 'Save Changes' : 'Save Ticket Type');
         $footer.append($cancelBtn).append($saveBtn);
         $card.append($footer);
 
@@ -1829,8 +1866,11 @@
     function openInlineTicketAdd($root) {
         const $card = getInlineTicketAddCard($root);
         if ($card.hasClass('is-open')) {
+            const wasAdding = $card.data('mpwemInlineAddMode') !== 'edit';
             closeInlineTicketAdd($root, { save: false });
-            return;
+            if (wasAdding) {
+                return;
+            }
         }
 
         const context = getTicketModalContext($root);
@@ -1853,8 +1893,40 @@
                 return;
             }
             $card.data('mpwemInlineAddRow', $row);
-            renderInlineTicketAddForm($root, $row);
+            $card.data('mpwemInlineAddMode', 'add');
+            renderInlineTicketAddForm($root, $row, { mode: 'add' });
         }, 100);
+    }
+
+    function openInlineTicketEdit($root, rowIndex) {
+        const $card = getInlineTicketAddCard($root);
+        const $row = getTicketRows($root).eq(rowIndex);
+        if (!$row.length) {
+            return;
+        }
+
+        const editingThisRow = $card.hasClass('is-open')
+            && $card.data('mpwemInlineAddMode') === 'edit'
+            && $card.data('mpwemInlineAddRow')
+            && $card.data('mpwemInlineAddRow')[0] === $row[0];
+
+        if ($card.hasClass('is-open')) {
+            closeInlineTicketAdd($root, { save: false });
+            if (editingThisRow) {
+                return;
+            }
+        }
+
+        $card.data('mpwemInlineAddRow', $row);
+        $card.data('mpwemInlineAddMode', 'edit');
+        $card.data('mpwemInlineAddOriginal', captureTicketRowFieldValues($row));
+
+        renderInlineTicketAddForm($root, $row, { mode: 'edit' });
+
+        const offset = $card.offset();
+        if (offset) {
+            $('html, body').animate({ scrollTop: Math.max(offset.top - 100, 0) }, 200);
+        }
     }
 
     function openTicketModal($root, mode, rowIndex) {

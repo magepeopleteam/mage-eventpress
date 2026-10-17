@@ -1685,10 +1685,26 @@
         const $saleEndDate = $row.find('[name="option_sale_end_date[]"]').first();
         const $saleEndTime = $row.find('[name="option_sale_end_time[]"]').first();
 
+        const headIcon = isEdit
+            ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+
+        const $headTitleRow = $('<div class="mpwem-ticket-add__head-title"></div>')
+            .append($('<h3></h3>').text(isEdit ? 'Edit Ticket Type' : 'Add New Ticket Type'));
+
+        const existingName = ($nameInput.val() || '').toString().trim();
+        if (isEdit && existingName) {
+            $headTitleRow.append($('<span class="mpwem-ticket-add__head-chip"></span>').text(existingName));
+        }
+
         $card.append(
             $('<div class="mpwem-ticket-add__head"></div>')
-                .append($('<h3></h3>').text(isEdit ? 'Edit Ticket Type' : 'Add New Ticket Type'))
-                .append($('<p></p>').text(isEdit ? 'Update the essentials, or open More options for everything else.' : 'The essentials are up front. Everything else is one click away.'))
+                .append($('<span class="mpwem-ticket-add__head-icon"></span>').html(headIcon))
+                .append(
+                    $('<div class="mpwem-ticket-add__head-copy"></div>')
+                        .append($headTitleRow)
+                        .append($('<p></p>').text(isEdit ? 'Update the essentials, or open More options for everything else.' : 'The essentials are up front. Everything else is one click away.'))
+                )
         );
 
         const $body = $('<div class="mpwem-ticket-add__body"></div>');
@@ -1805,19 +1821,30 @@
         const $saleEndDateProxy = $('<input type="date">').val(($saleEndDate.val() || '').toString());
         const $saleEndTimeProxy = $('<input type="time">').val(($saleEndTime.val() || '').toString());
 
+        $saleStartDateProxy.addClass('mpwem-ticket-add__date-part');
+        $saleStartTimeProxy.addClass('mpwem-ticket-add__time-part');
+        $saleEndDateProxy.addClass('mpwem-ticket-add__date-part');
+        $saleEndTimeProxy.addClass('mpwem-ticket-add__time-part');
+
         $more.append(
             $('<div class="mpwem-ticket-add__grid"></div>')
                 .append(
                     $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
                         .append($('<label></label>').text('Sale Starts'))
-                        .append($saleStartDateProxy)
-                        .append($saleStartTimeProxy)
+                        .append(
+                            $('<div class="mpwem-ticket-add__date-row"></div>')
+                                .append($saleStartDateProxy)
+                                .append($saleStartTimeProxy)
+                        )
                 )
                 .append(
                     $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
                         .append($('<label></label>').text('Sale Ends'))
-                        .append($saleEndDateProxy)
-                        .append($saleEndTimeProxy)
+                        .append(
+                            $('<div class="mpwem-ticket-add__date-row"></div>')
+                                .append($saleEndDateProxy)
+                                .append($saleEndTimeProxy)
+                        )
                 )
         );
 

@@ -3878,6 +3878,35 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-ticket-add__head {
     padding: 18px 22px;
     border-bottom: 1px solid #eef1f5;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.mpwem-ticket-add__head-icon {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(37, 99, 235, 0.12);
+    background: var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12));
+    color: #2563eb;
+    color: var(--mpwem-primary, #2563eb);
+}
+
+.mpwem-ticket-add__head-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.mpwem-ticket-add__head-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .mpwem-ticket-add__head h3 {
@@ -3885,6 +3914,19 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     font-size: 15px;
     font-weight: 700;
     color: #1e293b;
+}
+
+.mpwem-ticket-add__head-chip {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2563eb;
+    color: var(--mpwem-primary, #2563eb);
+    background: rgba(37, 99, 235, 0.12);
+    background: var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12));
+    padding: 2px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .mpwem-ticket-add__head p {
@@ -3962,6 +4004,21 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     gap: 6px;
 }
 
+.mpwem-ticket-add__date-row {
+    display: flex;
+    gap: 8px;
+}
+
+.mpwem-ticket-add__date-row .mpwem-ticket-add__date-part {
+    flex: 1.2;
+    min-width: 0;
+}
+
+.mpwem-ticket-add__date-row .mpwem-ticket-add__time-part {
+    flex: 1;
+    min-width: 0;
+}
+
 .mpwem-ticket-add__group--date input {
     margin-bottom: 0;
 }
@@ -3975,27 +4032,29 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 .mpwem-ticket-add__pills {
-    display: flex;
-    gap: 8px;
+    display: inline-flex !important;
+    padding: 3px !important;
+    gap: 2px !important;
+    background: #f1f5f9 !important;
+    border-radius: 10px !important;
 }
 
 .mpwem-ticket-add__pill {
-    padding: 8px 14px !important;
-    border-radius: 999px !important;
-    border: 1.5px solid #d9dbd9 !important;
-    background: #fff !important;
-    color: #334155 !important;
+    padding: 7px 16px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #64748b !important;
     font-size: 12.5px !important;
     font-weight: 600 !important;
     cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .mpwem-ticket-add__pill.is-active {
-    border-color: #2563eb !important;
-    border-color: var(--mpwem-primary, #2563eb) !important;
-    background: rgba(37, 99, 235, 0.12) !important;
-    color: #2563eb !important;
-    color: var(--mpwem-primary, #2563eb) !important;
+    background: #fff !important;
+    color: #1e293b !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
 }
 
 .mpwem-ticket-add__more-toggle {
@@ -4056,6 +4115,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     color: var(--mpwem-btn-primary-text, #fff) !important;
     border-color: #2563eb !important;
     border-color: var(--mpwem-btn-primary-bg, #2563eb) !important;
+    box-shadow: 0 6px 16px -6px rgba(37, 99, 235, 0.4) !important;
 }
 
 @media (max-width: 782px) {

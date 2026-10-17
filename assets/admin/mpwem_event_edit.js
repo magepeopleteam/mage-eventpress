@@ -1470,6 +1470,267 @@
         });
     }
 
+    function getInlineTicketAddCard($root) {
+        const context = getTicketModalContext($root);
+        if (!context.$summary.length) {
+            return $();
+        }
+
+        let $card = context.$summary.next('#mpwem_ticket_summary_add');
+        if (!$card.length) {
+            $card = $('<div class="mpwem-ticket-add" id="mpwem_ticket_summary_add"></div>');
+            context.$summary.after($card);
+        }
+
+        return $card;
+    }
+
+    function closeInlineTicketAdd($root, opts) {
+        opts = opts || {};
+        const $card = getInlineTicketAddCard($root);
+        const $row = $card.data('mpwemInlineAddRow');
+
+        if (!opts.save && $row && $row.length && $row.closest('body').length) {
+            $row.remove();
+        }
+
+        $card.removeData('mpwemInlineAddRow').removeClass('is-open').empty();
+
+        if (opts.save) {
+            storeSavedTicketSummarySnapshot($root);
+            renderTicketSummary($root);
+        }
+    }
+
+    function renderInlineTicketAddForm($root, $row) {
+        const context = getTicketModalContext($root);
+        const $card = getInlineTicketAddCard($root);
+        $card.empty().addClass('is-open');
+
+        const isHybrid = ($root.find('input[name="mep_event_type"]').val() || 'offline') === 'hybrid';
+        const globalQtyOn = context.$modalMount.find('input[name="enable_global_qty"]').first().is(':checked');
+
+        const $nameInput = $row.find('[name="option_name_t[]"]').first();
+        const $priceInput = $row.find('[name="option_price_t[]"]').first();
+        const $qtyInput = $row.find('[name="option_qty_t[]"]').first();
+        const $qtyTypeSelect = $row.find('[name="option_qty_t_type[]"]').first();
+        const $descInput = $row.find('[name="option_details_t[]"]').first();
+        const $defaultQtyInput = $row.find('[name="option_default_qty_t[]"]').first();
+        const $reserveQtyInput = $row.find('[name="option_rsv_t[]"]').first();
+        const $modeSelect = $row.find('[name="option_ticket_mode_t[]"]').first();
+        const $saleStartDate = $row.find('[name="option_sale_start_date[]"]').first();
+        const $saleStartTime = $row.find('[name="option_sale_start_time[]"]').first();
+        const $saleEndDate = $row.find('[name="option_sale_end_date[]"]').first();
+        const $saleEndTime = $row.find('[name="option_sale_end_time[]"]').first();
+
+        $card.append(
+            $('<div class="mpwem-ticket-add__head"></div>')
+                .append($('<h3></h3>').text('Add New Ticket Type'))
+                .append($('<p></p>').text('The essentials are up front. Everything else is one click away.'))
+        );
+
+        const $body = $('<div class="mpwem-ticket-add__body"></div>');
+
+        const $core = $('<div class="mpwem-ticket-add__core"></div>').toggleClass('mpwem-ticket-add__core--gq', globalQtyOn);
+
+        const $nameProxy = $('<input type="text" placeholder="e.g. General Admission">').val(($nameInput.val() || '').toString());
+        $core.append(
+            $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Ticket Name'))
+                .append($nameProxy)
+        );
+
+        const $priceProxy = $('<input type="text" inputmode="decimal" placeholder="0.00">').val(($priceInput.val() || '').toString());
+        $core.append(
+            $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Price'))
+                .append($priceProxy)
+        );
+
+        let $qtyProxy = null;
+        if (!globalQtyOn) {
+            $qtyProxy = $('<input type="number" placeholder="100">').val(($qtyInput.val() || '').toString());
+            $core.append(
+                $('<div class="mpwem-ticket-add__group"></div>')
+                    .append($('<label></label>').text('Capacity'))
+                    .append($qtyProxy)
+            );
+        }
+
+        $body.append($core);
+
+        if (globalQtyOn) {
+            $body.append(
+                $('<p class="mpwem-ticket-add__hint"></p>').text('Capacity is set by the shared quantity pool above, not per ticket type.')
+            );
+        }
+
+        const qtyTypeVal = ($qtyTypeSelect.val() || 'inputbox').toString();
+        const $pillInput = $('<button type="button" class="mpwem-ticket-add__pill"></button>').text('Input Box').toggleClass('is-active', qtyTypeVal === 'inputbox');
+        const $pillDropdown = $('<button type="button" class="mpwem-ticket-add__pill"></button>').text('Dropdown List').toggleClass('is-active', qtyTypeVal === 'dropdown');
+        $body.append(
+            $('<div class="mpwem-ticket-add__field"></div>')
+                .append($('<label></label>').text('Quantity shown as'))
+                .append(
+                    $('<div class="mpwem-ticket-add__pills"></div>').append($pillInput).append($pillDropdown)
+                )
+        );
+
+        $pillInput.on('click', function() {
+            $qtyTypeSelect.val('inputbox').trigger('change');
+            $pillInput.addClass('is-active');
+            $pillDropdown.removeClass('is-active');
+        });
+        $pillDropdown.on('click', function() {
+            $qtyTypeSelect.val('dropdown').trigger('change');
+            $pillDropdown.addClass('is-active');
+            $pillInput.removeClass('is-active');
+        });
+
+        const $moreToggle = $('<button type="button" class="mpwem-ticket-add__more-toggle"></button>')
+            .append($('<span></span>').text('More options — description, reserved & default quantity, ticket mode, sale period'))
+            .append($('<span class="mpwem-ticket-add__chev">▾</span>'));
+        $body.append($moreToggle);
+
+        const $more = $('<div class="mpwem-ticket-add__more"></div>').hide();
+
+        const $descProxy = $('<textarea rows="2" placeholder="Shown to attendees on the checkout page"></textarea>').val(($descInput.val() || '').toString());
+        $more.append(
+            $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Description'))
+                .append($descProxy)
+        );
+
+        const $defaultProxy = $('<input type="number" placeholder="1">').val(($defaultQtyInput.val() || '').toString());
+        const $reserveProxy = $('<input type="number" placeholder="0">').val(($reserveQtyInput.val() || '').toString());
+        $more.append(
+            $('<div class="mpwem-ticket-add__grid"></div>')
+                .append(
+                    $('<div class="mpwem-ticket-add__group"></div>')
+                        .append($('<label></label>').text('Default Qty'))
+                        .append($defaultProxy)
+                )
+                .append(
+                    $('<div class="mpwem-ticket-add__group"></div>')
+                        .append($('<label></label>').text('Reserve Qty'))
+                        .append($reserveProxy)
+                )
+        );
+
+        let $modeProxy = null;
+        if (isHybrid) {
+            const modeVal = ($modeSelect.val() || 'inperson').toString();
+            $modeProxy = $('<select></select>')
+                .append($('<option value="inperson"></option>').text('In Person (Physical)'))
+                .append($('<option value="online"></option>').text('Online Event'))
+                .val(modeVal);
+            $more.append(
+                $('<div class="mpwem-ticket-add__group"></div>')
+                    .append($('<label></label>').text('Ticket Mode'))
+                    .append($modeProxy)
+            );
+
+            $modeProxy.on('change', function() {
+                $modeSelect.val($(this).val()).trigger('change');
+            });
+        }
+
+        const $saleStartDateProxy = $('<input type="date">').val(($saleStartDate.val() || '').toString());
+        const $saleStartTimeProxy = $('<input type="time">').val(($saleStartTime.val() || '').toString());
+        const $saleEndDateProxy = $('<input type="date">').val(($saleEndDate.val() || '').toString());
+        const $saleEndTimeProxy = $('<input type="time">').val(($saleEndTime.val() || '').toString());
+
+        $more.append(
+            $('<div class="mpwem-ticket-add__grid"></div>')
+                .append(
+                    $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
+                        .append($('<label></label>').text('Sale Starts'))
+                        .append($saleStartDateProxy)
+                        .append($saleStartTimeProxy)
+                )
+                .append(
+                    $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
+                        .append($('<label></label>').text('Sale Ends'))
+                        .append($saleEndDateProxy)
+                        .append($saleEndTimeProxy)
+                )
+        );
+
+        $body.append($more);
+
+        $moreToggle.on('click', function() {
+            const willOpen = !$more.is(':visible');
+            $more.slideToggle(150);
+            $moreToggle.toggleClass('is-open', willOpen);
+        });
+
+        $card.append($body);
+
+        const $footer = $('<div class="mpwem-ticket-add__footer"></div>');
+        const $cancelBtn = $('<button type="button" class="button"></button>').text('Cancel');
+        const $saveBtn = $('<button type="button" class="button button-primary mpwem-ticket-add__save"></button>').text('Save Ticket Type');
+        $footer.append($cancelBtn).append($saveBtn);
+        $card.append($footer);
+
+        $nameProxy.on('input', function() { $nameInput.val($(this).val()); $nameProxy.removeClass('has-error'); });
+        $priceProxy.on('input', function() { $priceInput.val($(this).val()); });
+        if ($qtyProxy) {
+            $qtyProxy.on('input', function() { $qtyInput.val($(this).val()); });
+        }
+        $descProxy.on('input', function() { $descInput.val($(this).val()); });
+        $defaultProxy.on('input', function() { $defaultQtyInput.val($(this).val()); });
+        $reserveProxy.on('input', function() { $reserveQtyInput.val($(this).val()); });
+        $saleStartDateProxy.on('input change', function() { $saleStartDate.val($(this).val()); });
+        $saleStartTimeProxy.on('input change', function() { $saleStartTime.val($(this).val()); });
+        $saleEndDateProxy.on('input change', function() { $saleEndDate.val($(this).val()); });
+        $saleEndTimeProxy.on('input change', function() { $saleEndTime.val($(this).val()); });
+
+        $cancelBtn.on('click', function() {
+            closeInlineTicketAdd($root, { save: false });
+        });
+
+        $saveBtn.on('click', function() {
+            const name = ($nameProxy.val() || '').toString().trim();
+            if (!name) {
+                $nameProxy.addClass('has-error').trigger('focus');
+                return;
+            }
+
+            $nameInput.val(name);
+            $priceInput.val(($priceProxy.val() || '').toString());
+            closeInlineTicketAdd($root, { save: true });
+        });
+
+        window.setTimeout(function() {
+            $nameProxy.trigger('focus');
+        }, 0);
+    }
+
+    function openInlineTicketAdd($root) {
+        const $card = getInlineTicketAddCard($root);
+        if ($card.hasClass('is-open')) {
+            closeInlineTicketAdd($root, { save: false });
+            return;
+        }
+
+        const context = getTicketModalContext($root);
+        const $addButton = context.$modalMount.find('.mpwem_add_item').first();
+        if (!$addButton.length) {
+            return;
+        }
+
+        $addButton.trigger('click');
+
+        window.setTimeout(function() {
+            const $row = getTicketRows($root).last();
+            if (!$row.length) {
+                return;
+            }
+            $card.data('mpwemInlineAddRow', $row);
+            renderInlineTicketAddForm($root, $row);
+        }, 100);
+    }
+
     function openTicketModal($root, mode, rowIndex) {
         const context = getTicketModalContext($root);
         if (!context.$modal.length) {
@@ -1708,6 +1969,12 @@
         $root.on('click.mpwemTicketModal', '[data-mpwem-ticket-modal-open]', function(e) {
             e.preventDefault();
             const mode = $(this).attr('data-mpwem-ticket-modal-open') || 'list';
+
+            if (mode === 'new') {
+                openInlineTicketAdd($root);
+                return;
+            }
+
             const rowIndex = parseInt($(this).attr('data-ticket-row-index'), 10);
             openTicketModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
         });

@@ -800,7 +800,10 @@ function mpwem_load_sortable_datepicker(parent, item) {
             item = parent.find('.mpwem_hidden_content').first().find('.mpwem_hidden_item').html();
         }
         mpwem_load_sortable_datepicker(parent, item);
-        parent.find('.mpwem_item_insert').find('.add_mpwem_select2').select2({});
+        var $select2Targets = parent.find('.mpwem_item_insert').find('.add_mpwem_select2');
+        if ($select2Targets.length && typeof $select2Targets.select2 === 'function') {
+            $select2Targets.select2({});
+        }
         return true;
     });
 }(jQuery));

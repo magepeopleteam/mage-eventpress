@@ -1719,7 +1719,13 @@
             return;
         }
 
-        $addButton.trigger('click');
+        try {
+            $addButton.trigger('click');
+        } catch (err) {
+            /* A shared add-item handler may throw (e.g. a dependency not yet
+               loaded) after it has already appended the row; don't let that
+               stop the inline form below from rendering. */
+        }
 
         window.setTimeout(function() {
             const $row = getTicketRows($root).last();

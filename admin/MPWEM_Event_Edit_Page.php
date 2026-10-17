@@ -706,7 +706,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				<div class="mpwem-card__head">
 					<div class="mpwem-card__head-copy">
 						<h2><?php esc_html_e('Event Category', 'mage-eventpress'); ?></h2>
-						<p><?php esc_html_e('Assign categories to help attendees find this event.', 'mage-eventpress'); ?></p>
+						<p><?php esc_html_e('Assign categories to this event.', 'mage-eventpress'); ?></p>
 					</div>
 					<div class="mpwem-card__head-actions">
 						<button
@@ -748,7 +748,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				<div class="mpwem-card__head">
 					<div class="mpwem-card__head-copy">
 						<h2><?php esc_html_e('Event Organizer', 'mage-eventpress'); ?></h2>
-						<p><?php esc_html_e('Select the organization or person hosting this event.', 'mage-eventpress'); ?></p>
+						<p><?php esc_html_e('Select the Organizer to this event.', 'mage-eventpress'); ?></p>
 					</div>
 					<div class="mpwem-card__head-actions">
 						<button
@@ -826,6 +826,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<span class="mpwem-taxonomy-card__chip"><?php echo esc_html($tag_name); ?></span>
 							<?php endforeach; ?>
 						</div>
+						<?php if (!empty($tag_suggestions)) : ?>
+							<div class="mpwem-taxonomy-card__suggestions" data-tag-suggestions>
+								<span class="mpwem-taxonomy-card__suggestions-label"><?php esc_html_e('Suggested', 'mage-eventpress'); ?></span>
+								<div class="mpwem-taxonomy-card__suggestions-list">
+									<?php foreach ($tag_suggestions as $tag_name) : ?>
+										<button
+											type="button"
+											class="mpwem-taxonomy-card__chip-suggest"
+											data-tag-suggest="<?php echo esc_attr($tag_name); ?>"
+											<?php echo in_array($tag_name, $selected_tags, true) ? ' hidden' : ''; ?>>
+											+ <?php echo esc_html($tag_name); ?>
+										</button>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 						<div class="mpwem-taxonomy-card__meta">
 							<p class="mpwem-taxonomy-card__help"><?php esc_html_e('Type existing tags or add new ones. Separate each tag with a comma.', 'mage-eventpress'); ?></p>
 							<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=mep_tag&post_type=' . self::POST_TYPE)); ?>" target="_blank" rel="noopener noreferrer">
@@ -1466,6 +1482,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 			$featured_id  = $post_id ? (int) get_post_thumbnail_id($post_id) : 0;
 			$featured_url = $featured_id ? wp_get_attachment_image_url($featured_id, 'medium') : '';
+			$featured_meta = '';
+			if ($featured_id) {
+				$attached_file     = get_attached_file($featured_id);
+				$featured_filename = $attached_file ? wp_basename($attached_file) : '';
+				$featured_sizes    = wp_get_attachment_metadata($featured_id);
+				$featured_dims     = (!empty($featured_sizes['width']) && !empty($featured_sizes['height']))
+					? $featured_sizes['width'] . '×' . $featured_sizes['height']
+					: '';
+				$featured_meta = trim($featured_filename . ($featured_dims ? ' · ' . $featured_dims : ''));
+			}
 			$classical_url = $post_id ? $this->get_editor_switch_url('classic', $post_id) : '';
 			$frontend_url = $post_id ? get_permalink($post_id) : '';
 			$is_published = $post && $post->post_status === 'publish';
@@ -1573,30 +1599,51 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				</div>
 				<header class="mpwem-event-wizard__topbar">
 					<div class="mpwem-event-wizard__topbar-inner">
-						<a class="mpwem-link" href="<?php echo esc_url($back_to_list); ?>">
-							<span class="dashicons dashicons-arrow-left-alt"></span>
-							<?php esc_html_e('Back to Events', 'mage-eventpress'); ?>
+						<a class="mpwem-link mpwem-event-wizard__back" href="<?php echo esc_url($back_to_list); ?>" aria-label="<?php esc_attr_e('Back to Events', 'mage-eventpress'); ?>" title="<?php esc_attr_e('Back to Events', 'mage-eventpress'); ?>">
+							<span class="dashicons dashicons-arrow-left-alt" aria-hidden="true"></span>
 						</a>
 						<div class="mpwem-event-wizard__title">
 							<h1 title="<?php echo esc_attr($screen_title); ?>"><?php echo esc_html($screen_title); ?></h1>
 						</div>
+						<nav class="mpwem-event-wizard__steps" aria-label="<?php esc_attr_e('Event steps', 'mage-eventpress'); ?>">
+							<div class="mpwem-event-wizard__steps-inner">
+								<?php foreach ($steps as $step) : ?>
+									<button
+										type="button"
+										class="mpwem-step"
+										data-step-key="<?php echo esc_attr($step['key']); ?>"
+										data-panel="<?php echo esc_attr($step['panel']); ?>">
+										<span class="mpwem-step__label"><?php echo esc_html($step['label']); ?></span>
+									</button>
+								<?php endforeach; ?>
+							</div>
+						</nav>
 						<div class="mpwem-event-wizard__actions">
-							<?php if ($classical_url) : ?>
-								<a class="mpwem-link mpwem-modern-to-classic-btn" href="<?php echo esc_url($classical_url); ?>">
-									<span class="dashicons dashicons-editor-code" aria-hidden="true"></span>
-									<span><?php esc_html_e('Classic editor', 'mage-eventpress'); ?></span>
-								</a>
-							<?php endif; ?>
 							<?php if (! $is_published) : ?>
 								<button type="button" class="button mpwem-wizard-save-draft"><?php esc_html_e('Save as Draft', 'mage-eventpress'); ?></button>
 							<?php endif; ?>
+							<?php
+							$show_status_menu = $classical_url || $frontend_url || ($is_published && $can_publish) || $can_trash;
+							$current_status   = $post ? $post->post_status : 'draft';
+							$status_object    = get_post_status_object($current_status);
+							$status_label     = $status_object ? $status_object->label : ucfirst($current_status);
+							$status_modifiers = array(
+								'publish' => 'is-published',
+								'draft'   => 'is-draft',
+								'pending' => 'is-pending',
+								'future'  => 'is-scheduled',
+								'private' => 'is-private',
+							);
+							$status_modifier  = isset($status_modifiers[$current_status]) ? $status_modifiers[$current_status] : 'is-draft';
+							?>
+							<span class="mpwem-status-badge <?php echo esc_attr($status_modifier); ?>"><?php echo esc_html($status_label); ?></span>
 							<div class="mpwem-status-actions">
 								<?php if ($is_published) : ?>
 									<button type="button" class="button button-primary mpwem-status-actions__primary" data-status-action=""><?php esc_html_e('Update', 'mage-eventpress'); ?></button>
 								<?php elseif ($can_publish) : ?>
 									<button type="button" class="button button-primary mpwem-status-actions__primary" data-status-action="publish"><?php esc_html_e('Publish', 'mage-eventpress'); ?></button>
 								<?php endif; ?>
-								<?php if (($is_published && ($can_publish || $can_trash)) || (! $is_published && $can_trash && $can_publish)) : ?>
+								<?php if ($show_status_menu) : ?>
 									<div class="mpwem-status-actions__menu-wrap">
 										<button
 											type="button"
@@ -1607,6 +1654,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 											<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
 										</button>
 										<div class="mpwem-status-actions__menu" role="menu">
+											<?php if ($classical_url) : ?>
+												<a href="<?php echo esc_url($classical_url); ?>" class="mpwem-status-actions__menu-item">
+													<span class="dashicons dashicons-editor-code" aria-hidden="true"></span>
+													<?php esc_html_e('Classic editor', 'mage-eventpress'); ?>
+												</a>
+											<?php endif; ?>
 											<?php if ($frontend_url) : ?>
 												<a href="<?php echo esc_url($frontend_url); ?>" class="mpwem-status-actions__menu-item" target="_blank">
 													<span class="dashicons dashicons-external" aria-hidden="true"></span>
@@ -1626,20 +1679,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						</div>
 					</div>
 				</header>
-
-				<nav class="mpwem-event-wizard__steps" aria-label="<?php esc_attr_e('Event steps', 'mage-eventpress'); ?>">
-					<div class="mpwem-event-wizard__steps-inner">
-						<?php foreach ($steps as $step) : ?>
-							<button
-								type="button"
-								class="mpwem-step"
-								data-step-key="<?php echo esc_attr($step['key']); ?>"
-								data-panel="<?php echo esc_attr($step['panel']); ?>">
-								<span class="mpwem-step__label"><?php echo esc_html($step['label']); ?></span>
-							</button>
-						<?php endforeach; ?>
-					</div>
-				</nav>
 
 				<main class="mpwem-event-wizard__main">
 					<div class="mpwem-event-wizard__container">
@@ -1689,7 +1728,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	'mpwem_wizard_content',
 																	[
 																		'textarea_name' => 'content',
-																		'textarea_rows' => 10,
+																		'textarea_rows' => 28,
 																		'media_buttons' => true,
 																		'tinymce'       => [
 																			'content_style' => 'body{padding:16px 18px!important;margin:0;box-sizing:border-box;}body.mce-content-body{padding:16px 18px!important;}p{margin:0 0 1em;}',
@@ -1735,6 +1774,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
+												<div class="mpwem-sidebar-single-card">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
 															<h2><?php esc_html_e('Featured Image', 'mage-eventpress'); ?></h2>
@@ -1743,19 +1783,30 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<div class="mpwem-card__body">
 															<input type="hidden" name="_thumbnail_id" id="mpwem_featured_image_id" value="<?php echo esc_attr($featured_id); ?>" />
 															<div class="mpwem-featured-image" data-has-image="<?php echo esc_attr($featured_id ? '1' : '0'); ?>">
-																<div class="mpwem-featured-image__preview">
-																	<?php if ($featured_url) : ?>
-																		<img src="<?php echo esc_url($featured_url); ?>" alt="" />
-																	<?php else : ?>
-																		<div class="mpwem-featured-image__placeholder"><?php esc_html_e('No image selected', 'mage-eventpress'); ?></div>
-																	<?php endif; ?>
+																<div class="mpwem-featured-image__filled"<?php echo $featured_id ? '' : ' style="display:none;"'; ?>>
+																	<div class="mpwem-featured-image__preview">
+																		<?php if ($featured_url) : ?>
+																			<img src="<?php echo esc_url($featured_url); ?>" alt="" />
+																		<?php endif; ?>
+																		<span class="mpwem-featured-image__meta"><?php echo esc_html($featured_meta); ?></span>
+																	</div>
+																	<div class="mpwem-featured-image__actions">
+																		<button type="button" class="button mpwem-featured-select mpwem-featured-change">
+																			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3M16 8l-4-4-4 4M12 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																			<?php esc_html_e('Change', 'mage-eventpress'); ?>
+																		</button>
+																		<button type="button" class="button mpwem-featured-remove" aria-label="<?php esc_attr_e('Remove image', 'mage-eventpress'); ?>">
+																			<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0v14a1 1 0 01-1 1H7a1 1 0 01-1-1V6h12z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																		</button>
+																	</div>
 																</div>
-																<div class="mpwem-featured-image__actions">
-																	<button type="button" class="button button-primary mpwem-featured-select"><?php esc_html_e('Select', 'mage-eventpress'); ?></button>
-																	<button type="button" class="button mpwem-featured-remove" <?php echo $featured_id ? '' : 'disabled'; ?>>
-																		<?php esc_html_e('Remove', 'mage-eventpress'); ?>
-																	</button>
-																</div>
+																<button type="button" class="mpwem-featured-image__dropzone mpwem-featured-select"<?php echo $featured_id ? ' style="display:none;"' : ''; ?>>
+																	<span class="mpwem-featured-image__dropzone-icon" aria-hidden="true">
+																		<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5l5 5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																	</span>
+																	<span class="mpwem-featured-image__dropzone-title"><?php esc_html_e('Click to upload a featured image', 'mage-eventpress'); ?></span>
+																	<span class="mpwem-featured-image__dropzone-hint"><?php esc_html_e('JPG or PNG, up to 10MB', 'mage-eventpress'); ?></span>
+																</button>
 															</div>
 														</div>
 													</div>
@@ -1786,6 +1837,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													$this->render_organizer_card($post_id);
 													$this->render_tag_card($post_id);
 													?>
+												</div>
 												</aside>
 											</div>
 										</section>
@@ -2139,10 +2191,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 									</div>
 								</div>
 								<footer class="mpwem-event-wizard__footer">
+									<div class="mpwem-wizard-footer-progress" aria-hidden="true"><span style="width: <?php echo esc_attr( round( 100 / max( 1, count( $steps ) ), 2 ) ); ?>%"></span></div>
 									<div class="mpwem-event-wizard__footer-inner">
-										<button type="button" class="button mpwem-wizard-prev"><?php esc_html_e('Back', 'mage-eventpress'); ?></button>
+										<button type="button" class="button mpwem-wizard-prev" disabled><?php esc_html_e('Back', 'mage-eventpress'); ?></button>
 										<div class="mpwem-event-wizard__footer-center">
-											<span class="mpwem-wizard-progress" aria-live="polite"></span>
+											<span class="mpwem-wizard-step-num" aria-hidden="true">1</span>
+											<div class="mpwem-wizard-step-text">
+												<strong class="mpwem-wizard-step-name"><?php echo esc_html( $steps ? $steps[0]['label'] : '' ); ?></strong>
+												<span class="mpwem-wizard-progress" aria-live="polite"></span>
+											</div>
 										</div>
 										<button type="button" class="button button-primary mpwem-wizard-next"><?php esc_html_e('Next', 'mage-eventpress'); ?></button>
 									</div>

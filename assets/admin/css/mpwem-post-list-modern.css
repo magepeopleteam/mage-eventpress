@@ -80,7 +80,7 @@ body.post-type-mep_events_review.edit-php .wrap::after {
 	content: "Loading\2026";
 	top: 210px;
 	transform: translateX(-50%);
-	font-size: 13px;
+	font-size: 14px;
 	color: #64748B;
 	white-space: nowrap;
 }
@@ -146,7 +146,7 @@ body.mpwem-post-list-ready.post-type-mep_events_review.edit-php .wrap::after {
 	margin: 4px 0 16px;
 	padding-left: 30px;
 	max-width: 640px;
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #64748B;
 }
@@ -202,8 +202,8 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .mpwem-post-list-hero-wrap .bde-eyebrow {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 11px;
+	gap: 8px;
+	font-size: 12px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: .04em;
@@ -243,7 +243,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 	border: 1px solid #E4E9F0;
 	border-radius: 10px;
 	padding: 8px 14px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	color: #0F172A;
 	flex: 0 0 auto;
@@ -308,7 +308,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 }
 
 .mpwem-post-list-hero-wrap .mep-stat-label {
-	font-size: 12px;
+	font-size: 13px;
 	color: #64748B;
 }
 
@@ -395,13 +395,13 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .wrap.mpwem-post-list-modern-wrap ul.subsubsub a {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	padding: 6px 12px;
 	margin: 0 6px 6px 0;
 	border-radius: 8px;
 	background: #F1F5F9;
 	color: #64748B;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	text-decoration: none;
 }
@@ -437,8 +437,8 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .wrap.mpwem-post-list-modern-wrap .search-box input[type="search"] {
 	border: 1px solid #D1D5DB;
 	border-radius: 8px;
-	padding: 6px 12px;
-	min-height: 34px;
+	padding: 8px 12px;
+	min-height: 36px;
 	box-shadow: none;
 }
 
@@ -471,7 +471,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .wrap.mpwem-post-list-modern-wrap .mpwem-tablenav-right {
 	display: flex;
 	align-items: center;
-	gap: 14px;
+	gap: 12px;
 	margin-left: auto;
 }
 
@@ -482,7 +482,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 }
 
 .wrap.mpwem-post-list-modern-wrap .tablenav .displaying-num {
-	font-size: 13px;
+	font-size: 14px;
 	color: #64748B;
 }
 
@@ -497,7 +497,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 	border-color: #2563EB;
 	color: #FFFFFF;
 	font-weight: 600;
-	font-size: 13px;
+	font-size: 14px;
 	text-decoration: none;
 	box-shadow: none;
 	text-shadow: none;
@@ -530,7 +530,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 
 .wrap.mpwem-post-list-modern-wrap .tablenav .alignleft.actions:not(.bulkactions)::before {
 	content: "Date";
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
@@ -560,7 +560,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 	background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748B' d='M1.4.6 6 5.2 10.6.6 12 2 6 8 0 2z'/%3E%3C/svg%3E") no-repeat right 10px center;
 	background-size: 10px;
 	color: #0F172A;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 500;
 	line-height: 1.2;
 	box-shadow: none;
@@ -587,7 +587,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 	border-radius: 8px;
 	background: #fff;
 	color: #2563EB;
-	font-size: 12.5px;
+	font-size: 13px;
 	font-weight: 600;
 	line-height: 1;
 	box-shadow: none;
@@ -618,7 +618,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 
 .mpwem-promo-eyebrow {
 	display: inline-block;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: .06em;
 	color: #2563EB;
@@ -639,7 +639,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 
 .mpwem-promo-body {
 	margin: 0 0 16px;
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.6;
 	color: #64748B;
 }
@@ -653,7 +653,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .mpwem-promo-features li {
 	position: relative;
 	padding: 0 0 10px 22px;
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #334155;
 }
@@ -665,7 +665,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 	top: 0;
 	color: #2563EB;
 	font-weight: 700;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .mpwem-promo-panel .mpwem-promo-cta {
@@ -709,7 +709,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 	background: #F8FAFC;
 	border-bottom: 1px solid #E5E7EB;
 	color: #64748B;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 600;
 	letter-spacing: .04em;
 	text-transform: uppercase;
@@ -735,7 +735,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .wrap.mpwem-post-list-modern-wrap table.wp-list-table tbody td {
 	padding: 10px 12px;
 	border-bottom: 1px solid #F1F5F9;
-	font-size: 13px;
+	font-size: 14px;
 	color: #0F172A;
 	vertical-align: middle;
 	overflow: visible;
@@ -763,7 +763,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .wrap.mpwem-post-list-modern-wrap .column-name .row-title {
 	display: inline-block;
 	max-width: 100%;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	line-height: 1.35;
 	color: #2563EB;
@@ -788,7 +788,7 @@ body.post-type-mep_events_review .wrap.mpwem-post-list-modern-wrap .mpwem-post-l
 .wrap.mpwem-post-list-modern-wrap .column-date {
 	width: 130px;
 	color: #64748B;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 1.4;
 	white-space: normal;
 }
@@ -862,20 +862,20 @@ body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap .column-date 
 }
 
 .mpwem-speaker-list-role {
-	font-size: 12.5px;
+	font-size: 13px;
 	font-weight: 600;
 	color: #334155;
 	line-height: 1.35;
 }
 
 .mpwem-speaker-list-bio {
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 1.45;
 	color: #64748B;
 }
 
 .mpwem-speaker-list-desc-empty {
-	font-size: 12px;
+	font-size: 13px;
 	color: #94A3B8;
 	font-style: italic;
 }
@@ -884,20 +884,20 @@ body.post-type-mep_event_speaker .wrap.mpwem-post-list-modern-wrap .column-date 
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	max-width: 100%;
 }
 
 .mpwem-speaker-list-event {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	max-width: min(100%, 220px);
 	padding: 5px 10px 5px 6px;
 	background: #F1F5F9;
 	border: 1px solid transparent;
 	border-radius: 999px;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	line-height: 1.25;
 	color: #334155;
@@ -947,7 +947,7 @@ a.mpwem-speaker-list-event:hover .mpwem-speaker-list-event-icon {
 	background: #EEF2FF;
 	border: 1px solid #E0E7FF;
 	color: #4338CA;
-	font-size: 11.5px;
+	font-size: 12.5px;
 	font-weight: 700;
 	line-height: 1.25;
 	white-space: nowrap;
@@ -956,12 +956,12 @@ a.mpwem-speaker-list-event:hover .mpwem-speaker-list-event-icon {
 .mpwem-speaker-list-event-empty {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	padding: 5px 10px;
 	border-radius: 999px;
 	background: #F8FAFC;
 	border: 1px dashed #E2E8F0;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 500;
 	font-style: normal;
 	color: #94A3B8;
@@ -991,7 +991,7 @@ a.mpwem-speaker-list-event:hover .mpwem-speaker-list-event-icon {
 }
 
 .mpwem-speaker-pagination-info {
-	font-size: 12.5px;
+	font-size: 13px;
 	color: #64748B;
 	font-weight: 500;
 }
@@ -1014,7 +1014,7 @@ a.mpwem-speaker-list-event:hover .mpwem-speaker-list-event-icon {
 	border-radius: 8px;
 	background: #fff;
 	color: #475569;
-	font-size: 12.5px;
+	font-size: 13px;
 	font-weight: 600;
 	cursor: pointer;
 	line-height: 1;
@@ -1144,7 +1144,7 @@ body.mpwem-speaker-modal-open {
 
 .mpwem-speaker-modal__header p {
 	margin: 0;
-	font-size: 12.5px;
+	font-size: 13px;
 	line-height: 1.45;
 	color: #64748B;
 }
@@ -1152,13 +1152,13 @@ body.mpwem-speaker-modal-open {
 .mpwem-speaker-modal__grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 14px;
+	gap: 12px;
 }
 
 .mpwem-speaker-modal__field {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 8px;
 }
 
 .mpwem-speaker-modal__field--full {
@@ -1166,7 +1166,7 @@ body.mpwem-speaker-modal-open {
 }
 
 .mpwem-speaker-modal__field label {
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	color: #334155;
 }
@@ -1182,8 +1182,8 @@ body.mpwem-speaker-modal-open {
 	width: 100%;
 	border: 1.5px solid #E2E8F0;
 	border-radius: 10px;
-	padding: 9px 12px;
-	font-size: 13px;
+	padding: 11px 12px;
+	font-size: 14px;
 	color: #0F172A;
 	background: #fff;
 	box-shadow: none;
@@ -1292,14 +1292,14 @@ body.mpwem-speaker-modal-open {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 6px;
+	gap: 8px;
 }
 
 .mpwem-speaker-modal__status {
 	margin-top: 12px;
 	padding: 8px 12px;
 	border-radius: 8px;
-	font-size: 12.5px;
+	font-size: 13px;
 	line-height: 1.4;
 }
 
@@ -1378,14 +1378,14 @@ body.mpwem-speaker-modal-open {
 .mpwem-speaker-view-modal__loading {
 	padding: 28px 8px;
 	text-align: center;
-	font-size: 13px;
+	font-size: 14px;
 	color: #64748B;
 }
 
 .mpwem-speaker-view-hero {
 	display: flex;
 	align-items: center;
-	gap: 14px;
+	gap: 12px;
 	margin-bottom: 18px;
 	padding-right: 28px;
 }
@@ -1436,7 +1436,7 @@ body.mpwem-speaker-modal-open {
 	border-radius: 999px;
 	background: #EFF6FF;
 	color: #1D4ED8;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: 0.03em;
 	text-transform: uppercase;
@@ -1462,7 +1462,7 @@ body.mpwem-speaker-modal-open {
 .mpwem-speaker-view-label {
 	display: block;
 	margin-bottom: 6px;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
@@ -1470,7 +1470,7 @@ body.mpwem-speaker-modal-open {
 }
 
 .mpwem-speaker-view-value {
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #0F172A;
 	white-space: pre-wrap;
@@ -1483,7 +1483,7 @@ body.mpwem-speaker-modal-open {
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 8px;
 }
 
 .mpwem-speaker-view-events a {
@@ -1498,7 +1498,7 @@ body.mpwem-speaker-modal-open {
 
 .mpwem-speaker-view-empty {
 	margin: 0;
-	font-size: 13px;
+	font-size: 14px;
 	color: #94A3B8;
 	font-style: italic;
 }
@@ -1525,7 +1525,7 @@ body.mpwem-speaker-modal-open {
 	border-radius: 999px;
 	background: #FEF3C7;
 	color: #B45309;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 }
 
@@ -1596,7 +1596,7 @@ body.mpwem-speaker-modal-open {
 
 .mpwem-email-preview-modal__subtitle {
 	margin: 0;
-	font-size: 13px;
+	font-size: 14px;
 	color: #64748B;
 }
 
@@ -1669,7 +1669,7 @@ body.post-type-mep_events_review.post-new-php #wpbody-content {
 	border-radius: 10px;
 	background: #fff;
 	color: #334155;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	line-height: 1.2;
 	text-decoration: none;

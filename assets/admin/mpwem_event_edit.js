@@ -3569,13 +3569,35 @@
         // (Only for iframe map type — the API map has its own geocoder already)
         const $venueInput = $venue.find('#mpwem_location_venue, [name="mep_location_venue"]').first();
         const $mapDiv     = $venue.find('#show_gmap').first();
+        const $manualInputs = $venue.find(
+            '#mpwem-manual-entry-wrap [name="mep_street"], ' +
+            '#mpwem-manual-entry-wrap [name="mep_city"], ' +
+            '#mpwem-manual-entry-wrap [name="mep_state"], ' +
+            '#mpwem-manual-entry-wrap [name="mep_postcode"], ' +
+            '#mpwem-manual-entry-wrap [name="mep_country"]'
+        );
 
         if ($venueInput.length && $mapDiv.length) {
             var mapDebounceTimer = null;
 
-            $venueInput.on('input', function() {
+            var refreshMap = function() {
                 clearTimeout(mapDebounceTimer);
-                var location = $(this).val().trim();
+
+                // The venue field alone is the common case ("type a full address or
+                // place name"). The manual street/city/state/postcode/country fields
+                // are an opt-in, normally-hidden alternative — only fold them into the
+                // query while that panel is actually open, otherwise leftover saved
+                // values sitting in those hidden fields would silently corrupt an
+                // otherwise-clean venue address.
+                var venue = $venueInput.val().trim();
+                var location = venue;
+                var $manualPanel = $venue.find('#mpwem-manual-entry-wrap').first();
+                if ($manualPanel.length && $manualPanel.is(':visible')) {
+                    var extra = $manualInputs.toArray()
+                        .map(function(el) { return $(el).val().trim(); })
+                        .filter(function(part) { return part !== ''; });
+                    location = [venue].concat(extra).filter(function(part) { return part !== ''; }).join(', ');
+                }
                 if (!location) return;
 
                 mapDebounceTimer = window.setTimeout(function() {
@@ -3589,8 +3611,11 @@
                         '&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" ' +
                         'marginheight="0" marginwidth="0"></iframe>'
                     );
-                }, 900);
-            });
+                }, 250);
+            };
+
+            $venueInput.on('input', refreshMap);
+            $manualInputs.on('input', refreshMap);
         }
 
         $venue.data('mpwemGridEnhanced', true);
@@ -5488,13 +5513,14 @@
             $card.find('[data-tag-input]').each(function() {
                 const $input = $(this);
                 const $preview = $card.find('[data-tag-preview]').first();
+                const $suggestButtons = $card.find('[data-tag-suggest]');
 
                 if ($input.data('mpwemTagPreviewInit')) {
                     return;
                 }
 
-                const renderPreview = function() {
-                    const tags = ($input.val() || '')
+                const getTags = function() {
+                    return ($input.val() || '')
                         .toString()
                         .split(',')
                         .map(function(tag) {
@@ -5503,6 +5529,10 @@
                         .filter(function(tag, index, allTags) {
                             return tag.length && allTags.indexOf(tag) === index;
                         });
+                };
+
+                const renderPreview = function() {
+                    const tags = getTags();
 
                     $preview.empty();
 
@@ -5517,11 +5547,41 @@
                     });
                 };
 
+                const renderSuggestions = function() {
+                    const tags = getTags();
+
+                    $suggestButtons.each(function() {
+                        const $btn = $(this);
+                        const tagName = ($btn.data('tag-suggest') || '').toString();
+                        $btn.prop('hidden', tags.indexOf(tagName) !== -1);
+                    });
+                };
+
+                $suggestButtons.on('click.mpwemTagSuggest', function() {
+                    const tagName = ($(this).data('tag-suggest') || '').toString();
+
+                    if (!tagName) {
+                        return;
+                    }
+
+                    const tags = getTags();
+
+                    if (tags.indexOf(tagName) === -1) {
+                        tags.push(tagName);
+                    }
+
+                    $input.val(tags.join(', ')).trigger('input.mpwemTagPreview');
+                });
+
                 $input
-                    .on('input.mpwemTagPreview change.mpwemTagPreview blur.mpwemTagPreview', renderPreview)
+                    .on('input.mpwemTagPreview change.mpwemTagPreview blur.mpwemTagPreview', function() {
+                        renderPreview();
+                        renderSuggestions();
+                    })
                     .data('mpwemTagPreviewInit', true);
 
                 renderPreview();
+                renderSuggestions();
             });
 
             $card.find('[data-taxonomy-create-form]').each(function() {
@@ -5699,6 +5759,25 @@
         return isPublishedEvent($root) ? 'Save & Update Event' : 'Save & Publish Event';
     }
 
+    // Keeps the bottom nav bar (progress line, step badge/name, Back/Next) in
+    // sync with whichever step is active among the currently visible steps.
+    function syncWizardFooter($root, $visibleSteps, current) {
+        const total = $visibleSteps.length;
+        const $activeStep = $visibleSteps.eq(current - 1);
+        const stepName = $activeStep.find('.mpwem-step__label').text();
+        const $nextStep = $visibleSteps.eq(current);
+        const nextName = $nextStep.length ? $nextStep.find('.mpwem-step__label').text() : '';
+
+        $root.find('.mpwem-wizard-footer-progress > span').css('width', (current / total * 100) + '%');
+        $root.find('.mpwem-wizard-step-num').text(current);
+        $root.find('.mpwem-wizard-step-name').text(stepName);
+        $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + total);
+        $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
+        $root.find('.mpwem-wizard-next').text(
+            current === total ? finalSaveLabel($root) : (nextName ? 'Next: ' + nextName : 'Next Step')
+        );
+    }
+
     function setActiveStep($root, stepKey, options) {
         if (stepKey !== 'tickets') {
             closeTicketModal($root);
@@ -5787,9 +5866,7 @@
         // Progress
         const $visibleSteps = $steps.filter(function() { return $(this).css('display') !== 'none'; });
         const current = $visibleSteps.index($targetStep) + 1;
-        $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
-        $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
-        $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? finalSaveLabel($root) : 'Next Step');
+        syncWizardFooter($root, $visibleSteps, current);
         $root.find('#mpwem_active_step').val(stepKey);
 
         if (options && options.pushHash) {
@@ -5903,9 +5980,7 @@
         const $activeStep = $steps.filter('.is-active');
         if ($activeStep.length) {
             const current = $visibleSteps.index($activeStep) + 1;
-            $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
-            $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
-            $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? finalSaveLabel($root) : 'Next Step');
+            syncWizardFooter($root, $visibleSteps, current);
         }
     }
 
@@ -5978,11 +6053,17 @@
                         src: imageUrl,
                         alt: ''
                     });
+                    const meta = [data.filename, (data.width && data.height) ? (data.width + '×' + data.height) : '']
+                        .filter(Boolean)
+                        .join(' · ');
 
                     $root.find('#mpwem_featured_image_id').val(data.id || '');
                     $wrap.attr('data-has-image', data.id ? '1' : '0');
-                    $wrap.find('.mpwem-featured-image__preview').empty().append($image);
-                    $wrap.find('.mpwem-featured-remove').prop('disabled', false);
+                    $wrap.find('.mpwem-featured-image__preview').find('img').remove();
+                    $wrap.find('.mpwem-featured-image__preview').prepend($image);
+                    $wrap.find('.mpwem-featured-image__meta').text(meta);
+                    $wrap.find('.mpwem-featured-image__filled').show();
+                    $wrap.find('.mpwem-featured-image__dropzone').hide();
                 });
             }
 
@@ -5995,13 +6076,10 @@
             const $wrap = $root.find('.mpwem-featured-image').first();
             $root.find('#mpwem_featured_image_id').val('');
             $wrap.attr('data-has-image', '0');
-            $wrap.find('.mpwem-featured-image__preview').empty().append(
-                $('<div />', {
-                    class: 'mpwem-featured-image__placeholder',
-                    text: 'No image selected'
-                })
-            );
-            $(this).prop('disabled', true);
+            $wrap.find('.mpwem-featured-image__preview').find('img').remove();
+            $wrap.find('.mpwem-featured-image__meta').text('');
+            $wrap.find('.mpwem-featured-image__filled').hide();
+            $wrap.find('.mpwem-featured-image__dropzone').show();
         });
     }
 

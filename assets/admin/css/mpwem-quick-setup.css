@@ -51,8 +51,8 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 .mpwem-qs-eyebrow {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 11px;
+	gap: 8px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: .06em;
 	text-transform: uppercase;
@@ -96,7 +96,7 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 	background: #FFFFFF;
 	border: 1px solid #E4E9F0;
 	border-radius: 10px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	color: #334155;
 }
@@ -161,7 +161,7 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 
 .mpwem-qs-modern .tabs_next .tabItemNext .circleTitle {
 	color: #94A3B8 !important;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 700;
 	top: 46px !important;
 }
@@ -184,7 +184,7 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 .mpwem-qs-panel-head {
 	display: flex;
 	align-items: flex-start;
-	gap: 14px;
+	gap: 12px;
 	margin-bottom: 20px;
 }
 
@@ -246,7 +246,7 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 
 .mpwem-qs-woo-label {
 	display: block;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: .05em;
 	text-transform: uppercase;
@@ -263,13 +263,13 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 .mpwem-qs-status-pill {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	padding: 8px 12px;
 	border-radius: 999px;
 	background: #DCFCE7;
 	border: 1px solid #BBF7D0;
 	color: #15803D;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 }
 
@@ -305,7 +305,7 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 }
 
 .mpwem-qs-field-title {
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	color: #0F172A;
 	min-width: 0 !important;
@@ -317,7 +317,7 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 .mpwem-qs-modern select.formControl {
 	width: 100% !important;
 	max-width: 100% !important;
-	height: 42px;
+	height: 44px;
 	margin: 0 !important;
 	padding: 0 12px !important;
 	border: 1px solid #D1D5DB !important;
@@ -340,9 +340,9 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 .mpwem-qs-modern .info_text {
 	display: flex;
 	align-items: flex-start;
-	gap: 6px;
+	gap: 8px;
 	margin: 8px 0 0 !important;
-	font-size: 12.5px;
+	font-size: 13px;
 	line-height: 1.45;
 	color: #64748B !important;
 	font-style: normal !important;
@@ -413,7 +413,7 @@ body.mep_events_page_mpwem_quick_setup #wpbody-content {
 	display: inline-flex !important;
 	align-items: center;
 	justify-content: center;
-	gap: 6px;
+	gap: 8px;
 	min-height: 42px;
 	padding: 0 18px !important;
 	border-radius: 10px !important;

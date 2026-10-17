@@ -203,7 +203,7 @@
 									}
 									?>
                                     <div id="show_gmap">
-                                        <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo esc_attr( $query_param ); ?>&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                        <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo esc_attr( $query_param ); ?>&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                                     </div>
 								<?php }
 								if ( $map_type == 'api' ) {
@@ -393,7 +393,7 @@
                                                         });
                                                     }
                                                 }
-                                            }, 800);
+                                            }, 200);
                                             jQuery('[name="mep_location_venue"], [name="mep_street"], [name="mep_city"], [name="mep_state"], [name="mep_postcode"], [name="mep_country"]').on('input', geocodeAddress);
                                         }
                                         (function () {
@@ -435,7 +435,7 @@
                                     // For regular addresses, encode the entire string
                                     queryParam = encodeURIComponent(location);
                                 }
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
+                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             } else {
                                 jQuery('.mp_event_address').slideDown();
                                 jQuery('[name="mep_location_venue"]').val('<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $post_id, 'mep_location_venue' ) ); ?>');
@@ -455,23 +455,7 @@
                                     // For regular addresses, encode the entire string
                                     queryParam = encodeURIComponent(location);
                                 }
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
-                            }
-                        })
-                        jQuery('[name="mep_location_venue"]').on('input', function () {
-                            let location = jQuery(this).val();
-                            if (location !== '') {
-                                // Check if input looks like coordinates (lat,lng format)
-                                let coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
-                                let queryParam;
-                                if (coordinatePattern.test(location.trim())) {
-                                    // For coordinates, use them directly without encoding the comma
-                                    queryParam = location.trim();
-                                } else {
-                                    // For regular addresses, encode the entire string
-                                    queryParam = encodeURIComponent(location);
-                                }
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
+                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
                     </script>

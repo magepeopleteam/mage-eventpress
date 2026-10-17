@@ -46,7 +46,7 @@ body.mpwem-event-wizard-screen {
 }
 
 .mpwem-event-wizard {
-    background: var(--mpwem-bg);
+    background: #F4F5F7;
     min-height: calc(100vh - var(--mpwem-admin-bar-offset));
     padding-bottom: 196px;
     font-family: 'Inter', -apple-system, sans-serif;
@@ -90,13 +90,13 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-skeleton-title-group {
     display: grid;
-    gap: 10px;
+    gap: 8px;
     justify-items: center;
 }
 
 .mpwem-skeleton-steps {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 28px;
     overflow: hidden;
 }
@@ -123,7 +123,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-skeleton-card__head {
     display: grid;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-skeleton-grid {
@@ -134,7 +134,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-skeleton-advanced-list {
     display: grid;
-    gap: 14px;
+    gap: 12px;
 }
 
 .mpwem-skeleton-section {
@@ -176,7 +176,7 @@ body.mpwem-event-wizard-screen {
 .mpwem-skeleton-guide__item {
     display: grid;
     grid-template-columns: 22px minmax(0, 1fr);
-    gap: 10px;
+    gap: 8px;
     align-items: start;
 }
 
@@ -260,7 +260,7 @@ body.mpwem-event-wizard-screen {
 }
 
 .mpwem-skeleton-block--input {
-    height: 44px;
+    height: 46px;
 }
 
 .mpwem-skeleton-block--editor {
@@ -333,7 +333,7 @@ body.mpwem-event-wizard-screen {
     }
 
     .mpwem-skeleton-topbar {
-        gap: 14px;
+        gap: 12px;
     }
 
     .mpwem-skeleton-title-group {
@@ -376,7 +376,7 @@ body.mpwem-event-wizard-screen {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 6px;
+    gap: 8px;
     padding: 12px;
     height: auto;
     white-space: nowrap;
@@ -385,7 +385,7 @@ body.mpwem-event-wizard-screen {
     background: transparent;
     color: #353535 !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.01em;
@@ -431,6 +431,11 @@ body.mpwem-event-wizard-screen {
 }
 
 /* Topbar & Steps */
+body.mpwem-event-wizard-screen #wpcontent {
+    height: 100%;
+    padding-left: 0px;
+}
+
 .mpwem-event-wizard__topbar {
     position: relative;
     top: auto;
@@ -440,13 +445,13 @@ body.mpwem-event-wizard-screen {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--mpwem-border);
-    padding: 12px 16px;
+    padding: 8px 16px;
+    margin-bottom: 10px;
     transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .mpwem-event-wizard__topbar-inner {
-    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -462,7 +467,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-event-wizard__title h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 800;
     color: var(--mpwem-text);
     letter-spacing: -0.02em;
@@ -471,12 +476,12 @@ body.mpwem-event-wizard-screen {
     white-space: normal;
     word-break: break-word;
     text-transform: uppercase;
-    text-align: center;
+    text-align: left;
 }
 
 .mpwem-event-wizard__title .description {
     margin: 4px 0 0;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--mpwem-muted);
 }
 
@@ -486,6 +491,187 @@ body.mpwem-event-wizard-screen {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+}
+
+.mpwem-status-badge {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    height: 26px;
+    padding: 0 10px;
+    margin-right: 18px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+.mpwem-status-badge.is-published {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #166534;
+}
+
+.mpwem-status-badge.is-draft {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+
+.mpwem-status-badge.is-pending {
+    background: #fef3c7;
+    border-color: #fde68a;
+    color: #92400e;
+}
+
+.mpwem-status-badge.is-scheduled {
+    background: #dbeafe;
+    border-color: #93c5fd;
+    color: #1e40af;
+}
+
+.mpwem-status-badge.is-private {
+    background: #ede9fe;
+    border-color: #c4b5fd;
+    color: #5b21b6;
+}
+
+/* Payment status banner (Ticket & Pricing step) — icon-badge treatment,
+   no left-border bar. The warning and success rows are both always in the
+   DOM; JS toggles which one shows via inline display:none/flex (unchanged). */
+.mpwem-payment-banner {
+    padding: 18px 20px;
+    border-radius: var(--mpwem-radius);
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.mpwem-payment-banner--warning {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+}
+
+.mpwem-payment-banner--success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+}
+
+.mpwem-payment-banner__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    min-width: 0;
+}
+
+.mpwem-payment-banner__icon {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.mpwem-payment-banner--warning .mpwem-payment-banner__icon {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.mpwem-payment-banner--success .mpwem-payment-banner__icon {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.mpwem-payment-banner__title {
+    display: block !important;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.mpwem-payment-banner--warning .mpwem-payment-banner__title {
+    color: #78350f;
+}
+
+.mpwem-payment-banner--success .mpwem-payment-banner__title {
+    color: #14532d;
+}
+
+.mpwem-payment-banner__desc {
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.mpwem-payment-banner--warning .mpwem-payment-banner__desc {
+    color: #92400e;
+}
+
+.mpwem-payment-banner--success .mpwem-payment-banner__desc {
+    color: #166534;
+}
+
+.mpwem-payment-status__methods {
+    display: inline-flex !important;
+    flex-wrap: wrap;
+    gap: 6px;
+    vertical-align: middle;
+}
+
+.mpwem-payment-status__methods:empty {
+    display: none;
+}
+
+.mpwem-payment-method-pill {
+    display: inline-flex !important;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #bbf7d0;
+    color: #14532d;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.mpwem-payment-banner__btn {
+    flex: none;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 650;
+    padding: 10px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.mpwem-payment-banner__btn--primary {
+    border: none !important;
+    background: var(--mpwem-primary) !important;
+    color: #fff !important;
+}
+
+.mpwem-payment-banner__btn--primary:hover {
+    background: var(--mpwem-primary-hover) !important;
+}
+
+.mpwem-payment-banner__btn--secondary {
+    border: 1px solid #86efac !important;
+    background: #fff !important;
+    color: #166534 !important;
+}
+
+.mpwem-payment-banner__btn--secondary:hover {
+    background: #f0fdf4 !important;
+}
+
+.mpwem-payment-status-ask {
+    font-size: 13px;
+    font-style: italic;
+    color: #92400e;
 }
 
 .mpwem-status-actions {
@@ -520,12 +706,26 @@ body.mpwem-event-wizard-screen {
 }
 
 .mpwem-status-actions__toggle {
-    min-width: 42px;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
+    min-width: 32px;
+    padding-left: 9px !important;
+    padding-right: 9px !important;
     border-left: 1px solid rgba(255, 255, 255, 0.32) !important;
     border-top-right-radius: var(--mpwem-btn-radius) !important;
     border-bottom-right-radius: var(--mpwem-btn-radius) !important;
+}
+
+/* Compact the status-actions buttons specifically, without touching
+   the shared --mpwem-btn-padding used by buttons across the wizard */
+.mpwem-status-actions__primary,
+.mpwem-status-actions__toggle {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+    font-size: 13px !important;
+}
+
+.mpwem-status-actions__primary {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
 }
 
 .mpwem-status-actions__toggle .dashicons {
@@ -579,7 +779,7 @@ body.mpwem-event-wizard-screen {
     text-align: left;
     box-shadow: none !important;
     text-decoration: none !important;
-    gap: 10px;
+    gap: 8px;
     box-sizing: border-box;
 }
 
@@ -667,7 +867,7 @@ body.mpwem-event-wizard-screen {
     min-height: 0 !important;
     min-width: 0 !important;
     border-radius: 3px !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 400 !important;
     background: #f6f7f7 !important;
     color: #2c3338 !important;
@@ -807,7 +1007,8 @@ body.mpwem-event-wizard-screen {
     margin: 0 auto;
     padding: 0 16px;
     display: flex;
-    gap: 4px;
+    justify-content: center;
+    gap: 64px;
     overflow-x: auto;
     scrollbar-width: none;
     /* Hide scrollbar Firefox */
@@ -857,10 +1058,45 @@ body.mpwem-event-wizard-screen {
     overflow: visible;
 }
 
+/* Basic Info sidebar: Featured Image, Gallery, List Thumbnail, Slug,
+   Category, Organizer and Tags render as one unified card instead of
+   seven separate ones. Each piece keeps its own .mpwem-card /
+   .mpwem-taxonomy-card markup (and every class, id and data-attribute
+   JS relies on) — this wrapper just strips their individual chrome and
+   replaces the stacking margin with a divider between sections. */
+.mpwem-sidebar-single-card {
+    background: #fff;
+    border: 1px solid var(--mpwem-border);
+    border-radius: var(--mpwem-radius);
+    box-shadow: var(--mpwem-shadow);
+    overflow: hidden;
+}
+
+.mpwem-sidebar-single-card .mpwem-card,
+.mpwem-sidebar-single-card .mpwem-taxonomy-card {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.mpwem-sidebar-single-card>.mpwem-card+.mpwem-card,
+.mpwem-sidebar-single-card>.mpwem-taxonomy-card+.mpwem-taxonomy-card,
+.mpwem-sidebar-single-card>.mpwem-card+.mpwem-taxonomy-card,
+.mpwem-sidebar-single-card>.mpwem-taxonomy-card+.mpwem-card {
+    border-top: 1px solid #eef1f5;
+}
+
+.mpwem-sidebar-single-card .mpwem-card__head {
+    background: transparent;
+    border-bottom: none;
+    border-radius: 0;
+}
+
 .mpwem-card__head {
     padding: 14px 16px;
-    background: var(--mpwem-card-header-bg);
-    border-bottom: 1px solid var(--mpwem-border);
+    background: #fff;
+    border-bottom: 1px solid #d5d7da;
     border-top-right-radius: var(--mpwem-radius);
     border-top-left-radius: var(--mpwem-radius);
     overflow: hidden;
@@ -874,7 +1110,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-card__head p {
     margin: 4px 0 0;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--mpwem-muted);
 }
 
@@ -925,11 +1161,20 @@ body.mpwem-event-wizard-screen {
     min-height: 28px !important;
     padding: 0 10px !important;
     border-radius: 999px !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     line-height: 1 !important;
     white-space: nowrap;
     box-shadow: none !important;
+    background: #eff6ff !important;
+    border-color: #bfdbfe !important;
+    color: var(--mpwem-primary) !important;
+}
+
+.mpwem-taxonomy-card__toggle:hover {
+    background: #dbeafe !important;
+    border-color: #93c5fd !important;
+    color: var(--mpwem-primary-hover) !important;
 }
 
 .mpwem-taxonomy-card__toggle.is-active {
@@ -956,7 +1201,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-shortcode-help {
     display: grid;
-    gap: 10px;
+    gap: 8px;
     margin-top: 14px;
     padding-top: 14px;
     border-top: 1px solid rgba(148, 163, 184, 0.18);
@@ -968,7 +1213,7 @@ body.mpwem-event-wizard-screen {
 }
 
 .mpwem-shortcode-help__title {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--mpwem-text);
 }
@@ -980,7 +1225,7 @@ body.mpwem-event-wizard-screen {
     border-radius: 10px;
     background: #f8fbff;
     color: #1d4ed8;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
     white-space: normal;
     word-break: break-word;
@@ -988,7 +1233,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-shortcode-help__description {
     margin: 0;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.55;
     color: var(--mpwem-muted);
 }
@@ -1007,7 +1252,7 @@ body.mpwem-event-wizard-screen {
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .mpwem-field input {
@@ -1026,15 +1271,25 @@ body.mpwem-event-wizard-screen {
     padding: 0;
 }
 
+.mpwem-field--description .wp-editor-area {
+    min-height: 480px;
+    height: 480px !important;
+}
+
+.mpwem-field--description .mce-edit-area iframe {
+    min-height: 220px !important;
+    height: 220px !important;
+}
+
 .mpwem-input,
 .mp_formControl,
 .formControl {
     width: 100%;
-    padding: 10px 12px;
+    padding: 12px 12px;
     border: 1px solid var(--mpwem-border);
     border-radius: 8px;
     background-color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--mpwem-text);
     transition: all 0.2s;
 }
@@ -1103,7 +1358,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-taxonomy-create__head h3 {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.35;
     color: #17324d;
@@ -1112,14 +1367,14 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-taxonomy-create__head p {
     margin: 5px 0 0;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.45;
     color: #64748b;
 }
 
 .mpwem-taxonomy-create__controls {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 }
 
@@ -1128,7 +1383,7 @@ body.mpwem-event-wizard-screen {
     min-width: 0;
     margin-bottom: 0;
     border-radius: var(--mpwem-radius) !important;
-    min-height: 46px;
+    min-height: 48px;
     padding: 0 16px;
     border: 1px solid #c7d5e5;
     background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
@@ -1193,7 +1448,7 @@ body.mpwem-event-wizard-screen {
     margin: 10px 0 0;
     padding: 0 2px;
     min-height: 18px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.45;
     color: #64748b;
 }
@@ -1226,7 +1481,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-taxonomy-card__help {
     margin: 0;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.45;
     color: #64748b;
 }
@@ -1243,7 +1498,7 @@ body.mpwem-event-wizard-screen {
     border-radius: 8px;
     background: #fff;
     color: #334155 !important;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     line-height: 1;
     text-decoration: none !important;
@@ -1276,7 +1531,7 @@ body.mpwem-event-wizard-screen {
 
 .mpwem-taxonomy-card__tags-input {
     margin-bottom: 0;
-    min-height: 42px;
+    min-height: 44px;
 }
 
 .mpwem-taxonomy-card__chips {
@@ -1295,9 +1550,60 @@ body.mpwem-event-wizard-screen {
     border-radius: 999px;
     background: linear-gradient(135deg, #fff8ef 0%, #f8eee7 100%);
     color: #7c2d12;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     line-height: 1;
+}
+
+.mpwem-taxonomy-card__suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.mpwem-taxonomy-card__suggestions-label {
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--mpwem-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.mpwem-taxonomy-card__suggestions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mpwem-taxonomy-card__chip-suggest {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 6px 11px !important;
+    margin: 0 !important;
+    border: 1px solid var(--mpwem-border) !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    color: var(--mpwem-text) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    cursor: pointer;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.mpwem-taxonomy-card__chip-suggest:hover,
+.mpwem-taxonomy-card__chip-suggest:focus-visible {
+    background: var(--mpwem-primary-light, #eff6ff) !important;
+    border-color: var(--mpwem-primary) !important;
+    color: var(--mpwem-primary) !important;
+    outline: none;
+}
+
+.mpwem-taxonomy-card__chip-suggest[hidden] {
+    display: none !important;
 }
 
 #mpwem_slug_preview {
@@ -1307,7 +1613,7 @@ body.mpwem-event-wizard-screen {
     padding: 6px 10px;
     border-radius: 6px;
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-size: 11px;
+    font-size: 12px;
     color: #475569;
     margin-top: 6px;
     border: 1px solid #e2e8f0;
@@ -1324,7 +1630,7 @@ body.mpwem-event-wizard-screen {
 .mpwem-taxonomy-checklist {
     display: flex;
     flex-wrap: wrap;
-    gap: 3px;
+    gap: 8px;
     padding: 4px 0;
 }
 
@@ -1347,21 +1653,25 @@ body.mpwem-event-wizard-screen {
 .mpwem-taxonomy-checklist__label {
     display: inline-flex;
     align-items: center;
-    padding: 6px;
-    border: 1px solid #d9e2ef;
+    padding: 8px 14px;
+    border: 1.5px solid #d9dbd9;
     border-radius: 999px;
     background: #fff;
-    color: #475569;
-    font-size: 10px;
-    font-weight: normal;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
     line-height: 1.2;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s ease;
     user-select: none;
 }
 
 .mpwem-taxonomy-checklist__item:hover .mpwem-taxonomy-checklist__label {
+    transform: translateY(-1px);
+}
+
+.mpwem-taxonomy-checklist__item:not(:has(input:checked)):hover .mpwem-taxonomy-checklist__label {
     border-color: #94a3b8;
-    background: #f1f5f9;
+    background: #f8fafc;
     color: #1e293b;
 }
 
@@ -1369,11 +1679,36 @@ input#mpwem_location_venue {
     border-radius: 10px;
 }
 
+.mpwem-taxonomy-checklist__label::before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 12px;
+    flex: none;
+    background-color: currentColor;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    transition: width 0.15s ease, margin-right 0.15s ease;
+}
+
+.mpwem-taxonomy-checklist__item input:checked+.mpwem-taxonomy-checklist__label::before {
+    width: 12px;
+    margin-right: 6px;
+}
+
 .mpwem-taxonomy-checklist__item input:checked+.mpwem-taxonomy-checklist__label {
     border-color: var(--mpwem-primary);
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    color: var(--mpwem-primary);
-    box-shadow: 0 4px 12px -4px rgba(37, 99, 235, 0.25);
+    background: var(--mpwem-primary);
+    color: #fff;
+    box-shadow: 0 4px 10px -3px rgba(37, 99, 235, 0.5);
+}
+
+.mpwem-taxonomy-checklist__item:hover input:checked+.mpwem-taxonomy-checklist__label {
+    box-shadow: 0 6px 16px -4px rgba(37, 99, 235, 0.55);
 }
 
 .mpwem-taxonomy-checklist__item input:focus-visible+.mpwem-taxonomy-checklist__label {
@@ -1445,7 +1780,7 @@ input#mpwem_location_venue {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 14px;
+    gap: 12px;
 }
 
 .mpwem-event-setting-card__grid > section .mpev-label > div:first-child {
@@ -1476,7 +1811,7 @@ input#mpwem_location_venue {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 14px;
+    gap: 12px;
 }
 
 .mpwem-event-setting-card__copy {
@@ -1493,7 +1828,7 @@ input#mpwem_location_venue {
 .mpwem-event-setting-card__copy p,
 .mpwem-event-setting-card__help {
     margin: 6px 0 0;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
     color: #64748b;
 }
@@ -1650,7 +1985,7 @@ select.formControl,
 .mpwem-global-qty-field__help {
     display: block;
     margin-top: 8px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.55;
     color: #64748b;
 }
@@ -1708,8 +2043,8 @@ input[type="number"].mpwem-global-qty-field__input {
     text-align: center;
     width: 132px !important;
     max-width: 132px !important;
-    height: 42px !important;
-    padding: 8px 12px !important;
+    height: 44px !important;
+    padding: 10px 12px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 10px;
     background: #fff;
@@ -1742,7 +2077,7 @@ select.mpwem-global-qty-field__input {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
+    padding: 12px 16px;
     background: #fff;
     border: 1px solid var(--mpwem-border);
     border-radius: 10px;
@@ -1801,7 +2136,7 @@ select.mpwem-global-qty-field__input {
 }
 
 .mpwem-select-option {
-    padding: 10px 16px;
+    padding: 12px 16px;
     font-size: 14px;
     color: var(--mpwem-text);
     cursor: pointer;
@@ -1841,7 +2176,7 @@ select.mpwem-global-qty-field__input {
 }
 
 .mpwem-event-type-title {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: #1e293b;
     text-transform: uppercase;
@@ -1883,7 +2218,7 @@ select.mpwem-global-qty-field__input {
     border-radius: 50%;
     background: var(--mpwem-primary);
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -1910,13 +2245,13 @@ select.mpwem-global-qty-field__input {
 
 .mpwem-event-type-option small {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--mpwem-muted);
 }
 
 .mpwem-registration-mode {
     display: grid;
-    gap: 10px;
+    gap: 8px;
     padding: 10px 15px 0;
 }
 
@@ -1977,7 +2312,7 @@ select.mpwem-global-qty-field__input {
     border-radius: 50%;
     background: var(--mpwem-primary);
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -2014,14 +2349,14 @@ select.mpwem-global-qty-field__input {
 
 .mpwem-registration-mode__toggle .mpwem-date-type-option__copy strong {
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.25;
 }
 
 .mpwem-registration-mode__toggle .mpwem-date-type-option__copy small {
     color: var(--mpwem-muted);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.35;
     font-weight: normal;
 }
@@ -2030,7 +2365,7 @@ select.mpwem-global-qty-field__input {
 .mpwem-venue-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
     padding: 14px;
     background: #f1f5f9;
     border-radius: 10px;
@@ -2053,7 +2388,7 @@ select.mpwem-global-qty-field__input {
 .mpwem-venue-label {
     display: block;
     font-weight: 600;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: .4px;
     text-transform: uppercase;
     color: var(--mpwem-muted);
@@ -2065,8 +2400,8 @@ select.mpwem-global-qty-field__input {
     width: 100%;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    padding: 6px 9px;
-    font-size: 13px;
+    padding: 8px 9px;
+    font-size: 14px;
     background: #fff;
     box-sizing: border-box;
     transition: border-color .15s;
@@ -2087,13 +2422,13 @@ select.mpwem-global-qty-field__input {
 .mpwem-venue-search-wrap {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .mpwem-venue-search-label {
     display: block;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--mpwem-text);
     margin-bottom: 2px;
 }
@@ -2102,8 +2437,8 @@ select.mpwem-global-qty-field__input {
     width: 100%;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 13px;
+    padding: 10px 12px;
+    font-size: 14px;
     background: #fff;
     box-sizing: border-box;
     transition: border-color .15s, box-shadow .15s;
@@ -2124,7 +2459,7 @@ select.mpwem-global-qty-field__input {
 }
 
 .mpwem-venue-search-hint {
-    font-size: 11px;
+    font-size: 12px;
     color: #94a3b8;
     flex: 1;
 }
@@ -2135,7 +2470,7 @@ select.mpwem-global-qty-field__input {
     align-items: center;
     gap: 5px;
     padding: 4px 11px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--mpwem-primary);
     background: rgba(37, 99, 235, .07);
@@ -2247,7 +2582,7 @@ select.mpwem-global-qty-field__input {
     background: #e2e8f0;
     color: #64748b;
     border-radius: 50%;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     margin-left: 6px;
     cursor: help;
@@ -2350,7 +2685,7 @@ select.mpwem-global-qty-field__input {
 ._bg_light_padding_bB span {
     display: block !important;
     margin: 4px 0 0 !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     color: var(--mpwem-muted) !important;
 }
 
@@ -2380,7 +2715,7 @@ select.mpwem-global-qty-field__input {
 
 .label-text {
     display: block;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--mpwem-muted);
     margin-top: -8px;
     margin-bottom: 20px;
@@ -2388,8 +2723,8 @@ select.mpwem-global-qty-field__input {
 
 /* Sidebar Featured Image */
 .mpwem-featured-image__preview {
+    position: relative;
     background: #f1f5f9;
-    border: 2px dashed var(--mpwem-border);
     border-radius: 8px;
     aspect-ratio: 16/9;
     display: flex;
@@ -2403,6 +2738,22 @@ select.mpwem-global-qty-field__input {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.mpwem-featured-image__meta {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .mpwem-featured-image__actions {
@@ -2468,7 +2819,7 @@ select.mpwem-global-qty-field__input {
     .mpwem-taxonomy-card__toggle {
         width: 100%;
         min-height: 34px !important;
-        font-size: 12px !important;
+        font-size: 13px !important;
     }
 
     .mpwem-taxonomy-card .mpwem-card__head-actions {
@@ -2523,12 +2874,12 @@ select.mpwem-global-qty-field__input {
         top: var(--mpwem-admin-bar-offset);
         left: var(--mpwem-admin-sidebar-offset);
         right: 0;
-        padding: 16px 20px;
+        padding: 10px 20px;
     }
 
     .mpwem-event-wizard__steps {
         top: 101px;
-        margin-bottom: 32px;
+        margin-bottom: 0px;
     }
 
     .mpwem-event-wizard__container {
@@ -2552,7 +2903,7 @@ select.mpwem-global-qty-field__input {
 @media (min-width: 901px) {
     .mpwem-event-wizard__topbar-inner {
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -2561,12 +2912,13 @@ select.mpwem-global-qty-field__input {
     }
 
     .mpwem-event-wizard__topbar-inner>.mpwem-link:first-child {
-        min-width: 122px;
+        min-width: 0;
     }
 
     .mpwem-event-wizard__title {
-        flex: 1 1 auto;
-        margin: 0 16px;
+        flex: 0 1 auto;
+        max-width: 320px;
+        margin: 0 16px 0 8px;
     }
 
     .mpwem-event-wizard__title h1 {
@@ -2579,6 +2931,7 @@ select.mpwem-global-qty-field__input {
         flex-wrap: nowrap;
         gap: 0;
         min-width: initial;
+        margin-left: auto;
     }
 
     .mpwem-status-actions {
@@ -2704,13 +3057,13 @@ select.mpwem-global-qty-field__input {
 }
 
 #mpwem_ticket_summary.mpwem-ticket-summary {
-    gap: 14px;
+    gap: 12px;
     padding: 0 15px 14px;
     margin-top: 14px;
 }
 
 #mpwem_extra_service_summary.mpwem-ticket-summary {
-    gap: 14px;
+    gap: 12px;
     padding: 0 0 5px;
     margin-top: 14px;
 }
@@ -2730,14 +3083,14 @@ select.mpwem-global-qty-field__input {
 
 #mpwem_ticket_summary .mpwem-ticket-summary__toolbar {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
     padding: 18px 20px;
     border-radius: 14px;
 }
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__toolbar {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
     padding: 18px 20px;
     border-radius: 14px;
 }
@@ -2747,7 +3100,7 @@ select.mpwem-global-qty-field__input {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -2801,19 +3154,19 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-ticket-summary__intro p,
 .mpwem-ticket-modal__header-copy p {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.45;
     color: var(--mpwem-muted);
 }
 
 #mpwem_ticket_summary .mpwem-ticket-summary__intro p {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.4;
 }
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__intro p {
     max-width: 48ch;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.4;
 }
 
@@ -2840,12 +3193,13 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     line-height: 32px;
 }
 
+#mpwem_ticket_summary .mpwem-ticket-summary__actions .mpwem-ticket-summary__add,
 #mpwem_ticket_summary .mpwem-ticket-summary__actions .mpwem-ticket-summary__add.button-primary,
 #mpwem_ticket_summary .mpwem-ticket-summary__actions .mpwem-ticket-summary__add.button-primary:hover,
 #mpwem_ticket_summary .mpwem-ticket-summary__actions .mpwem-ticket-summary__add.button-primary:focus {
-    background: var(--mpwem-btn-primary-bg);
-    color: var(--mpwem-btn-primary-text);
-    border-color: var(--mpwem-btn-primary-bg);
+    background: var(--mpwem-btn-primary-bg, var(--mpwem-primary, #2563eb)) !important;
+    color: var(--mpwem-btn-primary-text, #ffffff) !important;
+    border-color: var(--mpwem-btn-primary-bg, var(--mpwem-primary, #2563eb)) !important;
 }
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__actions .button {
@@ -2909,7 +3263,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-ticket-summary__header {
     padding: 10px 22px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -2920,13 +3274,13 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 #mpwem_ticket_summary .mpwem-ticket-summary__header {
     padding: 10px 14px;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
 }
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__header {
     padding: 10px 14px;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
 }
 
@@ -2941,21 +3295,21 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 #mpwem_ticket_summary .mpwem-ticket-summary__item {
     padding: 8px 14px;
-    gap: 14px;
+    gap: 12px;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__item {
     padding: 8px 14px;
-    gap: 14px;
+    gap: 12px;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__item {
     padding: 8px 14px;
-    gap: 14px;
+    gap: 12px;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -2995,7 +3349,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-ticket-summary__item-head h4,
@@ -3019,7 +3373,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-ticket-summary__item-main p,
 .mpwem-ticket-summary__empty p {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.55;
     color: var(--mpwem-muted);
 }
@@ -3033,7 +3387,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     border-radius: 999px;
     background: #e8f1ff;
     color: #0f4fbf;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -3190,7 +3544,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__capacity {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     letter-spacing: 0;
     text-transform: none;
@@ -3215,12 +3569,12 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     }
 
     #mpwem_ticket_summary .mpwem-ticket-summary__item-head h4 {
-        font-size: 13px !important;
+        font-size: 14px !important;
     }
 
     #mpwem_ticket_summary .mpwem-ticket-summary__price,
     #mpwem_ticket_summary .mpwem-ticket-summary__capacity {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     #mpwem_extra_service_summary .mpwem-ticket-summary__header,
@@ -3239,12 +3593,12 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     }
 
     #mpwem_extra_service_summary .mpwem-ticket-summary__item-head h4 {
-        font-size: 13px !important;
+        font-size: 14px !important;
     }
 
     #mpwem_extra_service_summary .mpwem-ticket-summary__price,
     #mpwem_extra_service_summary .mpwem-ticket-summary__capacity {
-        font-size: 12px;
+        font-size: 13px;
     }
 }
 
@@ -3314,7 +3668,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 10px 20px;
+    gap: 8px 20px;
     padding: 16px 22px;
     border-bottom: 1px solid rgba(148, 163, 184, 0.2);
     background:
@@ -3433,7 +3787,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-ticket-modal__mount .mpwem-repeat-schedule-shell {
     display: grid;
-    gap: 14px;
+    gap: 12px;
     padding: 18px !important;
     background: transparent !important;
 }
@@ -3457,7 +3811,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     display: block;
     margin-top: 10px;
     color: #5b708c;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
 }
 
@@ -3466,14 +3820,14 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-ticket-modal__mount .mpwem-repeat-row ._justify_between_align_center_wrap>label:first-child,
 .mpwem-ticket-modal__mount .mpwem-repeat-row label._justify_between_align_center_wrap>._mr {
     display: grid;
-    gap: 6px;
+    gap: 8px;
     align-content: start;
     margin: 0;
 }
 
 .mpwem-ticket-modal__mount .mpwem-repeat-row ._justify_between_align_center_wrap>label:first-child::after,
 .mpwem-ticket-modal__mount .mpwem-repeat-row label._justify_between_align_center_wrap>._mr::after {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1.45;
     color: #64748b;
@@ -3537,7 +3891,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-ticket-modal__mount .mpwem-repeat-field-group .formControl,
 .mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
-    min-height: 44px;
+    min-height: 46px;
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box;
@@ -3593,7 +3947,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     align-items: center;
     gap: 8px;
     margin: 2px 8px 20px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: #64748b;
 }
@@ -3608,7 +3962,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     border-radius: 999px;
     background: #eef2ff;
     color: #4f46e5;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1;
 }
 
@@ -3669,7 +4023,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-ticket-modal__mount ._justify_between_align_center_wrap>label {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: #10233f;
 }
@@ -3689,9 +4043,9 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-ticket-mode-select {
     width: 100%;
     max-width: 150px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
-    padding: 5px 6px;
+    padding: 7px 6px;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     background-color: #fff;
@@ -3756,7 +4110,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     border: 0;
     background: #edf3fb;
     color: #10233f;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -3824,8 +4178,8 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    height: 40px;
-    padding: 8px 12px;
+    height: 42px;
+    padding: 10px 12px;
     border: 1px solid #d7e0ea;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.92);
@@ -3845,7 +4199,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-ticket-modal__mount .mpwem_ticket_table ._dFlex {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 128px;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 }
 
@@ -3998,12 +4352,12 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__mount .mpwem-ticket-action-bar__item {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-action-bar__item label {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -4073,7 +4427,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__mount .mpwem-ticket-card__group {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -4104,7 +4458,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-ticket-modal__mount .mpwem-card-label {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -4112,7 +4466,7 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-ticket-modal__mount .mpwem-card-sub-label {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.45;
     color: #4b5563;
 }
@@ -4123,8 +4477,8 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__mount .mpwem-date-input-wrap input {
     width: 100%;
     min-width: 0;
-    height: 42px;
-    padding: 10px 12px;
+    height: 44px;
+    padding: 12px 12px;
     border: 1px solid #ccd5e1;
     border-radius: 10px;
     background: #fff;
@@ -4143,7 +4497,7 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-ticket-modal__mount .mpwem-card-input--large {
-    height: 42px;
+    height: 44px;
     font-size: 14px;
     font-weight: 400;
 }
@@ -4167,7 +4521,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__mount .mpwem-card-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -4184,7 +4538,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 999px;
     background: #eef4ff;
     color: #1d4ed8;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.04em;
 }
@@ -4219,7 +4573,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__mount .mpwem-card-date-field {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 92px;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     width: 100%;
 }
@@ -4324,7 +4678,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__add.button.button-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -4441,7 +4795,7 @@ body.mpwem-ticket-modal-open {
 /* Style the event_meta_help_txtx links inside the unified docs card */
 .mpwem-docs-card p.event_meta_help_txtx {
     margin-bottom: 12px;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.5;
     display: block;
     position: relative;
@@ -4571,7 +4925,7 @@ body.mpwem-ticket-modal-open {
     grid-column: 2;
     margin: 2px 0 0;
     color: var(--mpwem-muted);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.45;
 }
 
@@ -4583,7 +4937,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 999px;
     background: linear-gradient(135deg, #f59e0b, #d97706);
     color: #fff;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     letter-spacing: .04em;
     line-height: 1.4;
@@ -4596,7 +4950,7 @@ body.mpwem-ticket-modal-open {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     margin-top: 12px;
     padding: 24px 18px;
     border: 1px dashed var(--mpwem-border, #d6dae3);
@@ -4622,7 +4976,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-pro-locked p {
     margin: 0;
     max-width: 360px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
     color: var(--mpwem-muted, #6b7280);
 }
@@ -4919,7 +5273,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section .mpev-label h2 {
     margin: 0 !important;
     color: var(--mpwem-text) !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     line-height: 1.35;
 }
@@ -4929,7 +5283,7 @@ body.mpwem-ticket-modal-open {
     display: block;
     margin-top: 7px;
     color: var(--mpwem-muted) !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.45;
 }
 
@@ -4941,13 +5295,13 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section .mp_formControl {
     width: 100% !important;
     max-width: 100% !important;
-    min-height: 42px;
-    padding: 8px 12px !important;
+    min-height: 44px;
+    padding: 10px 12px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 10px !important;
     background: #fff !important;
     color: var(--mpwem-text) !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     box-shadow: none !important;
     box-sizing: border-box;
 }
@@ -4972,7 +5326,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section .faq-item-header button,
 .mpwem-display-section #add-faq-item {
     border-radius: 9px !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 700 !important;
 }
 
@@ -5001,7 +5355,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--seo .mp_tab_item>._layout_default_xs_mp_zero,
 .mpwem-display-section--settings .mp_tab_item>._layout_default_xs_mp_zero {
     display: grid;
-    gap: 14px;
+    gap: 12px;
     background: transparent !important;
 }
 
@@ -5106,7 +5460,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--settings ._mr,
 .mpwem-display-section--settings label>span:first-child,
 .mpwem-display-section--settings .mpev-label h2 {
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em;
 }
@@ -5125,7 +5479,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--settings .mpev-label .label-text {
     margin-top: 6px;
     color: #64748b !important;
-    font-size: 11.5px !important;
+    font-size: 12.5px !important;
     line-height: 1.55;
     max-width: 34ch;
 }
@@ -5194,7 +5548,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #cfdced !important;
     border-radius: 12px !important;
     color: #1e3a5f !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em;
     box-shadow:
@@ -5346,7 +5700,7 @@ body.mpwem-ticket-modal-open {
     counter-increment: mpwem-terms-item;
     counter-reset: mpwem-terms-item;
     display: grid;
-    gap: 14px;
+    gap: 12px;
 }
 
 .mpwem-display-section--terms .mpwem-terms-item {
@@ -5375,7 +5729,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #f1d29a;
     border-radius: 999px;
     color: #b45309;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -5401,7 +5755,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--terms .mpwem-terms-item__head ._justify_between_align_center_wrap> :first-child {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -5452,7 +5806,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-display-section--terms [data-collapse] .buttonGroup {
     display: inline-flex !important;
-    gap: 6px;
+    gap: 8px;
     width: auto !important;
     max-width: none !important;
 }
@@ -5462,7 +5816,7 @@ body.mpwem-ticket-modal-open {
     min-height: 32px !important;
     padding: 0 12px !important;
     border-radius: 10px !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 700 !important;
 }
 
@@ -5505,7 +5859,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--terms .mpev-label .label-text {
     margin-top: 5px;
     color: #64748b !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     line-height: 1.45;
 }
 
@@ -5521,7 +5875,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-display-section--terms .mep-term-section {
     display: grid;
-    gap: 14px;
+    gap: 12px;
     padding: 16px 18px 18px !important;
     background:
         linear-gradient(180deg, rgba(248, 250, 252, 0.8) 0%, #fff 100%),
@@ -5547,7 +5901,7 @@ body.mpwem-ticket-modal-open {
 
 .mep_conditional_area {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 15px;
     justify-content: space-between;
 }
@@ -5581,11 +5935,11 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--terms .mep-term-header .mpev-label>p {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
     margin: 0 !important;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.35;
 }
@@ -5610,7 +5964,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--terms .mep-term-action {
     position: static !important;
     display: inline-flex;
-    gap: 6px;
+    gap: 8px;
     align-items: center;
     justify-content: flex-end;
     transform: none !important;
@@ -5648,7 +6002,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--terms .mep-term-content {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 8px;
     margin: 0 !important;
     padding: 12px !important;
     background: #f8fafc !important;
@@ -5666,7 +6020,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #e1e8f0;
     border-radius: 10px;
     color: #64748b;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.35;
 }
 
@@ -5679,7 +6033,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #d9e2ef;
     border-radius: 999px;
     color: #334155;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
 }
@@ -5701,7 +6055,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #cbd5e1 !important;
     border-radius: 9px !important;
     color: var(--mpwem-primary) !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
 }
@@ -5749,7 +6103,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #bae6fd;
     border-radius: 10px;
     color: #075985 !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 700;
     line-height: 1.45;
 }
@@ -5797,7 +6151,7 @@ body.mpwem-ticket-modal-open {
     gap: 7px;
     margin: 0 !important;
     color: var(--mpwem-text);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     line-height: 1.4;
 }
@@ -5856,14 +6210,14 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--attendee-form .mp_formControl,
 .mpwem-display-section--attendee-form input[type="text"],
 .mpwem-display-section--attendee-form select {
-    min-height: 40px !important;
-    padding: 8px 11px !important;
+    min-height: 42px !important;
+    padding: 10px 11px !important;
     background: #fff !important;
     border: 1px solid #d6e0eb !important;
     border-radius: 10px !important;
     box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03) !important;
     color: var(--mpwem-text) !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
 }
 
 .mpwem-display-section--attendee-form .conditional_form_area {
@@ -5878,7 +6232,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--attendee-form .conditional_form_area h4,
 .mpwem-display-section--attendee-form .conditional_form_area strong {
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
 }
 
@@ -5911,10 +6265,10 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--attendee-form .mep_condition_item .mp_formControl,
 .mpwem-display-section--attendee-form .mep_condition_item select.mp_formControl,
 .mpwem-display-section--attendee-form .mep_condition_item input.mp_formControl {
-    min-height: 32px !important;
-    height: 32px !important;
+    min-height: 34px !important;
+    height: 34px !important;
     padding: 0 28px 0 8px !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     border-radius: 7px !important;
     background-position: right 8px center !important;
     background-size: 14px !important;
@@ -6041,7 +6395,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 999px !important;
     background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%) !important;
     color: #1d4ed8 !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 700 !important;
     line-height: 1.2;
     box-shadow: 0 10px 24px -20px rgba(29, 78, 216, 0.65);
@@ -6144,7 +6498,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--faq .faq-item-header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     min-height: 42px;
     padding: 8px 10px;
@@ -6159,7 +6513,7 @@ body.mpwem-ticket-modal-open {
     margin: 0;
     overflow: hidden;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.35;
     text-overflow: ellipsis;
@@ -6179,7 +6533,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 6px;
     color: var(--mpwem-primary);
     font-family: dashicons;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1;
 }
@@ -6190,7 +6544,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-display-section--faq .faq-item-header .buttonGroup {
     display: inline-flex !important;
-    gap: 6px;
+    gap: 8px;
     width: auto !important;
     max-width: none !important;
 }
@@ -6228,13 +6582,13 @@ body.mpwem-ticket-modal-open {
     display: block;
     margin-bottom: 5px;
     color: var(--mpwem-text);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
 }
 
 .mpwem-display-section--faq .faq-item-content input[name="mep_faq_title[]"] {
-    height: 38px !important;
-    min-height: 38px;
+    height: 40px !important;
+    min-height: 40px;
 }
 
 .mpwem-display-section--faq .wp-editor-wrap,
@@ -6304,7 +6658,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--timeline .timeline-item-header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     min-height: 42px;
     padding: 8px 10px;
@@ -6319,7 +6673,7 @@ body.mpwem-ticket-modal-open {
     margin: 0;
     overflow: hidden;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.35;
     text-overflow: ellipsis;
@@ -6339,14 +6693,14 @@ body.mpwem-ticket-modal-open {
     border-radius: 6px;
     color: var(--mpwem-primary);
     font-family: dashicons;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1;
 }
 
 .mpwem-display-section--timeline .timeline-item-header .buttonGroup {
     display: inline-flex !important;
-    gap: 6px;
+    gap: 8px;
     width: auto !important;
     max-width: none !important;
 }
@@ -6372,7 +6726,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-display-section--timeline .timeline-item.open .timeline-item-content {
     display: grid;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-display-section--timeline .timeline-item-content>div {
@@ -6383,13 +6737,13 @@ body.mpwem-ticket-modal-open {
     display: block;
     margin-bottom: 5px;
     color: var(--mpwem-text);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
 }
 
 .mpwem-display-section--timeline .timeline-item-content input.regular-text {
-    height: 38px !important;
-    min-height: 38px;
+    height: 40px !important;
+    min-height: 40px;
 }
 
 .mpwem-display-section--timeline .wp-editor-wrap {
@@ -6465,20 +6819,20 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-display-section--related .mpev-label>div:first-child {
     display: grid;
-    gap: 6px;
+    gap: 8px;
     padding-top: 2px;
     align-content: start;
 }
 
 .mpwem-display-section--related .mpev-label h2 {
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     line-height: 1.35;
 }
 
 .mpwem-display-section--related .mpev-label .label-text {
     margin-top: 0;
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.5;
 }
 
@@ -6487,13 +6841,13 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-display-section--related input.related_section_label {
-    height: 42px !important;
-    min-height: 42px;
+    height: 44px !important;
+    min-height: 44px;
     padding-inline: 12px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 10px !important;
     background: #fff !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -6510,7 +6864,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-related-search-wrap {
     display: grid;
-    gap: 10px;
+    gap: 8px;
 }
 
 /* --- Search Input --- */
@@ -6534,12 +6888,12 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-related-search-input {
     width: 100%;
-    height: 44px;
+    height: 46px;
     padding: 0 54px 0 14px;
     border: 1px solid #d9e2ef;
     border-radius: 10px;
     background: #fff;
-    font-size: 13px;
+    font-size: 14px;
     color: #1e293b;
     transition: border-color 0.2s, box-shadow 0.2s;
     box-sizing: border-box;
@@ -6586,13 +6940,13 @@ body.mpwem-ticket-modal-open {
 .mpwem-related-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
     align-items: center;
-    min-height: 28px;
+    min-height: 30px;
 }
 
 .mpwem-related-pills-empty {
-    font-size: 12px;
+    font-size: 13px;
     color: #94a3b8;
     font-style: italic;
 }
@@ -6600,14 +6954,14 @@ body.mpwem-ticket-modal-open {
 .mpwem-related-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     min-height: 28px;
     padding: 3px 8px 3px 10px;
     border: 1px solid #d0e0f5;
     border-radius: 999px;
     background: #f0f6ff;
     color: #1a3a6b;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     line-height: 1.2;
     transition: background 0.15s, border-color 0.15s;
@@ -6694,7 +7048,7 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-related-result-item__title {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: #1e293b;
     line-height: 1.35;
@@ -6708,7 +7062,7 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-related-result-item__date {
-    font-size: 11px;
+    font-size: 12px;
     color: #94a3b8;
 }
 
@@ -6734,7 +7088,7 @@ body.mpwem-ticket-modal-open {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     padding: 28px 16px;
     text-align: center;
 }
@@ -6748,7 +7102,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-related-empty-state p {
     margin: 0;
-    font-size: 12px;
+    font-size: 13px;
     color: #94a3b8;
 }
 
@@ -6776,20 +7130,20 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-display-section--related .mpev-label>div:first-child {
     display: grid;
-    gap: 6px;
+    gap: 8px;
     padding-top: 2px;
     align-content: start;
 }
 
 .mpwem-display-section--related .mpev-label h2 {
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     line-height: 1.35;
 }
 
 .mpwem-display-section--related .mpev-label .label-text {
     margin-top: 0;
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.5;
 }
 
@@ -6819,7 +7173,7 @@ body.mpwem-ticket-modal-open {
     border-bottom: 1px solid #eef2f7 !important;
     background: #fff !important;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     vertical-align: middle;
 }
 
@@ -6848,7 +7202,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #bfd1ef;
     border-radius: 9px;
     color: var(--mpwem-primary);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     text-decoration: none;
 }
@@ -6856,7 +7210,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email h5 {
     margin: 0 0 6px !important;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
 }
 
@@ -6864,7 +7218,7 @@ body.mpwem-ticket-modal-open {
     display: block;
     margin-top: 4px;
     color: var(--mpwem-muted) !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.45;
 }
 
@@ -6886,7 +7240,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #d9e2ef;
     border-radius: 999px;
     color: #475569 !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 700;
     line-height: 1.2;
 }
@@ -6902,7 +7256,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 50%;
     color: var(--mpwem-primary);
     font-family: dashicons;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1;
 }
 
@@ -6927,7 +7281,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 10px;
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     color: var(--mpwem-text);
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .mpwem-display-section--email .mp_list ._min_200 {
@@ -6942,7 +7296,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #cbd5e1;
     border-radius: 7px;
     color: var(--mpwem-primary);
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     white-space: nowrap;
 }
@@ -7001,7 +7355,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email-reminder h5 {
     margin: 0 0 8px !important;
     color: #134e4a;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em;
 }
@@ -7010,14 +7364,14 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email-reminder p:not(.description),
 .mpwem-display-section--email-reminder .event_meta_help_txt {
     color: #58727a !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.55;
 }
 
 .mpwem-display-section--email-reminder .description {
     margin-top: 8px !important;
     color: #64748b !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.55;
 }
 
@@ -7076,7 +7430,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email-reminder table th {
     background: #f6fffc;
     color: #134e4a;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
     text-align: left;
 }
@@ -7094,7 +7448,7 @@ body.mpwem-ticket-modal-open {
     background: #f0fdfa;
     border: 1px solid #cceee6;
     color: #0f766e;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -7123,7 +7477,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--template .mep-template-section {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
     padding: 16px 20px !important;
 }
 
@@ -7158,7 +7512,7 @@ body.mpwem-ticket-modal-open {
     background: var(--mpwem-primary);
     border-radius: 999px;
     color: #fff;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
 }
@@ -7177,7 +7531,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--template .mep-template h5 {
     margin: 0px 0 20px 0;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.3;
 }
@@ -7204,7 +7558,7 @@ body.mpwem-ticket-modal-open {
 
 #mpwem_wizard_display .mpwem-event-wizard__sidebar .mpwem-display-section--template .mep-template h5 {
     margin: 10px 2px 0;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.35;
     text-align: center;
 }
@@ -7228,7 +7582,7 @@ body.mpwem-ticket-modal-open {
     gap: 8px;
     align-items: start;
     color: var(--mpwem-muted);
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .mpwem-card--help-display .mpwem-display-guide span {
@@ -7245,7 +7599,7 @@ body.mpwem-ticket-modal-open {
     border: 1px solid #bfd1ef;
     border-radius: 50%;
     color: var(--mpwem-primary);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
 }
 
@@ -7256,7 +7610,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-card--help-display .mpwem-display-guide strong {
     display: block;
     color: var(--mpwem-text);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.35;
 }
 
@@ -7264,7 +7618,7 @@ body.mpwem-ticket-modal-open {
     display: block;
     margin-top: 2px;
     color: var(--mpwem-muted);
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.45;
 }
 
@@ -7288,7 +7642,7 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-danger-zone {
     display: grid;
-    gap: 14px;
+    gap: 12px;
     padding: 2px 0;
 }
 
@@ -7310,7 +7664,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 999px;
     background: #ffe4e6;
     color: #be123c;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -7319,7 +7673,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-danger-zone__intro p {
     margin: 0;
     color: #7f1d1d;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.55;
 }
 
@@ -7398,14 +7752,14 @@ body.mpwem-ticket-modal-open {
 .mpwem-confirm-modal__body p {
     margin: 0;
     color: #475569;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.6;
 }
 
 .mpwem-confirm-modal__actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
     padding: 16px 20px 20px;
 }
 
@@ -7425,7 +7779,7 @@ body.mpwem-ticket-modal-open {
 
 #mpwem_wizard_media_mount_basic .mp_tab_item>section>h2,
 #mpwem_wizard_media_mount_basic .mp_tab_item .mpev-label h2 {
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 600 !important;
     color: var(--mpwem-text-main) !important;
     margin: 0 0 8px 0 !important;
@@ -7478,7 +7832,7 @@ body.mpwem-ticket-modal-open {
 }
 
 #mpwem_wizard_thumbnail_mount_basic h2 {
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 600 !important;
     color: var(--mpwem-text-main) !important;
     margin: 0 0 8px 0 !important;
@@ -7488,7 +7842,7 @@ body.mpwem-ticket-modal-open {
 }
 
 #mpwem_wizard_thumbnail_mount_basic .label-text {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--mpwem-text-muted);
     line-height: 1.4;
     display: block;
@@ -7517,7 +7871,7 @@ body.mpwem-ticket-modal-open {
 }
 
 #mpwem_wizard_media_mount_basic .mp_tab_item .label-text {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--mpwem-text-muted);
     line-height: 1.4;
     display: block;
@@ -7545,7 +7899,7 @@ body.mpwem-ticket-modal-open {
 #mpwem_wizard_media_mount_basic .mp_multi_image {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 16px;
 }
 
@@ -7583,7 +7937,7 @@ body.mpwem-ticket-modal-open {
     text-align: center;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 11px;
     z-index: 10;
 }
 
@@ -7608,7 +7962,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 10px !important;
     background: #eff6ff !important;
     color: #1d4ed8 !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 650 !important;
     line-height: 1.2 !important;
     letter-spacing: 0.01em;
@@ -7685,9 +8039,9 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) th {
     background: #f1f5f9;
-    padding: 14px 16px;
+    padding: 16px 16px;
     text-align: left;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--mpwem-text);
     text-transform: uppercase;
@@ -7734,10 +8088,10 @@ body.mpwem-ticket-modal-open {
 
 /* Refined Form Controls for Table */
 #mp_event_all_info_in_tab table:not(.ui-datepicker-calendar) .formControl {
-    padding: 8px 12px !important;
-    height: 38px;
+    padding: 10px 12px !important;
+    height: 40px;
     border-color: #e2e8f0;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 #mp_event_all_info_in_tab table:not(.ui-datepicker-calendar) .formControl:focus {
@@ -7797,7 +8151,7 @@ body.mpwem-ticket-modal-open {
     display: block;
     margin-top: 4px;
     color: var(--mpwem-muted);
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .mpwem-date-step ._padding_bt,
@@ -7821,7 +8175,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-date-step ._mr,
 .mpwem-date-step label>span:first-child {
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
 }
 
@@ -7830,7 +8184,7 @@ body.mpwem-ticket-modal-open {
     display: block;
     margin-top: 8px;
     color: var(--mpwem-muted);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.45;
 }
 
@@ -7838,7 +8192,7 @@ body.mpwem-ticket-modal-open {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
-    padding: 18px 22px;
+    padding: 20px 22px;
     border-bottom: 1px solid #eef2f7;
 }
 
@@ -7879,7 +8233,7 @@ body.mpwem-ticket-modal-open {
     border-radius: 50%;
     background: var(--mpwem-primary);
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -7936,18 +8290,18 @@ div.mpwem-date-type-option__copy {
 
 div.mpwem-date-type-option__copy strong {
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.25;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1.25;
 }
 
 .mpwem-date-type-option__copy small {
     color: var(--mpwem-muted);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.35;
 }
 
@@ -7961,7 +8315,7 @@ div.mpwem-date-type-option__copy strong {
     border: 1px solid #bbf7d0;
     border-radius: 999px;
     color: #166534;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
 }
 
@@ -7991,12 +8345,12 @@ div.mpwem-date-type-option__copy strong {
 .mpwem-date-buffer-field input[name="mep_buffer_time"] {
     width: 132px !important;
     max-width: 132px !important;
-    height: 42px !important;
-    padding: 8px 12px !important;
+    height: 44px !important;
+    padding: 10px 12px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 10px !important;
     background: #fff !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: normal;
     text-align: center;
 }
@@ -8027,13 +8381,13 @@ div.mpwem-date-type-option__copy strong {
     justify-self: end;
     width: 250px !important;
     max-width: 250px !important;
-    height: 42px !important;
-    padding: 8px 12px !important;
+    height: 44px !important;
+    padding: 10px 12px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 10px !important;
     background: #fff !important;
     color: var(--mpwem-text) !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 700;
     text-align: center;
     box-shadow: none !important;
@@ -8055,7 +8409,7 @@ div.mpwem-date-type-option__copy strong {
 .mpwem-date-step ._dFlex {
     display: flex !important;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     justify-content: end;
 }
@@ -8082,13 +8436,13 @@ div.mpwem-date-type-option__copy strong {
 .mpwem-time-input {
     width: 100% !important;
     max-width: none !important;
-    height: 42px !important;
+    height: 44px !important;
     padding-left: 38px !important;
     padding-right: 44px !important;
     border-color: #d9e2ef !important;
     border-radius: 10px !important;
     background: #fff !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
 }
 
 .mpwem-time-input {
@@ -8176,13 +8530,13 @@ div.mpwem-date-type-option__copy strong {
     align-items: center;
     justify-content: center;
     width: 24px;
-    height: 24px;
+    height: 26px;
     margin: 0;
     border: 1px solid #fecdd3;
     border-radius: 999px;
     background: #fff1f2;
     color: var(--mpwem-danger);
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1;
     cursor: pointer;
     transform: translateY(-50%);
@@ -8213,7 +8567,7 @@ div.mpwem-date-type-option__copy strong {
 .mpwem-date-step .mpwem-date-table th {
     background: #eef4fb !important;
     color: #31445f !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     letter-spacing: 0.04em !important;
 }
 
@@ -8404,7 +8758,7 @@ body.mpwem-drag-scroll-active {
     background: #eef4fb !important;
     border-bottom: 1px solid #d9e2ef !important;
     color: #31445f !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     letter-spacing: 0.04em !important;
     text-transform: uppercase;
@@ -8436,18 +8790,18 @@ body.mpwem-drag-scroll-active {
 .mep-special-datetime .mep_special_on_dates_table .name_validation {
     width: 100% !important;
     max-width: 100% !important;
-    height: 38px !important;
-    padding: 7px 10px !important;
+    height: 40px !important;
+    padding: 9px 10px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 9px !important;
     background: #fff !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     box-sizing: border-box;
 }
 
 .mep-special-datetime .mep_special_on_dates_table .mpwem-date-input,
 .mep-special-datetime .mep_special_on_dates_table .mpwem-time-input {
-    height: 38px !important;
+    height: 40px !important;
     text-align: center;
 }
 
@@ -8481,7 +8835,7 @@ body.mpwem-drag-scroll-active {
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table tr {
     display: grid;
     grid-template-columns: minmax(90px, 1fr) 120px 76px;
-    gap: 6px;
+    gap: 8px;
     align-items: center;
     width: 100%;
     box-sizing: border-box;
@@ -8513,7 +8867,7 @@ body.mpwem-drag-scroll-active {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
 }
 
@@ -8532,7 +8886,7 @@ body.mpwem-drag-scroll-active {
 
 .mep-special-datetime .mep_special_on_dates_table .buttonGroup {
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 .mpwem-date-step .mpwem_add_item,
@@ -8554,7 +8908,7 @@ body.mpwem-drag-scroll-active {
 
 .mpwem-ticket-off-dates-field .fdColumn label span {
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
 }
 
@@ -8582,7 +8936,7 @@ body.mpwem-drag-scroll-active {
 
 .mpwem-ticket-off-dates-field .mpwem_item_insert {
     display: grid;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
 }
 
@@ -8593,7 +8947,7 @@ body.mpwem-drag-scroll-active {
 .mpwem-ticket-off-dates-field .mpwem_remove_area>._dFlex {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     justify-content: end;
     width: 100%;
@@ -8657,7 +9011,7 @@ body.mpwem-drag-scroll-active {
     display: flex !important;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
     min-height: 42px;
     padding: 8px 10px !important;
     background: #f8fafc;
@@ -8681,7 +9035,7 @@ body.mpwem-drag-scroll-active {
     border: 0 !important;
     border-radius: 0 !important;
     color: #334155 !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 700 !important;
     cursor: pointer;
 }
@@ -8722,7 +9076,7 @@ body.mpwem-drag-scroll-active {
     flex: 0 0 auto;
     padding: 9px 12px !important;
     color: #475569;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
     cursor: pointer;
     border: none;
@@ -8796,14 +9150,14 @@ body.mpwem-drag-scroll-active {
 
 .mpwem-date-time-slots-table tbody {
     display: grid;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
 }
 
 .mpwem-date-time-slots-table tr.mpwem_remove_area {
     display: grid;
     grid-template-columns: minmax(220px, 1fr) 180px 86px;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     width: 100%;
     padding: 10px;
@@ -8830,15 +9184,15 @@ body.mpwem-drag-scroll-active {
 .mpwem-date-time-slots-table input[type="text"].formControl,
 .mpwem-date-time-slots-table .mpwem-time-input {
     width: 100% !important;
-    height: 42px !important;
+    height: 44px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 10px !important;
     background: #fff !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
 }
 
 .mpwem-date-time-slots-table input[type="text"].formControl {
-    padding: 8px 12px !important;
+    padding: 10px 12px !important;
 }
 
 .mpwem-date-time-slots-table input[type="text"].formControl:focus,
@@ -8945,11 +9299,11 @@ body.mpwem-drag-scroll-active {
 .mpwem-date-step .mpwem_date_format_settings label._justify_between_align_center_wrap ._mr {
     display: inline-flex !important;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     justify-self: start;
     margin: 0 !important;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     text-align: left;
     white-space: nowrap;
@@ -8969,13 +9323,13 @@ body.mpwem-drag-scroll-active {
     justify-self: end;
     width: 360px !important;
     max-width: 100% !important;
-    height: 42px !important;
-    padding: 8px 12px !important;
+    height: 44px !important;
+    padding: 10px 12px !important;
     border: 1px solid #d9e2ef !important;
     border-radius: 10px !important;
     background-color: #fff !important;
     color: var(--mpwem-text) !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     box-shadow: none !important;
     box-sizing: border-box;
 }
@@ -8990,7 +9344,7 @@ body.mpwem-drag-scroll-active {
     max-width: 760px;
     margin-top: 8px;
     color: var(--mpwem-muted);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.45;
 }
 
@@ -9050,7 +9404,7 @@ body.mpwem-event-wizard-screen #ui-datepicker-div {
     border-radius: 10px;
     background: #fff;
     color: var(--mpwem-text);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     box-shadow: none;
     box-sizing: border-box;
@@ -9101,7 +9455,7 @@ input.mpwem-custom-calendar__year {
     width: 100%;
     height: 24px;
     color: #64748b;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
 }
@@ -9121,7 +9475,7 @@ input.mpwem-custom-calendar__year {
     border-radius: 10px !important;
     background: transparent !important;
     color: #334155 !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     box-shadow: none !important;
     cursor: pointer;
@@ -9169,7 +9523,7 @@ input.mpwem-custom-calendar__year {
     height: 34px !important;
     padding: 0 12px !important;
     border-radius: 9px !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 800 !important;
 }
 
@@ -9271,7 +9625,7 @@ input.mpwem-custom-calendar__year {
     background: #fff;
     border: 1px solid #bfd1ef;
     color: var(--mpwem-primary);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
     letter-spacing: 0.04em;
 }
@@ -9291,7 +9645,7 @@ input.mpwem-custom-calendar__year {
     border-radius: 10px !important;
     background: #f8fafc !important;
     color: #475569 !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     letter-spacing: 0.04em;
     box-shadow: none !important;
@@ -9315,7 +9669,7 @@ input.mpwem-custom-calendar__year {
 .mpwem-custom-time-picker__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 12px;
     margin-bottom: 14px;
 }
 
@@ -9329,7 +9683,7 @@ input.mpwem-custom-calendar__year {
 .mpwem-custom-time-picker__label {
     margin-bottom: 8px;
     color: #64748b;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -9338,7 +9692,7 @@ input.mpwem-custom-calendar__year {
 .mpwem-custom-time-picker__hours,
 .mpwem-custom-time-picker__minutes {
     display: grid;
-    gap: 6px;
+    gap: 8px;
 }
 
 .mpwem-custom-time-picker__hours {
@@ -9365,7 +9719,7 @@ input.mpwem-custom-calendar__year {
     border-radius: 10px !important;
     background: #f8fafc !important;
     color: #334155 !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 800 !important;
     font-variant-numeric: tabular-nums;
     box-shadow: none !important;
@@ -9394,7 +9748,7 @@ input.mpwem-custom-calendar__year {
 .mpwem-custom-time-picker__presets {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 14px;
     padding-top: 12px;
     border-top: 1px solid #eef2f7;
@@ -9408,7 +9762,7 @@ input.mpwem-custom-calendar__year {
     border-radius: 999px !important;
     background: #fff !important;
     color: #475569 !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     box-shadow: none !important;
     cursor: pointer;
@@ -9441,7 +9795,7 @@ input.mpwem-custom-calendar__year {
     height: 34px !important;
     padding: 0 12px !important;
     border-radius: 9px !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 800 !important;
     box-shadow: none !important;
     cursor: pointer;
@@ -9474,8 +9828,8 @@ input.mpwem-custom-calendar__year {
 @media screen and (max-width: 1450px) and (min-width: 901px) {
     .mpwem-date-type-selector {
         grid-template-columns: 1fr 1fr;
-        padding: 14px 16px;
-        gap: 10px;
+        padding: 16px 16px;
+        gap: 8px;
     }
 
     .mpwem-date-type-option {
@@ -9499,11 +9853,11 @@ input.mpwem-custom-calendar__year {
     }
 
     div.mpwem-date-type-option__copy strong {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .mpwem-date-type-option__copy small {
-        font-size: 11px;
+        font-size: 12px;
     }
 
     .mpwem-date-type-option.is-active::after {
@@ -9511,7 +9865,7 @@ input.mpwem-custom-calendar__year {
         right: 6px;
         width: 18px;
         height: 18px;
-        font-size: 10px;
+        font-size: 11px;
     }
 }
 
@@ -9529,7 +9883,7 @@ input.mpwem-custom-calendar__year {
 
     .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {
         grid-template-columns: 1fr !important;
-        gap: 14px !important;
+        gap: 12px !important;
     }
 
     .mpwem-ticket-modal__mount .mpwem-repeat-schedule-shell {
@@ -9818,7 +10172,7 @@ button.mpwem_item_remove span {
 .ticket_status {
     padding: 4px 8px;
     border-radius: 6px;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.05em;
     display: inline-flex;
@@ -9840,7 +10194,7 @@ button.mpwem_item_remove span {
 
 .ticket_info {
     margin-top: 6px;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--mpwem-muted);
     display: flex;
     align-items: center;
@@ -9862,7 +10216,7 @@ code {
     color: var(--mpwem-text);
     font-family: monospace;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 /* Premium Saving Toaster Notification */
@@ -9967,7 +10321,7 @@ code {
 
 .mpwem-ticket-action-bar__item label {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     color: #64748b;
     letter-spacing: 0.05em;
@@ -10039,7 +10393,7 @@ code {
 }
 
 .mpwem-card-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     color: #94a3b8;
     letter-spacing: 0.05em;
@@ -10048,7 +10402,7 @@ code {
 }
 
 .mpwem-card-sub-label {
-    font-size: 11px;
+    font-size: 12px;
     color: #64748b;
     margin-top: 4px;
 }
@@ -10056,7 +10410,7 @@ code {
 .mpwem-global-qty-warning {
     display: none;
     margin: 2px 0 0;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
     color: #b45309;
 }
@@ -10065,7 +10419,7 @@ code {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-global-qty-warning__action.button.button-secondary {
@@ -10087,12 +10441,12 @@ code {
 /* Inputs */
 .mpwem-card-input {
     width: 100%;
-    height: 40px;
-    padding: 8px 12px;
+    height: 42px;
+    padding: 10px 12px;
     background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 14px;
     color: #1e293b;
     transition: all 0.2s ease;
 }
@@ -10116,7 +10470,7 @@ code {
 .mpwem-card-input--large {
     font-size: 16px;
     font-weight: 700;
-    height: 44px;
+    height: 46px;
 }
 
 .mpwem-card-input--small {
@@ -10136,7 +10490,7 @@ code {
     transform: translateY(-50%);
     color: #64748b;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .mpwem-card-input-wrapper--currency .mpwem-card-input {
@@ -10147,7 +10501,7 @@ code {
 .mpwem-card-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-card-tag {
@@ -10184,7 +10538,7 @@ code {
 
 .mpwem-card-time-field input {
     width: 100%;
-    height: 40px;
+    height: 42px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     padding: 0 12px;
@@ -10306,7 +10660,7 @@ code {
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-action-bar__item label,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-card-label {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: capitalize;
@@ -10340,7 +10694,7 @@ code {
     position: relative;
     z-index: 1;
     grid-template-columns: minmax(220px, 1.05fr) minmax(170px, 0.75fr) minmax(170px, 0.75fr);
-    gap: 14px;
+    gap: 12px;
     align-items: start;
 }
 
@@ -10359,12 +10713,12 @@ code {
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-global-card .mpwem-card-input {
-    height: 38px;
+    height: 40px;
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-global-card .mpwem-card-sub-label {
     margin-top: 5px;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.45;
     color: #4b5563;
 }
@@ -10398,7 +10752,7 @@ code {
     display: block;
     max-width: 760px;
     margin: 0 0 14px;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.55;
     color: #526173;
 }
@@ -10426,7 +10780,7 @@ code {
 
 #mpwem_ticket_pricing_settings ._padding_bt:has(input[name="mpwem_show_mm"])>[data-collapse="#mpwem_show_mm"] ._mr {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     color: #243449;
 }
@@ -10435,7 +10789,7 @@ code {
 #mpwem_ticket_pricing_settings ._padding_bt:has(input[name="mpwem_show_mm"]) input[name="mep_mm_min_qty_global"],
 #mpwem_ticket_pricing_settings ._padding_bt:has(input[name="mpwem_show_mm"]) input[name="mep_mm_max_qty_global"] {
     width: 100%;
-    min-height: 40px;
+    min-height: 42px;
     border: 1px solid #cfd9e8;
     border-radius: 10px;
     background-color: #fff;
@@ -10447,7 +10801,7 @@ code {
     display: block;
     margin: 7px 0 0;
     padding-left: calc(34% + 16px);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.45;
     color: #64748b;
 }
@@ -10465,7 +10819,7 @@ code {
 }
 
 #mpwem_ticket_pricing_settings ._padding_bt:has(input[name="mpwem_show_mm"]) [data-collapse="#mep_mm_ticket_type"]>._justify_between_align_center_wrap {
-    padding: 13px 14px;
+    padding: 15px 14px;
     border: 1px solid #dbe7f5;
     border-radius: 14px;
     background: #fff;
@@ -10473,7 +10827,7 @@ code {
 
 #mpwem_ticket_pricing_settings ._padding_bt:has(input[name="mpwem_show_mm"]) [data-collapse="#mep_mm_ticket_type"]>._justify_between_align_center_wrap label {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     color: #17253a;
 }
@@ -10538,7 +10892,7 @@ code {
     padding: 8px 60px 0 0 !important;
     border: 0 !important;
     background: transparent !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     line-height: 1.55 !important;
     color: var(--mpwem-muted, #64748b) !important;
 }
@@ -10577,7 +10931,7 @@ code {
 
 .mpwem-minmax-settings-card label._justify_between_align_center_wrap ._mr {
     margin: 0 !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 800 !important;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -10588,9 +10942,9 @@ code {
 .mpwem-minmax-settings-card input[name="mep_mm_min_qty_global"],
 .mpwem-minmax-settings-card input[name="mep_mm_max_qty_global"] {
     width: 100% !important;
-    min-height: 42px !important;
+    min-height: 44px !important;
     margin: 0 !important;
-    padding: 8px 12px !important;
+    padding: 10px 12px !important;
     border: 1px solid #cbd5e1 !important;
     border-radius: 12px !important;
     background-color: #fff !important;
@@ -10611,7 +10965,7 @@ code {
     display: block !important;
     margin: 8px 0 0 !important;
     /* padding-left: calc(32% + 18px) !important; */
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.5 !important;
     color: var(--mpwem-muted, #64748b) !important;
 }
@@ -10748,9 +11102,9 @@ code {
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-card-input {
-    /* height: 40px; */
-    padding: 8px 10px;
-    font-size: 13px;
+    /* height: 42px; */
+    padding: 10px 10px;
+    font-size: 14px;
     color: #111827;
     box-sizing: border-box;
     width: 100%;
@@ -10817,7 +11171,7 @@ code {
     min-width: 210px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-card-row--date {
@@ -10869,10 +11223,10 @@ code {
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-card-time-field input.formControl,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-date-input-wrap input {
-    height: 34px;
+    height: 36px;
     padding-top: 6px;
     padding-bottom: 6px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.2;
     border-radius: 8px;
 }
@@ -10912,8 +11266,8 @@ code {
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__identity .mpwem-card-input:not(.mpwem-card-input--large) {
-    height: 55px;
-    font-size: 12px;
+    height: 57px;
+    font-size: 13px;
     border-color: #dfdfdf;
     background: #f8f8f8;
     margin-top: 5px;
@@ -11061,7 +11415,7 @@ code {
 #mpwem_particular_date_modal .mpwem-date-modal__add.button.button-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     padding: 10px 16px;
     border: 1px solid #bfdbfe;
     border-radius: 999px;
@@ -11204,7 +11558,7 @@ code {
     padding: 14px 12px;
     border-bottom: 1px solid #d7dde8;
     background: linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -11333,8 +11687,8 @@ code {
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-input {
-    padding: 8px 10px;
-    font-size: 13px;
+    padding: 10px 10px;
+    font-size: 14px;
     color: #111827;
 }
 
@@ -11355,7 +11709,7 @@ code {
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 13px;
+    font-size: 14px;
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-input-wrapper--currency .mpwem-card-input {
@@ -11380,7 +11734,7 @@ code {
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 14px 14px;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1;
 }
 
@@ -11398,7 +11752,7 @@ code {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: nowrap;
     margin: 0;
 }
@@ -11417,7 +11771,7 @@ code {
     min-width: 0;
     margin: 0;
     color: #64748b;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: 0.08em;
@@ -11458,13 +11812,13 @@ code {
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-time-field input.formControl,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-date-input-wrap input {
-    height: 42px;
-    min-height: 34px;
+    height: 44px;
+    min-height: 36px;
     padding-top: 6px;
     padding-bottom: 6px;
     padding-right: 0 !important;
     padding-left: 30px !important;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.2;
     border-radius: 8px;
     box-sizing: border-box;
@@ -11531,8 +11885,8 @@ code {
 .mpwem-event-wizard__steps-inner {
     display: flex;
     align-items: flex-start;
-    gap: 24px;
-    padding: 30px 20px 16px;
+    gap: 64px;
+    padding: 26px 20px 28px;
     justify-content: center;
 }
 
@@ -11547,7 +11901,7 @@ code {
     background: transparent;
     cursor: pointer;
     transition: 0.25s ease;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: #94a3b8;
     min-height: auto;
@@ -11580,18 +11934,19 @@ code {
     text-align: center;
     line-height: 1.3;
     white-space: nowrap;
-    font-size: 12px;
+    font-size: 13px;
     color: inherit;
     transition: 0.25s ease;
 }
 
-/* Standard separator line between steps */
+/* Standard separator line between steps — spans exactly the flex gap,
+   so it always reaches the next circle regardless of step label width */
 .mpwem-step:not(:last-child)::after {
     content: "";
     position: absolute;
     top: 18px;
-    left: calc(50% + 24px);
-    width: calc(100% + 24px - 48px);
+    left: 100%;
+    width: 64px;
     height: 2px;
     background: #e2e8f0;
     z-index: 0;
@@ -11632,17 +11987,17 @@ code {
     .mpwem-step::before {
         width: 32px;
         height: 32px;
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .mpwem-step:not(:last-child)::after {
         top: 16px;
-        left: calc(50% + 22px);
-        width: calc(100% + 20px - 44px);
+        left: 100%;
+        width: 64px;
     }
 
     .mpwem-step__label {
-        font-size: 11px;
+        font-size: 12px;
     }
 }
 
@@ -11652,7 +12007,7 @@ code {
     .mpwem-event-wizard__steps-inner {
         flex-direction: column;
         align-items: stretch;
-        gap: 6px;
+        gap: 14px;
         padding: 20px 16px 12px;
     }
 
@@ -11671,7 +12026,7 @@ code {
     .mpwem-step::before {
         width: 32px;
         height: 32px;
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .mpwem-step:not(:last-child)::after {
@@ -11681,7 +12036,7 @@ code {
     .mpwem-step__label {
         white-space: normal;
         text-align: left;
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .mpwem-step.is-active {
@@ -11716,11 +12071,11 @@ code {
     }
 
     .mpwem-venue-search-footer {
-        gap: 6px;
+        gap: 8px;
     }
 
     .mpev-label h2 {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     #show_gmap iframe {
@@ -11743,11 +12098,11 @@ code {
 
     .mpwem-event-type-option {
         padding: 10px;
-        gap: 10px;
+        gap: 8px;
     }
 
     .mpwem-event-type-option strong {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .mpwem-venue-grid {
@@ -11765,7 +12120,7 @@ code {
     .mpwem-venue-search-footer {
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
+        gap: 8px;
     }
 
     .mpwem-manual-entry-btn {
@@ -11776,7 +12131,7 @@ code {
     .mpev-label {
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
+        gap: 8px;
     }
 
     .mpev-label>div:first-child {
@@ -11784,7 +12139,7 @@ code {
     }
 
     .mpev-label h2 {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .mpwem-select-wrapper {
@@ -11806,8 +12161,8 @@ code {
 
     .mpwem-venue-field input,
     .mpwem-venue-field select {
-        padding: 8px 6px;
-        font-size: 13px;
+        padding: 10px 6px;
+        font-size: 14px;
     }
 
     .mpwem-event-type-card {
@@ -11819,7 +12174,7 @@ code {
 @media screen and (max-width: 900px) {
     .mpwem-ticket-summary__toolbar {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 12px;
         padding: 16px;
     }
 
@@ -11860,7 +12215,7 @@ code {
     .mpwem-related-search-section .mpev-label {
         flex-direction: column;
         align-items: stretch;
-        gap: 10px;
+        gap: 8px;
     }
 
     .mpwem-related-search-section .mpev-label>div:first-child {
@@ -11888,7 +12243,7 @@ code {
     }
 
     .mpwem-related-pill {
-        font-size: 11px;
+        font-size: 12px;
         padding: 2px 6px 2px 8px;
         min-height: 24px;
         gap: 4px;
@@ -11901,8 +12256,8 @@ code {
     }
 
     .mpwem-related-search-input {
-        height: 40px;
-        font-size: 12px;
+        height: 42px;
+        font-size: 13px;
         padding: 0 44px 0 12px;
     }
 
@@ -11916,7 +12271,7 @@ code {
     }
 
     .mpwem-related-result-item__title {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .mpwem-related-empty-state {
@@ -11959,7 +12314,7 @@ code {
 
 .mpwem-speaker-panel__intro p {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.45;
     color: var(--mpwem-muted);
 }
@@ -11984,65 +12339,6 @@ code {
     background: var(--mpwem-surface);
     overflow: hidden;
     box-shadow: var(--mpwem-shadow);
-}
-
-.mpwem-speaker-display__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--mpwem-border);
-    background: var(--mpwem-card-header-bg);
-    border-top-left-radius: var(--mpwem-radius);
-    border-top-right-radius: var(--mpwem-radius);
-}
-
-.mpwem-speaker-display__head-copy {
-    min-width: 0;
-    flex: 1 1 auto;
-}
-
-.mpwem-speaker-display__title {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: var(--mpwem-text);
-}
-
-.mpwem-speaker-display__subtitle {
-    margin: 4px 0 0;
-    font-size: 13px;
-    line-height: 1.45;
-    color: var(--mpwem-muted);
-}
-
-.mpwem-speaker-display__chip {
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 26px;
-    padding: 5px;
-    border-radius: 999px;
-    border: 1px solid #bfdbfe;
-    background: #eff6ff;
-    color: #1d4ed8;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    line-height: 1;
-    white-space: nowrap;
-}
-
-h3.mpwem-speaker-display__title {
-    font-size: 20px;
-}
-
-span.mpwem-speaker-display__chip {
-    padding: 5px;
 }
 
 .mpwem-speaker-display__body {
@@ -12071,13 +12367,13 @@ span.mpwem-speaker-display__chip {
 
 .mpwem-speaker-display__field-label {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 650;
     color: #20344d;
 }
 
 .mpwem-speaker-display__hint {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.4;
     color: var(--mpwem-muted);
 }
@@ -12110,14 +12406,14 @@ span.mpwem-speaker-display__chip {
 .mpwem-speaker-display__input-wrap input.formControl {
     width: 100%;
     max-width: none;
-    height: 42px;
+    height: 44px;
     margin: 0;
     padding: 0 14px 0 38px;
     border: 1px solid #cbd5e1;
     border-radius: 10px;
     background: #fff;
     color: var(--mpwem-text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     box-shadow: none;
     box-sizing: border-box;
@@ -12139,7 +12435,7 @@ span.mpwem-speaker-display__chip {
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-speaker-display__icon-picker .mpwem_icon_item {
@@ -12155,9 +12451,9 @@ span.mpwem-speaker-display__chip {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 52px !important;
-    height: 52px !important;
-    min-height: 52px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
     margin: 0 !important;
     padding: 0 !important;
     border: 1px solid #dbeafe !important;
@@ -12210,7 +12506,7 @@ span.mpwem-speaker-display__chip {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 6px !important;
+    gap: 8px !important;
     height: 42px !important;
     min-height: 42px !important;
     margin: 0 !important;
@@ -12263,7 +12559,7 @@ span.mpwem-speaker-display__chip {
 .mpwem-speaker-picker__title-wrap {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -12281,7 +12577,7 @@ span.mpwem-speaker-display__chip {
     border-radius: 999px;
     background: #e8eef8;
     color: #1d4ed8;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 650;
     line-height: 1.3;
     white-space: nowrap;
@@ -12307,7 +12603,7 @@ span.mpwem-speaker-display__chip {
     border-radius: var(--mpwem-btn-radius) !important;
     background: #fff !important;
     color: #334155 !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 600 !important;
     line-height: 1 !important;
     text-decoration: none !important;
@@ -12364,7 +12660,7 @@ span.mpwem-speaker-display__chip {
 .mpwem-speaker-select__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-speaker-option {
@@ -12373,9 +12669,9 @@ span.mpwem-speaker-display__chip {
     align-items: flex-start;
     gap: 12px;
     margin: 0;
-    padding: 10px !important;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
+    padding: 14px 40px 14px 14px !important;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
     background: #fff;
     box-shadow: none;
     color: var(--mpwem-text);
@@ -12385,7 +12681,7 @@ span.mpwem-speaker-display__chip {
 }
 
 label.mpwem-speaker-option {
-    padding: 10px !important;
+    padding: 14px 40px 14px 14px !important;
 }
 
 .mpwem-speaker-option:hover {
@@ -12402,23 +12698,14 @@ label.mpwem-speaker-option {
 
 .mpwem-speaker-option input[type="checkbox"] {
     position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    margin: -1px !important;
+    top: 14px !important;
+    right: 14px !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
     padding: 0 !important;
-    border: 0 !important;
-    clip: rect(0, 0, 0, 0) !important;
-    overflow: hidden !important;
-    white-space: nowrap !important;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    opacity: 0 !important;
-}
-
-.mpwem-speaker-option input[type="checkbox"]::before,
-.mpwem-speaker-option input[type="checkbox"]::after {
-    content: none !important;
-    display: none !important;
+    accent-color: var(--mpwem-primary);
+    cursor: pointer;
 }
 
 .mpwem-speaker-option__avatar {
@@ -12496,7 +12783,7 @@ label.mpwem-speaker-option {
     display: block !important;
     width: 100%;
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.3;
     color: var(--mpwem-text);
@@ -12509,7 +12796,7 @@ label.mpwem-speaker-option {
     display: block !important;
     width: 100%;
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     line-height: 1.4;
     color: #64748b !important;
@@ -12518,23 +12805,18 @@ label.mpwem-speaker-option {
     white-space: nowrap;
 }
 
-.mpwem-speaker-option.is-selected .mpwem-speaker-option__name,
-.mpwem-speaker-option:has(input[type="checkbox"]:checked) .mpwem-speaker-option__name {
-    color: #1d4ed8;
-}
-
 .mpwem-speaker-select__empty,
 .mpwem-speaker-select__empty-state {
     margin: 0;
     color: var(--mpwem-muted);
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .mpwem-speaker-select__empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     padding: 36px 20px;
     text-align: center;
 }
@@ -12553,13 +12835,9 @@ label.mpwem-speaker-option {
 }
 
 @media screen and (max-width: 900px) {
-    .mpwem-speaker-display__head {
-        align-items: flex-start;
-    }
-
     .mpwem-speaker-display__row {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
         align-items: stretch;
     }
 
@@ -12735,13 +13013,13 @@ textarea.mpwem-field-error:focus,
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .mpwem-success-modal__actions .button {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     height: 38px;
     padding: 0 18px;
     border-radius: 10px;
@@ -12782,7 +13060,7 @@ textarea.mpwem-field-error:focus,
     background: #fffbeb;
     border: 1px solid #fde68a;
     border-radius: var(--mpwem-btn-radius);
-    font-size: 13px;
+    font-size: 14px;
     color: #92400e;
 }
 
@@ -12801,7 +13079,7 @@ textarea.mpwem-field-error:focus,
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px 16px;
+    gap: 8px 16px;
     padding: 16px 0;
     border-bottom: 1px solid var(--mpwem-border);
 }
@@ -12825,7 +13103,7 @@ textarea.mpwem-field-error:focus,
 
 #mpwem_wizard_seat_plan_card .mpwemasp_command th {
     flex: 0 0 auto;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .02em;
@@ -12875,7 +13153,7 @@ textarea.mpwem-field-error:focus,
 #mpwem_wizard_seat_plan_card .mp_seat_row_column_area {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     padding: 4px;
     background: var(--mpwem-bg);
     border: 1px solid var(--mpwem-border);
@@ -12891,8 +13169,8 @@ textarea.mpwem-field-error:focus,
 #mpwem_wizard_seat_plan_card .dButton {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
+    gap: 8px;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1;
     padding: var(--mpwem-btn-padding);
@@ -13090,7 +13368,7 @@ textarea.mpwem-field-error:focus,
 
 #mpwem_wizard_seat_plan_card .mp_event_seat_item .row_column_area {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: flex-end;
     margin-top: 4px;
 }
@@ -13116,7 +13394,7 @@ textarea.mpwem-field-error:focus,
     border-radius: 50%;
     background: #f1f5f9;
     color: #64748b;
-    font-size: 13px;
+    font-size: 14px;
     cursor: pointer;
     transition: background .15s ease, color .15s ease;
 }

@@ -54,20 +54,25 @@
 						// "method enabled" state and let JS show the correct one. The data-*
 						// flags pass the server-known state (saved option, PayPal, Stripe).
 						?>
-						<div class="mpwem-payment-warning" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); display: <?php echo $show_payment_warning ? 'flex' : 'none'; ?>; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-							<div>
-								<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'No Payment Method Enabled', 'mage-eventpress' ); ?></strong>
-								<span style="font-size: 13px;"><?php esc_html_e( 'Please configure at least one Payment gateway to start selling tickets.', 'mage-eventpress' ); ?></span>
+						<div class="mpwem-payment-warning mpwem-payment-banner mpwem-payment-banner--warning" style="display: <?php echo $show_payment_warning ? 'flex' : 'none'; ?>;">
+							<div class="mpwem-payment-banner__row">
+								<span class="mpwem-payment-banner__icon" aria-hidden="true">
+									<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/><path d="M12 9v4"/><circle cx="12" cy="16.5" r="0.9" fill="currentColor" stroke="none"/></svg>
+								</span>
+								<div>
+									<strong class="mpwem-payment-banner__title"><?php esc_html_e( 'No Payment Method Enabled', 'mage-eventpress' ); ?></strong>
+									<span class="mpwem-payment-banner__desc"><?php esc_html_e( 'Please configure at least one Payment gateway to start selling tickets.', 'mage-eventpress' ); ?></span>
+								</div>
 							</div>
 							<div>
 								<?php if ( current_user_can( 'manage_options' ) ) : ?>
-								<button type="button" class="button button-primary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></button>
+								<button type="button" class="button mep-payment-settings-trigger mpwem-payment-banner__btn mpwem-payment-banner__btn--primary"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></button>
 								<?php else : ?>
-								<span style="font-size: 13px; font-style: italic;"><?php esc_html_e( 'Ask a site administrator to configure a payment method.', 'mage-eventpress' ); ?></span>
+								<span class="mpwem-payment-status-ask"><?php esc_html_e( 'Ask a site administrator to configure a payment method.', 'mage-eventpress' ); ?></span>
 								<?php endif; ?>
 							</div>
 						</div>
-						<div class="mpwem-payment-status"
+						<div class="mpwem-payment-status mpwem-payment-banner mpwem-payment-banner--success"
 							data-woo-enabled="<?php echo $woo_enabled ? '1' : '0'; ?>"
 							data-option-set="<?php echo isset( $payment_opts['mep_enable_wc_payment'] ) ? '1' : '0'; ?>"
 							data-wc-active="<?php echo $wc_active ? '1' : '0'; ?>"
@@ -75,14 +80,19 @@
 							data-stripe="<?php echo $stripe_enabled ? '1' : '0'; ?>"
 							data-offline="<?php echo $offline_enabled ? '1' : '0'; ?>"
 							data-offline-label="<?php echo esc_attr( $offline_label ); ?>"
-							style="background: #e6f4ea; color: #0a7c2f; padding: 15px; border-left: 4px solid #34c759; border-radius: var(--mpwem-radius); display: <?php echo $show_payment_warning ? 'none' : 'flex'; ?>; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-							<div>
-								<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-check-circle" style="margin-right: 5px;"></i><?php esc_html_e( 'Payment Method Enabled', 'mage-eventpress' ); ?></strong>
-								<span style="font-size: 13px;"><?php esc_html_e( 'Active:', 'mage-eventpress' ); ?> <span class="mpwem-payment-status__methods" style="font-weight: 600;"></span></span>
+							style="display: <?php echo $show_payment_warning ? 'none' : 'flex'; ?>;">
+							<div class="mpwem-payment-banner__row">
+								<span class="mpwem-payment-banner__icon" aria-hidden="true">
+									<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+								</span>
+								<div>
+									<strong class="mpwem-payment-banner__title"><?php esc_html_e( 'Payment Method Enabled', 'mage-eventpress' ); ?></strong>
+									<span class="mpwem-payment-banner__desc"><?php esc_html_e( 'Active:', 'mage-eventpress' ); ?> <span class="mpwem-payment-status__methods"></span></span>
+								</div>
 							</div>
 							<div>
 								<?php if ( current_user_can( 'manage_options' ) ) : ?>
-								<button type="button" class="button button-secondary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Change Payment Method', 'mage-eventpress' ); ?></button>
+								<button type="button" class="button mep-payment-settings-trigger mpwem-payment-banner__btn mpwem-payment-banner__btn--secondary"><?php esc_html_e( 'Change Payment Method', 'mage-eventpress' ); ?></button>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -584,7 +594,10 @@
 							if (offlineOn) { methods.push(offlineLabel); }
 
 							if (methods.length > 0) {
-								$statusRow.find('.mpwem-payment-status__methods').text(methods.join(', '));
+								var $methodsWrap = $statusRow.find('.mpwem-payment-status__methods').empty();
+								methods.forEach(function(method) {
+									$('<span class="mpwem-payment-method-pill"></span>').text(method).appendTo($methodsWrap);
+								});
 								$warnRow.hide();
 								$statusRow.css('display', 'flex');
 							} else {

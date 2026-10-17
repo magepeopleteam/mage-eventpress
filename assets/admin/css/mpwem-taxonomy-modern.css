@@ -66,7 +66,7 @@ body.taxonomy-mep_org .wrap::after {
 	content: "Loading\2026";
 	top: 210px;
 	transform: translateX(-50%);
-	font-size: 13px;
+	font-size: 14px;
 	color: #64748B;
 	white-space: nowrap;
 }
@@ -172,8 +172,8 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 .mpwem-taxonomy-hero-wrap .bde-eyebrow {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 11px;
+	gap: 8px;
+	font-size: 12px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: .04em;
@@ -213,7 +213,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	border: 1px solid #E4E9F0;
 	border-radius: 10px;
 	padding: 8px 14px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	color: #0F172A;
 	flex: 0 0 auto;
@@ -278,7 +278,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 }
 
 .mpwem-taxonomy-hero-wrap .mep-stat-label {
-	font-size: 12px;
+	font-size: 13px;
 	color: #64748B;
 }
 
@@ -356,7 +356,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 
 .mpwem-promo-eyebrow {
 	display: inline-block;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: .06em;
 	color: #2563EB;
@@ -377,7 +377,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 
 .mpwem-promo-body {
 	margin: 0 0 16px;
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.6;
 	color: #64748B;
 }
@@ -391,7 +391,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 .mpwem-promo-features li {
 	position: relative;
 	padding: 0 0 10px 22px;
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #334155;
 }
@@ -403,7 +403,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	top: 0;
 	color: #2563EB;
 	font-weight: 700;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .mpwem-promo-panel .mpwem-promo-cta {
@@ -501,7 +501,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	border: 1px solid #BFDBFE;
 	border-radius: 8px;
 	color: #1D4ED8;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .mpwem-modal .form-field {
@@ -515,7 +515,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 .mpwem-modal .form-field label {
 	display: block;
 	margin-bottom: 6px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	color: #0F172A;
 }
@@ -526,7 +526,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	max-width: 100%;
 	border: 1px solid #D1D5DB;
 	border-radius: 8px;
-	padding: 9px 12px;
+	padding: 11px 12px;
 	font-size: 14px;
 	color: #0F172A;
 	background: #FFFFFF;
@@ -547,7 +547,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 
 .mpwem-modal .form-field p {
 	margin: 6px 0 0;
-	font-size: 12.5px;
+	font-size: 13px;
 	line-height: 1.5;
 	color: #94A3B8;
 }
@@ -556,7 +556,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	margin: 4px 0 14px;
 	padding-top: 8px;
 	border-top: 1px solid #EEF1F6;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 700;
 	letter-spacing: .04em;
 	text-transform: uppercase;
@@ -570,7 +570,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 .mpwem-modal-footer {
 	display: flex;
 	justify-content: flex-end;
-	gap: 10px;
+	gap: 8px;
 	padding: 16px 22px;
 	border-top: 1px solid #EEF1F6;
 	flex: 0 0 auto;
@@ -632,7 +632,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 .wrap.mpwem-taxonomy-modern-wrap .mpwem-tablenav-right {
 	display: flex;
 	align-items: center;
-	gap: 14px;
+	gap: 12px;
 	margin-left: auto;
 }
 
@@ -643,7 +643,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 }
 
 .wrap.mpwem-taxonomy-modern-wrap .tablenav .displaying-num {
-	font-size: 13px;
+	font-size: 14px;
 	color: #64748B;
 }
 
@@ -651,10 +651,10 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 .wrap.mpwem-taxonomy-modern-wrap .tablenav .button.action,
 .wrap.mpwem-taxonomy-modern-wrap .mpwem-tablenav-right .mpwem-add-term-btn {
 	box-sizing: border-box;
-	height: 34px;
+	height: 36px;
 	display: inline-flex;
 	align-items: center;
-	font-size: 13px;
+	font-size: 14px;
 	border-radius: 8px;
 	line-height: 1;
 }
@@ -728,7 +728,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	background: #F8FAFC;
 	border-bottom: 1px solid #E5E7EB;
 	color: #64748B;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	letter-spacing: .04em;
 	text-transform: uppercase;
@@ -782,7 +782,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	background: #EFF5FF;
 	color: #2563EB;
 	font-weight: 700;
-	font-size: 12.5px;
+	font-size: 13px;
 	border-radius: 999px;
 	text-decoration: none;
 }
@@ -794,7 +794,7 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	padding: 3px 10px;
 	background: #F1F5F9;
 	color: #64748B;
-	font-size: 12px;
+	font-size: 13px;
 	border-radius: 6px;
 }
 
@@ -860,20 +860,20 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	max-width: 100%;
 }
 
 .mpwem-term-list-event {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	max-width: min(100%, 220px);
 	padding: 5px 10px 5px 6px;
 	background: #F1F5F9;
 	border: 1px solid transparent;
 	border-radius: 999px;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	line-height: 1.25;
 	color: #334155;
@@ -923,7 +923,7 @@ a.mpwem-term-list-event:hover .mpwem-term-list-event-icon {
 	background: #EEF2FF;
 	border: 1px solid #E0E7FF;
 	color: #4338CA;
-	font-size: 11.5px;
+	font-size: 12.5px;
 	font-weight: 700;
 	line-height: 1.25;
 	text-decoration: none;
@@ -941,12 +941,12 @@ a.mpwem-term-list-event-more:hover {
 .mpwem-term-list-event-empty {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	padding: 5px 10px;
 	border-radius: 999px;
 	background: #F8FAFC;
 	border: 1px dashed #E2E8F0;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 500;
 	font-style: normal;
 	color: #94A3B8;
@@ -975,7 +975,7 @@ a.mpwem-term-list-event-more:hover {
 }
 
 .mpwem-term-pagination-info {
-	font-size: 12.5px;
+	font-size: 13px;
 	color: #64748B;
 	font-weight: 500;
 }
@@ -998,7 +998,7 @@ a.mpwem-term-list-event-more:hover {
 	border-radius: 8px;
 	background: #FFFFFF;
 	color: #334155;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	cursor: pointer;
 	box-shadow: none;
@@ -1125,7 +1125,7 @@ body.mpwem-term-modal-open {
 
 .mpwem-term-modal__header p {
 	margin: 0;
-	font-size: 13px;
+	font-size: 14px;
 	color: #64748B;
 	line-height: 1.45;
 }
@@ -1134,7 +1134,7 @@ body.mpwem-term-modal-open {
 	margin-top: 8px;
 	padding: 8px 12px;
 	border-radius: 8px;
-	font-size: 12.5px;
+	font-size: 13px;
 	line-height: 1.4;
 }
 
@@ -1167,13 +1167,13 @@ body.mpwem-term-modal-open {
 	padding: 36px 12px;
 	text-align: center;
 	color: #64748B;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .mpwem-term-view-hero {
 	display: flex;
 	align-items: center;
-	gap: 14px;
+	gap: 12px;
 	margin-bottom: 18px;
 	padding-right: 28px;
 }
@@ -1209,14 +1209,14 @@ body.mpwem-term-modal-open {
 	border-radius: 999px;
 	background: #F1F5F9;
 	color: #64748B;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 }
 
 .mpwem-term-view-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 14px;
+	gap: 12px;
 }
 
 .mpwem-term-view-item {
@@ -1230,7 +1230,7 @@ body.mpwem-term-modal-open {
 }
 
 .mpwem-term-view-label {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	letter-spacing: .04em;
 	text-transform: uppercase;
@@ -1238,7 +1238,7 @@ body.mpwem-term-modal-open {
 }
 
 .mpwem-term-view-value {
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #0F172A;
 	white-space: pre-wrap;
@@ -1251,7 +1251,7 @@ body.mpwem-term-modal-open {
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 8px;
 }
 
 .mpwem-term-view-events a {
@@ -1266,7 +1266,7 @@ body.mpwem-term-modal-open {
 
 .mpwem-term-view-empty {
 	margin: 0;
-	font-size: 13px;
+	font-size: 14px;
 	color: #94A3B8;
 	font-style: italic;
 }
@@ -1274,7 +1274,7 @@ body.mpwem-term-modal-open {
 .mpwem-term-view-org-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 10px 14px;
+	gap: 8px 12px;
 	margin-top: 4px;
 }
 

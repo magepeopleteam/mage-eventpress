@@ -45,7 +45,7 @@
 }
 .mpwem_event_list .header-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -60,7 +60,7 @@
 }
 .mpwem_event_list .stats-summary {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     margin-top: 4px;
     margin-bottom: 0;
@@ -123,7 +123,7 @@
 .mpwem_event_list .analytics-card-value {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     position: relative;
     z-index: 1;
@@ -281,7 +281,7 @@
 .mpwem_event_list #mpwem_event_filter_by_category {
     display: block;
     width: 100%;
-    min-height: 42px;
+    min-height: 44px;
     margin: 0;
     padding: 10px 40px 10px 40px;
     border: 1px solid #d9e2ef;
@@ -397,7 +397,7 @@
     border-radius: 10px !important;
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.05);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 12px !important;
+    font-size: 13px !important;
     box-sizing: border-box !important;
     z-index: 999999 !important;
     position: absolute !important;
@@ -418,7 +418,7 @@
     margin: 0 1.6em;
     line-height: 1.6em;
     color: #111827;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: -0.01em;
 }
@@ -426,12 +426,12 @@
 #ui-datepicker-div.mpwem-datepicker-modern select.ui-datepicker-month,
 #ui-datepicker-div.mpwem-datepicker-modern select.ui-datepicker-year {
     margin: 0 1px;
-    padding: 1px 2px;
+    padding: 3px 2px;
     border: 1px solid #e5e7eb;
     border-radius: 4px;
     background: #f9fafb;
     color: #111827;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     width: auto !important;
     max-width: 48%;
@@ -442,7 +442,7 @@
 #ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next {
     top: 10px !important;
     width: 20px;
-    height: 20px;
+    height: 22px;
     border: 1px solid #e5e7eb !important;
     border-radius: 5px !important;
     background: #ffffff !important;
@@ -482,7 +482,7 @@
     border-collapse: collapse;
     border-spacing: 0;
     table-layout: fixed !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
 }
 #ui-datepicker-div.mpwem-datepicker-modern th {
     padding: 1px 0;
@@ -505,7 +505,7 @@
     align-items: center;
     justify-content: center;
     width: 24px !important;
-    height: 24px !important;
+    height: 26px !important;
     max-width: 24px;
     margin: 1px auto;
     padding: 0 !important;
@@ -513,7 +513,7 @@
     border-radius: 6px !important;
     background: transparent !important;
     color: #1f2937 !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 500;
     text-align: center;
     box-sizing: border-box;
@@ -676,7 +676,7 @@
 .mpwem_event_list .mpwem-empty-state-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     padding: 11px 22px;
     border-radius: 999px;
     background: #1b3a8c;
@@ -829,7 +829,7 @@
 .mpwem_event_list .inline-edit-col input,
 .mpwem_event_list .inline-edit-col select {
     width: 100%;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 14px;
@@ -898,10 +898,10 @@
 
 .mpwem_event_list .quick-edit-form input,
 .mpwem_event_list .quick-edit-form select {
-    padding: 6px 8px;
+    padding: 8px 8px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .mpwem_event_list .quick-edit-form input:focus,
@@ -913,7 +913,7 @@
 
 .mpwem_event_list .quick-edit-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     margin-top: 10px;
     width: 100%;
@@ -927,7 +927,7 @@
     text-decoration: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease;
 }
@@ -962,7 +962,7 @@
 .mpwem_event_list .row-actions {
     visibility: hidden;
     color: #d1d5db;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .mpwem_event_list .event-table tr:hover .row-actions {
@@ -1068,7 +1068,7 @@
     font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 .mpwem_event_list .date-time {
     color: #374151;
@@ -1289,7 +1289,7 @@
 .mpwem_event_list .mpwem_empty_trash_btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background-color: #dc3545;
     color: #fff;
     border: none;
@@ -1370,7 +1370,7 @@
 }
 .mpwem_event_list .pagination .pagination-info {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     color: #6b7280;
     text-align: left;
 }
@@ -1380,11 +1380,11 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
+    font-size: 14px;
     color: #6b7280;
 }
 .mpwem-perpage-input {
-    height: 36px;
+    height: 38px;
     padding: 0 30px 0 12px;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -1393,7 +1393,7 @@
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: #374151;
     line-height: 36px;
@@ -1490,7 +1490,7 @@ select#mpwem_per_page {
 .mpwem-numbered-pagination {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 .mpwem-pg-btn {
@@ -1500,7 +1500,7 @@ select#mpwem_per_page {
     border: none;
     background: transparent;
     color: #374151;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     border-radius: 8px;

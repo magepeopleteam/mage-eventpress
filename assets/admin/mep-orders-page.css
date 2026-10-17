@@ -31,7 +31,7 @@
 .mep-orders-title {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	font-size: 22px !important;
 	font-weight: 700 !important;
 	color: #0f172a !important;
@@ -48,7 +48,7 @@
 
 .mep-orders-subtitle {
 	color: #64748b;
-	font-size: 13px;
+	font-size: 14px;
 	margin: 4px 0 0;
 }
 
@@ -58,7 +58,7 @@
 	gap: 3px;
 	background: linear-gradient(135deg, #6366f1, #8b5cf6);
 	color: #fff;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 0.05em;
 	padding: 2px 8px;
@@ -85,10 +85,10 @@
 .mep-btn {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	padding: 8px 16px;
 	border-radius: 8px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	cursor: pointer;
 	text-decoration: none;
@@ -178,8 +178,8 @@
 .mep-orders-wrap .bde-eyebrow {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 11px;
+	gap: 8px;
+	font-size: 12px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: .04em;
@@ -213,19 +213,19 @@
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
-	gap: 10px;
+	gap: 8px;
 	flex: 0 0 auto;
 }
 
 .mep-orders-wrap .bde-hero-badge {
 	display: flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	background: #fff;
 	border: 1px solid #E4E9F0;
 	border-radius: 10px;
 	padding: 8px 14px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	color: #0F172A;
 	white-space: nowrap;
@@ -328,7 +328,7 @@
 }
 
 .mep-stat-label {
-	font-size: 12px;
+	font-size: 13px;
 	color: #64748B;
 	margin-top: 2px;
 	text-transform: uppercase;
@@ -352,7 +352,7 @@
 	padding: 14px 20px;
 	background: #f8fafc;
 	border-bottom: 1px solid #e2e8f0;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	color: #374151;
 }
@@ -412,7 +412,7 @@
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: flex-end;
-	gap: 10px;
+	gap: 8px;
 }
 
 .mep-filter-field {
@@ -440,7 +440,7 @@
 }
 
 .mep-filter-field label {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	color: #475569;
 	text-transform: uppercase;
@@ -454,16 +454,16 @@
 .mep-filter-field input[type="date"],
 .mep-filter-field select {
 	width: 100%;
-	padding: 8px 10px;
+	padding: 10px 10px;
 	border: 1.5px solid #e2e8f0;
 	border-radius: 8px;
-	font-size: 13px;
+	font-size: 14px;
 	color: #1e293b;
 	background: #fff;
 	transition: border-color 0.15s, box-shadow 0.15s;
 	line-height: 1.4;
 	box-sizing: border-box;
-	height: 38px;
+	height: 40px;
 }
 
 .mep-filter-field input[type="text"]:focus,
@@ -561,7 +561,7 @@
 .mep-filter-pro-eyebrow {
 	display: inline-flex;
 	align-self: flex-start;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -581,7 +581,7 @@
 
 .mep-filter-pro-text {
 	margin: 0;
-	font-size: 12.5px;
+	font-size: 13px;
 	line-height: 1.45;
 	color: #64748b;
 }
@@ -589,14 +589,14 @@
 .mep-filter-pro-chips {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 6px;
+	gap: 8px;
 	margin: 4px 0 0;
 	padding: 0;
 	list-style: none;
 }
 
 .mep-filter-pro-chips li {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	color: #475569;
 	background: #fff;
@@ -616,7 +616,7 @@
 	border-radius: 10px;
 	background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
 	color: #fff !important;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	text-decoration: none !important;
 	white-space: nowrap;
@@ -686,7 +686,7 @@
 }
 
 .mep-result-count {
-	font-size: 12.5px;
+	font-size: 13px;
 	color: #64748b;
 	font-weight: 500;
 }
@@ -718,7 +718,7 @@
 .mep-orders-table {
 	width: 100%;
 	border-collapse: collapse;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .mep-orders-table thead tr {
@@ -728,7 +728,7 @@
 .mep-orders-table thead th {
 	padding: 12px 16px;
 	text-align: left;
-	font-size: 11.5px;
+	font-size: 12.5px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
@@ -765,7 +765,7 @@
 /* ---- Column Specific ---- */
 .mep-col-id { white-space: nowrap; }
 .mep-col-total { white-space: nowrap; text-align: right; }
-.mep-col-date { white-space: nowrap; font-size: 12px; color: #64748b; }
+.mep-col-date { white-space: nowrap; font-size: 13px; color: #64748b; }
 .mep-col-gateway { white-space: nowrap; }
 
 .mep-order-link {
@@ -784,7 +784,7 @@
 .mep-view-order-link {
 	display: block;
 	margin-top: 3px;
-	font-size: 11.5px;
+	font-size: 12.5px;
 	font-weight: 600;
 	color: #6366f1;
 	text-decoration: none;
@@ -807,8 +807,8 @@
 	margin-right: 16px;
 }
 .mep-bulk-select {
-	font-size: 12.5px;
-	height: 30px;
+	font-size: 13px;
+	height: 32px;
 	border-radius: 6px;
 	border: 1px solid #cbd5e1;
 	background: #fff;
@@ -824,7 +824,7 @@ select#mep-bulk-status {
 	border-radius: 6px;
 }
 .mep-bulk-count {
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	color: #6366f1;
 	min-width: 64px;
@@ -833,13 +833,13 @@ select#mep-bulk-status {
 .mep-email-link {
 	color: #6366f1;
 	text-decoration: none;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .mep-email-link:hover { text-decoration: underline; }
 
 .mep-phone {
-	font-size: 12px;
+	font-size: 13px;
 	color: #64748b;
 }
 
@@ -851,14 +851,14 @@ select#mep-bulk-status {
 	color: #475569;
 	padding: 2px 8px;
 	border-radius: 6px;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 500;
 }
 
 /* ---- Badges ---- */
 .mep-badge {
 	display: inline-block;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 600;
 	padding: 1px 6px;
 	border-radius: 20px;
@@ -883,7 +883,7 @@ select#mep-bulk-status {
 	align-items: center;
 	padding: 3px 10px;
 	border-radius: 20px;
-	font-size: 11.5px;
+	font-size: 12.5px;
 	font-weight: 600;
 	letter-spacing: 0.03em;
 	white-space: nowrap;
@@ -926,7 +926,7 @@ select#mep-bulk-status {
 }
 
 .mep-status-inline {
-	font-size: 12px;
+	font-size: 13px;
 }
 
 /* ---- No Orders ---- */
@@ -963,7 +963,7 @@ select#mep-bulk-status {
 }
 
 .mep-pagination-info {
-	font-size: 12.5px;
+	font-size: 13px;
 	color: #64748b;
 }
 
@@ -981,7 +981,7 @@ select#mep-bulk-status {
 	height: 34px;
 	padding: 0 10px;
 	border-radius: 8px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 500;
 	border: 1.5px solid #e2e8f0;
 	background: #fff;
@@ -1041,17 +1041,17 @@ select#mep-bulk-status {
 .mep-pagination-jump {
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 12.5px;
+	gap: 8px;
+	font-size: 13px;
 	color: #64748b;
 }
 
 .mep-pagination-jump input[type="number"] {
 	width: 60px;
-	padding: 6px 8px;
+	padding: 8px 8px;
 	border: 1.5px solid #e2e8f0;
 	border-radius: 8px;
-	font-size: 13px;
+	font-size: 14px;
 	text-align: center;
 	color: #1e293b;
 	-moz-appearance: textfield;
@@ -1070,7 +1070,7 @@ select#mep-bulk-status {
 
 .mep-btn-sm {
 	padding: 6px 12px;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 /* ---- Order Detail Page ---- */
@@ -1096,7 +1096,7 @@ select#mep-bulk-status {
 	padding: 14px 20px;
 	background: #f8fafc;
 	border-bottom: 1px solid #e2e8f0;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	color: #374151;
 	text-transform: uppercase;
@@ -1117,12 +1117,12 @@ select#mep-bulk-status {
 .mep-dl {
 	display: grid;
 	grid-template-columns: 140px 1fr;
-	gap: 10px 16px;
+	gap: 8px 16px;
 	margin: 0;
 }
 
 .mep-dl dt {
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	color: #64748b;
 	text-transform: uppercase;
@@ -1216,7 +1216,7 @@ select#mep-bulk-status {
 	.mep-pagination {
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 10px;
+		gap: 8px;
 	}
 }
 
@@ -1278,7 +1278,7 @@ select#mep-bulk-status {
 		align-items: center;
 		padding: 8px 14px;
 		border-bottom: 1px solid #f8fafc;
-		font-size: 12.5px;
+		font-size: 13px;
 	}
 	.mep-orders-table tbody td:last-child {
 		border-bottom: none;
@@ -1287,7 +1287,7 @@ select#mep-bulk-status {
 		content: attr(data-label);
 		font-weight: 700;
 		color: #64748b;
-		font-size: 11px;
+		font-size: 12px;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
 		flex-shrink: 0;
@@ -1314,16 +1314,16 @@ select#mep-bulk-status {
 .mep-status-change-wrap {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	flex-wrap: wrap;
 }
 
 .mep-status-select {
-	height: 36px;
+	height: 38px;
 	padding: 0 12px;
 	border: 1px solid #d1d5db;
 	border-radius: 6px;
-	font-size: 13px;
+	font-size: 14px;
 	background: #fff;
 	min-width: 140px;
 }
@@ -1336,12 +1336,12 @@ select#mep-bulk-status {
 
 .mep-btn-sm {
 	padding: 6px 14px !important;
-	font-size: 12px !important;
+	font-size: 13px !important;
 	height: 36px;
 }
 
 .mep-status-feedback {
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 }
 
@@ -1375,10 +1375,10 @@ select#mep-bulk-status {
 .mep-note-textarea {
 	width: 100%;
 	min-height: 80px;
-	padding: 10px 12px;
+	padding: 12px 12px;
 	border: 1px solid #d1d5db;
 	border-radius: 8px;
-	font-size: 13px;
+	font-size: 14px;
 	resize: vertical;
 	font-family: inherit;
 }
@@ -1392,15 +1392,15 @@ select#mep-bulk-status {
 .mep-note-form-actions {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 }
 
 .mep-note-type-select {
-	height: 36px;
+	height: 38px;
 	padding: 0 10px;
 	border: 1px solid #d1d5db;
 	border-radius: 6px;
-	font-size: 13px;
+	font-size: 14px;
 	background: #fff;
 }
 
@@ -1434,7 +1434,7 @@ select#mep-bulk-status {
 .mep-note-header {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	margin-bottom: 8px;
 	flex-wrap: wrap;
 }
@@ -1443,7 +1443,7 @@ select#mep-bulk-status {
 	display: inline-block;
 	padding: 2px 8px;
 	border-radius: 4px;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.3px;
@@ -1466,12 +1466,12 @@ select#mep-bulk-status {
 
 .mep-note-author {
 	font-weight: 600;
-	font-size: 13px;
+	font-size: 14px;
 	color: #1e293b;
 }
 
 .mep-note-date {
-	font-size: 12px;
+	font-size: 13px;
 	color: #94a3b8;
 	margin-left: auto;
 }
@@ -1500,7 +1500,7 @@ select#mep-bulk-status {
 }
 
 .mep-note-content {
-	font-size: 13px;
+	font-size: 14px;
 	color: #374151;
 	line-height: 1.6;
 	white-space: pre-wrap;
@@ -1578,7 +1578,7 @@ select#mep-bulk-status {
 
 .mep-sidebar-field label {
 	display: block;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	color: #64748b;
 	margin-bottom: 6px;
@@ -1588,11 +1588,11 @@ select#mep-bulk-status {
 
 .mep-sidebar-select {
 	width: 100%;
-	height: 38px;
+	height: 40px;
 	padding: 0 12px;
 	border: 1px solid #d1d5db;
 	border-radius: 6px;
-	font-size: 13px;
+	font-size: 14px;
 	background: #fff;
 }
 
@@ -1608,7 +1608,7 @@ select#mep-bulk-status {
 }
 
 .mep-sidebar-dl dt {
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	color: #64748b;
 	text-transform: uppercase;
@@ -1623,7 +1623,7 @@ select#mep-bulk-status {
 
 .mep-sidebar-dl dd {
 	margin: 0 0 4px;
-	font-size: 13px;
+	font-size: 14px;
 	color: #1e293b;
 }
 
@@ -1641,8 +1641,8 @@ select#mep-bulk-status {
 }
 
 .mep-notes-card .mep-note-textarea {
-	min-height: 60px;
-	font-size: 12px;
+	min-height: 62px;
+	font-size: 13px;
 	padding: 8px;
 }
 
@@ -1654,15 +1654,15 @@ select#mep-bulk-status {
 
 .mep-notes-card .mep-note-type-select {
 	flex: 1;
-	height: 32px;
-	font-size: 12px;
+	height: 34px;
+	font-size: 13px;
 	padding: 0 8px;
 }
 
 .mep-notes-card .mep-btn-sm {
 	height: 32px;
 	padding: 0 14px;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .mep-notes-list {
@@ -1697,25 +1697,25 @@ select#mep-bulk-status {
 }
 
 .mep-notes-card .mep-note-header {
-	gap: 6px;
+	gap: 8px;
 	margin-bottom: 6px;
 }
 
 .mep-notes-card .mep-note-type-badge {
-	font-size: 10px;
+	font-size: 11px;
 	padding: 1px 6px;
 }
 
 .mep-notes-card .mep-note-author {
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .mep-notes-card .mep-note-date {
-	font-size: 11px;
+	font-size: 12px;
 }
 
 .mep-notes-card .mep-note-content {
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .mep-notes-card .mep-no-notes {
@@ -1731,7 +1731,7 @@ select#mep-bulk-status {
 /* Status Feedback */
 .mep-status-feedback {
 	margin-top: 8px;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	text-align: center;
 	min-height: 18px;
@@ -1803,7 +1803,7 @@ select#mep-bulk-status {
 	color: #50575e;
 	text-transform: none;
 	letter-spacing: 0;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .mep-order-detail-wrap .mep-dl dd,
@@ -1848,7 +1848,7 @@ select#mep-bulk-status {
 	color: #2c3338;
 	text-transform: none;
 	letter-spacing: 0;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	border-bottom: 1px solid #dcdcde;
 }
@@ -1875,7 +1875,7 @@ select#mep-bulk-status {
 .mep-order-detail-wrap .mep-status-pill {
 	border-radius: 4px;
 	padding: 4px 10px;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 	letter-spacing: 0;
 }
@@ -1928,7 +1928,7 @@ select#mep-bulk-status {
 	padding: 10px 12px;
 	background: #efefef;
 	border-radius: 4px;
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #2c3338;
 }
@@ -1974,7 +1974,7 @@ select#mep-bulk-status {
 
 .mep-order-detail-wrap .mep-note-tag {
 	display: block;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
@@ -1986,10 +1986,10 @@ select#mep-bulk-status {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 10px;
+	gap: 8px;
 	margin: 10px 0 0;
 	padding: 0 4px;
-	font-size: 11px;
+	font-size: 12px;
 	color: #787c82;
 }
 
@@ -2043,7 +2043,7 @@ select#mep-bulk-status {
 	margin: 16px 0 20px;
 	box-shadow: 0 1px 2px rgba(16,24,40,.04);
 }
-.mep-od-head-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.mep-od-head-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .mep-od-head-icon {
 	width: 44px;
 	height: 44px;
@@ -2058,7 +2058,7 @@ select#mep-bulk-status {
 .mep-od-title {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	flex-wrap: wrap;
 	margin: 0 !important;
 	padding: 0 !important;
@@ -2070,10 +2070,10 @@ select#mep-bulk-status {
 .mep-od-placed {
 	display: flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	margin: 4px 0 0;
 	color: #64748b;
-	font-size: 13px;
+	font-size: 14px;
 }
 .mep-od-placed .dashicons { font-size: 15px; width: 15px; height: 15px; color: #94a3b8; }
 .mep-od-head-actions { display: flex; gap: 8px; flex-shrink: 0; }
@@ -2100,8 +2100,8 @@ select#mep-bulk-status {
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 13px;
+	gap: 8px;
+	font-size: 14px;
 	font-weight: 600;
 	line-height: 1;
 	background: #6366f1;
@@ -2119,8 +2119,8 @@ select#mep-bulk-status {
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 13px;
+	gap: 8px;
+	font-size: 14px;
 	font-weight: 600;
 	line-height: 1;
 	background: #fff;
@@ -2203,7 +2203,7 @@ select#mep-bulk-status {
 	display: inline-block;
 	background: #eef0fe;
 	color: #4f46e5;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	letter-spacing: .04em;
 	padding: 3px 9px;
@@ -2216,7 +2216,7 @@ select#mep-bulk-status {
 	text-align: left;
 	padding: 11px 18px;
 	background: #fafafe;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: .05em;
 	text-transform: uppercase;
@@ -2248,10 +2248,10 @@ select#mep-bulk-status {
 /* Attendee cells */
 .mep-od-att-name { display: block; font-weight: 600; color: #4f46e5; text-decoration: none; }
 .mep-od-att-name:hover { text-decoration: underline; }
-.mep-od-att-email { display: block; font-size: 12px; color: #94a3b8; margin-top: 2px; }
+.mep-od-att-email { display: block; font-size: 13px; color: #94a3b8; margin-top: 2px; }
 .mep-od-att-type { display: block; color: #334155; }
-.mep-od-att-qty { display: block; font-size: 12px; color: #94a3b8; margin-top: 2px; }
-.mep-od-ref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: #64748b; }
+.mep-od-att-qty { display: block; font-size: 13px; color: #94a3b8; margin-top: 2px; }
+.mep-od-ref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: #64748b; }
 
 /* Empty state (form responses) */
 .mep-od-empty { text-align: center; padding: 34px 18px; color: #94a3b8; }
@@ -2273,11 +2273,11 @@ select#mep-bulk-status {
 .mep-order-detail-wrap .mep-status-pill {
 	border-radius: 7px;
 	padding: 3px 11px;
-	font-size: 11.5px;
+	font-size: 12.5px;
 	font-weight: 600;
 	letter-spacing: 0;
 }
-.mep-order-detail-wrap .mep-status-inline { font-size: 12px; }
+.mep-order-detail-wrap .mep-status-inline { font-size: 13px; }
 .mep-order-detail-wrap .mep-status-processing { background: #ede9fe; color: #6d28d9; }
 
 /* ---- Buttons ---- */
@@ -2293,14 +2293,14 @@ select#mep-bulk-status {
 .mep-order-detail-wrap .mep-sidebar-field label {
 	text-transform: uppercase;
 	letter-spacing: .05em;
-	font-size: 11px;
+	font-size: 12px;
 	color: #94a3b8;
 	font-weight: 600;
 	margin-bottom: 7px;
 }
 .mep-order-detail-wrap .mep-sidebar-select {
 	width: 100%;
-	height: 40px;
+	height: 42px;
 	border: 1px solid #e2e8f0;
 	border-radius: 9px;
 	padding: 0 12px;
@@ -2332,9 +2332,9 @@ select#mep-bulk-status {
 }
 .mep-cust-meta { display: flex; flex-direction: column; min-width: 0; }
 .mep-cust-name { font-weight: 600; color: #0f172a; font-size: 14px; }
-.mep-cust-email { color: #6366f1; font-size: 12.5px; text-decoration: none; word-break: break-all; }
+.mep-cust-email { color: #6366f1; font-size: 13px; text-decoration: none; word-break: break-all; }
 .mep-cust-email:hover { text-decoration: underline; }
-.mep-cust-row { display: flex; align-items: center; gap: 8px; color: #475569; font-size: 13px; padding: 6px 0; }
+.mep-cust-row { display: flex; align-items: center; gap: 8px; color: #475569; font-size: 14px; padding: 6px 0; }
 .mep-cust-row .dashicons { color: #94a3b8; font-size: 16px; width: 16px; height: 16px; }
 .mep-cust-muted { color: #94a3b8; }
 .mep-cust-link {
@@ -2342,7 +2342,7 @@ select#mep-bulk-status {
 	align-items: center;
 	gap: 8px;
 	color: #6366f1;
-	font-size: 13px;
+	font-size: 14px;
 	text-decoration: none;
 	padding: 8px 0 0;
 	font-weight: 500;
@@ -2362,19 +2362,19 @@ select#mep-bulk-status {
 	width: 100%;
 	border: 1px solid #e2e8f0;
 	border-radius: 8px;
-	padding: 9px 11px;
-	font-size: 13px;
+	padding: 11px 11px;
+	font-size: 14px;
 	resize: vertical;
-	min-height: 46px;
+	min-height: 48px;
 	box-sizing: border-box;
 }
 .mep-order-detail-wrap .mep-note-form-actions { display: flex; gap: 8px; margin-top: 9px; }
 .mep-order-detail-wrap .mep-note-type-select {
 	flex: 1;
-	height: 34px;
+	height: 36px;
 	border: 1px solid #e2e8f0;
 	border-radius: 8px;
-	font-size: 12.5px;
+	font-size: 13px;
 	padding: 0 8px;
 	background: #fff;
 }
@@ -2424,7 +2424,7 @@ select#mep-bulk-status {
 	background: transparent !important;
 	padding: 0 !important;
 	border: none !important;
-	font-size: 13px;
+	font-size: 14px;
 	color: #334155;
 	line-height: 1.5;
 }
@@ -2433,7 +2433,7 @@ select#mep-bulk-status {
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-content strong { color: #0f172a; font-weight: 700; }
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-tag {
 	display: inline-block;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: .04em;
@@ -2443,10 +2443,10 @@ select#mep-bulk-status {
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-meta {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	margin-top: 5px;
 	padding: 0;
-	font-size: 10.5px;
+	font-size: 11.5px;
 	color: #9ca3af;
 	letter-spacing: .04em;
 }
@@ -2477,14 +2477,14 @@ select#mep-bulk-status {
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-item { padding: 0 0 11px 20px; }
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-item::before { top: 11px; bottom: -2px; }
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-dot { top: 3px; }
-.mep-order-detail-wrap .mep-notes-timeline .mep-note-content { font-size: 12.5px; line-height: 1.4; }
+.mep-order-detail-wrap .mep-notes-timeline .mep-note-content { font-size: 13px; line-height: 1.4; }
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-meta { margin-top: 2px; }
 
 /* ---- Order Notes — compact card-style timeline (match attached design) ---- */
 .mep-order-detail-wrap .mep-add-note-form { padding: 0; background: transparent; border: none; margin-bottom: 10px; }
-.mep-order-detail-wrap .mep-add-note-form .mep-note-textarea { min-height: 58px; border-radius: 9px; padding: 9px 11px; font-size: 12.5px; }
+.mep-order-detail-wrap .mep-add-note-form .mep-note-textarea { min-height: 60px; border-radius: 9px; padding: 11px 11px; font-size: 13px; }
 .mep-order-detail-wrap .mep-add-note-form .mep-note-form-actions { margin-top: 8px; }
-.mep-order-detail-wrap .mep-note-type-select { height: 34px; border-radius: 8px; }
+.mep-order-detail-wrap .mep-note-type-select { height: 36px; border-radius: 8px; }
 .mep-order-detail-wrap .mep-note-form-actions .mep-btn-sm { height: 34px; border-radius: 8px; padding: 0 18px; }
 
 .mep-order-detail-wrap .mep-notes-timeline { padding-top: 2px; }
@@ -2514,14 +2514,14 @@ select#mep-bulk-status {
 	padding: 8px 11px;
 }
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-content {
-	font-size: 12.5px;
+	font-size: 13px;
 	line-height: 1.4;
 	color: #334155;
 }
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-content strong { color: #1e293b; font-weight: 700; }
 .mep-order-detail-wrap .mep-notes-timeline .mep-note-meta {
 	margin-top: 4px;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 600;
 	letter-spacing: .03em;
 	color: #94a3b8;

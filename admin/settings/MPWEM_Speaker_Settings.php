@@ -53,13 +53,6 @@
 
                     <div class="mpwem-speaker-panel" id="mpwem-speaker-fields" style="display:<?php echo esc_attr( $speaker_enabled === 'yes' ? 'block' : 'none' ); ?>">
                         <div class="mpwem-speaker-display" data-mpwem-speaker-display="1">
-                            <div class="mpwem-speaker-display__head">
-                                <div class="mpwem-speaker-display__head-copy">
-                                    <h3 class="mpwem-speaker-display__title"><?php esc_html_e( 'Section Display', 'mage-eventpress' ); ?></h3>
-                                    <p class="mpwem-speaker-display__subtitle"><?php esc_html_e( 'Choose the heading and icon shown above speakers on the event page.', 'mage-eventpress' ); ?></p>
-                                </div>
-                                <span class="mpwem-speaker-display__chip"><?php esc_html_e( 'Frontend', 'mage-eventpress' ); ?></span>
-                            </div>
                             <div class="mpwem-speaker-display__body">
                                 <div class="mpwem-speaker-display__row mpwem-speaker-display__row--label">
                                     <div class="mpwem-speaker-display__meta">

@@ -57,7 +57,7 @@
   border-bottom: 1px solid #f1f5f9;
 }
 .mep-gs__sb-plugin-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: .8px;
   text-transform: uppercase;
@@ -93,7 +93,7 @@
   border-radius: 8px;
   cursor: pointer;
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   font-family: inherit;
   transition: background .12s, color .12s;
@@ -132,7 +132,7 @@
   flex-shrink: 0;
 }
 .mep-gs__lic-badge.mep-gs--pro .mep-gs__lic-dot { background: #6366f1; }
-.mep-gs__lic-text { font-size: 11px; color: #059669; font-weight: 500; }
+.mep-gs__lic-text { font-size: 12px; color: #059669; font-weight: 500; }
 .mep-gs__lic-badge.mep-gs--pro .mep-gs__lic-text { color: #4f46e5; }
 
 /* ── MAIN ── */
@@ -175,7 +175,7 @@
 }
 .mep-gs__topbar-title { font-size: 15px; font-weight: 600; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mep-gs__topbar-sep { color: #cbd5e1; font-size: 14px; flex-shrink: 0; }
-.mep-gs__topbar-sub { font-size: 13px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.mep-gs__topbar-sub { font-size: 14px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .mep-gs__save-btn {
   margin-left: auto;
   flex-shrink: 0;
@@ -184,13 +184,13 @@
   border: none;
   padding: 8px 16px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   white-space: nowrap;
 }
 .mep-gs__save-btn:hover { background: #4f46e5; }
@@ -213,7 +213,7 @@
   border-bottom: 1px solid #f0f0f1;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .mep-gs__section-head .mep-gs__section-icon { font-size: 15px; color: #6366f1; }
 .mep-gs__section-head-label { font-size: 15px; font-weight: 600; color: #1d2327; }
@@ -229,7 +229,7 @@
 .mep-gs__field-row:last-child { border-bottom: none; }
 .mep-gs__field-label-cell { padding: 20px 0 20px 24px; background: transparent; }
 .mep-gs__field-label { font-size: 14px; font-weight: 600; color: #1d2327; margin: 0; line-height: 1.4; }
-.mep-gs__field-hint { font-size: 13px; color: #646970; line-height: 1.55; margin-top: 5px; }
+.mep-gs__field-hint { font-size: 14px; color: #646970; line-height: 1.55; margin-top: 5px; }
 .mep-gs__field-control-cell {
   padding: 20px 24px 20px 0;
   display: block;
@@ -243,13 +243,13 @@
   background: #fff;
   border: 1px solid #8c8f94;
   border-radius: 4px;
-  padding: 6px 10px;
+  padding: 8px 10px;
   font-size: 14px;
   color: #2c3338;
   font-family: inherit;
   outline: none;
   transition: border-color .15s, box-shadow .15s;
-  min-height: 36px;
+  min-height: 38px;
   line-height: 1.4;
 }
 .mep-gs__select:focus,
@@ -264,7 +264,7 @@
   background: #fff;
   border: 1px solid #8c8f94;
   border-radius: 4px;
-  padding: 6px 10px;
+  padding: 8px 10px;
   font-size: 14px;
   color: #2c3338;
   font-family: inherit;
@@ -280,7 +280,7 @@
 
 /* ── CHECKBOXES ── */
 .mep-gs__checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; }
-.mep-gs__checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #475569; cursor: pointer; }
+.mep-gs__checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569; cursor: pointer; }
 .mep-gs__checkbox-item input[type="checkbox"] { accent-color: #6366f1; width: 14px; height: 14px; cursor: pointer; margin: 0; }
 
 /* ── BUTTONS ── */
@@ -293,7 +293,7 @@
   padding: 6px 12px;
   background: #fff;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
   font-family: inherit;
   transition: border-color .12s, color .12s;
@@ -303,13 +303,13 @@
 .mep-gs__img-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: #eef2ff;
   color: #4f46e5;
   border: 1px solid #c7d2fe;
   border-radius: 8px;
   padding: 7px 14px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   font-family: inherit;
@@ -323,7 +323,7 @@
   align-items: center;
   padding: 3px 9px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -334,13 +334,13 @@
 
 /* ── LICENSE TABLE ── */
 .mep-gs__table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.mep-gs__lic-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+.mep-gs__lic-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 600px; }
 .mep-gs__lic-table th {
   background: #f8fafc;
   padding: 10px 14px;
   text-align: left;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .5px;
   color: #64748b;
@@ -352,8 +352,8 @@
 .mep-gs__lic-key-input {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 12px;
+  padding: 8px 10px;
+  font-size: 13px;
   width: 140px;
   color: #1e293b;
   background: #fff;
@@ -367,7 +367,7 @@
   border: none;
   padding: 7px 14px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   font-family: inherit;
@@ -381,10 +381,10 @@
 .mep-gs__lic-table input[type="password"] {
   border: 1px solid #e2e8f0 !important;
   border-radius: 8px !important;
-  padding: 6px 10px !important;
-  font-size: 12px !important;
+  padding: 8px 10px !important;
+  font-size: 13px !important;
   width: 140px !important;
-  min-height: 34px !important;
+  min-height: 36px !important;
   color: #1e293b !important;
   background: #fff !important;
   font-family: inherit !important;
@@ -405,7 +405,7 @@
   border: none !important;
   padding: 7px 14px !important;
   border-radius: 8px !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
   cursor: pointer !important;
   font-family: inherit !important;
@@ -429,14 +429,14 @@
 
 /* ── INFO NOTE ── */
 .mep-gs__info-note { padding: 12px 18px; background: #eff6ff; border-bottom: 1px solid #dbeafe; }
-.mep-gs__info-note p { font-size: 12px; color: #3b82f6; line-height: 1.6; margin: 0; }
+.mep-gs__info-note p { font-size: 13px; color: #3b82f6; line-height: 1.6; margin: 0; }
 
 /* ── PLUGIN LABEL BADGE (free/pro indicator in sidebar) ── */
 .mep-gs__plugin-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 4px;
@@ -454,7 +454,7 @@
 .mep-gs__saved-banner {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin: 0 20px 14px;
   padding: 12px 16px;
   color: #067a55;
@@ -489,7 +489,7 @@
 .mep-gs__compact-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
   padding: 16px 18px;
 }
 .mep-gs__compact-item {
@@ -502,7 +502,7 @@
 }
 .mep-gs__compact-label {
   display: block;
-  font-size: 10.5px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #1e1e1e;
   margin-bottom: 8px;
@@ -514,14 +514,14 @@
 .mep-gs__compact-item .mep-gs__input {
   width: 100%;
   max-width: 100%;
-  min-height: 34px;
+  min-height: 36px;
 }
 
 /* Colour picker → compact inline swatch + hex (+ small reset) */
 .mep-gs__compact-item .wp-picker-container {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .mep-gs__compact-item .wp-picker-container .wp-color-result.button {
@@ -543,12 +543,12 @@
 }
 .mep-gs__compact-item .wp-picker-input-wrap input[type="text"] {
   width: 86px !important;
-  height: 34px;
-  min-height: 34px;
+  height: 36px;
+  min-height: 36px;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
-  font-size: 12px;
-  padding: 4px 8px;
+  font-size: 13px;
+  padding: 6px 8px;
 }
 .mep-gs__compact-item .wp-picker-default,
 .mep-gs__compact-item .wp-picker-clear {
@@ -557,7 +557,7 @@
   line-height: 1;
   padding: 0 8px;
   border-radius: 8px;
-  font-size: 11px;
+  font-size: 12px;
 }
 /* Iris panel spans the chip width when opened */
 .mep-gs__compact-item .wp-picker-holder { flex: 0 0 100%; }
@@ -581,7 +581,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  font-size: 13px;
+  font-size: 14px;
   color: #334155;
   cursor: pointer;
   border-bottom: 1px solid #f8fafc;
@@ -641,7 +641,7 @@
   .mep-gs__wrap { min-height: 100vh; overflow: visible; }
   .mep-gs__main { height: auto; overflow: visible; }
   .mep-gs__content { overflow: visible; height: auto; }
-  .mep-gs__topbar-title { font-size: 13px; }
+  .mep-gs__topbar-title { font-size: 14px; }
   .mep-gs__save-btn { padding: 8px 12px; }
   .mep-gs__input--sm { width: 80px; }
   .mep-gs__checkbox-group { gap: 8px; }
@@ -666,7 +666,7 @@
   appearance: none;
   width: 100%;
   max-width: 280px;
-  min-height: 36px;
+  min-height: 38px;
   height: auto;
   line-height: 1.4;
   border: 1px solid #8c8f94;
@@ -696,7 +696,7 @@
   border: 1px solid #8c8f94;
   border-radius: 4px;
   color: #2c3338;
-  min-height: 36px;
+  min-height: 38px;
   box-shadow: none;
 }
 .mep-gs__root .mep-gs__textarea { min-height: 90px; }
@@ -746,7 +746,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
   border: none;
   max-width: none;
   background: none;
@@ -824,7 +824,7 @@
 .mep-gs__root .wbtm_add_icon_image_button_area button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: #eef2ff;
   color: #4f46e5;
   border: 1px solid #c7d2fe;
@@ -913,7 +913,7 @@
   clear: both !important;
   width: 100% !important;
   max-width: 520px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   color: #646970 !important;
   line-height: 1.55 !important;
   margin: 5px 0 0 !important;
@@ -950,10 +950,10 @@
   background: #fff;
   border: 1px solid #8c8f94;
   border-radius: 4px;
-  padding: 6px 10px;
+  padding: 8px 10px;
   font-size: 14px;
   color: #2c3338;
-  min-height: 36px;
+  min-height: 38px;
   line-height: 1.4;
   box-shadow: none;
   margin: 0;
@@ -1003,7 +1003,7 @@
 .mep-gs__root fieldset label {
   display: flex !important;
   align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
   font-size: 14px;
   color: #2c3338;
   margin: 0 !important;
@@ -1037,14 +1037,14 @@
 .mep-gs__root .mep-licensing-page,
 .mep-gs__root .wc_status_table_wrapper { padding: 8px 24px 20px; }
 .mep-gs__root .mep-licensing-table,
-.mep-gs__root .wc_status_table_wrapper table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.mep-gs__root .wc_status_table_wrapper table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .mep-gs__root .mep-licensing-table th,
 .mep-gs__root .wc_status_table_wrapper th {
   background: #f6f7f7;
   padding: 12px 16px;
   text-align: left;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .5px;
   color: #646970;
@@ -1120,7 +1120,7 @@
   border-radius: 10px;
   background: #f5f7ff;
   color: #4f46e5;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   padding: 10px 16px;
   cursor: pointer;
@@ -1148,7 +1148,7 @@
 .mep-em__tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   margin: 0 0 22px;
 }
 .mep-em__tab {
@@ -1158,7 +1158,7 @@
   border: 1.5px solid #c7d2fe;
   background: #fff;
   color: #4f46e5;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
   padding: 11px 18px;
@@ -1266,7 +1266,7 @@
 }
 .mep-em__card-desc {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #94a3b8;
   line-height: 1.4;
 }
@@ -1278,20 +1278,20 @@
 .mep-em__row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 .mep-em__field { margin-bottom: 14px; }
 .mep-em__field:last-child { margin-bottom: 0; }
 .mep-em__label {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #1e293b;
   margin: 0 0 6px;
 }
 .mep-em__hint {
   margin: 6px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -1304,8 +1304,8 @@
   border-radius: 10px !important;
   background: #fff !important;
   color: #0f172a !important;
-  font-size: 13px !important;
-  padding: 10px 12px !important;
+  font-size: 14px !important;
+  padding: 12px 12px !important;
   line-height: 1.4 !important;
   box-shadow: none !important;
   min-height: 0 !important;
@@ -1355,7 +1355,7 @@
   padding: 5px 12px !important;
   height: auto !important;
   line-height: 1.2 !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   box-shadow: none !important;
   top: 0 !important;
@@ -1447,7 +1447,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   color: #334155;
   cursor: pointer;
   margin: 0;
@@ -1475,7 +1475,7 @@
   background: #eef2ff;
   color: #4f46e5;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   padding: 9px 12px;
   border-radius: 8px;
@@ -1547,7 +1547,7 @@
 }
 .mep-em-modal__desc {
   margin: 0 0 18px;
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
   line-height: 1.5;
 }
@@ -1555,7 +1555,7 @@
   margin: 12px 0 0;
   padding: 10px 12px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.4;
 }
 .mep-em-modal__status.mep-em--ok {
@@ -1569,7 +1569,7 @@
 .mep-em-modal__actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
   margin-top: 20px;
 }
 .mep-em-modal__cancel {
@@ -1578,7 +1578,7 @@
   color: #475569;
   border-radius: 10px;
   padding: 10px 14px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -1591,7 +1591,7 @@
   color: #fff;
   border-radius: 10px;
   padding: 10px 16px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -1619,7 +1619,7 @@
 .mep-gs__email-subnav {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
   padding: 6px;
   margin: 0 0 18px;
   background: #f1f5f9;
@@ -1633,7 +1633,7 @@
   border: 0;
   background: transparent;
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.2;
   padding: 10px 16px;
@@ -1767,7 +1767,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-gn__card-head {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 16px 18px 0;
 }
 .mep-gn__card-icon {
@@ -1795,7 +1795,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-gn__field:last-child { margin-bottom: 0; }
 .mep-gn__label {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1804,7 +1804,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-gn__hint {
   margin: 6px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -1816,8 +1816,8 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border-radius: 10px !important;
   background: #f8fafc !important;
   color: #0f172a !important;
-  font-size: 13px !important;
-  padding: 10px 12px !important;
+  font-size: 14px !important;
+  padding: 12px 12px !important;
   line-height: 1.4 !important;
   box-shadow: none !important;
   min-height: 0 !important;
@@ -1881,7 +1881,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-gn__checks {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
+  gap: 8px 12px;
   padding: 10px 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -1890,8 +1890,8 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-gn__check {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 8px;
+  font-size: 14px;
   color: #334155;
   margin: 0;
   cursor: pointer;
@@ -1905,7 +1905,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-gn__choice-box {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 16px;
+  gap: 8px 16px;
   padding: 12px 14px;
   background: #eef2ff;
   border: 1px solid #c7d2fe;
@@ -1914,8 +1914,8 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-gn__radio {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 8px;
+  font-size: 14px;
   color: #334155;
   margin: 0;
   cursor: pointer;
@@ -1934,7 +1934,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-gn__zoom-val {
   min-width: 36px;
   text-align: center;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: #4f46e5;
   background: #eef2ff;
@@ -2023,14 +2023,14 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-si__card-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
   line-height: 1.45;
 }
 .mep-si__card-body { padding: 16px 20px 20px; }
 .mep-si__label {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -2039,7 +2039,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-si__hint {
   margin: 8px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -2049,8 +2049,8 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border-radius: 10px !important;
   background: #fff !important;
   color: #0f172a !important;
-  font-size: 13px !important;
-  padding: 10px 12px !important;
+  font-size: 14px !important;
+  padding: 12px 12px !important;
   box-shadow: none !important;
 }
 .mep-si__field { margin-bottom: 14px; }
@@ -2076,7 +2076,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   background: var(--mep-si-secondary, #f1f5ff);
 }
 .mep-si__preview-badge {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #94a3b8;
 }
@@ -2087,7 +2087,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border-radius: 10px;
   background: var(--mep-si-primary, #4f46e5);
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.01em;
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
@@ -2104,7 +2104,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   min-height: 46px;
   padding: 6px 10px 6px 8px;
@@ -2176,13 +2176,13 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-si__icon-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 .mep-si__icon-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   padding: 12px 14px;
   border: 1px solid #e8ecf1;
   border-radius: 12px;
@@ -2348,7 +2348,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-sc__card-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -2357,7 +2357,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-sc__field:last-child { margin-bottom: 0; }
 .mep-sc__label {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -2366,7 +2366,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-sc__hint {
   margin: 8px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -2378,10 +2378,10 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border-radius: 10px !important;
   background: #fff !important;
   color: #0f172a !important;
-  font-size: 13px !important;
-  padding: 10px 12px !important;
+  font-size: 14px !important;
+  padding: 12px 12px !important;
   box-shadow: none !important;
-  min-height: 42px;
+  min-height: 44px;
   line-height: 1.4;
 }
 .mep-sc__select {
@@ -2446,7 +2446,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-el__row--stack {
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: 8px;
 }
 .mep-el__row-text {
   min-width: 0;
@@ -2463,7 +2463,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-el__row-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -2517,10 +2517,10 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border-radius: 10px !important;
   background: #fff !important;
   color: #0f172a !important;
-  font-size: 13px !important;
-  padding: 10px 12px !important;
+  font-size: 14px !important;
+  padding: 12px 12px !important;
   box-shadow: none !important;
-  min-height: 42px;
+  min-height: 44px;
 }
 @media (max-width: 600px) {
   .mep-el__row {
@@ -2531,12 +2531,12 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 
 /* ── Single Event template thumbnails ── */
 .mep-se__template-row {
-  gap: 14px;
+  gap: 12px;
 }
 .mep-se__templates {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
 .mep-se__template {
@@ -2544,7 +2544,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
   padding: 10px;
   background: #fff;
@@ -2607,7 +2607,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-se__template-name {
   display: block;
   padding: 0 2px 2px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.3;
@@ -2621,7 +2621,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border-radius: 999px;
   background: #6366f1;
   color: #fff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -2641,7 +2641,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-cu__notice {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
   padding: 16px 18px;
   margin-bottom: 16px;
   border-radius: 14px;
@@ -2683,7 +2683,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-cu__notice--warn .mep-cu__notice-body strong { color: #92400e; }
 .mep-cu__notice-body p {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.45;
 }
 .mep-cu__notice--info .mep-cu__notice-body p { color: #1d4ed8; }
@@ -2719,7 +2719,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-pay__tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   margin: 0 0 22px;
 }
 .mep-pay__tab {
@@ -2729,7 +2729,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border: 1.5px solid #c7d2fe;
   background: #fff;
   color: #4f46e5;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
   padding: 11px 18px;
@@ -2795,7 +2795,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-pay__card-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -2818,7 +2818,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 .mep-pay__row--stack {
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: 8px;
 }
 .mep-pay__row-text { min-width: 0; flex: 1; }
 .mep-pay__row-label {
@@ -2832,7 +2832,7 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
 }
 .mep-pay__row-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -2876,10 +2876,10 @@ body.mep_events_page_mep_event_settings_page #wpbody-content > .error {
   border-radius: 5px !important;
   background: #fff !important;
   color: #0f172a !important;
-  font-size: 13px !important;
-  padding: 10px 12px !important;
+  font-size: 14px !important;
+  padding: 12px 12px !important;
   box-shadow: none !important;
-  min-height: 42px;
+  min-height: 44px;
 }
 select#mep_confirmation_page_id {
   border: 1px solid #ddd;
@@ -2888,7 +2888,7 @@ select#mep_confirmation_page_id {
 .mep-pay__checks {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
+  gap: 8px 12px;
   padding: 10px 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -2897,22 +2897,22 @@ select#mep_confirmation_page_id {
 .mep-pay__check {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 8px;
+  font-size: 14px;
   color: #334155;
   margin: 0;
   cursor: pointer;
 }
 .mep-pay__empty {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
 }
 
 .mep-pay__notice {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
   padding: 16px 18px;
   margin-bottom: 16px;
   background: #fffbeb;
@@ -2939,7 +2939,7 @@ select#mep_confirmation_page_id {
 }
 .mep-pay__notice-body p {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #a16207;
   line-height: 1.45;
 }
@@ -2949,7 +2949,7 @@ select#mep_confirmation_page_id {
   border-radius: 10px;
   background: #4f46e5;
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   padding: 10px 14px;
   cursor: pointer;
@@ -2980,7 +2980,7 @@ select#mep_confirmation_page_id {
 .mep-pay__gateway-main {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   min-width: 0;
 }
 .mep-pay__gateway-icon {
@@ -3004,7 +3004,7 @@ select#mep_confirmation_page_id {
 }
 .mep-pay__gateway-status {
   display: inline-block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 999px;
@@ -3020,7 +3020,7 @@ select#mep_confirmation_page_id {
   background: #f5f7ff !important;
   color: #4f46e5 !important;
   border-radius: 10px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
   padding: 8px 14px !important;
   cursor: pointer;
@@ -3039,7 +3039,7 @@ select#mep_confirmation_page_id {
   padding: 5px 12px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   user-select: none;
@@ -3057,7 +3057,7 @@ select#mep_confirmation_page_id {
   gap: 12px;
 }
 .mep-pay .mep-wc-pm-heading {
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
   color: #64748b !important;
   text-transform: uppercase;
@@ -3127,7 +3127,7 @@ select#mep_confirmation_page_id {
 }
 .mep-ms__card-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
   line-height: 1.45;
 }
@@ -3162,7 +3162,7 @@ select#mep_confirmation_page_id {
 .mep-ms__file {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   max-width: 560px;
 }
@@ -3174,7 +3174,7 @@ select#mep_confirmation_page_id {
   border-radius: 10px;
   background: #f5f7ff;
   color: #4f46e5;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   padding: 10px 14px;
   cursor: pointer;
@@ -3188,7 +3188,7 @@ select#mep_confirmation_page_id {
 .mep-ms__checks {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
+  gap: 8px 12px;
   padding: 10px 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -3197,8 +3197,8 @@ select#mep_confirmation_page_id {
 .mep-ms__check {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 8px;
+  font-size: 14px;
   color: #334155;
   margin: 0;
   cursor: pointer;
@@ -3233,7 +3233,7 @@ select#mep_confirmation_page_id {
 .mep-ms .mep-licensing-table input[type="text"] {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 6px 10px;
+  padding: 8px 10px;
   width: 100%;
   max-width: 280px;
 }
@@ -3281,7 +3281,7 @@ select#mep_confirmation_page_id {
 .mep-ls__card-head {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 22px 24px 16px;
 }
 .mep-ls__card-head--row {
@@ -3290,7 +3290,7 @@ select#mep_confirmation_page_id {
 .mep-ls__card-head-left {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
 }
 .mep-ls__card--status .mep-ls__card-head {
@@ -3328,7 +3328,7 @@ select#mep_confirmation_page_id {
   border-radius: 999px;
   background: #f1f3f8;
   color: #5b6478;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 1.2;
   white-space: nowrap;
@@ -3344,13 +3344,13 @@ select#mep_confirmation_page_id {
 .mep-ls__card--status .mep-ls__card-body { padding: 20px 24px 24px; }
 .mep-ls__empty {
   margin: 8px 0 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
 }
 .mep-ls .mep_licensae_info:empty { display: none; }
 .mep-ls .mep_licensae_info {
   margin: 0 0 12px;
-  font-size: 13px;
+  font-size: 14px;
   color: #475569;
 }
 
@@ -3364,7 +3364,7 @@ select#mep_confirmation_page_id {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  font-size: 13px;
+  font-size: 14px;
   background: transparent;
   border: 0;
   box-shadow: none;
@@ -3375,7 +3375,7 @@ select#mep_confirmation_page_id {
   padding: 12px 14px !important;
   text-align: left !important;
   font-weight: 600 !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   color: #8b93a7 !important;
@@ -3400,7 +3400,7 @@ select#mep_confirmation_page_id {
   vertical-align: middle !important;
   background: #fff !important;
   text-align: left !important;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
 }
 .mep-gs__root .mep-ls .mep-ls__license-table tbody tr:last-child td,
@@ -3411,15 +3411,15 @@ select#mep_confirmation_page_id {
 .mep-gs__root .mep-ls .mep-licensing-table input[type="text"] {
   width: 100% !important;
   max-width: 240px !important;
-  min-height: 38px !important;
+  min-height: 40px !important;
   margin: 0 !important;
-  padding: 8px 12px !important;
+  padding: 10px 12px !important;
   border: 1px solid #e2e6ef !important;
   border-radius: 8px !important;
   background: #fff !important;
   box-shadow: none !important;
   color: #1e2433 !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   line-height: 1.4 !important;
 }
 .mep-gs__root .mep-ls .mep-ls__license-table input[type="text"]:focus,
@@ -3440,10 +3440,10 @@ select#mep_confirmation_page_id {
 .mep-gs__root .mep-ls .mep-licensing-table td span[style*="color:green"] {
   display: inline-flex !important;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 5px 12px !important;
   border-radius: 999px !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
   text-transform: none !important;
@@ -3490,7 +3490,7 @@ select#mep_confirmation_page_id {
   border-radius: 8px !important;
   background: var(--mep-ls-purple) !important;
   color: #fff !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
   text-shadow: none !important;
@@ -3531,7 +3531,7 @@ select#mep_confirmation_page_id {
 .mep-ls__status-label {
   grid-column: 1;
   grid-row: 1;
-  font-size: 12px;
+  font-size: 13px;
   color: #8b93a7;
   line-height: 1.35;
 }
@@ -3568,7 +3568,7 @@ select#mep_confirmation_page_id {
   border-radius: 6px;
   background: #f6f7fb;
   color: #5b6478;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1.4;
   text-decoration: none;
@@ -3598,7 +3598,7 @@ select#mep_confirmation_page_id {
   border-radius: 8px;
   background: var(--mep-ls-purple);
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -3693,7 +3693,7 @@ select#mep_confirmation_page_id {
 }
 .mep-pdf__card-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--mep-pdf-muted);
   line-height: 1.45;
 }
@@ -3710,7 +3710,7 @@ select#mep_confirmation_page_id {
 .mep-pdf__grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .mep-pdf__field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .mep-pdf__label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #334155;
   line-height: 1.3;
@@ -3721,15 +3721,15 @@ select#mep_confirmation_page_id {
 .mep-gs__root .mep-pdf textarea.mep-pdf__control {
   width: 100% !important;
   max-width: none !important;
-  min-height: 44px !important;
+  min-height: 46px !important;
   margin: 0 !important;
-  padding: 10px 14px !important;
+  padding: 12px 14px !important;
   border: 1px solid transparent !important;
   border-radius: 8px !important;
   background: var(--mep-pdf-input-bg) !important;
   box-shadow: none !important;
   color: #0f172a !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   line-height: 1.4 !important;
 }
 .mep-gs__root .mep-pdf textarea.mep-pdf__textarea {
@@ -3750,7 +3750,7 @@ select#mep_confirmation_page_id {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   min-height: 120px;
   padding: 20px 16px;
   border: 1.5px dashed #c9d4e3;
@@ -3771,12 +3771,12 @@ select#mep_confirmation_page_id {
   margin-bottom: 4px;
 }
 .mep-pdf__upload-line1 {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #334155;
 }
 .mep-pdf__upload-line2 {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--mep-pdf-muted);
 }
 .mep-pdf__upload-preview {
@@ -3797,7 +3797,7 @@ select#mep_confirmation_page_id {
   border: 0;
   background: none;
   color: #ef4444;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -3820,7 +3820,7 @@ select#mep_confirmation_page_id {
 }
 .mep-pdf__toggle-desc {
   margin: 2px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--mep-pdf-muted);
 }
 
@@ -3889,7 +3889,7 @@ select#mep_confirmation_page_id {
   flex: 1;
 }
 .mep-pdf__color-name {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #0f172a;
 }
@@ -3917,7 +3917,7 @@ select#mep_confirmation_page_id {
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
   color: var(--mep-pdf-muted) !important;
   text-transform: uppercase;
@@ -3962,7 +3962,7 @@ select#mep_confirmation_page_id {
   background: var(--mep-pdf-input-bg);
 }
 .mep-pdf__billing-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #0f172a;
   cursor: pointer;
@@ -3994,7 +3994,7 @@ select#mep_confirmation_page_id {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -4026,14 +4026,14 @@ select#mep_confirmation_page_id {
   padding: 16px 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .mep-pdf__preview-generic {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 .mep-pdf__gsound-page { display: none; }
 .mep-pdf__preview-accent {
@@ -4078,7 +4078,7 @@ select#mep_confirmation_page_id {
   display: block;
 }
 .mep-pdf__preview-org {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #64748b;
   white-space: nowrap;
@@ -4105,14 +4105,14 @@ select#mep_confirmation_page_id {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 11px;
+  font-size: 12px;
   color: #64748b;
 }
 .mep-pdf__preview-body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   margin-top: auto;
   padding-top: 10px;
   border-top: 1px dashed #e2e8f0;
@@ -4124,11 +4124,11 @@ select#mep_confirmation_page_id {
   min-width: 0;
 }
 .mep-pdf__preview-attendee strong {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--mep-pdf-preview-text);
 }
 .mep-pdf__preview-attendee span {
-  font-size: 10px;
+  font-size: 11px;
   color: #94a3b8;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4149,14 +4149,14 @@ select#mep_confirmation_page_id {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
 }
 .mep-pdf__preview-price.is-hidden { visibility: hidden; }
 .mep-pdf__preview-theme-name {
   margin: 0;
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #64748b;
 }
@@ -4171,7 +4171,7 @@ select#mep_confirmation_page_id {
   border-radius: 10px;
   background: #eef2ff;
   color: #4f46e5;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   box-shadow: none;
@@ -4221,7 +4221,7 @@ select#mep_confirmation_page_id {
 }
 .mep-pdf__gsound-ticket { display: grid; grid-template-columns: minmax(0, 1fr) 74px; border-bottom: 1px solid #e4e1f0; }
 .mep-pdf__gsound-main { min-width: 0; }
-.mep-pdf__gsound-org { display: flex; align-items: center; gap: 6px; padding: 8px 10px; border-bottom: 1px solid #f0eef8; }
+.mep-pdf__gsound-org { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid #f0eef8; }
 .mep-pdf__gsound-org .mep-pdf__preview-logo { width: 28px; height: 28px; border-radius: 6px; }
 .mep-pdf__gsound-org > span:last-child { min-width: 0; }
 .mep-pdf__gsound-org strong, .mep-pdf__gsound-org small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -4235,7 +4235,7 @@ select#mep_confirmation_page_id {
 .mep-pdf__gsound-facts .is-wide { grid-column: span 2; }
 .mep-pdf__gsound-facts small, .mep-pdf__gsound-facts strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .mep-pdf__gsound-facts small { color: #6b6780; }
-.mep-pdf__gsound-holder { display: flex; align-items: center; gap: 6px; padding: 8px 10px; border-top: 1px solid #f0eef8; }
+.mep-pdf__gsound-holder { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-top: 1px solid #f0eef8; }
 .mep-pdf__gsound-holder b { display: inline-flex; width: 24px; height: 24px; align-items: center; justify-content: center; border-radius: 50%; background: #5b33e8; color: #fff; }
 .mep-pdf__gsound-holder strong, .mep-pdf__gsound-holder small { display: block; }
 .mep-pdf__gsound-stub { display: flex; flex-direction: column; align-items: flex-start; padding: 11px 8px; border-left: 1px dashed #d8d4e5; background: rgba(250,249,254,0.94); }
@@ -4304,7 +4304,7 @@ select#mep_confirmation_page_id {
 .mep-ai__card-head {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 18px 22px;
   border-bottom: 1px solid #f1f5f9;
 }
@@ -4362,7 +4362,7 @@ select#mep_confirmation_page_id {
 }
 .mep-ai__desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--mep-ai-muted);
   line-height: 1.45;
 }
@@ -4413,15 +4413,15 @@ select#mep_confirmation_page_id {
 .mep-gs__root .mep-ai input.mep-ai__control {
   width: 100% !important;
   max-width: none !important;
-  min-height: 42px !important;
+  min-height: 44px !important;
   margin: 0 !important;
-  padding: 10px 12px !important;
+  padding: 12px 12px !important;
   border: 1px solid var(--mep-ai-line) !important;
   border-radius: 8px !important;
   background: #fff !important;
   box-shadow: none !important;
   color: var(--mep-ai-ink) !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   line-height: 1.4 !important;
 }
 .mep-gs__root .mep-ai select.mep-ai__control {
@@ -4444,7 +4444,7 @@ select#mep_confirmation_page_id {
 .mep-ai__provider {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   padding: 18px 0;
   border-bottom: 1px solid #f1f5f9;
 }
@@ -4455,7 +4455,7 @@ select#mep_confirmation_page_id {
 .mep-gs__root .mep-ai h4.mep-ai__provider-name {
   display: block !important;
   margin: 0 !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 700 !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
@@ -4470,11 +4470,11 @@ select#mep_confirmation_page_id {
 .mep-ai__cell {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
 }
 .mep-ai__field-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -4485,7 +4485,7 @@ select#mep_confirmation_page_id {
 .mep-ai .mep-ai-model-status {
   margin: 2px 0 0;
   min-height: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--mep-ai-muted);
   line-height: 1.4;
 }
@@ -4569,7 +4569,7 @@ select#mep_confirmation_page_id {
 }
 .mep-ssc__card-desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--mep-ssc-muted);
   line-height: 1.45;
 }
@@ -4581,7 +4581,7 @@ select#mep_confirmation_page_id {
 }
 .mep-ssc__field { display: flex; flex-direction: column; gap: 8px; }
 .mep-ssc__field-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -4590,7 +4590,7 @@ select#mep_confirmation_page_id {
 }
 .mep-ssc__hint {
   margin: -2px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--mep-ssc-muted);
   line-height: 1.45;
 }
@@ -4599,15 +4599,15 @@ select#mep_confirmation_page_id {
 .mep-gs__root .mep-ssc input.mep-ssc__control {
   width: 100% !important;
   max-width: none !important;
-  min-height: 44px !important;
+  min-height: 46px !important;
   margin: 0 !important;
-  padding: 10px 14px !important;
+  padding: 12px 14px !important;
   border: 1px solid transparent !important;
   border-radius: 10px !important;
   background: var(--mep-ssc-input) !important;
   box-shadow: none !important;
   color: var(--mep-ssc-ink) !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
 }
 .mep-gs__root .mep-ssc select.mep-ssc__control {
   appearance: none;
@@ -4679,7 +4679,7 @@ select#mep_confirmation_page_id {
   border-radius: 10px;
   background: #f1f5f9;
   color: #475569;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   border: 1px solid transparent;
   transition: background 0.15s ease, color 0.15s ease;
@@ -4720,7 +4720,7 @@ select#mep_confirmation_page_id {
   border-radius: 999px;
   background: #fff;
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   border: 1px solid var(--mep-ssc-line);
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -4734,14 +4734,14 @@ select#mep_confirmation_page_id {
   padding: 18px 18px 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   align-items: stretch;
 }
 .mep-ssc__preview-label {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -4796,7 +4796,7 @@ select#mep_confirmation_page_id {
   margin-bottom: 14px;
 }
 .mep-ssc__preview-brand {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #4338ca;
   overflow: hidden;
@@ -4809,7 +4809,7 @@ select#mep_confirmation_page_id {
   border-radius: 50%;
   background: var(--mep-ssc-accent);
   color: #fff;
-  font-size: 11px;
+  font-size: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -4830,7 +4830,7 @@ select#mep_confirmation_page_id {
   margin-bottom: 4px;
 }
 .mep-ssc__preview-headline {
-  font-size: 13px;
+  font-size: 14px;
   font-style: italic;
   color: var(--mep-ssc-accent);
   margin-bottom: 12px;
@@ -4839,18 +4839,18 @@ select#mep_confirmation_page_id {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 11px;
+  font-size: 12px;
   color: #64748b;
   margin-bottom: 10px;
 }
 .mep-ssc__preview-event {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--mep-ssc-text);
   margin-bottom: 10px;
 }
 .mep-ssc__preview-footer {
-  font-size: 10px;
+  font-size: 11px;
   color: #94a3b8;
 }
 .mep-ssc__refresh {
@@ -4864,7 +4864,7 @@ select#mep_confirmation_page_id {
   border-radius: 10px;
   background: var(--mep-ssc-purple-soft);
   color: var(--mep-ssc-purple-deep);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   box-shadow: none;
@@ -4879,7 +4879,7 @@ select#mep_confirmation_page_id {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   min-height: 140px;
   padding: 22px 16px;
   border: 1.5px dashed #c9d4e3;
@@ -4901,12 +4901,12 @@ select#mep_confirmation_page_id {
   margin-bottom: 4px;
 }
 .mep-ssc__upload-line1 {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--mep-ssc-purple-deep);
 }
 .mep-ssc__upload-line2 {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--mep-ssc-muted);
 }
 .mep-ssc__upload-preview { display: block; width: 100%; }
@@ -4923,7 +4923,7 @@ select#mep_confirmation_page_id {
   border: 0;
   background: transparent;
   color: #dc2626;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -4936,7 +4936,7 @@ select#mep_confirmation_page_id {
 .mep-ssc__color-box {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-height: 44px;
   padding: 8px 12px;
   border-radius: 10px;
@@ -4955,7 +4955,7 @@ select#mep_confirmation_page_id {
   box-shadow: none !important;
   min-height: 0 !important;
   padding: 0 !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
   color: var(--mep-ssc-ink) !important;
   width: auto !important;

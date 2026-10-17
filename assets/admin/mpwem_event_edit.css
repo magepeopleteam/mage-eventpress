@@ -3476,77 +3476,105 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     gap: 6px;
 }
 
-.mpwem-ticket-summary__status-toggle {
+.mpwem-ticket-summary__status-toggle,
+.mpwem-ticket-summary__status-badge {
     display: inline-flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    padding: 0 10px !important;
-    min-height: 22px;
+    gap: 6px !important;
+    padding: 4px 10px 4px 8px !important;
     border-radius: 999px !important;
-    border: 1px solid transparent !important;
-    background: #dcfce7 !important;
-    color: #166534 !important;
+    border: none !important;
     font-size: 11px !important;
     font-weight: 700 !important;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    cursor: pointer;
     white-space: nowrap;
+    background: #ecfdf3 !important;
+    color: #15803d !important;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.mpwem-ticket-summary__status-toggle {
+    cursor: pointer;
+}
+
+.mpwem-ticket-summary__status-toggle:hover {
+    transform: translateY(-1px);
+}
+
+.mpwem-ticket-summary__status-toggle:active {
+    transform: translateY(0);
 }
 
 .mpwem-ticket-summary__status-toggle.is-inactive {
-    background: #fff1f2 !important;
-    color: #be123c !important;
+    background: #fef2f2 !important;
+    color: #b91c1c !important;
 }
 
 .mpwem-ticket-summary__status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-    min-height: 22px;
+    cursor: default;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+}
+
+.mpwem-ticket-summary__status-dot {
+    width: 6px;
+    height: 6px;
     border-radius: 999px;
-    background: #dcfce7;
-    color: #166534;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
+    background: currentColor;
+    flex: none;
 }
 
 .mpwem-ticket-summary__action-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     padding: 0 !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 6px !important;
+    border-radius: 8px !important;
     background: #fff !important;
     color: #64748b !important;
-    font-size: 12px;
     cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.mpwem-ticket-summary__action-btn:hover {
-    background: #f8fafc !important;
-    color: #334155 !important;
+.mpwem-ticket-summary__action-btn svg {
+    width: 14px;
+    height: 14px;
 }
 
-.mpwem-ticket-summary__action-btn--danger:hover {
+.mpwem-ticket-summary__action-btn--edit:hover {
+    background: var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12)) !important;
+    border-color: var(--mpwem-primary, #2563eb) !important;
+    color: var(--mpwem-primary, #2563eb) !important;
+}
+
+.mpwem-ticket-summary__action-btn--delete:hover {
     background: #fef2f2 !important;
     border-color: #fecaca !important;
     color: #dc2626 !important;
 }
 
 .mpwem-ticket-summary__sort-handle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 24px;
+    height: 30px;
     cursor: grab;
-    flex-direction: column;
-    gap: 1px;
-    font-size: 9px;
-    line-height: 1;
+    color: #cbd5e1;
+    transition: color 0.15s ease;
+}
+
+.mpwem-ticket-summary__sort-handle svg {
+    width: 16px;
+    height: 16px;
+}
+
+.mpwem-ticket-summary__sort-handle:hover {
+    color: #94a3b8;
 }
 
 .mpwem-ticket-summary__sort-handle:active {

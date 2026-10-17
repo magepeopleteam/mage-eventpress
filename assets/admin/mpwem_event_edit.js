@@ -1377,12 +1377,17 @@
         return $row.find('.mpwem_show_hide_button').length > 0;
     }
 
+    const TICKET_SUMMARY_EDIT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+    const TICKET_SUMMARY_DELETE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
+    const TICKET_SUMMARY_GRIP_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+
     function buildTicketSummaryActions($root, index, isSold, isDisabled) {
         const $wrap = $('<div class="mpwem-ticket-summary__item-actions"></div>');
 
         if (isSold) {
             const $status = $('<button type="button" class="mpwem-ticket-summary__status-toggle"></button>')
-                .text(isDisabled ? 'Inactive' : 'Active')
+                .append('<span class="mpwem-ticket-summary__status-dot" aria-hidden="true"></span>')
+                .append($('<span></span>').text(isDisabled ? 'Inactive' : 'Active'))
                 .toggleClass('is-inactive', isDisabled)
                 .attr('title', 'Click to ' + (isDisabled ? 'activate' : 'deactivate') + ' this ticket type');
 
@@ -1400,19 +1405,23 @@
 
             $wrap.append($status);
         } else {
-            $wrap.append($('<span class="mpwem-ticket-summary__status-badge"></span>').text('Active'));
+            $wrap.append(
+                $('<span class="mpwem-ticket-summary__status-badge"></span>')
+                    .append('<span class="mpwem-ticket-summary__status-dot" aria-hidden="true"></span>')
+                    .append($('<span></span>').text('Active'))
+            );
         }
 
-        const $editBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn" title="Edit"></button>')
-            .append('<span class="fas fa-pen" aria-hidden="true"></span>');
+        const $editBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--edit" title="Edit" aria-label="Edit ticket type"></button>')
+            .append(TICKET_SUMMARY_EDIT_ICON);
         $editBtn.on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             openInlineTicketEdit($root, index);
         });
 
-        const $deleteBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--danger" title="Delete"></button>')
-            .append('<span class="fas fa-trash-alt" aria-hidden="true"></span>');
+        const $deleteBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--delete" title="Delete" aria-label="Delete ticket type"></button>')
+            .append(TICKET_SUMMARY_DELETE_ICON);
         $deleteBtn.on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1423,9 +1432,8 @@
             }
         });
 
-        const $sortHandle = $('<div class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__sort-handle" title="Drag to reorder"></div>')
-            .append('<span class="fas fa-ellipsis-v" aria-hidden="true"></span>')
-            .append('<span class="fas fa-ellipsis-v" aria-hidden="true"></span>');
+        const $sortHandle = $('<span class="mpwem-ticket-summary__sort-handle" title="Drag to reorder" aria-label="Drag to reorder" role="img"></span>')
+            .append(TICKET_SUMMARY_GRIP_ICON);
         $sortHandle.on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();

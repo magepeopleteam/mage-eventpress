@@ -3631,6 +3631,125 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     border-color: var(--mpwem-btn-primary-bg) !important;
 }
 
+/* Global Quantity — Simple Ticket Type summary */
+.mpwem-ticket-summary__gq {
+    padding: 14px 20px;
+    border-bottom: 1px solid #eef1f5;
+}
+
+.mpwem-ticket-summary__gq-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.mpwem-ticket-summary__gq-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mpwem-ticket-summary__gq-title {
+    font-size: 13px;
+    font-weight: 650;
+    color: #1e293b;
+}
+
+.mpwem-ticket-summary__gq-hint {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.mpwem-ticket-summary__gq-switch {
+    flex: none;
+}
+
+.mpwem-ticket-summary__gq-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 14px;
+    padding: 14px;
+    border: 1px solid #eef1f5;
+    border-radius: 12px;
+    background: #fcfcfb;
+}
+
+.mpwem-ticket-summary__gq-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 650;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.mpwem-ticket-summary__gq-pills {
+    display: flex;
+    gap: 8px;
+}
+
+.mpwem-ticket-summary__gq-pill {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1.5px solid #d9dbd9;
+    background: #2563eb;
+    background: #fff;
+    color: #334155;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.mpwem-ticket-summary__gq-pill.is-active {
+    border-color: #2563eb;
+    border-color: var(--mpwem-primary, #2563eb);
+    background: rgba(37, 99, 235, 0.12);
+    color: #2563eb;
+    color: var(--mpwem-primary, #2563eb);
+}
+
+.mpwem-ticket-summary__gq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.mpwem-ticket-summary__gq-group input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    color: #1e293b;
+    background: #fff;
+}
+
+.mpwem-ticket-summary__gq-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    border-color: var(--mpwem-primary, #2563eb);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.mpwem-ticket-summary__gq-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 9px;
+}
+
+.mpwem-ticket-summary__gq-notice span {
+    font-size: 12.5px;
+    color: #92400e;
+}
+
 .mpwem-ticket-modal {
     position: fixed;
     inset: 0;

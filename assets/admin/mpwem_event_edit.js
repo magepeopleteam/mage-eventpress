@@ -1015,6 +1015,7 @@
         }
 
         return {
+            $summary: $summary,
             $summaryList: $summary.find('#mpwem_ticket_summary_list').first(),
             $modal: $root.find('#mpwem_ticket_editor_modal').first(),
             $modalMount: $root.find('#mpwem_ticket_modal_mount').first(),
@@ -1261,6 +1262,117 @@
         highlightRow($row);
     }
 
+    function renderTicketSummaryGlobalQty($root) {
+        const context = getTicketModalContext($root);
+        if (!context.$summary.length) {
+            return;
+        }
+
+        let $gq = context.$summary.find('#mpwem_ticket_summary_gq').first();
+        if (!$gq.length) {
+            $gq = $('<div class="mpwem-ticket-summary__gq" id="mpwem_ticket_summary_gq"></div>');
+            const $toolbar = context.$summary.find('.mpwem-ticket-summary__toolbar').first();
+            if ($toolbar.length) {
+                $toolbar.after($gq);
+            } else {
+                context.$summary.prepend($gq);
+            }
+        }
+
+        const $realToggle = context.$modalMount.find('input[name="enable_global_qty"]').first();
+        const $realTypeSelect = context.$modalMount.find('select[name="mep_gq_type"]').first();
+        const $realTotal = context.$modalMount.find('input[name="mep_gq_total_seat"]').first();
+        const $realReserve = context.$modalMount.find('input[name="mep_gq_total_resv_seat"]').first();
+
+        $gq.empty();
+
+        if (!$realToggle.length) {
+            return;
+        }
+
+        const enabled = $realToggle.is(':checked');
+        const gqType = ($realTypeSelect.val() || 'global').toString();
+        const isFull = gqType !== 'date_wise';
+
+        const $row = $('<div class="mpwem-ticket-summary__gq-row"></div>')
+            .append(
+                $('<div class="mpwem-ticket-summary__gq-copy"></div>')
+                    .append($('<span class="mpwem-ticket-summary__gq-title"></span>').text('Share one quantity pool across all ticket types'))
+                    .append($('<span class="mpwem-ticket-summary__gq-hint"></span>').text('Turn this on if ticket types should draw from a single shared seat count instead of their own.'))
+            );
+
+        const $toggleLabel = $('<label class="round_switch_label mpwem-ticket-summary__gq-switch"></label>');
+        const $toggleInput = $('<input type="checkbox">').prop('checked', enabled);
+        $toggleLabel.append($toggleInput).append('<span class="round_switch"></span>');
+        $row.append($toggleLabel);
+        $gq.append($row);
+
+        $toggleInput.on('change', function() {
+            $realToggle.prop('checked', $(this).is(':checked')).trigger('change');
+        });
+
+        if (!enabled) {
+            return;
+        }
+
+        const $panel = $('<div class="mpwem-ticket-summary__gq-panel"></div>');
+
+        const $pillField = $('<div class="mpwem-ticket-summary__gq-field"></div>')
+            .append($('<label class="mpwem-ticket-summary__gq-label"></label>').text('Quantity applies'));
+        const $pills = $('<div class="mpwem-ticket-summary__gq-pills"></div>');
+        const $pillFull = $('<button type="button" class="mpwem-ticket-summary__gq-pill"></button>').text('Across the whole event').toggleClass('is-active', isFull);
+        const $pillDate = $('<button type="button" class="mpwem-ticket-summary__gq-pill"></button>').text('Per scheduled date').toggleClass('is-active', !isFull);
+        $pills.append($pillFull).append($pillDate);
+        $pillField.append($pills);
+        $panel.append($pillField);
+
+        $pillFull.on('click', function() {
+            $realTypeSelect.val('global').trigger('change');
+        });
+        $pillDate.on('click', function() {
+            $realTypeSelect.val('date_wise').trigger('change');
+        });
+
+        if (isFull) {
+            const $grid = $('<div class="mpwem-ticket-summary__gq-grid"></div>');
+
+            const $totalGroup = $('<div class="mpwem-ticket-summary__gq-group"></div>')
+                .append($('<label class="mpwem-ticket-summary__gq-label"></label>').text('Total Qty'));
+            const $totalInput = $('<input type="number" placeholder="0">').val(($realTotal.val() || '').toString());
+            $totalGroup.append($totalInput);
+
+            const $reserveGroup = $('<div class="mpwem-ticket-summary__gq-group"></div>')
+                .append($('<label class="mpwem-ticket-summary__gq-label"></label>').text('Reserve Qty'));
+            const $reserveInput = $('<input type="number" placeholder="0">').val(($realReserve.val() || '').toString());
+            $reserveGroup.append($reserveInput);
+
+            $grid.append($totalGroup).append($reserveGroup);
+            $panel.append($grid);
+
+            $totalInput.on('input', function() {
+                $realTotal.val($(this).val());
+            }).on('change', function() {
+                renderTicketSummary($root);
+            });
+            $reserveInput.on('input', function() {
+                $realReserve.val($(this).val());
+            }).on('change', function() {
+                renderTicketSummary($root);
+            });
+        } else {
+            const $notice = $('<div class="mpwem-ticket-summary__gq-notice"></div>')
+                .append($('<span></span>').text('Quantity for each date is set in the Date & Time step.'))
+                .append(
+                    $('<button type="button" class="button"></button>')
+                        .attr('data-mpwem-open-particular-date-modal', '')
+                        .text('Open Date Table')
+                );
+            $panel.append($notice);
+        }
+
+        $gq.append($panel);
+    }
+
     function renderTicketSummary($root) {
         const context = getTicketModalContext($root);
         const regEnabled = isRegistrationEnabled($root);
@@ -1281,6 +1393,8 @@
         const earlyBirdEnabled = isEarlyBirdEnabled($root);
 
         getPanel($root, '#mpwem_ticket_pricing_settings').find('#mpwem_ticket_summary').toggleClass('is-earlybird', earlyBirdEnabled);
+
+        renderTicketSummaryGlobalQty($root);
 
         const $headerRow = $('<div class="mpwem-ticket-summary__header"></div>')
             .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Ticket Type'))

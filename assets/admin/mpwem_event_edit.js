@@ -1502,6 +1502,21 @@
         }
     }
 
+    function syncRealFieldValue($el, val) {
+        $el.val(val);
+        if ($el.is('select')) {
+            $el.find('option').each(function() {
+                if (this.value === val) {
+                    this.setAttribute('selected', 'selected');
+                } else {
+                    this.removeAttribute('selected');
+                }
+            });
+        } else {
+            $el.attr('value', val);
+        }
+    }
+
     function renderInlineTicketAddForm($root, $row) {
         const context = getTicketModalContext($root);
         const $card = getInlineTicketAddCard($root);
@@ -1577,12 +1592,14 @@
         );
 
         $pillInput.on('click', function() {
-            $qtyTypeSelect.val('inputbox').trigger('change');
+            syncRealFieldValue($qtyTypeSelect, 'inputbox');
+            $qtyTypeSelect.trigger('change');
             $pillInput.addClass('is-active');
             $pillDropdown.removeClass('is-active');
         });
         $pillDropdown.on('click', function() {
-            $qtyTypeSelect.val('dropdown').trigger('change');
+            syncRealFieldValue($qtyTypeSelect, 'dropdown');
+            $qtyTypeSelect.trigger('change');
             $pillDropdown.addClass('is-active');
             $pillInput.removeClass('is-active');
         });
@@ -1631,7 +1648,8 @@
             );
 
             $modeProxy.on('change', function() {
-                $modeSelect.val($(this).val()).trigger('change');
+                syncRealFieldValue($modeSelect, $(this).val());
+                $modeSelect.trigger('change');
             });
         }
 
@@ -1672,18 +1690,18 @@
         $footer.append($cancelBtn).append($saveBtn);
         $card.append($footer);
 
-        $nameProxy.on('input', function() { $nameInput.val($(this).val()); $nameProxy.removeClass('has-error'); });
-        $priceProxy.on('input', function() { $priceInput.val($(this).val()); });
+        $nameProxy.on('input', function() { syncRealFieldValue($nameInput, $(this).val()); $nameProxy.removeClass('has-error'); });
+        $priceProxy.on('input', function() { syncRealFieldValue($priceInput, $(this).val()); });
         if ($qtyProxy) {
-            $qtyProxy.on('input', function() { $qtyInput.val($(this).val()); });
+            $qtyProxy.on('input', function() { syncRealFieldValue($qtyInput, $(this).val()); });
         }
-        $descProxy.on('input', function() { $descInput.val($(this).val()); });
-        $defaultProxy.on('input', function() { $defaultQtyInput.val($(this).val()); });
-        $reserveProxy.on('input', function() { $reserveQtyInput.val($(this).val()); });
-        $saleStartDateProxy.on('input change', function() { $saleStartDate.val($(this).val()); });
-        $saleStartTimeProxy.on('input change', function() { $saleStartTime.val($(this).val()); });
-        $saleEndDateProxy.on('input change', function() { $saleEndDate.val($(this).val()); });
-        $saleEndTimeProxy.on('input change', function() { $saleEndTime.val($(this).val()); });
+        $descProxy.on('input', function() { syncRealFieldValue($descInput, $(this).val()); });
+        $defaultProxy.on('input', function() { syncRealFieldValue($defaultQtyInput, $(this).val()); });
+        $reserveProxy.on('input', function() { syncRealFieldValue($reserveQtyInput, $(this).val()); });
+        $saleStartDateProxy.on('input change', function() { syncRealFieldValue($saleStartDate, $(this).val()); });
+        $saleStartTimeProxy.on('input change', function() { syncRealFieldValue($saleStartTime, $(this).val()); });
+        $saleEndDateProxy.on('input change', function() { syncRealFieldValue($saleEndDate, $(this).val()); });
+        $saleEndTimeProxy.on('input change', function() { syncRealFieldValue($saleEndTime, $(this).val()); });
 
         $cancelBtn.on('click', function() {
             closeInlineTicketAdd($root, { save: false });
@@ -1696,8 +1714,8 @@
                 return;
             }
 
-            $nameInput.val(name);
-            $priceInput.val(($priceProxy.val() || '').toString());
+            syncRealFieldValue($nameInput, name);
+            syncRealFieldValue($priceInput, ($priceProxy.val() || '').toString());
             closeInlineTicketAdd($root, { save: true });
         });
 

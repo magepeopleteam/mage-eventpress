@@ -3370,6 +3370,18 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     line-height: 1.3;
 }
 
+.mpwem-ticket-summary__item-desc {
+    margin: 2px 0 0 !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    color: #94a3b8 !important;
+    font-weight: 400 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
 .mpwem-ticket-summary__item-main p,
 .mpwem-ticket-summary__empty p {
     margin: 0;

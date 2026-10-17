@@ -1531,17 +1531,22 @@
             const price = ticketRowPrice($row);
             const capacity = ticketSummaryQty($root, $row);
             const isDisabled = $row.hasClass('disable_row');
+            const description = ($row.find('[name="option_details_t[]"]').first().val() || '').toString().trim();
+
+            const $itemMain = $('<div class="mpwem-ticket-summary__item-main"></div>')
+                .append(
+                    $('<div class="mpwem-ticket-summary__item-head"></div>')
+                        .append($('<h4></h4>').text(name))
+                );
+
+            if (description) {
+                $itemMain.append($('<p class="mpwem-ticket-summary__item-desc"></p>').text(description));
+            }
 
             const $item = $('<article class="mpwem-ticket-summary__item"></article>')
                 .attr('data-ticket-row-index', index)
                 .toggleClass('is-disabled', isDisabled)
-                .append(
-                    $('<div class="mpwem-ticket-summary__item-main"></div>')
-                        .append(
-                            $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                .append($('<h4></h4>').text(name))
-                        )
-                )
+                .append($itemMain)
                 .append(
                     $('<div class="mpwem-ticket-summary__meta"></div>')
                         .append($('<span class="mpwem-ticket-summary__price"></span>').text(price))

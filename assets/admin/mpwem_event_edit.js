@@ -1373,6 +1373,102 @@
         $gq.append($panel);
     }
 
+    function ticketRowIsSold($row) {
+        return $row.find('.mpwem_show_hide_button').length > 0;
+    }
+
+    function buildTicketSummaryActions($root, index, isSold, isDisabled) {
+        const $wrap = $('<div class="mpwem-ticket-summary__item-actions"></div>');
+
+        if (isSold) {
+            const $status = $('<button type="button" class="mpwem-ticket-summary__status-toggle"></button>')
+                .text(isDisabled ? 'Inactive' : 'Active')
+                .toggleClass('is-inactive', isDisabled)
+                .attr('title', 'Click to ' + (isDisabled ? 'activate' : 'deactivate') + ' this ticket type');
+
+            $status.on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const $liveRow = getTicketRows($root).eq(index);
+                const $realToggle = $liveRow.find('.mpwem_show_hide_button').first();
+                if ($realToggle.length) {
+                    $realToggle.trigger('click');
+                    storeSavedTicketSummarySnapshot($root);
+                    renderTicketSummary($root);
+                }
+            });
+
+            $wrap.append($status);
+        } else {
+            $wrap.append($('<span class="mpwem-ticket-summary__status-badge"></span>').text('Active'));
+        }
+
+        const $editBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn" title="Edit"></button>')
+            .append('<span class="fas fa-pen" aria-hidden="true"></span>');
+        $editBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openTicketModal($root, 'list', index);
+        });
+
+        const $deleteBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--danger" title="Delete"></button>')
+            .append('<span class="fas fa-trash-alt" aria-hidden="true"></span>');
+        $deleteBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const $liveRow = getTicketRows($root).eq(index);
+            const $realRemove = $liveRow.find('.mpwem_item_remove').first();
+            if ($realRemove.length) {
+                $realRemove.trigger('click');
+            }
+        });
+
+        const $sortHandle = $('<div class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__sort-handle" title="Drag to reorder"></div>')
+            .append('<span class="fas fa-ellipsis-v" aria-hidden="true"></span>')
+            .append('<span class="fas fa-ellipsis-v" aria-hidden="true"></span>');
+        $sortHandle.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        $wrap.append($editBtn).append($deleteBtn).append($sortHandle);
+
+        return $wrap;
+    }
+
+    function enableTicketSummarySort($root, context) {
+        if (!context.$summaryList.length || typeof context.$summaryList.sortable !== 'function') {
+            return;
+        }
+
+        if (context.$summaryList.data('ui-sortable')) {
+            context.$summaryList.sortable('destroy');
+        }
+
+        context.$summaryList.sortable({
+            items: '> .mpwem-ticket-summary__item',
+            handle: '.mpwem-ticket-summary__sort-handle',
+            axis: 'y',
+            update: function() {
+                const $container = getTicketRowsContainer($root);
+                if (!$container.length) {
+                    return;
+                }
+
+                const $liveRows = getTicketRows($root);
+                context.$summaryList.find('.mpwem-ticket-summary__item').each(function() {
+                    const oldIndex = parseInt($(this).attr('data-ticket-row-index'), 10);
+                    if (!Number.isNaN(oldIndex) && $liveRows.eq(oldIndex).length) {
+                        $container.append($liveRows.eq(oldIndex));
+                    }
+                });
+
+                storeSavedTicketSummarySnapshot($root);
+                renderTicketSummary($root);
+            }
+        });
+    }
+
     function renderTicketSummary($root) {
         const context = getTicketModalContext($root);
         const regEnabled = isRegistrationEnabled($root);
@@ -1404,6 +1500,8 @@
         if (earlyBirdEnabled) {
             $headerRow.append($('<span class="mpwem-ticket-summary__header-earlybird"></span>').text('Sale Period'));
         }
+
+        $headerRow.append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
 
         context.$summaryList.append($headerRow);
 
@@ -1466,8 +1564,12 @@
                 );
             }
 
+            $item.append(buildTicketSummaryActions($root, index, ticketRowIsSold($row), isDisabled));
+
             context.$summaryList.append($item);
         });
+
+        enableTicketSummarySort($root, context);
     }
 
     function getInlineTicketAddCard($root) {

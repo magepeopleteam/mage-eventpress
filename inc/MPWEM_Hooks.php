@@ -488,6 +488,7 @@
                     $all_times = MPWEM_Functions::get_times($event_id, $all_dates, $date);
                     if (is_array($all_times) && sizeof($all_times) > 0) {
                         $time = current($all_times);
+                        $slot_end  = is_array($time) && isset( $time['end']['time'] ) ? $time['end']['time'] : '';
                         $time_info = is_array($time) && array_key_exists( 'start', $time ) ? $time['start'] : [];
                         if (is_array($time_info) && sizeof($time_info) > 0) {
                             $time = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
@@ -501,9 +502,7 @@
 					$icon_setting_sec        = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_date_icon         = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'mi mi-clock';
-					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
-					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$hide_only_end_time_list = self::hide_list_end_time( $event_infos );
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
 					if ( isset( $first_date ) && is_array( $first_date ) && array_key_exists( 'end', $first_date ) ) {
 						// Use the end paired with the same occurrence as $start_time (not the primary event's raw meta),
@@ -511,6 +510,12 @@
 						$end_date_time = $first_date['end'];
 						$end_date      = $end_date_time ? date( 'Y-m-d', strtotime( $end_date_time ) ) : '';
 						$end_time      = ( $end_date_time && MPWEM_Global_Function::check_time_exit_date( $end_date_time ) ) ? date( 'H:i:s', strtotime( $end_date_time ) ) : '';
+					} elseif ( ! empty( $slot_end ) && ! empty( $date ) ) {
+						// Repeated events: event_end_date is the last day of the whole series, so pair the
+						// shown session with its own time slot's end instead (same day as the session).
+						$end_date      = date( 'Y-m-d', strtotime( $date ) );
+						$end_time      = $slot_end;
+						$end_date_time = $end_date . ' ' . $end_time;
 					} else {
 						$end_date      = is_array($event_infos) && array_key_exists( 'event_end_date', $event_infos ) ? $event_infos['event_end_date'] : '';
 						$end_time      = is_array($event_infos) && array_key_exists( 'event_end_time', $event_infos ) ? $event_infos['event_end_time'] : '';
@@ -534,6 +539,22 @@
                     </div>
 				<?php }
 			}
+			/**
+			 * "Hide End Time in List" (Event List Settings) for the list-card date lines.
+			 *
+			 * Read from the saved option itself: the $event_infos these hooks get come from
+			 * MPWEM_Functions::get_all_info(), which carries no event_list_setting_sec, so
+			 * looking it up there always fell back to "no" and the setting never applied.
+			 *
+			 * @param array $event_infos Card data; an explicit event_list_setting_sec in it still wins.
+			 * @return string 'yes' or 'no'.
+			 */
+			private static function hide_list_end_time( $event_infos ) {
+				$section = is_array( $event_infos ) && isset( $event_infos['event_list_setting_sec'] ) && is_array( $event_infos['event_list_setting_sec'] ) ? $event_infos['event_list_setting_sec'] : [];
+				$hide    = array_key_exists( 'mep_event_hide_end_time_list', $section ) ? $section['mep_event_hide_end_time_list'] : MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_end_time_list', 'no' );
+
+				return 'yes' === $hide ? 'yes' : 'no';
+			}
 			public function list_upcoming_date_only( $event_infos ) {
 				$recurring_event = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
@@ -541,9 +562,7 @@
 					$icon_setting_sec        = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_date_icon         = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
-					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
-					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$hide_only_end_time_list = self::hide_list_end_time( $event_infos );
 					$end_time                = is_array($event_infos) && array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					?>
                     <div class="list_content upcomming_date_only">
@@ -570,7 +589,7 @@
                     <div class="list_content upcomming_time_only">
                         <span class="<?php echo esc_attr( $time_icon ); ?>"></span><?php
 							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'time' ) );
-							if ( $end_time && MPWEM_Global_Function::check_time_exit_date( $end_time ) ) {
+							if ( $end_time && MPWEM_Global_Function::check_time_exit_date( $end_time ) && self::hide_list_end_time( $event_infos ) == 'no' ) {
 								echo ' - ' . esc_html( MPWEM_Global_Function::date_format( $end_time, 'time' ) );
 							}
 						?>

@@ -109,7 +109,7 @@
 														$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
 														$ticket_price_     = apply_filters( 'mpwem_group_ticket_price', $ticket_price_, $event_id, $ticket_name );
 														$ticket_price_     = apply_filters( 'mpwem_group_qty_price', $ticket_price_, $event_id, $ticket_name );
-														$ticket_price_wc   = wc_price( $ticket_price_ );
+														$ticket_price_wc   = wc_price( MPWEM_Global_Function::normalize_price( $ticket_price_ ) );
 														$ticket_price      = MPWEM_Global_Function::price_convert_raw( $ticket_price_wc );
 														$ticket_qty        = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 														$ticket_d_qty      = is_array($ticket_type) && array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
@@ -208,7 +208,7 @@
 																		?>
                                                                     </div>
                                                                     <div class="ticket-price">
-                                                                        <?php echo wc_price($ticket_price_); ?>
+                                                                        <?php echo wc_price( $ticket_price ) . MPWEM_Global_Function::price_suffix( $event_id, $ticket_price ); ?>
                                                                     </div>
                                                                 </div>
 																<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>

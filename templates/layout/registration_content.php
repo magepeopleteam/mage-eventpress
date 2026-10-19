@@ -43,6 +43,13 @@
 		$label_email = !empty($event_infos['mep_rsvp_email_label']) ? $event_infos['mep_rsvp_email_label'] : __( 'Email Address', 'mage-eventpress' );
 		$label_phone = !empty($event_infos['mep_rsvp_phone_label']) ? $event_infos['mep_rsvp_phone_label'] : __( 'Phone Number', 'mage-eventpress' );
 		$label_qty   = !empty($event_infos['mep_rsvp_qty_label']) ? $event_infos['mep_rsvp_qty_label'] : __( 'Number of Seats', 'mage-eventpress' );
+		$use_attendee_form = 'on' === ( $event_infos['mep_rsvp_use_attendee_form'] ?? 'off' )
+			&& class_exists( 'MPWEM_Form_Builder' )
+			&& method_exists( 'MPWEM_Layout', 'get_rsvp_form_array' );
+		$rsvp_form_array = $use_attendee_form ? MPWEM_Layout::get_rsvp_form_array( $event_id ) : array();
+		$use_attendee_form = $use_attendee_form && ! empty( $rsvp_form_array );
+		$has_name_field  = $use_attendee_form && isset( $rsvp_form_array['user_name'] );
+		$has_email_field = $use_attendee_form && isset( $rsvp_form_array['user_email'] );
 
 		if ( ! wp_doing_ajax() ) {
 			?>
@@ -59,18 +66,34 @@
 				<?php wp_nonce_field( 'mep_rsvp_nonce', 'nonce' ); ?>
 
 				<div class="mep-rsvp-fields">
+					<?php if ( $use_attendee_form ) : ?>
+						<div class="mep-rsvp-dynamic-fields">
+							<?php
+							foreach ( $rsvp_form_array as $rsvp_form_field ) {
+								MPWEM_Form_Builder::create_form( $rsvp_form_field );
+							}
+							?>
+						</div>
+					<?php endif; ?>
+
+					<?php if ( ! $has_name_field ) : ?>
 					<div class="mep-rsvp-field">
 						<label><?php echo esc_html( $label_name ); ?> <span>*</span></label>
 						<input type="text" name="rsvp_name" required placeholder="<?php echo esc_attr( $label_name ); ?>" />
 					</div>
+					<?php endif; ?>
+					<?php if ( ! $has_email_field ) : ?>
 					<div class="mep-rsvp-field">
 						<label><?php echo esc_html( $label_email ); ?> <span>*</span></label>
 						<input type="email" name="rsvp_email" required placeholder="<?php echo esc_attr( $label_email ); ?>" />
 					</div>
+					<?php endif; ?>
+					<?php if ( ! $use_attendee_form ) : ?>
 					<div class="mep-rsvp-field">
 						<label><?php echo esc_html( $label_phone ); ?> <span>*</span></label>
 						<input type="text" name="rsvp_phone" required placeholder="<?php echo esc_attr( $label_phone ); ?>" />
 					</div>
+					<?php endif; ?>
 
 					<div class="mep-rsvp-field">
 						<label><?php echo esc_html( $label_qty ); ?></label>
@@ -108,19 +131,7 @@
 	// showed that show's sold seats as free, and the cart booked the seat for 00:00, where
 	// no availability check counted it. Use the day's first start time instead; 00:00 stays
 	// only when the day has no times or really has a midnight show.
-	$user_ts = strtotime( $user_date );
-	if ( $user_ts && '00:00' === date( 'H:i', $user_ts ) ) {
-		$day_starts = array();
-		foreach ( (array) MPWEM_Functions::get_times( $event_id, $all_dates, $user_date ) as $day_time ) {
-			$day_start = ! empty( $day_time['start']['time'] ) ? strtotime( $day_time['start']['time'] ) : false;
-			if ( $day_start ) {
-				$day_starts[] = date( 'H:i', $day_start );
-			}
-		}
-		if ( $day_starts && ! in_array( '00:00', $day_starts, true ) ) {
-			$user_date = date( 'Y-m-d', $user_ts ) . ' ' . $day_starts[0];
-		}
-	}
+	$user_date = MPWEM_Functions::resolve_occurrence_datetime( $event_id, $user_date, $all_dates );
 	$event_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 	// $date      = empty( $date ) || $event_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 // echo $date;

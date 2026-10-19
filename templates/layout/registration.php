@@ -52,7 +52,12 @@
 						<div class="mpwem_registration_area <?php echo esc_attr( $kera_class ); ?>">
 							<?php do_action( 'mpwem_date_select', $event_id, $event_infos); ?>
 								<?php do_action( 'mpwem_registration_content', $event_id, $all_dates, $all_times, $date ); ?>
-							<?php do_action( 'mpwem_hidden_content', $event_id ); ?>
+							<?php
+							$uses_rsvp_attendee_form = 'rsvp' === $reg_status && 'on' === get_post_meta( $event_id, 'mep_rsvp_use_attendee_form', true );
+							if ( ! $uses_rsvp_attendee_form ) {
+								do_action( 'mpwem_hidden_content', $event_id );
+							}
+							?>
 						</div>
 					</form>
 					<?php

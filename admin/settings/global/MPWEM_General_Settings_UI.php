@@ -44,6 +44,8 @@
 					'mep_hide_expired_date_in_calendar',
 					'mep_event_direct_checkout',
 					'mep_show_zero_as_free',
+					'mep_price_suffix',
+					'mep_price_suffix_in_orders',
 					'mep_ticket_expire_time',
 					'mep_ticket_expire_time_on_cart',
 					'mep_load_fontawesome_from_theme',
@@ -262,6 +264,8 @@
 			private static function card_inventory( $g ) {
 				self::open_card( 'fas fa-box', __( 'Inventory & Stock', 'mage-eventpress' ) );
 				self::toggle_yesno( 'mep_show_zero_as_free', __( 'Show Zero Price', 'mage-eventpress' ), __( 'Display "Free" instead of 0 when a ticket has no price.', 'mage-eventpress' ), $g( 'mep_show_zero_as_free', 'yes' ) );
+				self::text( 'mep_price_suffix', __( 'Price Suffix', 'mage-eventpress' ), __( 'Text shown after event prices, e.g. "+ VAT". Leave empty to turn it off. When WooCommerce taxes are on, it only shows on events whose Tax Status is Taxable.', 'mage-eventpress' ), $g( 'mep_price_suffix', '' ) );
+				self::toggle_yesno( 'mep_price_suffix_in_orders', __( 'Price Suffix in Cart & Orders', 'mage-eventpress' ), __( 'Also show the price suffix in the cart, checkout, order pages and order emails.', 'mage-eventpress' ), $g( 'mep_price_suffix_in_orders', 'yes' ) );
 				echo '<div class="mep-gn__row-2">';
 				self::text( 'mep_ticket_expire_time', __( 'Stop Sales (Minutes)', 'mage-eventpress' ), __( 'Minutes before event when sales close. 0 = no limit.', 'mage-eventpress' ), $g( 'mep_ticket_expire_time', '0' ) );
 				self::text( 'mep_ticket_expire_time_on_cart', __( 'Cart Hold Time (Min)', 'mage-eventpress' ), __( 'Minutes before abandoned cart tickets release.', 'mage-eventpress' ), $g( 'mep_ticket_expire_time_on_cart', '10' ) );

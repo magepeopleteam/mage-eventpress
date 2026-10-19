@@ -220,15 +220,31 @@
 				}
 				return MPWEM_Global_Function::get_wc_raw_price( $price );
 			}
+			/**
+			 * Comparable form of an extra service name.
+			 *
+			 * Older editor saves stored names HTML-encoded ("6 St&uuml;ck"), but the
+			 * booking form prints them through esc_attr(), so the browser posts the
+			 * decoded text ("6 Stück"). Comparing the raw strings silently dropped the
+			 * service from the cart; decode both sides before comparing.
+			 *
+			 * @param string $name Stored or posted extra service name.
+			 * @return string
+			 */
+			public static function normalize_ex_service_name( $name ) {
+				$name = html_entity_decode( (string) $name, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+				return trim( str_replace( "'", "", $name ) );
+			}
 			public static function get_ex_price_by_name( $ticket_name, $post_id, $ticket_types = [] ) {
 				$ticket_types = (is_array( $ticket_types ) && count( $ticket_types ) > 0) ? $ticket_types : MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
 				$price        = 0;
 				$ticket_name  = explode( '_', $ticket_name )[0];
-				$ticket_name  = str_replace( "'", "", $ticket_name );
+				$ticket_name  = self::normalize_ex_service_name( $ticket_name );
 				if ( is_array( $ticket_types ) && count( $ticket_types ) > 0 ) {
 					foreach ( $ticket_types as $ticket_type ) {
 						$name = is_array($ticket_type) && array_key_exists( 'option_name', $ticket_type ) ? $ticket_type['option_name'] : '';
-						$name = str_replace( "'", "", $name );
+						$name = self::normalize_ex_service_name( $name );
 						if ( $ticket_name == $name ) {
 							$price = is_array($ticket_type) && array_key_exists( 'option_price', $ticket_type ) ? $ticket_type['option_price'] : 0;
 						}
@@ -540,6 +556,9 @@
 								if ( $start_date_time && $more_end_date_time && strtotime( $more_end_date_time ) > $now ) {
 									$all_dates[ $count ]['time'] = $start_date_time;
 									$all_dates[ $count ]['end']  = $more_end_date_time;
+									// 'end' spans to the last date (whole-course summary); keep this row's own end
+									// so per-date views (date list, time slot) don't show it as a multi-day range.
+									$all_dates[ $count ]['occurrence_end'] = $end_date_time;
 								}
 							}else{
 								if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now ) {
@@ -655,7 +674,7 @@
 								$times[0]['start']['label'] = '';
 								$times[0]['start']['time']  = date( 'H:i', strtotime( $dates['time'] ) );
 								$times[0]['end']['label']   = '';
-								$times[0]['end']['time']    = date( 'H:i', strtotime( $dates['end'] ) );
+								$times[0]['end']['time']    = date( 'H:i', strtotime( array_key_exists( 'occurrence_end', $dates ) ? $dates['occurrence_end'] : $dates['end'] ) );
 							}
 						}
 					} else {
@@ -727,6 +746,38 @@
 					}
 				}
 				return $times;
+			}
+			/**
+			 * Turn a midnight occurrence into the show it really names.
+			 *
+			 * A date-only value ('Y-m-d') or a 'Y-m-d 00:00' value names the day but not the
+			 * show. Booked as-is it prints "12:00 AM" on the cart, order, e-mail and ticket
+			 * for an event that really starts at 2 PM. Use the day's first start time
+			 * instead. The value is returned untouched when it already carries a real time,
+			 * when the day has no start times, or when the day genuinely has a 00:00 show.
+			 *
+			 * @param int          $event_id  Event ID.
+			 * @param string       $date      Occurrence as posted/requested ('Y-m-d' or 'Y-m-d H:i').
+			 * @param array|string $all_dates Optional get_dates() result, to save a lookup.
+			 *
+			 * @return string
+			 */
+			public static function resolve_occurrence_datetime( $event_id, $date, $all_dates = [] ) {
+				$timestamp = $date ? strtotime( $date ) : false;
+				if ( ! $timestamp || '00:00' !== date( 'H:i', $timestamp ) ) {
+					return $date;
+				}
+				$day_starts = [];
+				foreach ( (array) self::get_times( $event_id, $all_dates, $date ) as $day_time ) {
+					$day_start = ! empty( $day_time['start']['time'] ) ? strtotime( $day_time['start']['time'] ) : false;
+					if ( $day_start ) {
+						$day_starts[] = date( 'H:i', $day_start );
+					}
+				}
+				if ( $day_starts && ! in_array( '00:00', $day_starts, true ) ) {
+					return date( 'Y-m-d', $timestamp ) . ' ' . $day_starts[0];
+				}
+				return $date;
 			}
 			//==========================//
 			public static function get_location( $event_id, $key = '' ) {

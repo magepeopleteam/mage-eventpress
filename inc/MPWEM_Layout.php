@@ -384,6 +384,31 @@
 			}
 
 			/**
+			 * Return the attendee-form fields that can safely be collected by RSVP mode.
+			 *
+			 * RSVP submissions use the regular AJAX serializer, so upload fields cannot be
+			 * transported. All other fields retain the order and conditional rules saved
+			 * by the PRO form builder.
+			 *
+			 * @param int|string $event_id Event post ID.
+			 * @return array
+			 */
+			public static function get_rsvp_form_array( $event_id ) {
+				if ( ! self::is_attendee_form_enabled( $event_id ) ) {
+					return array();
+				}
+
+				$form_array = self::get_form_array( $event_id );
+				foreach ( $form_array as $key => $field ) {
+					if ( ! is_array( $field ) || 'file' === ( $field['type'] ?? '' ) ) {
+						unset( $form_array[ $key ] );
+					}
+				}
+
+				return apply_filters( 'mpwem_rsvp_form_array', $form_array, $event_id );
+			}
+
+			/**
 			 * Build the frontend field array in the exact sequence saved by the visual
 			 * form builder (mep_fb_formbuilder_json), mixing built-in and custom fields
 			 * in whatever order the admin dragged them into, instead of the legacy
@@ -448,7 +473,7 @@
 							'type'     => $def['type'],
 							'name'     => $name,
 							'd_name'   => $def['d_name'],
-							'required' => 1,
+							'required' => array_key_exists( 'required', $field ) ? $field['required'] : 1,
 							'label'    => MPWEM_Global_Function::get_post_info( $form_id, $def['label_meta'], $def['default_label'] ),
 						];
 						if ( ! empty( $def['options_meta'] ) ) {

@@ -519,6 +519,14 @@
 						)
 					);
 					?>
+                    <br>
+                    <label class="mpev-label">
+                        <div>
+                            <h2><?php esc_html_e( 'Virtual event link', 'mage-eventpress' ); ?></h2>
+                            <span class="label-text"><?php esc_html_e( 'Optional join URL (Zoom, Google Meet, Teams...). Insert it in confirmation, ticket and reminder emails with {virtual_link}; insert the details above with {virtual_details}.', 'mage-eventpress' ); ?></span>
+                        </div>
+                        <input type="url" class="mp_formControl" name="mep_event_virtual_link" id="mep_event_virtual_link" placeholder="https://" value="<?php echo esc_attr( get_post_meta( $post_id, 'mep_event_virtual_link', true ) ); ?>">
+                    </label>
                 </section>
 				<?php do_action( 'mep_event_details_after_virtual_event_info_text_box', $post_id ); ?>
 				<?php

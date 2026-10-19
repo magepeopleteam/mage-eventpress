@@ -11916,6 +11916,10 @@ div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .inputIncDec 
 	padding: 20px 24px 24px;
 }
 
+#mep-rsvp-form .mep-rsvp-dynamic-fields {
+	display: contents;
+}
+
 .mep-rsvp-fields {
 	display: grid;
 	grid-template-columns: 1fr 1fr;

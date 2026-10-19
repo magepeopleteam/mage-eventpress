@@ -3957,7 +3957,11 @@
     function shouldKeepNativeSelect($select) {
         const name = ($select.attr('name') || '').toString();
 
-        return $select.closest('#mp_event_custom_form_table, .mp_event_custom_form_table').length > 0
+        // Ticket / extra-service tables scroll sideways, which clips the absolutely
+        // positioned custom dropdown to one row. Add-on columns (e.g. Membership Plan)
+        // must stay native so every option can be reached.
+        return $select.closest('.mpwem_ticket_table, .mpwem_extra_service_table').length > 0
+            || $select.closest('#mp_event_custom_form_table, .mp_event_custom_form_table').length > 0
             || $select.closest('#mpwem_wizard_attendee_form_mount table, .mpwem-display-section--attendee-form table').length > 0
             || $select.closest('.mep_condition_item, .mep_conditional_form_hidden, .conditional_form_area').length > 0
             || name === 'mep_event_reg_form_id'
@@ -6171,10 +6175,11 @@
 
         const $virtualSection = $('#mpev-online-event');
         if (needsVirtual) {
-            const virtualVal = getVirtualDetailsValue();
+            // A join link alone is enough to run an online event.
+            const virtualVal = getVirtualDetailsValue() || $.trim(($('#mep_event_virtual_link').val() || '').toString());
             $virtualSection.toggleClass('mpwem-field-error', virtualVal === '');
             if (virtualVal === '') {
-                messages.push('Virtual event details are required for online events.');
+                messages.push('Virtual event details or link are required for online events.');
                 if (!$firstInvalid.length) $firstInvalid = $virtualSection;
             }
         } else {
@@ -6481,6 +6486,44 @@
         return null;
     }
 
+    // Each row is { $sd, $st, $ed, $et } and has already passed
+    // checkDateTimePair(). Marks the End of the first row that runs into the
+    // next one (by start time) and returns { message, $field }, or null.
+    function checkDateRowsOverlap(rows) {
+        const parsed = rows.map(function(row) {
+            const sd = (row.$sd.val() || '').toString().trim();
+            const st = (row.$st.val() || '').toString().trim();
+            const ed = (row.$ed.val() || '').toString().trim();
+            const et = (row.$et.val() || '').toString().trim();
+            return {
+                row: row,
+                sd: sd,
+                st: st,
+                start: new Date(sd + 'T' + st).getTime(),
+                end: new Date(ed + 'T' + et).getTime()
+            };
+        }).filter(function(item) {
+            return !isNaN(item.start) && !isNaN(item.end);
+        }).sort(function(a, b) {
+            return a.start - b.start;
+        });
+
+        for (let i = 1; i < parsed.length; i++) {
+            const prev = parsed[i - 1];
+            const next = parsed[i];
+            if (prev.end > next.start) {
+                const $edUI = dateVisibleField(prev.row.$ed);
+                $edUI.addClass('mpwem-field-error');
+                prev.row.$et.addClass('mpwem-field-error');
+                return {
+                    message: 'The date starting ' + buildScheduleDateTimeLabel(prev.sd, prev.st) + ' ends after the next date starts (' + buildScheduleDateTimeLabel(next.sd, next.st) + '). Change its End so it finishes before the next date starts.',
+                    $field: $edUI
+                };
+            }
+        }
+        return null;
+    }
+
     function validateDateStep($root, options) {
         options = options || {};
         const focus = options.focus !== false;
@@ -6534,6 +6577,23 @@
                 if (error) return;
                 error = checkDateTimePair($sds.eq(i), $sts.eq(i), $eds.eq(i), $ets.eq(i), 'Additional date');
             });
+        }
+
+        // Single / Particular rows must not overlap: a row that ends after the
+        // next one starts is shown on the front end as one continuous range.
+        // Mirrors the 'date_overlap' check in MPWEM_Event_Edit_Page::handle_save().
+        if (!error && moreNames) {
+            const rows = [
+                { $sd: findByName(mainNames.sd).first(), $st: findByName(mainNames.st).first(), $ed: findByName(mainNames.ed).first(), $et: findByName(mainNames.et).first() }
+            ];
+            const $sds = findByName(moreNames.sd);
+            const $sts = findByName(moreNames.st);
+            const $eds = findByName(moreNames.ed);
+            const $ets = findByName(moreNames.et);
+            $sds.each(function(i) {
+                rows.push({ $sd: $sds.eq(i), $st: $sts.eq(i), $ed: $eds.eq(i), $et: $ets.eq(i) });
+            });
+            error = checkDateRowsOverlap(rows);
         }
 
         // Repeated-event extras.
@@ -7005,7 +7065,7 @@
             const errorMessages = {
                 title: 'Event title is required.',
                 venue: 'Location/Venue is required for in-person events.',
-                virtual: 'Virtual event details are required for online events.',
+                virtual: 'Virtual event details or link are required for online events.',
                 tickets: 'Please add at least one ticket type.',
                 ticket_fields: 'Each ticket type needs a name, price and capacity.',
                 extra_service: 'Each extra service with a name needs a price and available quantity.',
@@ -7014,6 +7074,7 @@
                 early_bird_order: 'The sale End date & time must be later than the Start date & time.',
                 date_required: 'Set the event Start and End date & time.',
                 date_order: 'The event End date & time must be later than the Start.',
+                date_overlap: 'Two event dates overlap — each date must end before the next date starts.',
                 repeat_periods: 'After Repeated Days must be a number of at least 1.',
                 date_format: 'Complete the Date/Time format settings (Date Format, Time Format and Show Timezone).',
                 faq_items: 'FAQ is enabled — each FAQ item needs a title and a description.',

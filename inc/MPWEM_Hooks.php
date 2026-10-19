@@ -463,7 +463,8 @@
 					?>
                     <div class="list_price">
 						<div class="list_price_label"><?php echo esc_html( $show_price_label ) ?></div>
-                    	<div class="list_price_value"><?php echo wp_kses_post( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) ); ?></div>
+						<?php $list_min_price = MPWEM_Functions::get_min_price( $event_id ); ?>
+						<div class="list_price_value"><?php echo wp_kses_post( wc_price( $list_min_price ) . MPWEM_Global_Function::price_suffix( $event_id, $list_min_price ) ); ?></div>
 					</div>
 					<?php
 				}
@@ -487,6 +488,7 @@
                     $all_times = MPWEM_Functions::get_times($event_id, $all_dates, $date);
                     if (is_array($all_times) && sizeof($all_times) > 0) {
                         $time = current($all_times);
+                        $slot_end  = is_array($time) && isset( $time['end']['time'] ) ? $time['end']['time'] : '';
                         $time_info = is_array($time) && array_key_exists( 'start', $time ) ? $time['start'] : [];
                         if (is_array($time_info) && sizeof($time_info) > 0) {
                             $time = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
@@ -500,9 +502,7 @@
 					$icon_setting_sec        = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_date_icon         = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'mi mi-clock';
-					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
-					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$hide_only_end_time_list = self::hide_list_end_time( $event_infos );
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
 					if ( isset( $first_date ) && is_array( $first_date ) && array_key_exists( 'end', $first_date ) ) {
 						// Use the end paired with the same occurrence as $start_time (not the primary event's raw meta),
@@ -510,6 +510,12 @@
 						$end_date_time = $first_date['end'];
 						$end_date      = $end_date_time ? date( 'Y-m-d', strtotime( $end_date_time ) ) : '';
 						$end_time      = ( $end_date_time && MPWEM_Global_Function::check_time_exit_date( $end_date_time ) ) ? date( 'H:i:s', strtotime( $end_date_time ) ) : '';
+					} elseif ( ! empty( $slot_end ) && ! empty( $date ) ) {
+						// Repeated events: event_end_date is the last day of the whole series, so pair the
+						// shown session with its own time slot's end instead (same day as the session).
+						$end_date      = date( 'Y-m-d', strtotime( $date ) );
+						$end_time      = $slot_end;
+						$end_date_time = $end_date . ' ' . $end_time;
 					} else {
 						$end_date      = is_array($event_infos) && array_key_exists( 'event_end_date', $event_infos ) ? $event_infos['event_end_date'] : '';
 						$end_time      = is_array($event_infos) && array_key_exists( 'event_end_time', $event_infos ) ? $event_infos['event_end_time'] : '';
@@ -533,6 +539,22 @@
                     </div>
 				<?php }
 			}
+			/**
+			 * "Hide End Time in List" (Event List Settings) for the list-card date lines.
+			 *
+			 * Read from the saved option itself: the $event_infos these hooks get come from
+			 * MPWEM_Functions::get_all_info(), which carries no event_list_setting_sec, so
+			 * looking it up there always fell back to "no" and the setting never applied.
+			 *
+			 * @param array $event_infos Card data; an explicit event_list_setting_sec in it still wins.
+			 * @return string 'yes' or 'no'.
+			 */
+			private static function hide_list_end_time( $event_infos ) {
+				$section = is_array( $event_infos ) && isset( $event_infos['event_list_setting_sec'] ) && is_array( $event_infos['event_list_setting_sec'] ) ? $event_infos['event_list_setting_sec'] : [];
+				$hide    = array_key_exists( 'mep_event_hide_end_time_list', $section ) ? $section['mep_event_hide_end_time_list'] : MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_end_time_list', 'no' );
+
+				return 'yes' === $hide ? 'yes' : 'no';
+			}
 			public function list_upcoming_date_only( $event_infos ) {
 				$recurring_event = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
@@ -540,9 +562,7 @@
 					$icon_setting_sec        = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_date_icon         = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
-					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
-					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$hide_only_end_time_list = self::hide_list_end_time( $event_infos );
 					$end_time                = is_array($event_infos) && array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					?>
                     <div class="list_content upcomming_date_only">
@@ -569,7 +589,7 @@
                     <div class="list_content upcomming_time_only">
                         <span class="<?php echo esc_attr( $time_icon ); ?>"></span><?php
 							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'time' ) );
-							if ( $end_time && MPWEM_Global_Function::check_time_exit_date( $end_time ) ) {
+							if ( $end_time && MPWEM_Global_Function::check_time_exit_date( $end_time ) && self::hide_list_end_time( $event_infos ) == 'no' ) {
 								echo ' - ' . esc_html( MPWEM_Global_Function::date_format( $end_time, 'time' ) );
 							}
 						?>
@@ -697,7 +717,7 @@
 														<a class="list_calender" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_url( $event_title ); ?>&dates=<?php echo esc_attr( $date ); ?>/<?php echo esc_attr( $end_time ); ?>&details=<?php echo esc_attr( $content ); ?>&location=<?php echo esc_attr( $location ); ?>&sf=true" rel="noopener noreferrer" target='_blank' rel="nofollow"> <i class="fab fa-google"></i> <?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
 														<a class="list_calender" href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_url( $event_title ); ?>&st=<?php echo esc_attr( $date ); ?>&et=<?php echo esc_attr( $end_time ); ?>&desc=<?php echo esc_attr( $content ); ?>&in_loc=<?php echo esc_attr( $location ); ?>&uid=" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="fab fa-yahoo"></i> <?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
 														<a class="list_calender" href="https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=<?php echo esc_attr( $date ); ?>&enddt=<?php echo esc_attr( $end_time ); ?>&subject=<?php echo esc_attr( $event_title ); ?>&body=<?php echo esc_url( $event_title ); ?>" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="far fa-envelope"></i> <?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
-														<a class="list_calender" href="https://webapps.genprod.com/wa/cal/download-ics.php?date_end=<?php echo esc_attr( $end_time ); ?>&date_start=<?php echo esc_attr( $date ); ?>&summary=<?php echo esc_url( $event_title ); ?>&location=<?php echo esc_attr( $location ); ?>&description=<?php echo esc_attr( $content ); ?>" rel="noopener noreferrer" target='_blank'><i class="fab fa-apple"></i> <?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $upcoming_date ) ); ?>" rel="noopener noreferrer" target='_blank'><i class="fab fa-apple"></i> <?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
 													</div>
 												</div>
 											</div>
@@ -802,8 +822,112 @@
 				$phone      = isset( $_POST['rsvp_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_phone'] ) ) : '';
 				$event_date = isset( $_POST['rsvp_date'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_date'] ) ) : '';
 				$ticket_qty = isset( $_POST['rsvp_qty'] ) ? absint( $_POST['rsvp_qty'] ) : 1;
+				$extra_meta = array();
+				$form_fields = array();
+				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) || 'rsvp' !== MPWEM_Global_Function::get_event_mode( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event is not accepting RSVP responses.', 'mage-eventpress' ) ) );
+				}
+				$use_attendee_form = $event_id
+					&& 'on' === get_post_meta( $event_id, 'mep_rsvp_use_attendee_form', true )
+					&& class_exists( 'MPWEM_Form_Builder' )
+					&& method_exists( 'MPWEM_Layout', 'get_rsvp_form_array' );
 
-				if ( ! $event_id || empty( $name ) || empty( $email ) || empty( $phone ) ) {
+				if ( $use_attendee_form ) {
+					$form_array  = MPWEM_Layout::get_rsvp_form_array( $event_id );
+					$use_attendee_form = ! empty( $form_array );
+					$field_values = array();
+					$reserved_meta = array(
+						'ea_name', 'ea_email', 'ea_phone', 'ea_ticket_qty', 'ea_event_name',
+						'ea_event_id', 'ea_event_date', 'ea_order_status', 'ea_ticket_no',
+						'ea_ticket_type', 'ea_ticket_price', 'ea_ticket_order_amount',
+						'ea_payment_method', 'ea_order_id', 'ea_user_id', 'ea_flag',
+					);
+
+					foreach ( $form_array as $field ) {
+						if ( ! is_array( $field ) || empty( $field['name'] ) || in_array( $field['type'] ?? '', array( 'title', 'file' ), true ) ) {
+							continue;
+						}
+
+						$field_name = sanitize_key( $field['name'] );
+						$raw_value  = isset( $_POST[ $field_name ] ) ? wp_unslash( $_POST[ $field_name ] ) : '';
+						$raw_values = is_array( $raw_value ) ? $raw_value : array( $raw_value );
+						$values     = array();
+						foreach ( $raw_values as $raw_item ) {
+							if ( is_scalar( $raw_item ) ) {
+								$values[] = 'textarea' === ( $field['type'] ?? '' )
+									? sanitize_textarea_field( $raw_item )
+									: sanitize_text_field( $raw_item );
+							}
+						}
+						$values = array_values( array_filter( $values, 'strlen' ) );
+						$value  = 'checkbox' === ( $field['type'] ?? '' ) ? implode( ', ', $values ) : ( $values[0] ?? '' );
+						if ( 'email' === ( $field['type'] ?? '' ) ) {
+							$value = sanitize_email( $value );
+						} elseif ( 'user_website' === $field_name ) {
+							$value = esc_url_raw( $value );
+						}
+
+						$field_type = $field['type'] ?? '';
+						if ( in_array( $field_type, array( 'select', 'radio', 'checkbox', 'gender', 'vegetarian' ), true ) ) {
+							if ( 'gender' === $field_type ) {
+								$allowed_values = array( 'Male', 'Female' );
+							} elseif ( 'vegetarian' === $field_type ) {
+								$allowed_values = array( 'Yes', 'No' );
+							} else {
+								$allowed_values = array_values( array_filter( array_map( 'trim', explode( ',', (string) ( $field['data'] ?? '' ) ) ), 'strlen' ) );
+							}
+							$selected_values = array_values( array_filter( array_map( 'trim', explode( ',', $value ) ), 'strlen' ) );
+							$selected_values = array_values( array_intersect( $selected_values, $allowed_values ) );
+							$value = 'checkbox' === $field_type ? implode( ', ', $selected_values ) : ( $selected_values[0] ?? '' );
+						}
+						$field_values[ $field_name ] = $value;
+					}
+
+					foreach ( $form_array as $field ) {
+						if ( ! is_array( $field ) || empty( $field['name'] ) || in_array( $field['type'] ?? '', array( 'title', 'file' ), true ) ) {
+							continue;
+						}
+
+						$field_name = sanitize_key( $field['name'] );
+						$value      = $field_values[ $field_name ] ?? '';
+						$is_visible = true;
+						if ( ! empty( $field['parent_id'] ) && '' !== (string) ( $field['parent_value'] ?? '' ) ) {
+							$parent_value = $field_values[ sanitize_key( $field['parent_id'] ) ] ?? '';
+							$is_visible   = in_array( (string) $field['parent_value'], array_map( 'trim', explode( ',', (string) $parent_value ) ), true );
+						}
+						$is_required = $is_visible && ( ! empty( $field['required'] ) || in_array( $field_name, array( 'user_name', 'user_email' ), true ) );
+						if ( $is_required && '' === $value ) {
+							/* translators: %s: RSVP field label. */
+							wp_send_json_error( array( 'message' => sprintf( esc_html__( '%s is required.', 'mage-eventpress' ), esc_html( $field['label'] ?? $field_name ) ) ) );
+						}
+						if ( 'email' === ( $field['type'] ?? '' ) && '' !== $value && ! is_email( $value ) ) {
+							wp_send_json_error( array( 'message' => esc_html__( 'Please enter a valid email address.', 'mage-eventpress' ) ) );
+						}
+
+						if ( 'user_name' === $field_name ) {
+							$name = $value;
+						} elseif ( 'user_email' === $field_name ) {
+							$email = $value;
+						} elseif ( 'user_phone' === $field_name ) {
+							$phone = $value;
+						}
+
+						$d_name = sanitize_key( $field['d_name'] ?? '' );
+						if ( $is_visible && $d_name && 0 === strpos( $d_name, 'ea_' ) && ! in_array( $d_name, $reserved_meta, true ) ) {
+							$extra_meta[ $d_name ] = $value;
+						}
+						if ( $is_visible && ! in_array( $field_name, array( 'user_name', 'user_email', 'user_phone' ), true ) ) {
+							$form_fields[] = array(
+								'label' => sanitize_text_field( $field['label'] ?? $field_name ),
+								'value' => $value,
+							);
+						}
+					}
+				}
+
+				$ticket_qty = max( 1, min( 10, $ticket_qty ) );
+
+				if ( ! $event_id || empty( $name ) || empty( $email ) || ( ! $use_attendee_form && empty( $phone ) ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'Please fill out all required fields.', 'mage-eventpress' ) ) );
 				}
 
@@ -929,7 +1053,11 @@
 					'user_ticket_qty' => $ticket_qty,
 				);
 
-				$attendee_id = mep_rsvp_attendee_create( $event_id, $user_info );
+				if ( $form_fields ) {
+					$extra_meta['_mep_rsvp_form_fields'] = $form_fields;
+				}
+
+				$attendee_id = mep_rsvp_attendee_create( $event_id, $user_info, $extra_meta );
 
 				if ( $attendee_id ) {
 					// Send confirmation email

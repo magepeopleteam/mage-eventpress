@@ -50,6 +50,7 @@
 				// Old dashboard - Replaced by MPWEM_My_Account_Dashboard
 				// add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
 				add_filter( 'woocommerce_cart_item_price', array( $this, 'cart_item_price' ), 10, 4 );
+				add_filter( 'woocommerce_order_formatted_line_subtotal', array( $this, 'order_line_subtotal_suffix' ), 10, 2 );
 			}
 			/**
 			 * Make event-linked WooCommerce products purchasable.
@@ -70,13 +71,25 @@
 				}
 				return $is_purchasable;
 			}
+			/**
+			 * The occurrence the visitor is booking, from the first posted mep_event_start_date[].
+			 *
+			 * The booking form normally posts a full 'Y-m-d H:i', but a cached page or a stale
+			 * link can still post a date-only or midnight value. Resolve that to the day's
+			 * real start time here so the cart, order, e-mails and PDF ticket never print
+			 * "12:00 AM" for a 2 PM show.
+			 */
+			public static function get_posted_event_date( $event_id ) {
+				$start_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['mep_event_start_date'] ) ) : [];
+				$start_date = (string) current( $start_date );
+				return MPWEM_Functions::resolve_occurrence_datetime( $event_id, $start_date );
+			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 				$linked_event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
 				if ( get_post_type( $product_id ) == 'mep_events' ) {
 					$recurring      = MPWEM_Global_Function::get_post_info( $product_id, 'mep_enable_recurring', 'no' );
-					$start_date     = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-					$start_date     = current( $start_date );
+					$start_date     = self::get_posted_event_date( $product_id );
 					$location       = isset( $_POST['mep_event_location_cart'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_location_cart'] ) ) : '';
 					$recurring_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['recurring_event_date'] ) ) : [];
 					$time_slot_text = isset( $_POST['time_slot_name'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_name'] ) ) : '';
@@ -206,7 +219,7 @@
 													$line_total  = (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'];
 													$ticket_text = '<tr>'
 														. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $ticket['ticket_name'] ) . $_badge . '</td>'
-														. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket['ticket_price'] ) . ' &times; ' . esc_html( $ticket['ticket_qty'] ) . '</td>'
+														. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket['ticket_price'] ) . MPWEM_Global_Function::order_price_suffix( $eid, $ticket['ticket_price'] ) . ' &times; ' . esc_html( $ticket['ticket_qty'] ) . '</td>'
 														. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $line_total ) . '</td>'
 														. '</tr>';
 													echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $ticket, $eid );
@@ -237,7 +250,7 @@
 											$ex_total = (float) $extra_service['service_price'] * (float) $extra_service['service_qty'];
 											echo '<tr>'
 												. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $extra_service['service_name'] ) . '</td>'
-												. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $extra_service['service_price'] ) . ' &times; ' . esc_html( $extra_service['service_qty'] ) . '</td>'
+												. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $extra_service['service_price'] ) . MPWEM_Global_Function::order_price_suffix( $eid, $extra_service['service_price'] ) . ' &times; ' . esc_html( $extra_service['service_qty'] ) . '</td>'
 												. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $ex_total ) . '</td>'
 												. '</tr>';
 										} ?>
@@ -500,8 +513,7 @@
 					$not_in_the_cart = apply_filters( 'mep_check_product_into_cart', true, $wc_product_id );
 					if ( ! $not_in_the_cart ) {
 						// Check if it's a date conflict
-						$current_event_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-						$current_event_date = ! empty( $current_event_date ) ? current( $current_event_date ) : '';
+						$current_event_date = self::get_posted_event_date( $event_id );
 						
 						// Check cart for same event with different date
 						$has_date_conflict = false;
@@ -1051,7 +1063,7 @@
 					}
 					if ( is_array( $event_extra_service ) && sizeof( $event_extra_service ) > 0 ) {
 						foreach ( $event_extra_service as $extra_service ) {
-							$service_type_name = $extra_service['service_name'] . " - " . wc_price( $extra_service['service_price'] ) . ' x ' . $extra_service['service_qty'] . ' = ';
+							$service_type_name = $extra_service['service_name'] . " - " . wc_price( $extra_service['service_price'] ) . MPWEM_Global_Function::order_price_suffix( $eid, $extra_service['service_price'] ) . ' x ' . $extra_service['service_qty'] . ' = ';
 							$service_type_val  = wc_price( (float) $extra_service['service_price'] * (float) $extra_service['service_qty']  );
 							$item->add_meta_data( $service_type_name, $service_type_val );
 						}
@@ -1407,8 +1419,7 @@
 			}
 			public static function get_cart_ticket_info( $post_id ) {
 				$ticket_info = [];
-				$start_date  = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-				$start_date  = current( $start_date );
+				$start_date  = self::get_posted_event_date( $post_id );
 				$names       = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
 				$qty         = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
@@ -1448,26 +1459,29 @@
 			public static function get_cart_ex_info( $post_id ) {
 				$ticket_info  = [];
 				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
-				$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-				$start_date   = current( $start_date );
+				$start_date   = self::get_posted_event_date( $post_id );
 				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
 				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
+					// Normalized name => name exactly as stored on the event.
 					$valid_ex_names = [];
 					if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) {
 						foreach ( $ticket_types as $t_type ) {
 							$t_name = is_array($t_type) && array_key_exists( 'option_name', $t_type ) ? $t_type['option_name'] : '';
-							$t_name = str_replace( "'", "", $t_name );
-							if ( $t_name ) {
-								$valid_ex_names[] = $t_name;
+							$t_key  = MPWEM_Functions::normalize_ex_service_name( $t_name );
+							if ( $t_key && ! isset( $valid_ex_names[ $t_key ] ) ) {
+								$valid_ex_names[ $t_key ] = $t_name;
 							}
 						}
 					}
 					foreach ( $names as $key => $name ) {
 						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
 						$ex_name = explode( '_', $name )[0];
-						$ex_name = str_replace( "'", "", $ex_name );
-						if ( $name && $current_qty > 0 && in_array( $ex_name, $valid_ex_names ) ) {
+						$ex_name = MPWEM_Functions::normalize_ex_service_name( $ex_name );
+						if ( $name && $current_qty > 0 && isset( $valid_ex_names[ $ex_name ] ) ) {
+							// Keep the stored spelling so order meta and the sold-count
+							// records match what earlier bookings saved for this service.
+							$name = $valid_ex_names[ $ex_name ];
 							$ticket_info[ $key ]['service_name']  = $name;
 							$ticket_info[ $key ]['service_price'] = MPWEM_Functions::get_ex_price_by_name( $name, $post_id, $ticket_types );
 							$ticket_info[ $key ]['service_qty']   = $current_qty;
@@ -1492,8 +1506,7 @@
 				$attendee_info = [];
 				$names         = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
-					$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-					$start_date   = current( $start_date );
+					$start_date   = self::get_posted_event_date( $post_id );
 					$qty          = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 					$submit_infos = [];
 					$form_array   = MPWEM_Layout::get_form_array( $post_id );
@@ -1575,7 +1588,7 @@
 								$line_total   = (float) $ticket_price * (float) $ticket_qty;
 								$ticket_text  = '<table cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:0 0 10px;"><tr>'
 									. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $ticket_name ) . '</td>'
-									. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket_price ) . ' &times; ' . esc_html( $ticket_qty ) . '</td>'
+									. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket_price ) . MPWEM_Global_Function::order_price_suffix( $post_id, $ticket_price ) . ' &times; ' . esc_html( $ticket_qty ) . '</td>'
 									. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $line_total ) . '</td>'
 									. '</tr></table>';
 								echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
@@ -1686,9 +1699,27 @@
 					if ( ! array_key_exists( 'event_tp', $cart_item ) || '' === $cart_item['event_tp'] || null === $cart_item['event_tp'] ) {
 						return $price;
 					}
-					$price = wc_price( $cart_item['event_tp']);
+					$price = wc_price( $cart_item['event_tp'] ) . MPWEM_Global_Function::order_price_suffix( $cart_item['event_id'], $cart_item['event_tp'] );
 				}
 				return $price;
+			}
+			/**
+			 * Price suffix on the Price column of event lines in order emails,
+			 * the thank-you page and My Account > Orders.
+			 *
+			 * The line's own tax decides, not the event's current settings: with
+			 * WooCommerce taxes on, a line that was charged no tax (VAT-exempt
+			 * customer, non-taxable event) gets no suffix.
+			 */
+			public function order_line_subtotal_suffix( $subtotal, $item ) {
+				$event_id = is_a( $item, 'WC_Order_Item_Product' ) ? (int) $item->get_meta( 'event_id' ) : 0;
+				if ( ! $event_id || 'yes' !== MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_price_suffix_in_orders', 'yes' ) ) {
+					return $subtotal;
+				}
+				if ( wc_tax_enabled() && (float) $item->get_subtotal_tax() <= 0 ) {
+					return $subtotal;
+				}
+				return $subtotal . MPWEM_Global_Function::price_suffix( 0, $item->get_subtotal() );
 			}
 		}
 		new MPWEM_Woocommerce();

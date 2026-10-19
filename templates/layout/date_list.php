@@ -23,6 +23,8 @@
 					foreach ( $all_dates as $dates ) {
 						$start_time = is_array($dates) && array_key_exists( 'time', $dates ) ? $dates['time'] : '';
 						$end_time   = is_array($dates) && array_key_exists( 'end', $dates ) ? $dates['end'] : '';
+						// Single Event + expire-on-end stores the course's last end in 'end'; show this date's own end.
+						$end_time   = is_array($dates) && array_key_exists( 'occurrence_end', $dates ) ? $dates['occurrence_end'] : $end_time;
 						if ( $start_time ) {
 							$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $start_time ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
 							?>

@@ -2213,6 +2213,54 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return $started > 0;
 		}
 
+		/**
+		 * Whether any two Single/Particular date rows overlap, i.e. a row ends
+		 * after the next row (by start time) begins. The front end shows such a
+		 * row as one continuous range spanning the others. Rows without a start
+		 * and end date are skipped, as the save routine drops them too.
+		 *
+		 * @param array $main_keys Field names of the main row: start date, start time, end date, end time.
+		 * @param array $more_keys Field names of the "Add More Date" rows (posted as arrays), same order.
+		 */
+		private function date_rows_overlap(array $main_keys, array $more_keys): bool
+		{
+			$field = function ($key, $index = null) {
+				$value = isset($_POST[$key]) ? wp_unslash($_POST[$key]) : '';
+				if (null !== $index) {
+					$value = is_array($value) && isset($value[$index]) ? $value[$index] : '';
+				}
+				return is_scalar($value) ? trim(sanitize_text_field((string) $value)) : '';
+			};
+
+			$rows = [[$field($main_keys[0]), $field($main_keys[1]), $field($main_keys[2]), $field($main_keys[3])]];
+			$more = isset($_POST[$more_keys[0]]) && is_array($_POST[$more_keys[0]]) ? array_keys((array) $_POST[$more_keys[0]]) : [];
+			foreach ($more as $i) {
+				$rows[] = [$field($more_keys[0], $i), $field($more_keys[1], $i), $field($more_keys[2], $i), $field($more_keys[3], $i)];
+			}
+
+			$ranges = [];
+			foreach ($rows as $row) {
+				if ('' === $row[0] || '' === $row[2]) {
+					continue;
+				}
+				$start = strtotime(trim($row[0] . ' ' . $row[1]));
+				$end   = strtotime(trim($row[2] . ' ' . $row[3]));
+				if (false !== $start && false !== $end) {
+					$ranges[] = [$start, $end];
+				}
+			}
+
+			usort($ranges, static function ($a, $b) {
+				return $a[0] <=> $b[0];
+			});
+			for ($i = 1, $count = count($ranges); $i < $count; $i++) {
+				if ($ranges[$i - 1][1] > $ranges[$i][0]) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public function handle_save(): void
 		{
 			if (! $this->can_manage_events()) {
@@ -2272,6 +2320,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				}
 				$venue_value   = isset($_POST['mep_location_venue']) ? trim(sanitize_text_field(wp_unslash($_POST['mep_location_venue']))) : '';
 				$virtual_value = isset($_POST['mp_event_virtual_type_des']) ? trim(wp_strip_all_tags(wp_unslash($_POST['mp_event_virtual_type_des']))) : '';
+				// A join link alone is enough to run an online event.
+				if ('' === $virtual_value && isset($_POST['mep_event_virtual_link'])) {
+					$virtual_value = trim(esc_url_raw(wp_unslash($_POST['mep_event_virtual_link'])));
+				}
 
 				if ('' === $post_title) {
 					$validation_error = 'title';
@@ -2404,6 +2456,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						}
 					}
 
+					if ('' === $validation_error && 'everyday' !== $recurring) {
+						$more_keys = 'yes' === $recurring
+							? ['event_more_start_date', 'event_more_start_time', 'event_more_end_date', 'event_more_end_time']
+							: ['event_more_start_date_normal', 'event_more_start_time_normal', 'event_more_end_date_normal', 'event_more_end_time_normal'];
+						if ($this->date_rows_overlap($keys, $more_keys)) {
+							$validation_error = 'date_overlap';
+						}
+					}
+
 					if ('' === $validation_error && 'everyday' === $recurring) {
 						$periods = isset($_POST['mep_repeated_periods']) ? trim((string) wp_unslash($_POST['mep_repeated_periods'])) : '';
 						if ('' === $periods || ! is_numeric($periods) || (int) $periods < 1) {
@@ -2455,7 +2516,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 				if ('' !== $validation_error) {
 					$ticket_errors  = ['tickets', 'ticket_fields', 'extra_service', 'global_qty', 'early_bird', 'early_bird_order'];
-					$date_errors    = ['date_required', 'date_order', 'repeat_periods', 'date_format'];
+					$date_errors    = ['date_required', 'date_order', 'date_overlap', 'repeat_periods', 'date_format'];
 					$display_errors = ['faq_items', 'timeline_items', 'related_label', 'related_list'];
 					if (in_array($validation_error, $ticket_errors, true)) {
 						$error_step = 'tickets';
@@ -2519,7 +2580,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			if (class_exists('MPWEM_Form_Settings')) {
-				$reg_form_status = isset($_POST['mep_event_reg_form_status']) ? 'on' : 'off';
+				$reg_form_status = isset($_POST['mep_event_reg_form_status']) || isset($_POST['mep_rsvp_use_attendee_form']) ? 'on' : 'off';
 				update_post_meta($post_id, 'mep_event_reg_form_status', $reg_form_status);
 			}
 

@@ -472,6 +472,7 @@
 				return max( $price, 0 );
 			}
 			public static function get_wc_raw_price( $price ) {
+				$price = self::normalize_price( $price );
 				if ( ! self::has_woocommerce() ) {
 					return (float) $price;
 				}
@@ -683,8 +684,42 @@
 				$opts = self::get_native_currency_settings();
 				return (string) $opts['mep_currency_position'];
 			}
+			/** Convert an editor-entered amount to a locale-independent decimal string. */
+			public static function normalize_price( $amount ): string {
+				$amount = trim( (string) $amount );
+				$amount = preg_replace( '/[\s\x{00a0}\x{202f}]/u', '', $amount );
+				if ( preg_match( '/^-?[.,]\d+$/', $amount ) ) {
+					$amount = str_replace( array( '-.', '-,' ), array( '-0.', '-0,' ), $amount );
+					if ( '.' === $amount[0] || ',' === $amount[0] ) {
+						$amount = '0' . $amount;
+					}
+				}
+				if ( ! preg_match( '/^-?\d[\d.,]*$/', $amount ) ) {
+					return '0';
+				}
+				$comma = strrpos( $amount, ',' );
+				$dot   = strrpos( $amount, '.' );
+				if ( false !== $comma && false !== $dot ) {
+					$decimal = $comma > $dot ? ',' : '.';
+				} else {
+					$decimal = false !== $comma ? ',' : ( false !== $dot ? '.' : '' );
+				}
+				$thousands = self::has_woocommerce()
+					? wc_get_price_thousand_separator()
+					: self::get_native_currency_settings()['mep_currency_thousand_sep'];
+				if ( $thousands && $decimal === $thousands && preg_match( '/^-?\d{1,3}(?:' . preg_quote( $thousands, '/' ) . '\d{3})+$/', $amount ) ) {
+					return str_replace( $thousands, '', $amount );
+				}
+				if ( '' !== $decimal ) {
+					$last  = strrpos( $amount, $decimal );
+					$whole = preg_replace( '/[.,]/', '', substr( $amount, 0, $last ) );
+					$cents = substr( $amount, $last + 1 );
+					$amount = $whole . '.' . $cents;
+				}
+				return $amount;
+			}
 			public static function mep_format_price( $amount ): string {
-				$amount = (float) $amount;
+				$amount = (float) self::normalize_price( $amount );
 				if ( self::has_woocommerce() ) {
 					return wc_price( $amount );
 				}
@@ -705,6 +740,51 @@
 					case 'right_space': return '<span class="woocommerce-Price-amount amount">' . $number . '&nbsp;<span class="woocommerce-Price-currencySymbol">' . $symbol . '</span></span>';
 					default:            return '<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $symbol . '</span>' . $number . '</span>';
 				}
+			}
+			/**
+			 * Text printed after an event price, e.g. "+ VAT" (General Settings > Price Suffix).
+			 *
+			 * Follows WooCommerce's own price suffix rule: while WooCommerce taxes are
+			 * on, only events whose Tax Status is Taxable get it. Never appended to a
+			 * zero price, which prints as "Free".
+			 *
+			 * @param int        $event_id Event ID; 0 skips the tax status check.
+			 * @param float|null $amount   The price it follows; null when unknown.
+			 * @param bool       $plain    Plain text, for places that strip HTML.
+			 *
+			 * @return string Suffix with a leading space, or '' when it does not apply.
+			 */
+			public static function price_suffix( $event_id = 0, $amount = null, $plain = false ): string {
+				$text = trim( (string) self::get_settings( 'general_setting_sec', 'mep_price_suffix', '' ) );
+				$show = '' !== $text && ( null === $amount || (float) $amount > 0 );
+				if ( $show && $event_id && self::has_woocommerce() && function_exists( 'wc_tax_enabled' ) && wc_tax_enabled() ) {
+					$product = wc_get_product( self::get_post_info( $event_id, 'link_wc_product', $event_id ) );
+					$show    = ! $product || $product->is_taxable();
+				}
+				if ( '' === $text || ! apply_filters( 'mpwem_show_price_suffix', $show, $event_id, $amount ) ) {
+					return '';
+				}
+				return $plain ? ' ' . $text : ' <small class="mpwem_price_suffix">' . esc_html( $text ) . '</small>';
+			}
+			/**
+			 * Price suffix for the cart, checkout, order screens and emails.
+			 *
+			 * Off when "Price Suffix in Cart & Orders" is disabled, and for VAT-exempt
+			 * customers, who are not charged the tax it announces.
+			 *
+			 * @param int        $event_id Event ID.
+			 * @param float|null $amount   The price it follows.
+			 *
+			 * @return string
+			 */
+			public static function order_price_suffix( $event_id, $amount = null ): string {
+				if ( 'yes' !== self::get_settings( 'general_setting_sec', 'mep_price_suffix_in_orders', 'yes' ) ) {
+					return '';
+				}
+				if ( self::has_woocommerce() && function_exists( 'wc_tax_enabled' ) && wc_tax_enabled() && function_exists( 'WC' ) && WC()->customer && WC()->customer->get_is_vat_exempt() ) {
+					return '';
+				}
+				return self::price_suffix( $event_id, $amount );
 			}
 		}
 		new MPWEM_Global_Function();

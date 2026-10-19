@@ -1627,6 +1627,26 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'              => 'mep_price_suffix',
+								'label'             => __( 'Price Suffix', 'mage-eventpress' ),
+								'desc'              => __( 'Text shown after event prices, e.g. "+ VAT". Leave empty to turn it off. When WooCommerce taxes are on, it only shows on events whose Tax Status is Taxable.', 'mage-eventpress' ),
+								'type'              => 'text',
+								'default'           => '',
+								'placeholder'       => '+ VAT',
+								'sanitize_callback' => 'sanitize_text_field'
+							),
+							array(
+								'name'    => 'mep_price_suffix_in_orders',
+								'label'   => __( 'Price Suffix in Cart & Orders', 'mage-eventpress' ),
+								'desc'    => __( 'Also show the price suffix in the cart, checkout, order pages and order emails.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
 								'name'        => 'mep_ticket_expire_time',
 								'label'       => __( 'Stop Sales Before Event (Minutes)', 'mage-eventpress' ),
 								'desc'        => __( 'Minutes before the event when ticket sales close. Use 0 for no limit.', 'mage-eventpress' ),
@@ -2288,7 +2308,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mep_confirmation_email_text',
 								'label'   => __( 'Confirmation Email Body', 'mage-eventpress' ),
-								'desc'    => __( 'Email content. Placeholders: <b>{name}</b>, <b>{event}</b>, <b>{ticket_type}</b>, <b>{order_id}</b>, <b>{event_date}</b>, <b>{event_time}</b>, <b>{event_datetime}</b>, <b>{payment_method}</b>, <b>{amount_paid}</b>', 'mage-eventpress' ),
+								'desc'    => __( 'Email content. Placeholders: <b>{name}</b>, <b>{event}</b>, <b>{ticket_type}</b>, <b>{order_id}</b>, <b>{event_date}</b>, <b>{event_time}</b>, <b>{event_datetime}</b>, <b>{payment_method}</b>, <b>{amount_paid}</b>, <b>{virtual_link}</b>, <b>{virtual_details}</b>, <b>{calendar_ics_url}</b>, <b>{google_calendar_url}</b>', 'mage-eventpress' ),
 								'type'    => 'wysiwyg',
 								'default' => 'Hi {name},<br><br>Thanks for joining the event.<br><br>Here are the event details:<br><br>Event Name: {event}<br><br>Ticket Type: {ticket_type}<br><br>Event Date: {event_date}<br><br>Start Time: {event_time}<br><br>Full DateTime: {event_datetime}<br><br>Payment Method: {payment_method}<br><br>Amount Paid: {amount_paid}<br><br>Thanks',
 							),

@@ -501,6 +501,28 @@
 	text-align: center;
 }
 
+.mep-rsvp-table .column-form-fields {
+	min-width: 180px;
+}
+
+.mep-rsvp-form-fields {
+	display: grid;
+	grid-template-columns: minmax(70px, auto) 1fr;
+	gap: 3px 8px;
+	margin: 0;
+}
+
+.mep-rsvp-form-fields dt {
+	font-weight: 600;
+	color: #475569;
+}
+
+.mep-rsvp-form-fields dd {
+	margin: 0;
+	color: #64748b;
+	white-space: pre-wrap;
+}
+
 .mep-rsvp-table .column-status {
 	width: 140px;
 }

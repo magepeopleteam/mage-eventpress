@@ -401,6 +401,112 @@ if ( ! function_exists( 'mep_pro_modify_admin_menu_capabilities' ) ) {
 	}
 }
 
+if ( ! function_exists( 'mep_is_shop_manager_eventpress_request' ) ) {
+	/**
+	 * Whether the current request targets an EventPress screen, settings group,
+	 * AJAX handler or REST route that Shop Managers may use.
+	 *
+	 * Every marker is checked against the endpoint it belongs to, so a marker
+	 * appended to an unrelated core screen (for example ?page=mep_x or
+	 * ?post_type=mep_events on options-general.php) never matches.
+	 *
+	 * @return bool|null True/false when decided, null when it cannot be decided
+	 *                   yet (admin menu not registered) and must not be cached.
+	 */
+	function mep_is_shop_manager_eventpress_request() {
+		global $pagenow;
+
+		if ( wp_doing_ajax() ) {
+			if ( ! isset( $_REQUEST['action'] ) || ! is_string( $_REQUEST['action'] ) ) {
+				return false;
+			}
+			$action = sanitize_key( wp_unslash( $_REQUEST['action'] ) );
+			// AJAX actions registered by EventPress PRO under legacy prefixes.
+			$legacy_actions = array(
+				'wbbm_get_bus_details',
+				'wbbm_get_order_details',
+				'wbtm_tab_assign',
+				'wtbm_activate_core_support',
+				'wtbm_activate_pdf_support',
+				'wtbm_activate_wc_support',
+				'wtbm_install_core_support',
+				'wtbm_install_pdf_support',
+				'wtbm_install_wc_support',
+				'generate_attendee_pdf',
+			);
+			return 0 === strpos( $action, 'mep_' ) || 0 === strpos( $action, 'mpwem_' ) || in_array( $action, $legacy_actions, true );
+		}
+
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			// Match the resolved route only, never the query string.
+			$route = isset( $GLOBALS['wp']->query_vars['rest_route'] ) ? (string) $GLOBALS['wp']->query_vars['rest_route'] : '';
+			if ( '' === $route && isset( $_SERVER['REQUEST_URI'] ) ) {
+				$path   = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+				$prefix = '/' . trim( rest_get_url_prefix(), '/' ) . '/';
+				$pos    = strpos( $path, $prefix );
+				$route  = false === $pos ? '' : '/' . substr( $path, $pos + strlen( $prefix ) );
+			}
+			return 0 === stripos( $route, '/mep/' ) || 0 === stripos( $route, '/mpwem/' );
+		}
+
+		if ( ! is_admin() ) {
+			return false;
+		}
+
+		// EventPress admin pages are routed through edit.php?post_type=mep_events&page=…
+		// (or admin.php for a top-level menu); core renders the plugin page and exits.
+		if ( isset( $_GET['page'] ) && in_array( $pagenow, array( 'edit.php', 'admin.php' ), true ) ) {
+			if ( ! is_string( $_GET['page'] ) ) {
+				return false;
+			}
+			if ( ! did_action( 'admin_menu' ) || ! function_exists( 'get_plugin_page_hookname' ) ) {
+				return null;
+			}
+			global $_registered_pages;
+			$page = plugin_basename( wp_unslash( $_GET['page'] ) );
+			foreach ( array( 'edit.php?post_type=mep_events', 'mep_events' ) as $parent ) {
+				if ( ! empty( $_registered_pages[ get_plugin_page_hookname( $page, $parent ) ] ) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		$post_type = isset( $_GET['post_type'] ) && is_string( $_GET['post_type'] ) ? sanitize_key( wp_unslash( $_GET['post_type'] ) ) : '';
+		if ( in_array( $post_type, array( 'mep_events', 'mep_event_speaker' ), true ) && in_array( $pagenow, array( 'edit.php', 'post-new.php' ), true ) ) {
+			return true;
+		}
+
+		if ( 'post.php' === $pagenow && isset( $_GET['post'] ) ) {
+			$post_id = absint( $_GET['post'] );
+			return $post_id && 'mep_events' === get_post_type( $post_id );
+		}
+
+		if ( 'options.php' === $pagenow && isset( $_POST['option_page'] ) && is_string( $_POST['option_page'] ) ) {
+			$option_page = wp_unslash( $_POST['option_page'] );
+			$prefixes    = array(
+				'mep_',
+				'mpwem_',
+				'general_setting_sec',
+				'event_list_setting_sec',
+				'single_event_setting_sec',
+				'email_setting_sec',
+				'style_setting_sec',
+				'icon_setting_sec',
+				'carousel_setting_sec',
+				'mp_slider_settings',
+			);
+			foreach ( $prefixes as $prefix ) {
+				if ( 0 === strpos( $option_page, $prefix ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+}
+
 if ( ! function_exists( 'mep_pro_grant_shop_manager_access' ) ) {
 	add_filter( 'user_has_cap', 'mep_grant_shop_manager_access', 10, 4 );
 	function mep_grant_shop_manager_access( $allcaps, $caps, $args, $user ) {
@@ -409,98 +515,23 @@ if ( ! function_exists( 'mep_pro_grant_shop_manager_access' ) ) {
 			return $allcaps;
 		}
 		// Fast exit: only shop managers need elevation — skip everyone else immediately.
-		if ( empty( $allcaps['manage_woocommerce'] ) ) {
+		if ( empty( $allcaps['manage_woocommerce'] ) || ! empty( $allcaps['manage_options'] ) ) {
 			return $allcaps;
 		}
 
-		// Cache the context result per user per request so the string comparisons
+		// Cache the context result per user per request so the checks
 		// below run at most ONCE per user rather than on every capability check.
 		static $mep_cap_cache = array();
 		$uid = isset( $user->ID ) ? (int) $user->ID : 0;
-		if ( isset( $mep_cap_cache[ $uid ] ) ) {
-			if ( $mep_cap_cache[ $uid ] ) {
-				$allcaps['manage_options'] = true;
+		if ( ! isset( $mep_cap_cache[ $uid ] ) ) {
+			$is_eventpress_context = mep_is_shop_manager_eventpress_request();
+			if ( null === $is_eventpress_context ) {
+				return $allcaps;
 			}
-			return $allcaps;
+			$mep_cap_cache[ $uid ] = $is_eventpress_context;
 		}
 
-		$is_eventpress_context = false;
-
-		if ( is_admin() ) {
-			global $pagenow;
-
-			if ( isset( $_GET['page'] ) && is_string( $_GET['page'] ) ) {
-				$page = $_GET['page'];
-				if (
-					strpos( $page, 'mep_' ) === 0 ||
-					strpos( $page, 'mpwem_' ) === 0 ||
-					$page === 'attendee_list' ||
-					$page === 'mep_event_welcome_page' ||
-					$page === 'mpwem_quick_setup'
-				) {
-					$is_eventpress_context = true;
-				}
-			}
-
-			if ( isset( $_GET['post_type'] ) && ( $_GET['post_type'] === 'mep_events' || $_GET['post_type'] === 'mep_event_speaker' ) ) {
-				$is_eventpress_context = true;
-			}
-
-			if ( $pagenow === 'post.php' && isset( $_GET['post'] ) ) {
-				$post_id = absint( $_GET['post'] );
-				if ( $post_id && get_post_type( $post_id ) === 'mep_events' ) {
-					$is_eventpress_context = true;
-				}
-			}
-
-			if ( $pagenow === 'options.php' && isset( $_POST['option_page'] ) && is_string( $_POST['option_page'] ) ) {
-				$option_page = $_POST['option_page'];
-				if (
-					strpos( $option_page, 'mep_' ) === 0 ||
-					strpos( $option_page, 'mpwem_' ) === 0 ||
-					strpos( $option_page, 'general_setting_sec' ) === 0 ||
-					strpos( $option_page, 'event_list_setting_sec' ) === 0 ||
-					strpos( $option_page, 'single_event_setting_sec' ) === 0 ||
-					strpos( $option_page, 'email_setting_sec' ) === 0 ||
-					strpos( $option_page, 'style_setting_sec' ) === 0 ||
-					strpos( $option_page, 'icon_setting_sec' ) === 0 ||
-					strpos( $option_page, 'carousel_setting_sec' ) === 0 ||
-					strpos( $option_page, 'mp_slider_settings' ) === 0 ||
-					strpos( $option_page, 'mep_settings_licensing' ) === 0
-				) {
-					$is_eventpress_context = true;
-				}
-			}
-		}
-
-		if ( wp_doing_ajax() ) {
-			if ( isset( $_REQUEST['action'] ) && is_string( $_REQUEST['action'] ) ) {
-				$action = $_REQUEST['action'];
-				if (
-					strpos( $action, 'mep_' ) === 0 ||
-					strpos( $action, 'mpwem_' ) === 0 ||
-					strpos( $action, 'wbtm_' ) === 0 ||
-					strpos( $action, 'wtbm_' ) === 0 ||
-					strpos( $action, 'wbbm_' ) === 0 ||
-					$action === 'generate_attendee_pdf'
-				) {
-					$is_eventpress_context = true;
-				}
-			}
-		}
-
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-				if ( stripos( $_SERVER['REQUEST_URI'], '/wp-json/mep/' ) !== false || stripos( $_SERVER['REQUEST_URI'], '/wp-json/mpwem/' ) !== false ) {
-					$is_eventpress_context = true;
-				}
-			}
-		}
-
-		// Store result so all subsequent capability checks in this request are instant.
-		$mep_cap_cache[ $uid ] = $is_eventpress_context;
-
-		if ( $is_eventpress_context ) {
+		if ( $mep_cap_cache[ $uid ] ) {
 			$allcaps['manage_options'] = true;
 		}
 

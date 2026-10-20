@@ -1107,7 +1107,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$all_ticket_tyle = get_post_meta( $event, 'mep_event_ticket_type', true );
 				foreach ( $all_ticket_tyle as $key => $val ) {
 					if ( $val['option_name_t'] === $type ) {
-						return is_array($val) && array_key_exists( 'option_price_t', $val ) ? (int) $val['option_price_t'] : 0;
+						return is_array($val) && array_key_exists( 'option_price_t', $val ) ? (float) MPWEM_Global_Function::normalize_price( $val['option_price_t'] ) : 0;
 					}
 				}
 			} else {
@@ -1247,11 +1247,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$event_date  = is_array($_user_info) && array_key_exists( 'user_event_date', $_user_info ) ? sanitize_text_field( $_user_info['user_event_date'] ) : "";
 				$event_id    = is_array( $_user_info ) && array_key_exists( 'user_event_id', $_user_info ) && $_user_info['user_event_id'] ? sanitize_text_field( $_user_info['user_event_id'] ) : $event_id;
 			}
-			// $ticket_total_price = (int) ( mep_get_event_ticket_price_by_name( $event_id, $ticket_type ) * (int) $ticket_qty );
 			$price              = mep_get_event_ticket_price_by_name( $event_id, $ticket_type );
-			$price              = (float) preg_replace( '/[^0-9.]/', '', $price );
+			$price              = (float) MPWEM_Global_Function::normalize_price( $price );
 			$qty                = (int) $ticket_qty;
-			$ticket_total_price = (int) ( $price * $qty );
+			$ticket_total_price = $price * $qty;
 			$uname              = isset( $_uname ) && ! empty( $_uname ) ? $_uname : $billing_full_name;
 			$new_post           = array(
 				'post_title'    => $uname,
@@ -1446,7 +1445,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 
 			$ticket_name  = isset( $ticket_info['ticket_name'] ) ? sanitize_text_field( $ticket_info['ticket_name'] ) : '';
 			$ticket_qty   = isset( $ticket_info['ticket_qty'] ) ? absint( $ticket_info['ticket_qty'] ) : 1;
-			$ticket_price = isset( $ticket_info['ticket_price'] ) ? (float) $ticket_info['ticket_price'] : 0.0;
+			$ticket_price = isset( $ticket_info['ticket_price'] ) ? (float) MPWEM_Global_Function::normalize_price( $ticket_info['ticket_price'] ) : 0.0;
 			$ticket_total = $ticket_price * $ticket_qty;
 
 			$new_post = array(
@@ -3564,7 +3563,7 @@ die();
 			} elseif ( empty( $qty ) ) {
 				return 0.0;
 			}
-			$line_price = (float) $price * (float) $qty;
+			$line_price = (float) MPWEM_Global_Function::normalize_price( $price ) * (float) $qty;
 			if ( $product && is_object( $product ) && method_exists( $product, 'is_taxable' ) ) {
 				if ( $product->is_taxable() && wc_prices_include_tax() ) {
 					$tax_rates      = WC_Tax::get_rates( $product->get_tax_class() );
@@ -3606,7 +3605,7 @@ die();
 			} elseif ( empty( $qty ) ) {
 				return 0.0;
 			}
-			$line_price   = (float) $price * (float) $qty;
+			$line_price   = (float) MPWEM_Global_Function::normalize_price( $price ) * (float) $qty;
 			$return_price = $line_price;
 			if ( $product && is_object( $product ) && method_exists( $product, 'is_taxable' ) ) {
 				if ( $product->is_taxable() ) {

@@ -3049,6 +3049,12 @@
 	padding: 14px 16px;
 }
 
+/* Undated events render no date badge, so the body must span the whole row
+   instead of falling into the badge column, where it collapses to 0px. */
+.list_with_filter_section.mep_event_list .mep_event_minimal_list__surface > .mep_event_minimal_list__body:first-child {
+	grid-column: 1 / -1;
+}
+
 .list_with_filter_section.mep_event_list .mep_event_minimal_list__date,
 .list_with_filter_section.mep_event_list .mep_event_minimal_list .mep-ev-start-date {
 	position: static;

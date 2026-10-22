@@ -157,7 +157,12 @@
 					wp_send_json_error( __( 'Invalid or unpublished Event.', 'mage-eventpress' ) );
 					wp_die();
 				}
-				
+				// The event page withholds the booking panel from non-members; this endpoint
+				// must not hand it (and its RSVP nonce) out either.
+				if ( ! MPWEM_Global_Function::user_can_register_for_event( $post_id ) ) {
+					wp_send_json_error( __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ), 403 );
+				}
+
 				// Get dates and times
 				$all_dates   = MPWEM_Functions::get_dates( $post_id );
 				$all_times   = MPWEM_Functions::get_times( $post_id, $all_dates, $dates );
@@ -814,9 +819,11 @@
 			}
 
 			public function mep_submit_rsvp() {
-				check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
-
 				$event_id   = isset( $_POST['event_id'] ) ? absint( $_POST['event_id'] ) : 0;
+				// The nonce is bound to the event, so a form printed on one event cannot be
+				// replayed against another.
+				check_ajax_referer( 'mep_rsvp_nonce_' . $event_id, 'nonce' );
+
 				$name       = isset( $_POST['rsvp_name'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_name'] ) ) : '';
 				$email      = isset( $_POST['rsvp_email'] ) ? sanitize_email( wp_unslash( $_POST['rsvp_email'] ) ) : '';
 				$phone      = isset( $_POST['rsvp_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_phone'] ) ) : '';
@@ -826,6 +833,14 @@
 				$form_fields = array();
 				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) || 'rsvp' !== MPWEM_Global_Function::get_event_mode( $event_id ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'This event is not accepting RSVP responses.', 'mage-eventpress' ) ) );
+				}
+				// Same visibility rule as the WooCommerce path: only a published event, unless
+				// the user can edit it and is test-booking a draft or private one.
+				if ( 'publish' !== get_post_status( $event_id ) && ! current_user_can( 'edit_post', $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event is not accepting RSVP responses.', 'mage-eventpress' ) ) );
+				}
+				if ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ) ), 403 );
 				}
 				$use_attendee_form = $event_id
 					&& 'on' === get_post_meta( $event_id, 'mep_rsvp_use_attendee_form', true )

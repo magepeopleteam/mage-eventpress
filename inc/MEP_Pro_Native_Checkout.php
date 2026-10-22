@@ -67,8 +67,20 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			$attendee_data = isset( $_POST['attendee_fields'] ) ? wp_unslash( $_POST['attendee_fields'] )                   : '';
 			$gateway_id    = isset( $_POST['payment_method'] ) ? sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ) : '';
 
-			if ( ! $event_id ) {
+			if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
 				wp_send_json_error( array( 'message' => __( 'Invalid event.', 'mage-eventpress' ) ) );
+			}
+			// Same rule as the WooCommerce and RSVP paths: a published event (its editors may
+			// test-book a draft or private one) in a booking mode with a date still open.
+			// MPWEM_Woocommerce is not loaded without WooCommerce, so it is repeated here.
+			$event_dates = MPWEM_Functions::get_dates( $event_id );
+			if ( ( 'publish' !== get_post_status( $event_id ) && ! current_user_can( 'edit_post', $event_id ) )
+				|| ! MPWEM_Global_Function::is_bookable_event( $event_id )
+				|| ! is_array( $event_dates ) || empty( $event_dates ) ) {
+				wp_send_json_error( array( 'message' => __( 'Sorry, this event is not available for booking.', 'mage-eventpress' ) ) );
+			}
+			if ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
+				wp_send_json_error( array( 'message' => __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ) ) );
 			}
 
 			// Everyday events that hide the ticket-time selector post a date with no real

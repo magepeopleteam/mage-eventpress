@@ -352,6 +352,30 @@
 				return ! self::is_undated_event( $event_id );
 			}
 			/**
+			 * Whether a user may register for the event under its "Member Only" setting.
+			 *
+			 * The event page only hides the booking form from visitors outside the allowed
+			 * roles, so every server-side booking path (RSVP, WooCommerce cart, native
+			 * checkout) must ask this too. An event that is not member-only is open to all;
+			 * a member-only one needs a logged-in user holding one of the allowed roles, or
+			 * the "all" entry, which admits any logged-in user.
+			 *
+			 * @param int      $event_id Event post ID.
+			 * @param int|null $user_id  User to check; the current user when null.
+			 * @return bool
+			 */
+			public static function user_can_register_for_event( $event_id, $user_id = null ): bool {
+				$member_type = get_post_meta( $event_id, 'mep_member_only_event', true );
+				$allowed     = true;
+				if ( $member_type && 'for_all' !== $member_type ) {
+					$user          = null === $user_id ? wp_get_current_user() : get_userdata( (int) $user_id );
+					$allowed_roles = array_map( 'strval', (array) get_post_meta( $event_id, 'mep_member_only_user_role', true ) );
+					$allowed       = $user instanceof WP_User && $user->exists()
+						&& ( in_array( 'all', $allowed_roles, true ) || array_intersect( (array) $user->roles, $allowed_roles ) );
+				}
+				return (bool) apply_filters( 'mep_user_can_register_for_event', $allowed, $event_id, $user_id );
+			}
+			/**
 			 * Call-to-action label for an event-list card. Bookable events keep the
 			 * existing "Book"; everything else invites the visitor to read on instead of
 			 * promising a booking that the details page cannot deliver.

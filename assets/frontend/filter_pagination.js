@@ -277,7 +277,8 @@
             status: holder.data('status'),
             year: holder.data('year'),
             sort: holder.data('sort'),
-            show: holder.data('show')
+            show: holder.data('show'),
+            exclude: holder.data('exclude')
         };
         let inner = holder.find('.mage_grid_box');
         if (inner.length === 0) {

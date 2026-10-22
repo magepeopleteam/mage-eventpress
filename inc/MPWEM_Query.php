@@ -212,7 +212,7 @@
 				);
 				return new WP_Query( $args );
 			}
-			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
+			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '', $exclude = '' ) {
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
 
@@ -327,6 +327,13 @@
 				}
 				
 				$final_ids = $wpdb->get_col($query);
+
+				// Hide specific events from this list (e.g. private events that stay
+				// reachable by direct link). Applied before paging so counts stay right.
+				$exclude_ids = array_filter( wp_parse_id_list( $exclude ) );
+				if ( ! empty( $exclude_ids ) ) {
+					$final_ids = array_values( array_diff( array_map( 'intval', $final_ids ), $exclude_ids ) );
+				}
 
 				if ( empty($final_ids) ) {
 					$final_ids = [0];

@@ -239,11 +239,12 @@
 					'year'    => sanitize_text_field( $_REQUEST['year'] ?? '' ),
 					'sort'    => sanitize_text_field( $_REQUEST['sort'] ?? 'ASC' ),
 					'show'    => intval( $_REQUEST['show'] ?? - 1 ),
+					'exclude' => sanitize_text_field( wp_unslash( $_REQUEST['exclude'] ?? '' ) ),
 				);
 				$paged  = intval( $_REQUEST['page'] ?? 1 );
 				$style  = $atts['style'];
 				$column = $style != 'grid' ? 1 : $atts['column'];
-				$loop   = MPWEM_Query::event_query( $atts['show'], $atts['sort'], $atts['cat'], $atts['org'], $atts['city'], $atts['country'], $atts['status'], '', $atts['year'], $paged );
+				$loop   = MPWEM_Query::event_query( $atts['show'], $atts['sort'], $atts['cat'], $atts['org'], $atts['city'], $atts['country'], $atts['status'], '', $atts['year'], $paged, '', $atts['exclude'] );
 				ob_start();
 				while ( $loop->have_posts() ) {
 					$loop->the_post();

@@ -511,6 +511,7 @@
 					'state-filter'     => 'yes',
 					'date-filter'      => 'yes',
 					'year'             => '',
+					'exclude'          => '',
 				);
 			$params           = shortcode_atts( $defaults, $atts );
 
@@ -542,10 +543,11 @@
 			$status           = sanitize_text_field( $params['status'] );
 			$year             = sanitize_text_field( $params['year'] );
 			$filter           = sanitize_text_field( $params['search-filter'] );
+			$exclude          = implode( ',', array_filter( wp_parse_id_list( $params['exclude'] ) ) );
 				$show             = ( $filter == 'yes' || $pagination == 'yes' && $style != 'timeline' ) && $pagination_style != 'ajax' ? - 1 : $show;
 				$unq_id           = 'abr' . uniqid();
 				ob_start();
-				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, $state, $year, 0, $tag );
+				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, $state, $year, 0, $tag, $exclude );
 				$total_item = $loop->found_posts;
 				?>
                 <div class='mage list_with_filter_section mep_event_list mep-list-is-loading' id='mage-container'>
@@ -576,6 +578,7 @@
                                  data-country="<?php echo esc_attr( $country ); ?>"
                                  data-status="<?php echo esc_attr( $status ); ?>"
                                  data-year="<?php echo esc_attr( $year ); ?>"
+                                 data-exclude="<?php echo esc_attr( $exclude ); ?>"
                                  data-sort="<?php echo esc_attr( $sort ); ?>"
                                  data-show="<?php echo esc_attr( $show ); ?>"
                                  data-pagination="<?php echo esc_attr( $pagination ); ?>"

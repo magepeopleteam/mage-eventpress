@@ -40,10 +40,9 @@
 				// printed here - an undated event is not "expired", it simply has no date.
 				do_action( 'mpwem_undated_event_notice', $event_id, $event_infos );
 			} elseif ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
-				$event_member_type = is_array($event_infos) && array_key_exists( 'mep_member_only_event', $event_infos ) ? $event_infos['mep_member_only_event'] : 'for_all';
-				$saved_user_role   = is_array($event_infos) && array_key_exists( 'mep_member_only_user_role', $event_infos ) ? $event_infos['mep_member_only_user_role'] : [];
-				// if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) ) || in_array( 'all', $saved_user_role ) ) ) {
-				if( $event_member_type == 'for_all' || ($event_member_type != 'for_all'  && is_user_logged_in() && ( in_array(wp_get_current_user()->roles[0],$saved_user_role) || in_array('all',$saved_user_role) ) )){
+				// Same check every booking endpoint runs, so the form shows exactly when a
+				// submission from it would be accepted.
+				if ( MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 
                     $kera_class = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_category', 'off' );
                     $kera_class=$kera_class=='on'?'kera_class':'';

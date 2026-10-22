@@ -782,7 +782,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$temp_body = str_replace( "{order_id}", $order_id, $temp_body );
 					$temp_body = str_replace( "{payment_method}", $payment_method, $temp_body );
 					$ticket_names = array( isset( $ticket['ticket_name'] ) ? $ticket['ticket_name'] : '' );
-					$virtual_tags = array_merge( mep_get_virtual_email_tags( $event_id, $ticket_names ), mep_get_calendar_email_tags( $event_id, $raw_date, $ticket_names ) );
+					$booking      = array( 'order_id' => $order_id, 'attendee_id' => $__attendee_id );
+					$virtual_tags = array_merge( mep_get_virtual_email_tags( $event_id, $ticket_names, $booking ), mep_get_calendar_email_tags( $event_id, $raw_date, $ticket_names, $booking ) );
 					$temp_body    = str_replace( array_keys( $virtual_tags ), array_values( $virtual_tags ), $temp_body );
 
 					$final_output .= $temp_body . "<br><hr><br>";
@@ -827,7 +828,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$email_body = str_replace( "{order_id}", $order_id, $email_body );
 				$email_body = str_replace( "{payment_method}", $payment_method, $email_body );
 				$email_body = str_replace( "{amount_paid}", $amount_paid, $email_body );
-				$virtual_tags = array_merge( mep_get_virtual_email_tags( $event_id, array( $ticket_type ) ), mep_get_calendar_email_tags( $event_id, $event_date_time, array( $ticket_type ) ) );
+				$booking      = array( 'order_id' => $order_id, 'attendee_id' => $attendee_id );
+				$virtual_tags = array_merge( mep_get_virtual_email_tags( $event_id, array( $ticket_type ), $booking ), mep_get_calendar_email_tags( $event_id, $event_date_time, array( $ticket_type ), $booking ) );
 				$email_body   = str_replace( array_keys( $virtual_tags ), array_values( $virtual_tags ), $email_body );
 
 				return $email_body;
@@ -1018,9 +1020,9 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter
 			$virtual_append_removed = $places_virtual_details && remove_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10 );
-			$email_body             = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id, $event_ticket_info_arr );
+			$email_body             = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id, $event_ticket_info_arr, $attendee_id );
 			if ( $virtual_append_removed ) {
-				add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 4 );
+				add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 5 );
 			}
 			// ✨ Format email body properly
 			$email_body = wpautop( $email_body );        // Add paragraphs
@@ -3723,17 +3725,24 @@ die();
 		 * rule the confirmation email uses to append the details. When the tickets are
 		 * unknown (previews, test sends) a hybrid event qualifies.
 		 *
-		 * @param int   $event_id     Event post ID.
-		 * @param array $ticket_names Booked ticket names (option_name_t values).
+		 * A member-only event additionally requires the booking to pass
+		 * mep_virtual_booking_meets_member_rule().
+		 *
+		 * @param int        $event_id     Event post ID.
+		 * @param array      $ticket_names Booked ticket names (option_name_t values).
+		 * @param array|null $booking      array( 'order_id' => int, 'attendee_id' => int ), or null when unknown.
 		 * @return bool
 		 */
-		function mep_event_virtual_access_allowed( $event_id, $ticket_names = array() ) {
+		function mep_event_virtual_access_allowed( $event_id, $ticket_names = array(), $booking = null ) {
 			$event_type = get_post_meta( $event_id, 'mep_event_type', true ) ?: 'offline';
+			if ( 'online' !== $event_type && 'hybrid' !== $event_type ) {
+				return false;
+			}
+			if ( ! mep_virtual_booking_meets_member_rule( $event_id, $booking ) ) {
+				return false;
+			}
 			if ( 'online' === $event_type ) {
 				return true;
-			}
-			if ( 'hybrid' !== $event_type ) {
-				return false;
 			}
 			$ticket_names = array_filter( array_map( 'strval', (array) $ticket_names ), 'strlen' );
 			if ( empty( $ticket_names ) ) {
@@ -3752,6 +3761,65 @@ die();
 		}
 	}
 
+	if ( ! function_exists( 'mep_virtual_booking_meets_member_rule' ) ) {
+		/**
+		 * Whether a booking may receive a member-only event's virtual access details.
+		 *
+		 * Booking is gated by MPWEM_Global_Function::user_can_register_for_event(), but
+		 * the join details are sent later (confirmation, PDF and reminder emails, My
+		 * Account), so each delivery re-checks the user who made the booking: the
+		 * attendee's ea_user_id, else the order customer. An order staff created in the
+		 * WooCommerce admin qualifies, as staff booked it on purpose. With no booking
+		 * context (previews, test sends) only a user who can edit the event qualifies.
+		 *
+		 * @param int        $event_id Event post ID.
+		 * @param array|null $booking  array( 'order_id' => int, 'attendee_id' => int ), or null when unknown.
+		 * @return bool
+		 */
+		function mep_virtual_booking_meets_member_rule( $event_id, $booking = null ) {
+			$member_type = get_post_meta( $event_id, 'mep_member_only_event', true );
+			if ( ! $member_type || 'for_all' === $member_type ) {
+				return true;
+			}
+			$booking     = is_array( $booking ) ? $booking : array();
+			$order_id    = isset( $booking['order_id'] ) ? absint( $booking['order_id'] ) : 0;
+			$attendee_id = isset( $booking['attendee_id'] ) ? absint( $booking['attendee_id'] ) : 0;
+			// Only an attendee record of this event says who booked it.
+			if ( $attendee_id && ( ! in_array( get_post_type( $attendee_id ), array( 'mep_events_attendees', 'mep_rsvp_responses' ), true ) || (int) get_post_meta( $attendee_id, 'ea_event_id', true ) !== (int) $event_id ) ) {
+				$attendee_id = 0;
+			}
+			if ( $attendee_id && ! $order_id ) {
+				$order_id = absint( get_post_meta( $attendee_id, 'ea_order_id', true ) );
+			} elseif ( ! $attendee_id && $order_id ) {
+				// Native checkout bookings are not WooCommerce orders; their attendee knows the user.
+				$found       = get_posts( array(
+					'post_type'      => array( 'mep_events_attendees', 'mep_rsvp_responses' ),
+					'post_status'    => 'any',
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+					'meta_query'     => array(
+						array( 'key' => 'ea_order_id', 'value' => $order_id ),
+						array( 'key' => 'ea_event_id', 'value' => $event_id ),
+					),
+				) );
+				$attendee_id = $found ? (int) $found[0] : 0;
+			}
+			$order = $order_id && function_exists( 'wc_get_order' ) ? wc_get_order( $order_id ) : false;
+			if ( $order instanceof WC_Order && 'admin' === $order->get_created_via() ) {
+				$allowed = true;
+			} elseif ( $attendee_id ) {
+				$allowed = MPWEM_Global_Function::user_can_register_for_event( $event_id, (int) get_post_meta( $attendee_id, 'ea_user_id', true ) );
+			} elseif ( $order instanceof WC_Order ) {
+				$allowed = MPWEM_Global_Function::user_can_register_for_event( $event_id, (int) $order->get_customer_id() );
+			} else {
+				$allowed = current_user_can( 'edit_post', $event_id );
+			}
+
+			return (bool) apply_filters( 'mep_virtual_booking_meets_member_rule', $allowed, $event_id, $booking );
+		}
+	}
+
 	if ( ! function_exists( 'mep_get_virtual_email_tags' ) ) {
 		/**
 		 * Values for the {virtual_link} and {virtual_details} email placeholders.
@@ -3761,21 +3829,22 @@ die();
 		 * "Virtual event details" content. Both are empty when the booking may not
 		 * receive them (see mep_event_virtual_access_allowed()).
 		 *
-		 * @param int   $event_id     Event post ID.
-		 * @param array $ticket_names Booked ticket names, when known.
+		 * @param int        $event_id     Event post ID.
+		 * @param array      $ticket_names Booked ticket names, when known.
+		 * @param array|null $booking      array( 'order_id' => int, 'attendee_id' => int ), when known.
 		 * @return array Placeholder => value.
 		 */
-		function mep_get_virtual_email_tags( $event_id, $ticket_names = array() ) {
+		function mep_get_virtual_email_tags( $event_id, $ticket_names = array(), $booking = null ) {
 			$tags = array(
 				'{virtual_link}'    => '',
 				'{virtual_details}' => '',
 			);
-			if ( $event_id > 0 && mep_event_virtual_access_allowed( $event_id, $ticket_names ) ) {
+			if ( $event_id > 0 && mep_event_virtual_access_allowed( $event_id, $ticket_names, $booking ) ) {
 				$tags['{virtual_link}']    = esc_url( (string) get_post_meta( $event_id, 'mep_event_virtual_link', true ) );
 				$tags['{virtual_details}'] = wp_kses_post( html_entity_decode( (string) get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) ) );
 			}
 
-			return apply_filters( 'mep_virtual_email_tags', $tags, $event_id, $ticket_names );
+			return apply_filters( 'mep_virtual_email_tags', $tags, $event_id, $ticket_names, $booking );
 		}
 	}
 
@@ -3956,20 +4025,21 @@ die();
 		 * @param int    $event_id     Event post ID.
 		 * @param string $start        Booked occurrence start.
 		 * @param array  $ticket_names Booked ticket names, when known.
+		 * @param array|null $booking  array( 'order_id' => int, 'attendee_id' => int ), when known.
 		 * @return array Placeholder => value.
 		 */
-		function mep_get_calendar_email_tags( $event_id, $start, $ticket_names = array() ) {
+		function mep_get_calendar_email_tags( $event_id, $start, $ticket_names = array(), $booking = null ) {
 			$tags = array(
 				'{calendar_ics_url}'    => '',
 				'{google_calendar_url}' => '',
 			);
 			if ( $event_id > 0 && '' !== trim( (string) $start ) ) {
-				$with_virtual                  = mep_event_virtual_access_allowed( $event_id, $ticket_names ) && '' !== (string) get_post_meta( $event_id, 'mep_event_virtual_link', true );
+				$with_virtual                  = mep_event_virtual_access_allowed( $event_id, $ticket_names, $booking ) && '' !== (string) get_post_meta( $event_id, 'mep_event_virtual_link', true );
 				$tags['{calendar_ics_url}']    = esc_url( mep_get_event_ics_url( $event_id, $start, $with_virtual ) );
 				$tags['{google_calendar_url}'] = esc_url( mep_get_event_google_calendar_url( $event_id, $start, $with_virtual ) );
 			}
 
-			return apply_filters( 'mep_calendar_email_tags', $tags, $event_id, $start, $ticket_names );
+			return apply_filters( 'mep_calendar_email_tags', $tags, $event_id, $start, $ticket_names, $booking );
 		}
 	}
 
@@ -4047,11 +4117,16 @@ die();
 		}
 	}
 
-	add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 4 );
+	add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 5 );
 	if ( ! function_exists( 'mep_virtual_join_info_event_email_text' ) ) {
-		function mep_virtual_join_info_event_email_text( $content, $event_id, $order_id, $event_ticket_info_arr = [] ) {
+		function mep_virtual_join_info_event_email_text( $content, $event_id, $order_id, $event_ticket_info_arr = [], $attendee_id = 0 ) {
 			$event_type    = get_post_meta( $event_id, 'mep_event_type', true ) ?: 'offline';
 			$email_content = get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) ?: '';
+
+			// A member-only event's details go only to a booking made by an allowed member.
+			if ( ! mep_virtual_booking_meets_member_rule( $event_id, array( 'order_id' => $order_id, 'attendee_id' => $attendee_id ) ) ) {
+				return html_entity_decode( $content );
+			}
 
 			// Fully online event: always include virtual details.
 			if ( $event_type === 'online' ) {

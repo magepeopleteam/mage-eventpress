@@ -662,6 +662,8 @@
 				$rejection = '';
 				if ( ! self::is_event_on_sale( $event_id ) ) {
 					$rejection = __( 'Sorry, this event is not available for booking.', 'mage-eventpress' );
+				} elseif ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
+					$rejection = __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' );
 				} elseif ( ! self::has_ticket_selection( $ticket_info ) ) {
 					$rejection = __( 'Please select at least one ticket on the event page before booking.', 'mage-eventpress' );
 				}
@@ -1652,7 +1654,9 @@
 							while ( $loop->have_posts() ) {
 								$loop->the_post();
 								$event_id     = get_post_meta( get_the_id(), 'ea_event_id', true );
-								$virtual_info = get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) ? get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) : '';
+								// Same rule as the emails: in-person tickets of a hybrid event and
+								// bookings that fail a member-only restriction get no join details.
+								$virtual_info = mep_event_virtual_access_allowed( $event_id, array( get_post_meta( get_the_id(), 'ea_ticket_type', true ) ), array( 'attendee_id' => get_the_id() ) ) ? get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) : '';
 								$time         = get_post_meta( $event_id, 'event_expire_datetime', true ) ? strtotime( get_post_meta( $event_id, 'event_expire_datetime', true ) ) : strtotime( get_post_meta( $event_id, 'event_start_datetime', true ) );
 								$newformat    = date( 'Y-m-d H:i:s', $time );
 								if ( strtotime( current_time( 'Y-m-d H:i:s' ) ) < strtotime( $newformat ) ) {

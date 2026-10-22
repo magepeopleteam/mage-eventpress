@@ -63,7 +63,7 @@
 				<input type="hidden" name="action" value="mep_submit_rsvp" />
 				<input type="hidden" name="event_id" value="<?php echo esc_attr( $event_id ); ?>" />
 				<input type="hidden" name="rsvp_date" value="<?php echo esc_attr( $date ); ?>" />
-				<?php wp_nonce_field( 'mep_rsvp_nonce', 'nonce' ); ?>
+				<?php wp_nonce_field( 'mep_rsvp_nonce_' . $event_id, 'nonce' ); ?>
 
 				<div class="mep-rsvp-fields">
 					<?php if ( $use_attendee_form ) : ?>

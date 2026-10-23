@@ -6212,6 +6212,32 @@
         return ($row.find('[name="' + name + '"]').first().val() || '').toString().trim();
     }
 
+    // True when any ticket type or extra service has a non-zero price. A price
+    // counts as paid if it holds any digit 1-9, so "0", "0.00" and "" are free
+    // while "0,50" (comma decimal) is not mistaken for zero.
+    function hasPaidItems($root) {
+        const isPaid = function(value) {
+            return /[1-9]/.test((value || '').toString());
+        };
+        let paid = false;
+        getTicketRows($root).each(function() {
+            if (isPaid(rowFieldValue($(this), 'option_price_t[]'))) {
+                paid = true;
+                return false;
+            }
+        });
+        if (paid) {
+            return true;
+        }
+        $root.find('[name="option_price[]"]').each(function() {
+            if ($(this).closest('.mpwem_hidden_content').length === 0 && isPaid($(this).val())) {
+                paid = true;
+                return false;
+            }
+        });
+        return paid;
+    }
+
     function validateTicketsStep($root, options) {
         options = options || {};
         const focus = options.focus !== false;
@@ -6229,7 +6255,9 @@
         //    Skipped when saving ticket types from the modal so the user can
         //    build their ticket list first and configure payment later.
         //    The check still runs on Next Step navigation and Publish/Update.
-        if (!skipPaymentCheck) {
+        //    Free-only events need no gateway: both checkouts complete a zero
+        //    total order without payment.
+        if (!skipPaymentCheck && hasPaidItems($root)) {
             const $paymentWarning = $('.mpwem-payment-warning');
             if ($paymentWarning.length && $paymentWarning.is(':visible')) {
                 message = 'Please configure at least one payment method to sell tickets.';

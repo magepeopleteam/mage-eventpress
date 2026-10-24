@@ -4087,21 +4087,60 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-ticket-add__more-toggle {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
+    gap: 12px !important;
     width: 100% !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 10px !important;
-    padding: 11px 14px !important;
-    background: #fafafa !important;
+    border: 1px solid #e7eaee !important;
+    border-radius: 12px !important;
+    padding: 13px 14px !important;
+    background: #fff !important;
     cursor: pointer;
-    font-size: 13px !important;
-    font-weight: 650 !important;
-    color: #334155 !important;
     text-align: left !important;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.mpwem-ticket-add__more-toggle:hover {
+    background: #fafbfc !important;
+    border-color: #d8dbe0 !important;
+}
+
+.mpwem-ticket-add__more-icon {
+    flex: none !important;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: rgba(37, 99, 235, 0.12) !important;
+    background: var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12)) !important;
+    color: #2563eb !important;
+    color: var(--mpwem-primary, #2563eb) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.mpwem-ticket-add__more-text {
+    flex: 1 !important;
+    min-width: 0;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.mpwem-ticket-add__more-label {
+    font-size: 13.5px !important;
+    font-weight: 650 !important;
+    color: #1e293b !important;
+}
+
+.mpwem-ticket-add__more-sub {
+    font-size: 12px !important;
+    color: #94a3b8 !important;
+    margin-top: 2px;
+    line-height: 1.4;
 }
 
 .mpwem-ticket-add__chev {
-    transition: transform 0.15s ease;
+    flex: none !important;
+    color: #94a3b8 !important;
+    transition: transform 0.18s ease;
 }
 
 .mpwem-ticket-add__more-toggle.is-open .mpwem-ticket-add__chev {

@@ -1772,9 +1772,20 @@
             $pillInput.removeClass('is-active');
         });
 
-        const $moreToggle = $('<button type="button" class="mpwem-ticket-add__more-toggle"></button>')
-            .append($('<span></span>').text('More options — description, reserved & default quantity, ticket mode, sale period'))
-            .append($('<span class="mpwem-ticket-add__chev">▾</span>'));
+        const $moreToggle = $('<button type="button" class="mpwem-ticket-add__more-toggle" aria-expanded="false"></button>')
+            .append(
+                $('<span class="mpwem-ticket-add__more-icon" aria-hidden="true"></span>')
+                    .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.3"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="16" cy="17" r="2.3"/></svg>')
+            )
+            .append(
+                $('<span class="mpwem-ticket-add__more-text"></span>')
+                    .append($('<span class="mpwem-ticket-add__more-label"></span>').text('More options'))
+                    .append($('<span class="mpwem-ticket-add__more-sub"></span>').text('Description, reserved & default quantity, ticket mode, sale period'))
+            )
+            .append(
+                $('<span class="mpwem-ticket-add__chev"></span>')
+                    .html('<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>')
+            );
         $body.append($moreToggle);
 
         const $more = $('<div class="mpwem-ticket-add__more"></div>').hide();
@@ -1858,7 +1869,7 @@
         $moreToggle.on('click', function() {
             const willOpen = !$more.is(':visible');
             $more.slideToggle(150);
-            $moreToggle.toggleClass('is-open', willOpen);
+            $moreToggle.toggleClass('is-open', willOpen).attr('aria-expanded', willOpen ? 'true' : 'false');
         });
 
         $card.append($body);

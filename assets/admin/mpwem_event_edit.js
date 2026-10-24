@@ -3510,6 +3510,39 @@
             );
         }
 
+        const extraItems = items.filter(function(item) {
+            return !item.isPrimary;
+        });
+
+        if (extraItems.length) {
+            const $header = $('<div class="mpwem-ticket-summary__header"></div>')
+                .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Additional Start'))
+                .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Additional End'))
+                .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
+
+            context.$summaryList.append($header);
+
+            extraItems.forEach(function(item) {
+                context.$summaryList.append(
+                    $('<article class="mpwem-ticket-summary__item"></article>')
+                        .append(
+                            $('<div class="mpwem-ticket-summary__item-main"></div>')
+                                .append(
+                                    $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                        .append($('<h4></h4>').text(item.startLabel))
+                                )
+                        )
+                        .append(
+                            $('<div class="mpwem-ticket-summary__meta"></div>')
+                                .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(item.endLabel))
+                        )
+                        .append(buildDateSummaryActions($root, type, item.rowIndex, false))
+                );
+            });
+        }
+
+        // "+ Add Schedule" renders after every row (the primary one and
+        // any additional dates), not between them.
         if (config.secondaryAction) {
             context.$summaryList.append(
                 $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
@@ -3517,39 +3550,6 @@
                     .text(config.secondaryAction)
             );
         }
-
-        const extraItems = items.filter(function(item) {
-            return !item.isPrimary;
-        });
-
-        if (!extraItems.length) {
-            return;
-        }
-
-        const $header = $('<div class="mpwem-ticket-summary__header"></div>')
-            .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Additional Start'))
-            .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Additional End'))
-            .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
-
-        context.$summaryList.append($header);
-
-        extraItems.forEach(function(item) {
-            context.$summaryList.append(
-                $('<article class="mpwem-ticket-summary__item"></article>')
-                    .append(
-                        $('<div class="mpwem-ticket-summary__item-main"></div>')
-                            .append(
-                                $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                    .append($('<h4></h4>').text(item.startLabel))
-                            )
-                    )
-                    .append(
-                        $('<div class="mpwem-ticket-summary__meta"></div>')
-                            .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(item.endLabel))
-                    )
-                    .append(buildDateSummaryActions($root, type, item.rowIndex, false))
-            );
-        });
     }
 
     function getDateFieldNames(type) {

@@ -4580,15 +4580,25 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 .mpwem-repeat-dt-pill .mpwem-time-input {
     border: none !important;
     border-radius: 0 !important;
-    height: 42px !important;
+    height: 44px !important;
 }
 
+/* Wide enough that the visible date/time text never crowds the ✕ reset
+   button reserved in the shared .mpwem-date-input/.mpwem-time-input
+   padding (38px left for the calendar/clock icon, 44/76px right for
+   the reset button). */
 .mpwem-repeat-dt-pill .mpwem-date-input {
-    width: 190px !important;
+    width: 225px !important;
 }
 
 .mpwem-repeat-dt-pill .mpwem-time-input {
-    width: 150px !important;
+    width: 185px !important;
+}
+
+.mpwem-repeat-dt-pill .mpwem-date-input-wrap .remove_icon,
+.mpwem-repeat-dt-pill .mpwem-time-input-wrap .mpwem_time_reset {
+    opacity: 1;
+    visibility: visible;
 }
 
 .mpwem-repeat-interval-suffix {

@@ -9069,6 +9069,47 @@ body.mpwem-ticket-modal-open {
     font-size: 14px;
 }
 
+/* Repeated Event's own panel head: same icon-badge/eyebrow look as
+   the Single Event/Particular Dates summary toolbars, scoped to this
+   one section's head so those two panels' own (rarely shown) heads
+   are unaffected. */
+[data-collapse="#mep_everyday_event"] > ._layout_default_xs_mp_zero > .mpwem-date-card__head {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff !important;
+    border: 1px solid #e7eaf0;
+    border-bottom: 1px solid #e7eaf0 !important;
+}
+
+[data-collapse="#mep_everyday_event"] .mpwem-date-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: var(--mpwem-primary, #2563eb);
+}
+
+[data-collapse="#mep_everyday_event"] .mpwem-date-card__intro {
+    min-width: 0;
+}
+
+[data-collapse="#mep_everyday_event"] .mpwem-date-card__eyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #9aa5b4;
+}
+
+[data-collapse="#mep_everyday_event"] .mpwem-date-card__head h4 {
+    margin-top: 2px !important;
+}
+
 .mpwem-date-step ._padding_bt,
 .mpwem-date-step section:not(.bg-light) {
     padding: 18px 22px !important;

@@ -6699,6 +6699,23 @@
         $repeatSection.find('section.bg-light').hide();
         $repeatSection.find('.mep-special-datetime section.bg-light').hide();
 
+        /* Repeated Event has no separate collapsed summary card (its
+           real fields render inline, see initializeParticularDateModal),
+           so its own panel head is the only header this section shows -
+           give it the same icon-badge/eyebrow look the Single Event and
+           Particular Dates summary toolbars already have. */
+        const $head = $repeatSection.find('> ._layout_default_xs_mp_zero > .mpwem-date-card__head').first();
+        if ($head.length && !$head.data('mpwemIconHeadEnhanced')) {
+            const $icon = $('<span class="mpwem-date-card__icon" aria-hidden="true"></span>')
+                .html('<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+            const $eyebrow = $('<span class="mpwem-date-card__eyebrow"></span>').text('Repeated Event');
+            const $intro = $('<div class="mpwem-date-card__intro"></div>').append($eyebrow);
+
+            $head.children().appendTo($intro);
+            $head.empty().append($icon, $intro);
+            $head.data('mpwemIconHeadEnhanced', true);
+        }
+
         $repeatSection.find('> ._layout_default_xs_mp_zero > ._padding_bt').each(function() {
             const $row = $(this);
             const $fieldWrap = $row.find('> ._justify_between_align_center_wrap').first();

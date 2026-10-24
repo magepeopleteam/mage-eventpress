@@ -1749,14 +1749,31 @@
         }
 
         const qtyTypeVal = ($qtyTypeSelect.val() || 'inputbox').toString();
-        const $pillInput = $('<button type="button" class="mpwem-ticket-add__pill"></button>').text('Input Box').toggleClass('is-active', qtyTypeVal === 'inputbox');
-        const $pillDropdown = $('<button type="button" class="mpwem-ticket-add__pill"></button>').text('Dropdown List').toggleClass('is-active', qtyTypeVal === 'dropdown');
+
+        const $qtyIndicator = $('<div class="mpwem-ticket-add__pill-indicator"></div>');
+        const $pillInput = $('<button type="button" class="mpwem-ticket-add__pill"></button>')
+            .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2.5"/><path d="M7 12h6"/></svg><span>Input Box</span>')
+            .toggleClass('is-active', qtyTypeVal === 'inputbox');
+        const $pillDropdown = $('<button type="button" class="mpwem-ticket-add__pill"></button>')
+            .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2.5"/><path d="M15 10l2 2-2 2"/></svg><span>Dropdown List</span>')
+            .toggleClass('is-active', qtyTypeVal === 'dropdown');
+        const $qtyCaption = $('<p class="mpwem-ticket-add__pill-caption"></p>');
+
+        function updateQtyControl(type) {
+            $qtyIndicator.css('left', type === 'dropdown' ? 'calc(50% + 1px)' : '3px');
+            $qtyCaption.text(type === 'dropdown'
+                ? 'Attendees pick a quantity from a dropdown list.'
+                : 'Attendees type the number of tickets they want.');
+        }
+        updateQtyControl(qtyTypeVal);
+
         $body.append(
             $('<div class="mpwem-ticket-add__field"></div>')
                 .append($('<label></label>').text('Quantity shown as'))
                 .append(
-                    $('<div class="mpwem-ticket-add__pills"></div>').append($pillInput).append($pillDropdown)
+                    $('<div class="mpwem-ticket-add__pills"></div>').append($qtyIndicator).append($pillInput).append($pillDropdown)
                 )
+                .append($qtyCaption)
         );
 
         $pillInput.on('click', function() {
@@ -1764,12 +1781,14 @@
             $qtyTypeSelect.trigger('change');
             $pillInput.addClass('is-active');
             $pillDropdown.removeClass('is-active');
+            updateQtyControl('inputbox');
         });
         $pillDropdown.on('click', function() {
             syncRealFieldValue($qtyTypeSelect, 'dropdown');
             $qtyTypeSelect.trigger('change');
             $pillDropdown.addClass('is-active');
             $pillInput.removeClass('is-active');
+            updateQtyControl('dropdown');
         });
 
         const $moreToggle = $('<button type="button" class="mpwem-ticket-add__more-toggle" aria-expanded="false"></button>')

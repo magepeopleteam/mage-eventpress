@@ -4059,14 +4059,32 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 .mpwem-ticket-add__pills {
+    position: relative;
     display: inline-flex !important;
     padding: 3px !important;
     gap: 2px !important;
     background: #f1f5f9 !important;
-    border-radius: 10px !important;
+    border-radius: 11px !important;
+}
+
+.mpwem-ticket-add__pill-indicator {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    width: calc(50% - 4px);
+    left: 3px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+    transition: left 0.2s cubic-bezier(.4, 0, .2, 1);
 }
 
 .mpwem-ticket-add__pill {
+    position: relative;
+    z-index: 1;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
     padding: 7px 16px !important;
     border-radius: 8px !important;
     border: none !important;
@@ -4075,13 +4093,22 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     font-size: 12.5px !important;
     font-weight: 600 !important;
     cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease;
+}
+
+.mpwem-ticket-add__pill svg {
+    flex: none;
 }
 
 .mpwem-ticket-add__pill.is-active {
-    background: #fff !important;
     color: #1e293b !important;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.mpwem-ticket-add__pill-caption {
+    margin: 2px 0 0 !important;
+    font-size: 12px !important;
+    color: #94a3b8 !important;
+    line-height: 1.5;
 }
 
 .mpwem-ticket-add__more-toggle {

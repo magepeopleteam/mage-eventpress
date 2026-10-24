@@ -9175,8 +9175,8 @@ div.mpwem-date-type-option__copy strong {
 
 [data-collapse="#mep_everyday_event"] input[name="mep_repeated_periods"] {
     justify-self: end;
-    width: 250px !important;
-    max-width: 250px !important;
+    width: 72px !important;
+    max-width: 72px !important;
     height: 44px !important;
     padding: 10px 12px !important;
     border: 1px solid #d9e2ef !important;

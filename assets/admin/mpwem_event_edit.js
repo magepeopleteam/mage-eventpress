@@ -3408,29 +3408,36 @@
         if (type === 'yes') {
             const $rows = getParticularDateRows($root);
 
-            context.$summaryList.append(
-                $('<div class="mpwem-ticket-summary__header"></div>')
-                    .append($('<span class="mpwem-ticket-summary__header-ticket">Start Date</span>'))
-                    .append($('<span class="mpwem-ticket-summary__header-capacity">End Date</span>'))
-                    .append($('<span class="mpwem-ticket-summary__header-action">Action</span>'))
-            );
-
             const primaryDateVal = ($modalMount.find('input[name="event_start_date"]').first().val() || '').toString().trim();
             const primaryTimeVal = ($modalMount.find('input[name="event_start_time"]').first().val() || '').toString().trim();
             const primaryEndDateVal = ($modalMount.find('input[name="event_end_date"]').first().val() || '').toString().trim();
             const primaryEndTimeVal = ($modalMount.find('input[name="event_end_time"]').first().val() || '').toString().trim();
 
             if (!primaryDateVal && !$rows.length) {
+                // No header row here either - nothing to label yet.
                 context.$summaryList.append(
-                    $('<div class="mpwem-ticket-summary__empty"></div>')
+                    $('<div class="mpwem-ticket-summary__empty mpwem-ticket-summary__empty--centered"></div>')
+                        .append(
+                            $('<span class="mpwem-ticket-summary__empty-icon" aria-hidden="true"></span>')
+                                .html('<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>')
+                        )
                         .append($('<h4></h4>').text('No dates added yet'))
                         .append($('<p></p>').text('Add specific dates and times for this event to run on.'))
-                        .append($('<button type="button" class="button button-primary"></button>')
-                            .attr('data-mpwem-date-modal-open', 'new')
-                            .text('Create First Date'))
+                        .append(
+                            $('<button type="button" class="button button-primary"></button>')
+                                .attr('data-mpwem-date-modal-open', 'new')
+                                .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create First Date')
+                        )
                 );
                 return;
             }
+
+            context.$summaryList.append(
+                $('<div class="mpwem-ticket-summary__header"></div>')
+                    .append($('<span class="mpwem-ticket-summary__header-ticket">Start Date</span>'))
+                    .append($('<span class="mpwem-ticket-summary__header-capacity">End Date</span>'))
+                    .append($('<span class="mpwem-ticket-summary__header-action">Action</span>'))
+            );
 
             if (primaryDateVal) {
                 const primaryDisplayStart = buildScheduleDateTimeLabel(primaryDateVal, primaryTimeVal) || 'Start date not set';

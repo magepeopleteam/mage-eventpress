@@ -6687,7 +6687,7 @@
 
         enhanceDateFields($repeatSection);
         enhanceCustomCalendar($repeatSection);
-        enhanceRepeatedScheduleLayout($repeatSection);
+        enhanceRepeatedScheduleLayout($context);
         enhanceRepeatRangeLayout($context);
         enhanceRepeatSkipSection($context);
         syncRepeatedDateConstraints($repeatSection);

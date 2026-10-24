@@ -3491,24 +3491,40 @@
         const items = collectSingleEventSummaryItems($modalMount);
         const primaryItem = items.find(function(item) { return item.isPrimary; });
 
-        if (primaryItem) {
+        if (!primaryItem) {
+            // Matches the empty state Particular Dates/Tickets/Extra
+            // Services already use - without it, this step showed
+            // nothing but a bare "+ Add Schedule" button with no
+            // explanation of what was missing.
             context.$summaryList.append(
-                $('<article class="mpwem-ticket-summary__item"></article>')
-                    .attr('data-date-row-index', -1)
+                $('<div class="mpwem-ticket-summary__empty"></div>')
+                    .append($('<h4></h4>').text('No schedule set yet'))
+                    .append($('<p></p>').text('Add a start and end date & time so people know when this event happens.'))
                     .append(
-                        $('<div class="mpwem-ticket-summary__item-main"></div>')
-                            .append(
-                                $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                    .append($('<h4></h4>').text(primaryItem.startLabel))
-                            )
+                        $('<button type="button" class="button button-primary"></button>')
+                            .attr('data-mpwem-date-modal-open', 'new')
+                            .text('Add Schedule')
                     )
-                    .append(
-                        $('<div class="mpwem-ticket-summary__meta"></div>')
-                            .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryItem.endLabel))
-                    )
-                    .append(buildDateSummaryActions($root, type, -1, true))
             );
+            return;
         }
+
+        context.$summaryList.append(
+            $('<article class="mpwem-ticket-summary__item"></article>')
+                .attr('data-date-row-index', -1)
+                .append(
+                    $('<div class="mpwem-ticket-summary__item-main"></div>')
+                        .append(
+                            $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                .append($('<h4></h4>').text(primaryItem.startLabel))
+                        )
+                )
+                .append(
+                    $('<div class="mpwem-ticket-summary__meta"></div>')
+                        .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryItem.endLabel))
+                )
+                .append(buildDateSummaryActions($root, type, -1, true))
+        );
 
         const extraItems = items.filter(function(item) {
             return !item.isPrimary;

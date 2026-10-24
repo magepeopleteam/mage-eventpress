@@ -9732,6 +9732,10 @@ body.mpwem-drag-scroll-active {
     justify-self: auto;
 }
 
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem-date-input-wrap::before {
+    display: none;
+}
+
 .mpwem-repeat-skip-body .mpwem-ticket-off-dates-field input.mpwem-date-input {
     border: none !important;
     padding: 0 !important;
@@ -9771,10 +9775,13 @@ body.mpwem-drag-scroll-active {
     position: relative;
     margin: 0 !important;
     display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
     padding: 0 !important;
     background: #fff;
     border: 1.5px solid #d9dbd9;

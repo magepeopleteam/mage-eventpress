@@ -4685,6 +4685,27 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-repeat-skip-toggle {
     justify-content: space-between !important;
+    border-radius: 14px !important;
+    border-color: #e7eaf0 !important;
+    background: #fafbfd !important;
+}
+
+.mpwem-repeat-skip-toggle:hover,
+.mpwem-repeat-skip-toggle.is-open {
+    background: #f4f6fb !important;
+    border-color: #dfe3ee !important;
+}
+
+.mpwem-repeat-skip-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px #f0eefd;
+    border-color: #5648e0 !important;
+}
+
+.mpwem-repeat-skip-body {
+    border-radius: 16px !important;
+    border-color: #e7eaf0 !important;
+    background: #fcfcfd !important;
 }
 
 .mpwem-repeat-skip-toggle__left {

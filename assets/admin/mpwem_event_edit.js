@@ -3493,11 +3493,18 @@
            place those fields are actually editable. */
         const items = collectSingleEventSummaryItems($modalMount);
         const primaryItem = items.find(function(item) { return item.isPrimary; });
+        const extraItems = items.filter(function(item) {
+            return !item.isPrimary;
+        });
 
-        if (!primaryItem) {
+        if (!primaryItem && !extraItems.length) {
             // Without this, the step showed nothing but a bare
             // "+ Add Schedule" button with no explanation of what was
-            // missing.
+            // missing. Only shown when there is truly nothing yet -
+            // "+ Add Schedule" adds a row via the real add-item button
+            // (see openInlineDateAdd), which can land as an additional
+            // date even while the primary stays unset, same as
+            // Particular Dates' "Create First Date" already allows.
             context.$summaryList.append(
                 $('<div class="mpwem-ticket-summary__empty mpwem-ticket-summary__empty--centered"></div>')
                     .append(
@@ -3515,26 +3522,24 @@
             return;
         }
 
-        context.$summaryList.append(
-            $('<article class="mpwem-ticket-summary__item"></article>')
-                .attr('data-date-row-index', -1)
-                .append(
-                    $('<div class="mpwem-ticket-summary__item-main"></div>')
-                        .append(
-                            $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                .append($('<h4></h4>').text(primaryItem.startLabel))
-                        )
-                )
-                .append(
-                    $('<div class="mpwem-ticket-summary__meta"></div>')
-                        .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryItem.endLabel))
-                )
-                .append(buildDateSummaryActions($root, type, -1, true))
-        );
-
-        const extraItems = items.filter(function(item) {
-            return !item.isPrimary;
-        });
+        if (primaryItem) {
+            context.$summaryList.append(
+                $('<article class="mpwem-ticket-summary__item"></article>')
+                    .attr('data-date-row-index', -1)
+                    .append(
+                        $('<div class="mpwem-ticket-summary__item-main"></div>')
+                            .append(
+                                $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                    .append($('<h4></h4>').text(primaryItem.startLabel))
+                            )
+                    )
+                    .append(
+                        $('<div class="mpwem-ticket-summary__meta"></div>')
+                            .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryItem.endLabel))
+                    )
+                    .append(buildDateSummaryActions($root, type, -1, true))
+            );
+        }
 
         if (extraItems.length) {
             const $header = $('<div class="mpwem-ticket-summary__header"></div>')

@@ -6635,8 +6635,11 @@
 
         const labels = {
             '#mep_normal_event': 'Single schedule',
-            '#mep_particular_event': 'Specific date schedule',
-            '#mep_everyday_event': 'Repeated schedule'
+            '#mep_particular_event': 'Specific date schedule'
+            /* '#mep_everyday_event' deliberately excluded: its own panel
+               head now has an icon-badge "Repeated Event" eyebrow (see
+               enhanceRepeatedScheduleLayout), so this pill said the same
+               thing a second time right above it. */
         };
 
         $.each(labels, function(selector, label) {

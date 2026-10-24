@@ -4401,9 +4401,10 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-repeat-row {
     padding: 16px 18px !important;
-    border: 1px solid #e2e8f0 !important;
+    border: 1px solid #e7eaf0 !important;
     border-radius: 18px !important;
     background: rgba(255, 255, 255, 0.96) !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
 .mpwem-repeat-row .label-text {
@@ -4433,7 +4434,15 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 .mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr::after {
-    content: "Use 1 for daily repetition or a higher number to skip days.";
+    content: "1 = every day, 2 = every other day...";
+}
+
+.mpwem-repeat-row--start ._justify_between_align_center_wrap>label:first-child::after {
+    content: "First occurrence begins here";
+}
+
+.mpwem-repeat-row--end ._justify_between_align_center_wrap>label:first-child::after {
+    content: "No new occurrences after this date";
 }
 
 .mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr {
@@ -4449,7 +4458,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 .mpwem-repeat-row--offdays ._justify_between_align_center_wrap>label:first-child::after {
-    content: "Pick weekdays that should always stay unavailable.";
+    content: "Tap a day to skip it every week";
 }
 
 .mpwem-repeat-row--offdates .fdColumn .label-text {
@@ -4543,12 +4552,18 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     display: inline-flex !important;
     align-items: stretch;
     border: 1px solid #d9e2ef;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #fff;
     overflow: hidden;
     width: fit-content;
     max-width: 100%;
     flex-shrink: 0;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.mpwem-repeat-dt-pill:hover {
+    border-color: #cfd4e6;
+    box-shadow: 0 2px 10px -4px rgba(30, 27, 75, 0.14);
 }
 
 .mpwem-repeat-dt-pill > *:first-child {
@@ -4574,6 +4589,64 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-repeat-dt-pill .mpwem-time-input {
     width: 150px !important;
+}
+
+.mpwem-repeat-interval-suffix {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* Plain-language summary of what the repeat rule computes to. Sits as a
+   grid child of .mpwem-repeat-schedule-shell, which already spaces its
+   children via `gap` - no extra margin needed here. */
+.mpwem-repeat-summary {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px solid #e1ddfb;
+    border-radius: 14px;
+    background: #f0eefd;
+    color: #352f8a;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.55;
+}
+
+.mpwem-repeat-summary svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #5648e0;
+}
+
+.mpwem-repeat-skip-toggle {
+    justify-content: space-between !important;
+}
+
+.mpwem-repeat-skip-toggle__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.mpwem-repeat-skip-toggle__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: #f0eefd;
+    color: #5648e0;
+    flex-shrink: 0;
+}
+
+.mpwem-repeat-skip-toggle__count {
+    color: #8b8fa3;
+    font-weight: 600;
 }
 
 @media (max-width: 640px) {
@@ -9786,6 +9859,7 @@ body.mpwem-drag-scroll-active {
     background: #fff;
     border: 1.5px solid #d9dbd9;
     border-radius: 999px;
+    transition: border-color .14s ease, background .14s ease, box-shadow .14s ease;
 }
 
 .mpwem-offday-option input {
@@ -9832,6 +9906,12 @@ body.mpwem-drag-scroll-active {
     background: var(--mpwem-primary, #2563eb) !important;
     border-color: #2563eb !important;
     border-color: var(--mpwem-primary, #2563eb) !important;
+    box-shadow: 0 6px 14px -6px rgba(37, 99, 235, 0.55);
+    box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--mpwem-primary, #2563eb) 55%, transparent);
+}
+
+.mpwem-offday-option:not(:has(input:checked)):hover {
+    border-color: #cfd4e6;
 }
 
 .mpwem-offday-option input:checked~.mpwem-offday-chip {

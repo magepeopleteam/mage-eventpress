@@ -6657,15 +6657,24 @@
         });
     }
 
+    function setMpwemRowLabelText($mr, text) {
+        if (!$mr || !$mr.length) return;
+        const $tip = $mr.children('.mpwem-info-tip').first().detach();
+        $mr.empty().text(text);
+        if ($tip.length) {
+            $mr.append($tip);
+        }
+    }
+
     function enhanceRepeatRangeLayout($panel) {
         const $repeatSection = $panel.find('[data-collapse="#mep_everyday_event"]').first();
         if (!$repeatSection.length || $repeatSection.data('mpwemRangeLayoutEnhanced')) {
             return;
         }
 
-        // Start/End keep their original "Start Date & Time" / "End Date & Time"
-        // row and field names - just merge each row's date + time inputs into
-        // one bordered, single-line pill instead of two separate boxed inputs.
+        // Start/End: merge each row's date + time inputs into one bordered,
+        // single-line pill instead of two separate boxed inputs, and shorten
+        // the row labels to read as a sentence with the schedule below it.
         ['start', 'end'].forEach(function(kind) {
             const $row = $repeatSection.find('.mpwem-repeat-row--' + kind).first();
             if (!$row.length) return;
@@ -6675,9 +6684,86 @@
             if ($dFlex.length) {
                 $dFlex.addClass('mpwem-repeat-dt-pill');
             }
+
+            const $mr = $fieldWrap.find('> label:first-child > ._mr').first();
+            setMpwemRowLabelText($mr, kind === 'start' ? 'Starts' : 'Ends');
         });
 
+        const $intervalRow = $repeatSection.find('.mpwem-repeat-row--interval').first();
+        if ($intervalRow.length) {
+            const $mr = $intervalRow.find('> label._justify_between_align_center_wrap > ._mr').first();
+            setMpwemRowLabelText($mr, 'Repeat every');
+
+            const $intervalInput = $intervalRow.find('input[name="mep_repeated_periods"]').first();
+            if ($intervalInput.length && !$intervalInput.next('.mpwem-repeat-interval-suffix').length) {
+                $intervalInput.after($('<span class="mpwem-repeat-interval-suffix"></span>').text('day(s)'));
+            }
+        }
+
         $repeatSection.data('mpwemRangeLayoutEnhanced', true);
+    }
+
+    function buildRepeatSummaryText($repeatSection) {
+        const startDateText = $.trim($repeatSection.find('#event_start_date_everyday').val() || '');
+        const endDateText = $.trim($repeatSection.find('#event_end_date_everyday').val() || '');
+        const interval = parseInt($repeatSection.find('input[name="mep_repeated_periods"]').val(), 10) || 1;
+        const freqText = interval === 1 ? 'every day' : 'every ' + interval + ' days';
+
+        let text = 'Repeats ' + freqText;
+        if (startDateText) {
+            text += ' from ' + startDateText;
+            if (endDateText) {
+                text += ' to ' + endDateText;
+            }
+        }
+
+        const skippedDayNames = [];
+        $repeatSection.find('.mpwem-repeat-row--offdays .mpwem-offday-option').each(function() {
+            const $opt = $(this);
+            if (!$opt.find('input[type="checkbox"]').is(':checked')) return;
+            const full = $opt.data('mpwemOffDayFullLabel') || $opt.attr('title');
+            if (full) skippedDayNames.push(full);
+        });
+        if (skippedDayNames.length) {
+            text += ', skipping ' + skippedDayNames.join(', ');
+        }
+
+        return text + '.';
+    }
+
+    function refreshRepeatSummaryBanner($repeatSection) {
+        let $banner = $repeatSection.find('.mpwem-repeat-summary').first();
+        if (!$banner.length) {
+            $banner = $(
+                '<div class="mpwem-repeat-summary">' +
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"/></svg>' +
+                    '<span class="mpwem-repeat-summary__text"></span>' +
+                '</div>'
+            );
+            const $head = $repeatSection.find('> ._layout_default_xs_mp_zero > ._bg_light_padding').first();
+            if ($head.length) {
+                $head.after($banner);
+            } else {
+                $repeatSection.find('> ._layout_default_xs_mp_zero').first().prepend($banner);
+            }
+        }
+        $banner.find('.mpwem-repeat-summary__text').text(buildRepeatSummaryText($repeatSection));
+    }
+
+    function enhanceRepeatSummary($repeatSection) {
+        refreshRepeatSummaryBanner($repeatSection);
+
+        if ($repeatSection.data('mpwemSummaryBound')) return;
+
+        $repeatSection.on(
+            'change',
+            'input[name="event_start_date_everyday"], input[name="event_end_date_everyday"], input[name="mep_repeated_periods"], .mpwem-repeat-row--offdays input[type="checkbox"]',
+            function() {
+                refreshRepeatSummaryBanner($repeatSection);
+            }
+        );
+
+        $repeatSection.data('mpwemSummaryBound', true);
     }
 
     function refreshRepeatedEndDateFieldUI($scope) {
@@ -6690,6 +6776,7 @@
         enhanceRepeatedScheduleLayout($context);
         enhanceRepeatRangeLayout($context);
         enhanceRepeatSkipSection($context);
+        enhanceRepeatSummary($repeatSection);
         syncRepeatedDateConstraints($repeatSection);
     }
 
@@ -6736,9 +6823,25 @@
         });
     }
 
+    function countRepeatSkipExceptions($repeatSection) {
+        const offDaysCount = $repeatSection.find('.mpwem-repeat-row--offdays input[type="checkbox"]:checked').length;
+        const offDatesCount = $repeatSection.find('.mpwem-repeat-row--offdates .mpwem_item_insert').children().length;
+        return offDaysCount + offDatesCount;
+    }
+
+    function refreshRepeatSkipToggleCount($repeatSection) {
+        const $count = $repeatSection.find('.mpwem-repeat-skip-toggle__count');
+        if (!$count.length) return;
+        const total = countRepeatSkipExceptions($repeatSection);
+        $count.text(total ? ' · ' + total + ' skipped' : '');
+    }
+
     function enhanceRepeatSkipSection($panel) {
         const $repeatSection = $panel.find('[data-collapse="#mep_everyday_event"]').first();
-        if (!$repeatSection.length || $repeatSection.data('mpwemSkipSectionEnhanced')) {
+        if (!$repeatSection.length) return;
+
+        if ($repeatSection.data('mpwemSkipSectionEnhanced')) {
+            refreshRepeatSkipToggleCount($repeatSection);
             return;
         }
 
@@ -6748,9 +6851,19 @@
             return;
         }
 
+        setMpwemRowLabelText($offDaysRow.find('> ._justify_between_align_center_wrap > label > ._mr').first(), 'Weekly off days');
+        setMpwemRowLabelText($offDatesRow.find('.fdColumn label > span').first(), 'One-off dates');
+
         const $anchor = $offDaysRow.length ? $offDaysRow : $offDatesRow;
+        const $toggleLeft = $('<span class="mpwem-repeat-skip-toggle__left"></span>')
+            .append(
+                $('<span class="mpwem-repeat-skip-toggle__icon"></span>')
+                    .html('<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>')
+            )
+            .append($('<span></span>').text('Skip specific days or dates'))
+            .append($('<span class="mpwem-repeat-skip-toggle__count"></span>'));
         const $toggle = $('<button type="button" class="mpwem-ticket-add__more-toggle mpwem-repeat-skip-toggle" aria-expanded="false"></button>')
-            .append($('<span></span>').text('Skip days & dates'))
+            .append($toggleLeft)
             .append(
                 $('<span class="mpwem-ticket-add__chev"></span>')
                     .html('<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>')
@@ -6770,6 +6883,18 @@
             $body.slideToggle(150);
             $toggle.toggleClass('is-open', willOpen).attr('aria-expanded', willOpen ? 'true' : 'false');
         });
+
+        $body.on('change', 'input[type="checkbox"]', function() {
+            refreshRepeatSkipToggleCount($repeatSection);
+        });
+        const $offDatesInsert = $offDatesRow.find('.mpwem_item_insert').first();
+        if ($offDatesInsert.length && window.MutationObserver) {
+            new MutationObserver(function() {
+                refreshRepeatSkipToggleCount($repeatSection);
+            }).observe($offDatesInsert[0], { childList: true });
+        }
+
+        refreshRepeatSkipToggleCount($repeatSection);
 
         $repeatSection.data('mpwemSkipSectionEnhanced', true);
     }

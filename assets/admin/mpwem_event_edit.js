@@ -3614,7 +3614,9 @@
         const visibleDate = parsedDate ? formatVisibleDate(parsedDate) : '';
 
         const $dateHidden = $('<input type="hidden">').val(isoDate);
-        const $dateVisible = $('<input type="text" class="formControl mpwem-date-input" autocomplete="off">').val(visibleDate);
+        const $dateVisible = $('<input type="text" class="formControl mpwem-date-input" autocomplete="off">')
+            .val(visibleDate)
+            .attr('placeholder', formatVisibleDate(new Date()));
         const $dateWrap = $('<label class="mpwem-date-input-wrap"></label>')
             .append($dateHidden, $dateVisible)
             .append($('<span class="fas fa-times remove_icon mpwem_date_reset" aria-hidden="true" title="Clear date"></span>'));
@@ -3623,7 +3625,7 @@
             syncRealFieldValue($realDateInput, $(this).val());
         });
 
-        const $timeInput = $('<input type="time" class="formControl">').val(($realTimeInput.val() || '').toString());
+        const $timeInput = $('<input type="time" class="formControl" placeholder="Select time">').val(($realTimeInput.val() || '').toString());
         const $timeWrap = $('<label class="mpwem-time-input-wrap"></label>')
             .append($timeInput)
             .append($('<span class="fas fa-times remove_icon mpwem_time_reset" aria-hidden="true" title="Clear time"></span>'));

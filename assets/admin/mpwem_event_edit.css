@@ -3325,6 +3325,12 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     cursor: pointer;
 }
 
+#mpwem_particular_date_summary .mpwem-ticket-summary__header,
+#mpwem_particular_date_summary .mpwem-ticket-summary__item {
+    grid-template-columns: minmax(0, 1fr) minmax(100px, 0.5fr) minmax(90px, 0.4fr);
+    column-gap: 16px;
+}
+
 .mpwem-ticket-summary__item:nth-child(even) {
     background: #fafcff;
     border-color: #dbe5f2;

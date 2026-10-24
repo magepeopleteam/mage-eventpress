@@ -3336,6 +3336,37 @@
         }
     }
 
+    function buildDateSummaryActions($root, type, rowIndex, isPrimary) {
+        const $wrap = $('<div class="mpwem-ticket-summary__item-actions"></div>');
+
+        const $editBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--edit" title="Edit" aria-label="Edit date"></button>')
+            .html(TICKET_SUMMARY_EDIT_ICON);
+        $editBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openInlineDateEdit($root, type, isPrimary ? -1 : rowIndex);
+        });
+        $wrap.append($editBtn);
+
+        if (!isPrimary) {
+            const $deleteBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--delete" title="Delete" aria-label="Delete date"></button>')
+                .html(TICKET_SUMMARY_DELETE_ICON);
+            $deleteBtn.on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const $rows = getActiveDateModalRows($root, type);
+                const $row = $rows.eq(rowIndex);
+                const $realRemove = $row.find('.mpwem_item_remove').first();
+                if ($realRemove.length) {
+                    $realRemove.trigger('click');
+                }
+            });
+            $wrap.append($deleteBtn);
+        }
+
+        return $wrap;
+    }
+
     function renderParticularDateSummary($root) {
         const context = getParticularDateModalContext($root);
         if (!context.$summaryList.length) {
@@ -3355,6 +3386,7 @@
                 $('<div class="mpwem-ticket-summary__header"></div>')
                     .append($('<span class="mpwem-ticket-summary__header-ticket">Start Date</span>'))
                     .append($('<span class="mpwem-ticket-summary__header-capacity">End Date</span>'))
+                    .append($('<span class="mpwem-ticket-summary__header-action">Action</span>'))
             );
 
             const primaryDateVal = ($modalMount.find('input[name="event_start_date"]').first().val() || '').toString().trim();
@@ -3377,7 +3409,7 @@
             if (primaryDateVal) {
                 const primaryDisplayStart = buildScheduleDateTimeLabel(primaryDateVal, primaryTimeVal) || 'Start date not set';
                 const primaryDisplayEnd = buildScheduleDateTimeLabel(primaryEndDateVal, primaryEndTimeVal) || 'End date not set';
-                
+
                 context.$summaryList.append(
                     $('<article class="mpwem-ticket-summary__item"></article>')
                         .attr('data-date-row-index', -1)
@@ -3392,6 +3424,7 @@
                             $('<div class="mpwem-ticket-summary__meta"></div>')
                                 .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryDisplayEnd))
                         )
+                        .append(buildDateSummaryActions($root, type, -1, true))
                 );
             }
 
@@ -3419,6 +3452,7 @@
                             $('<div class="mpwem-ticket-summary__meta"></div>')
                                 .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(displayEnd))
                         )
+                        .append(buildDateSummaryActions($root, type, index, false))
                 );
             });
             return;
@@ -3465,6 +3499,10 @@
 
         $header.append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text(type === 'no' ? 'End Date' : 'Details'));
 
+        if (type === 'no') {
+            $header.append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
+        }
+
         context.$summaryList.append($header);
 
         summaryItems.forEach(function(item) {
@@ -3482,7 +3520,8 @@
                     .append(
                         $('<div class="mpwem-ticket-summary__meta"></div>')
                             .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(item.endLabel))
-                    );
+                    )
+                    .append(buildDateSummaryActions($root, type, item.rowIndex, !!item.isPrimary));
             } else {
                 $item.append(
                     $('<div class="mpwem-ticket-summary__item-main"></div>')
@@ -3502,6 +3541,261 @@
 
             context.$summaryList.append($item);
         });
+    }
+
+    function getDateFieldNames(type) {
+        return type === 'no'
+            ? {
+                primary: { start: 'event_start_date_normal', startTime: 'event_start_time_normal', end: 'event_end_date_normal', endTime: 'event_end_time_normal' },
+                row: { start: 'event_more_start_date_normal[]', startTime: 'event_more_start_time_normal[]', end: 'event_more_end_date_normal[]', endTime: 'event_more_end_time_normal[]' }
+            }
+            : {
+                primary: { start: 'event_start_date', startTime: 'event_start_time', end: 'event_end_date', endTime: 'event_end_time' },
+                row: { start: 'event_more_start_date[]', startTime: 'event_more_start_time[]', end: 'event_more_end_date[]', endTime: 'event_more_end_time[]' }
+            };
+    }
+
+    function getInlineDateAddCard($root) {
+        const context = getParticularDateModalContext($root);
+        if (!context.$summary.length) {
+            return $();
+        }
+
+        let $card = context.$summary.next('#mpwem_particular_date_summary_add');
+        if (!$card.length) {
+            $card = $('<div class="mpwem-ticket-add" id="mpwem_particular_date_summary_add"></div>');
+            context.$summary.after($card);
+        }
+
+        return $card;
+    }
+
+    function closeInlineDateAdd($root, opts) {
+        opts = opts || {};
+        const $card = getInlineDateAddCard($root);
+        const $scope = $card.data('mpwemInlineDateScope');
+        const $row = $card.data('mpwemInlineDateRow');
+        const mode = $card.data('mpwemInlineDateMode') || 'add';
+        const original = $card.data('mpwemInlineDateOriginal');
+        const fieldNames = $card.data('mpwemInlineDateFieldNames');
+
+        if (!opts.save) {
+            if (mode === 'add') {
+                if ($row && $row.length && $row.closest('body').length) {
+                    $row.remove();
+                }
+            } else if (original && fieldNames && $scope && $scope.length) {
+                Object.keys(fieldNames).forEach(function(key) {
+                    const $field = $scope.find('[name="' + fieldNames[key] + '"]').first();
+                    if ($field.length && Object.prototype.hasOwnProperty.call(original, key)) {
+                        syncRealFieldValue($field, original[key]);
+                    }
+                });
+            }
+        }
+
+        $card.removeData('mpwemInlineDateScope mpwemInlineDateRow mpwemInlineDateMode mpwemInlineDateOriginal mpwemInlineDateFieldNames').removeClass('is-open').empty();
+
+        initializeParticularDateTableDragScroll($root);
+        syncDateWiseGlobalQtyColumns($root);
+        syncParticularDateModalFooter($root);
+        storeSavedParticularDateSummarySnapshot($root);
+        renderParticularDateSummary($root);
+    }
+
+    function renderInlineDateAddForm($root, opts) {
+        const type = opts.type;
+        const mode = opts.mode;
+        const $scope = opts.scope;
+        const fieldNames = opts.fieldNames;
+        const isEdit = mode !== 'add';
+        const $card = getInlineDateAddCard($root);
+        $card.empty().addClass('is-open');
+
+        const $startDateInput = $scope.find('[name="' + fieldNames.start + '"]').first();
+        const $startTimeInput = $scope.find('[name="' + fieldNames.startTime + '"]').first();
+        const $endDateInput = $scope.find('[name="' + fieldNames.end + '"]').first();
+        const $endTimeInput = $scope.find('[name="' + fieldNames.endTime + '"]').first();
+
+        const typeLabel = type === 'no' ? 'Event Date' : 'Particular Date';
+        const headIcon = isEdit
+            ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+
+        $card.append(
+            $('<div class="mpwem-ticket-add__head"></div>')
+                .append($('<span class="mpwem-ticket-add__head-icon"></span>').html(headIcon))
+                .append(
+                    $('<div class="mpwem-ticket-add__head-copy"></div>')
+                        .append(
+                            $('<div class="mpwem-ticket-add__head-title"></div>')
+                                .append($('<h3></h3>').text((isEdit ? 'Edit ' : 'Add ') + typeLabel))
+                        )
+                        .append($('<p></p>').text(isEdit ? 'Update the start and end date & time.' : 'Set the start and end date & time for this schedule.'))
+                )
+        );
+
+        const $body = $('<div class="mpwem-ticket-add__body"></div>');
+
+        const $startDateProxy = $('<input type="date">').val(($startDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
+        const $startTimeProxy = $('<input type="time">').val(($startTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
+        const $endDateProxy = $('<input type="date">').val(($endDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
+        const $endTimeProxy = $('<input type="time">').val(($endTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
+
+        $body.append(
+            $('<div class="mpwem-ticket-add__grid"></div>')
+                .append(
+                    $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
+                        .append($('<label></label>').text('Starts'))
+                        .append(
+                            $('<div class="mpwem-ticket-add__date-row"></div>')
+                                .append($startDateProxy)
+                                .append($startTimeProxy)
+                        )
+                )
+                .append(
+                    $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
+                        .append($('<label></label>').text('Ends'))
+                        .append(
+                            $('<div class="mpwem-ticket-add__date-row"></div>')
+                                .append($endDateProxy)
+                                .append($endTimeProxy)
+                        )
+                )
+        );
+
+        $card.append($body);
+
+        const $footer = $('<div class="mpwem-ticket-add__footer"></div>');
+        const $cancelBtn = $('<button type="button" class="button"></button>').text('Cancel');
+        const $saveBtn = $('<button type="button" class="button button-primary mpwem-ticket-add__save"></button>').text(isEdit ? 'Save Changes' : 'Save Date');
+        $footer.append($cancelBtn).append($saveBtn);
+        $card.append($footer);
+
+        $startDateProxy.on('input change', function() { syncRealFieldValue($startDateInput, $(this).val()); $startDateProxy.removeClass('has-error'); });
+        $startTimeProxy.on('input change', function() { syncRealFieldValue($startTimeInput, $(this).val()); });
+        $endDateProxy.on('input change', function() { syncRealFieldValue($endDateInput, $(this).val()); $endDateProxy.removeClass('has-error'); });
+        $endTimeProxy.on('input change', function() { syncRealFieldValue($endTimeInput, $(this).val()); });
+
+        $cancelBtn.on('click', function() {
+            closeInlineDateAdd($root, { save: false });
+        });
+
+        $saveBtn.on('click', function() {
+            const startOk = !!($startDateProxy.val() || '').toString();
+            const endOk = !!($endDateProxy.val() || '').toString();
+            if (!startOk || !endOk) {
+                $startDateProxy.toggleClass('has-error', !startOk);
+                $endDateProxy.toggleClass('has-error', !endOk);
+                (startOk ? $endDateProxy : $startDateProxy).trigger('focus');
+                return;
+            }
+
+            closeInlineDateAdd($root, { save: true });
+        });
+
+        window.setTimeout(function() {
+            $startDateProxy.trigger('focus');
+        }, 0);
+    }
+
+    function openInlineDateAdd($root) {
+        const $card = getInlineDateAddCard($root);
+        if ($card.hasClass('is-open')) {
+            const wasAdding = $card.data('mpwemInlineDateMode') === 'add';
+            closeInlineDateAdd($root, { save: false });
+            if (wasAdding) {
+                return;
+            }
+        }
+
+        const type = getActiveDateModalType($root);
+        if (type !== 'no' && type !== 'yes') {
+            return;
+        }
+
+        const $activeSection = getActiveDateModalSection($root, type);
+        const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
+        if (!$addButton.length) {
+            return;
+        }
+
+        try {
+            $addButton.trigger('click');
+        } catch (err) {
+            /* A shared add-item handler may throw (e.g. a dependency not yet
+               loaded) after it has already appended the row; don't let that
+               stop the inline form below from rendering. */
+        }
+
+        window.setTimeout(function() {
+            enhanceDateFields($root);
+            enhanceCustomCalendar($root);
+            syncDateWiseGlobalQtyColumns($root);
+
+            const $row = getActiveDateModalRows($root, type).last();
+            if (!$row.length) {
+                return;
+            }
+
+            const fieldNames = getDateFieldNames(type).row;
+            $card.data('mpwemInlineDateScope', $row);
+            $card.data('mpwemInlineDateRow', $row);
+            $card.data('mpwemInlineDateMode', 'add');
+            $card.data('mpwemInlineDateFieldNames', fieldNames);
+            renderInlineDateAddForm($root, { mode: 'add', type: type, scope: $row, fieldNames: fieldNames });
+        }, 100);
+    }
+
+    function openInlineDateEdit($root, type, rowIndex) {
+        const $card = getInlineDateAddCard($root);
+        const names = getDateFieldNames(type);
+        const context = getParticularDateModalContext($root);
+        const isPrimary = rowIndex === -1 || rowIndex === null || typeof rowIndex === 'undefined';
+
+        let $scope;
+        let fieldNames;
+        let $row = null;
+
+        if (isPrimary) {
+            const $activeSection = getActiveDateModalSection($root, type);
+            $scope = $activeSection.length ? $activeSection : context.$modalMount;
+            fieldNames = names.primary;
+        } else {
+            $row = getActiveDateModalRows($root, type).eq(rowIndex);
+            if (!$row.length) {
+                return;
+            }
+            $scope = $row;
+            fieldNames = names.row;
+        }
+
+        const editingSame = $card.hasClass('is-open')
+            && $card.data('mpwemInlineDateMode') !== 'add'
+            && $card.data('mpwemInlineDateScope')
+            && $card.data('mpwemInlineDateScope')[0] === $scope[0];
+
+        if ($card.hasClass('is-open')) {
+            closeInlineDateAdd($root, { save: false });
+            if (editingSame) {
+                return;
+            }
+        }
+
+        const original = {};
+        Object.keys(fieldNames).forEach(function(key) {
+            const $field = $scope.find('[name="' + fieldNames[key] + '"]').first();
+            original[key] = ($field.val() || '').toString();
+        });
+
+        const mode = isPrimary ? 'edit-primary' : 'edit-row';
+        $card.data('mpwemInlineDateScope', $scope);
+        $card.data('mpwemInlineDateRow', $row);
+        $card.data('mpwemInlineDateMode', mode);
+        $card.data('mpwemInlineDateOriginal', original);
+        $card.data('mpwemInlineDateFieldNames', fieldNames);
+
+        renderInlineDateAddForm($root, { mode: mode, type: type, scope: $scope, fieldNames: fieldNames });
     }
 
     function openParticularDateModal($root, mode, rowIndex) {
@@ -3649,6 +3943,15 @@
         $root.on('click.mpwemDateModal', '[data-mpwem-date-modal-open]', function(e) {
             e.preventDefault();
             const mode = $(this).attr('data-mpwem-date-modal-open') || 'list';
+
+            if (mode === 'new') {
+                const activeType = getActiveDateModalType($root);
+                if (activeType === 'no' || activeType === 'yes') {
+                    openInlineDateAdd($root);
+                    return;
+                }
+            }
+
             const rowIndex = parseInt($(this).attr('data-date-row-index'), 10);
             openParticularDateModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
         });
@@ -5357,7 +5660,9 @@
         if (mainStartDate || mainStartTime || mainEndDate || mainEndTime) {
             items.push({
                 startLabel: buildScheduleDateTimeLabel(mainStartDate, mainStartTime) || 'Start date not set',
-                endLabel: buildScheduleDateTimeLabel(mainEndDate, mainEndTime) || 'End date not set'
+                endLabel: buildScheduleDateTimeLabel(mainEndDate, mainEndTime) || 'End date not set',
+                isPrimary: true,
+                rowIndex: -1
             });
         }
 
@@ -5366,7 +5671,7 @@
             .filter(function() {
                 return $(this).closest('.mpwem_hidden_content').length === 0;
             })
-            .each(function() {
+            .each(function(rowIndex) {
                 const $row = $(this);
                 const startDate = ($row.find('input[name="event_more_start_date_normal[]"]').first().val() || '').toString().trim();
                 const startTime = ($row.find('input[name="event_more_start_time_normal[]"]').first().val() || '').toString().trim();
@@ -5379,7 +5684,9 @@
 
                 items.push({
                     startLabel: buildScheduleDateTimeLabel(startDate, startTime) || 'Start date not set',
-                    endLabel: buildScheduleDateTimeLabel(endDate, endTime) || 'End date not set'
+                    endLabel: buildScheduleDateTimeLabel(endDate, endTime) || 'End date not set',
+                    isPrimary: false,
+                    rowIndex: rowIndex
                 });
             });
 

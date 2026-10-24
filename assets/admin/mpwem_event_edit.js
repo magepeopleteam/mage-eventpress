@@ -3531,6 +3531,42 @@
             };
     }
 
+    function buildPrimaryDateTimePill($realDateInput, $realTimeInput) {
+        const isoDate = ($realDateInput.val() || '').toString();
+        const parsedDate = parseIsoDate(isoDate);
+        const visibleDate = parsedDate ? formatVisibleDate(parsedDate) : '';
+
+        const $dateHidden = $('<input type="hidden">').val(isoDate);
+        const $dateVisible = $('<input type="text" class="formControl mpwem-date-input" autocomplete="off">').val(visibleDate);
+        const $dateWrap = $('<label class="mpwem-date-input-wrap"></label>')
+            .append($dateHidden, $dateVisible)
+            .append($('<span class="fas fa-times remove_icon mpwem_date_reset" aria-hidden="true" title="Clear date"></span>'));
+
+        $dateHidden.on('change', function() {
+            syncRealFieldValue($realDateInput, $(this).val());
+        });
+
+        const $timeInput = $('<input type="time" class="formControl">').val(($realTimeInput.val() || '').toString());
+        const $timeWrap = $('<label class="mpwem-time-input-wrap"></label>')
+            .append($timeInput)
+            .append($('<span class="fas fa-times remove_icon mpwem_time_reset" aria-hidden="true" title="Clear time"></span>'));
+
+        $timeInput.on('change', function() {
+            syncRealFieldValue($realTimeInput, $(this).val());
+        });
+
+        const $pill = $('<div class="dFlex mpwem-repeat-dt-pill"></div>').append($dateWrap, $timeWrap);
+        // Wires up the same custom calendar/time-picker popups used
+        // everywhere else in the wizard (incl. the reset ✕ buttons,
+        // handled by the existing global delegated click handlers) -
+        // this proxy never holds a real field `name`, so it's never
+        // submitted; it only mirrors value changes onto the real
+        // start/end date & time inputs via the listeners above.
+        enhanceCustomCalendar($pill);
+
+        return $pill;
+    }
+
     function renderPrimaryDateFieldsBlock($root, type, $modalMount) {
         const names = getDateFieldNames(type).primary;
 
@@ -3543,34 +3579,16 @@
             return $();
         }
 
-        const $startDateProxy = $('<input type="date">').val(($startDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
-        const $startTimeProxy = $('<input type="time">').val(($startTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
-        const $endDateProxy = $('<input type="date">').val(($endDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
-        const $endTimeProxy = $('<input type="time">').val(($endTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
-
-        $startDateProxy.on('input change', function() { syncRealFieldValue($startDateInput, $(this).val()); });
-        $startTimeProxy.on('input change', function() { syncRealFieldValue($startTimeInput, $(this).val()); });
-        $endDateProxy.on('input change', function() { syncRealFieldValue($endDateInput, $(this).val()); });
-        $endTimeProxy.on('input change', function() { syncRealFieldValue($endTimeInput, $(this).val()); });
-
         return $('<div class="mpwem-ticket-add__grid mpwem-date-primary-fields"></div>')
             .append(
                 $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
                     .append($('<label></label>').text('Event Starts'))
-                    .append(
-                        $('<div class="mpwem-ticket-add__date-row"></div>')
-                            .append($startDateProxy)
-                            .append($startTimeProxy)
-                    )
+                    .append(buildPrimaryDateTimePill($startDateInput, $startTimeInput))
             )
             .append(
                 $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
                     .append($('<label></label>').text('Event Ends'))
-                    .append(
-                        $('<div class="mpwem-ticket-add__date-row"></div>')
-                            .append($endDateProxy)
-                            .append($endTimeProxy)
-                    )
+                    .append(buildPrimaryDateTimePill($endDateInput, $endTimeInput))
             );
     }
 

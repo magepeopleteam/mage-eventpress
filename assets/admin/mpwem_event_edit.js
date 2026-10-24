@@ -3061,7 +3061,6 @@
                 eyebrow: 'Particular Dates',
                 summaryTitle: 'Specific event dates',
                 summaryText: 'Review particular dates at a glance, then open the full editor when you need to change time or quantity details.',
-                primaryAction: 'Show Details',
                 secondaryAction: '+ Add Particular Date',
                 modalTitle: 'Manage particular dates',
                 modalDescription: 'Edit specific event dates, times, and quantities without leaving this step.',
@@ -3336,11 +3335,11 @@
             );
         }
 
-        // Single Event has no "Open Settings" button, and its
-        // "+ Add Schedule" renders after the Starts/Ends fields instead
-        // of here (see renderParticularDateSummary) - every other type
-        // keeps its secondary action in this header toolbar.
-        if (config.secondaryAction && type !== 'no') {
+        // Single Event and Particular Dates have no "Open Settings"/
+        // "Show Details" button, and their "+ Add..." action renders
+        // after their own date list instead of here (see
+        // renderParticularDateSummary).
+        if (config.secondaryAction && type !== 'no' && type !== 'yes') {
             context.$summaryActions.append(
                 $('<button type="button" class="button button-primary"></button>')
                     .attr('data-mpwem-date-modal-open', 'new')
@@ -3488,6 +3487,17 @@
                         .append(buildDateSummaryActions($root, type, index, false))
                 );
             });
+
+            // "+ Add Particular Date" renders after every row, same as
+            // Single Event's "+ Add Schedule".
+            if (config.secondaryAction) {
+                context.$summaryList.append(
+                    $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+                        .attr('data-mpwem-date-modal-open', 'new')
+                        .text(config.secondaryAction)
+                );
+            }
+
             return;
         }
 

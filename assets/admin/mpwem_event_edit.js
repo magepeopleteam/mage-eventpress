@@ -6589,7 +6589,15 @@
 
             $group.addClass('mpwem-offday-grid');
             $group.find('.customCheckboxLabel').addClass('mpwem-offday-option');
-            $group.find('.customCheckbox').addClass('mpwem-offday-chip');
+            $group.find('.customCheckbox').each(function() {
+                const $chip = $(this).addClass('mpwem-offday-chip');
+                const fullLabel = $.trim($chip.text());
+                if (fullLabel && !$chip.data('mpwemOffDayFullLabel')) {
+                    $chip.data('mpwemOffDayFullLabel', fullLabel);
+                    $chip.closest('.mpwem-offday-option').attr('title', fullLabel);
+                    $chip.text(fullLabel.charAt(0).toUpperCase());
+                }
+            });
             $group.find('input[type="checkbox"]').off('change.mpwemOffDays').on('change.mpwemOffDays', function() {
                 syncOffDayPickerValue($group);
             });
@@ -6619,6 +6627,13 @@
         $repeatSection.children('._layout_default_xs_mp_zero').addClass('mpwem-repeat-schedule-shell');
         $repeatSection.find('.mep-special-datetime').addClass('mpwem-repeat-special-panel');
         $repeatSection.find('#mep_disable_ticket_time').addClass('mpwem-repeat-times-panel');
+        /* These leftover "section.bg-light" headers (mismatched copy from a
+           shared template, e.g. "Configure Event Locations and Virtual
+           Venues" above the time settings) were only ever hidden while this
+           section lived inside the modal; hide them here too now that it
+           renders inline. */
+        $repeatSection.find('section.bg-light').hide();
+        $repeatSection.find('.mep-special-datetime section.bg-light').hide();
 
         $repeatSection.find('> ._layout_default_xs_mp_zero > ._padding_bt').each(function() {
             const $row = $(this);
@@ -6642,6 +6657,63 @@
         });
     }
 
+    function enhanceRepeatRangeLayout($panel) {
+        const $repeatSection = $panel.find('[data-collapse="#mep_everyday_event"]').first();
+        if (!$repeatSection.length || $repeatSection.data('mpwemRangeLayoutEnhanced')) {
+            return;
+        }
+
+        const $startRow = $repeatSection.find('.mpwem-repeat-row--start').first();
+        const $endRow = $repeatSection.find('.mpwem-repeat-row--end').first();
+        const $intervalRow = $repeatSection.find('.mpwem-repeat-row--interval').first();
+
+        if (!$startRow.length && !$endRow.length && !$intervalRow.length) {
+            return;
+        }
+
+        const $startTimeWrap = $startRow.find('input[name="event_start_time_everyday"]').closest('label');
+        const $endTimeWrap = $endRow.find('input[name="event_end_time_everyday"]').closest('label');
+
+        $startRow.find('span._mr').first().text('Starts');
+        $endRow.find('span._mr').first().text('Ends');
+
+        const $anchor = $startRow.length ? $startRow : ($endRow.length ? $endRow : $intervalRow);
+        const $rangeGrid = $('<div class="mpwem-repeat-range-grid"></div>');
+        $anchor.before($rangeGrid);
+
+        if ($startRow.length) {
+            $rangeGrid.append($startRow.detach().addClass('mpwem-repeat-range-grid__item'));
+        }
+        if ($endRow.length) {
+            $rangeGrid.append($endRow.detach().addClass('mpwem-repeat-range-grid__item'));
+        }
+        if ($intervalRow.length) {
+            $rangeGrid.append($intervalRow.detach().addClass('mpwem-repeat-range-grid__item'));
+        }
+
+        if ($startTimeWrap.length || $endTimeWrap.length) {
+            const $timeGrid = $('<div class="mpwem-repeat-range-grid mpwem-repeat-time-grid"></div>');
+            $rangeGrid.after($timeGrid);
+
+            if ($startTimeWrap.length) {
+                $timeGrid.append(
+                    $('<div class="mpwem-repeat-range-grid__item mpwem-repeat-time-field"></div>')
+                        .append($('<span class="mpwem-repeat-time-label"></span>').text('Daily Start Time'))
+                        .append($startTimeWrap.detach())
+                );
+            }
+            if ($endTimeWrap.length) {
+                $timeGrid.append(
+                    $('<div class="mpwem-repeat-range-grid__item mpwem-repeat-time-field"></div>')
+                        .append($('<span class="mpwem-repeat-time-label"></span>').text('Daily End Time'))
+                        .append($endTimeWrap.detach())
+                );
+            }
+        }
+
+        $repeatSection.data('mpwemRangeLayoutEnhanced', true);
+    }
+
     function refreshRepeatedEndDateFieldUI($scope) {
         const $context = $scope && $scope.length ? $scope : $('.mpwem-event-wizard').first();
         const $repeatSection = $context.find('[data-collapse="#mep_everyday_event"]').first();
@@ -6650,6 +6722,8 @@
         enhanceDateFields($repeatSection);
         enhanceCustomCalendar($repeatSection);
         enhanceRepeatedScheduleLayout($repeatSection);
+        enhanceRepeatRangeLayout($context);
+        enhanceRepeatSkipSection($context);
         syncRepeatedDateConstraints($repeatSection);
     }
 

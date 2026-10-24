@@ -4378,35 +4378,35 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     display: none !important;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-schedule-modal {
+.mpwem-repeat-schedule-modal {
     padding: 0 !important;
     overflow: hidden !important;
     margin-bottom: 20px !important;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-schedule-shell {
+.mpwem-repeat-schedule-shell {
     display: grid;
     gap: 12px;
     padding: 18px !important;
     background: transparent !important;
 }
 
-.mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._padding_bt {
+[data-collapse="#mep_everyday_event"] ._padding_bt {
     border-bottom: 1px solid #e2e8f0;
 }
 
-.mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._padding_bt:last-child {
+[data-collapse="#mep_everyday_event"] ._padding_bt:last-child {
     border-bottom: none;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row {
+.mpwem-repeat-row {
     padding: 16px 18px !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 18px !important;
     background: rgba(255, 255, 255, 0.96) !important;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row .label-text {
+.mpwem-repeat-row .label-text {
     display: block;
     margin-top: 10px;
     color: #5b708c;
@@ -4414,37 +4414,37 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     line-height: 1.5;
 }
 
-.mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {}
+[data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {}
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row ._justify_between_align_center_wrap>label:first-child,
-.mpwem-ticket-modal__mount .mpwem-repeat-row label._justify_between_align_center_wrap>._mr {
+.mpwem-repeat-row ._justify_between_align_center_wrap>label:first-child,
+.mpwem-repeat-row label._justify_between_align_center_wrap>._mr {
     display: grid;
     gap: 8px;
     align-content: start;
     margin: 0;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row ._justify_between_align_center_wrap>label:first-child::after,
-.mpwem-ticket-modal__mount .mpwem-repeat-row label._justify_between_align_center_wrap>._mr::after {
+.mpwem-repeat-row ._justify_between_align_center_wrap>label:first-child::after,
+.mpwem-repeat-row label._justify_between_align_center_wrap>._mr::after {
     font-size: 13px;
     font-weight: 500;
     line-height: 1.45;
     color: #64748b;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--start ._justify_between_align_center_wrap>label:first-child::after {
+.mpwem-repeat-row--start ._justify_between_align_center_wrap>label:first-child::after {
     content: "Choose when the repeated schedule begins.";
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--end ._justify_between_align_center_wrap>label:first-child::after {
+.mpwem-repeat-row--end ._justify_between_align_center_wrap>label:first-child::after {
     content: "Set when the repeated schedule should stop.";
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr::after {
+.mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr::after {
     content: "Use 1 for daily repetition or a higher number to skip days.";
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr {
+.mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr {
     display: inline-flex;
     flex-wrap: wrap;
     align-items: center;
@@ -4452,85 +4452,85 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     row-gap: 4px;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr::after {
+.mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr::after {
     flex-basis: 100%;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap>label:first-child::after {
+.mpwem-repeat-row--offdays ._justify_between_align_center_wrap>label:first-child::after {
     content: "Pick weekdays that should always stay unavailable.";
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdates .fdColumn .label-text {
+.mpwem-repeat-row--offdates .fdColumn .label-text {
     margin-top: 6px;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-field-group {
+.mpwem-repeat-field-group {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
     align-items: center;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-field-group>label,
-.mpwem-ticket-modal__mount .mpwem-repeat-field-group>.mep_load_every_day {
+.mpwem-repeat-field-group>label,
+.mpwem-repeat-field-group>.mep_load_every_day {
     width: fit-content;
     max-width: 100%;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-field-group .mpwem-date-input-wrap,
-.mpwem-ticket-modal__mount .mpwem-repeat-field-group .mep_load_every_day .mpwem-date-input-wrap {
+.mpwem-repeat-field-group .mpwem-date-input-wrap,
+.mpwem-repeat-field-group .mep_load_every_day .mpwem-date-input-wrap {
     /* width: 100%; */
     min-width: 0;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-field-group>label.mpwem-time-input-wrap {
+.mpwem-repeat-field-group>label.mpwem-time-input-wrap {
     width: fit-content;
     max-width: 100%;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-field-group .formControl,
-.mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
+.mpwem-repeat-field-group .formControl,
+.mpwem-repeat-row input[name="mep_repeated_periods"] {
     min-height: 46px;
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
+.mpwem-repeat-row input[name="mep_repeated_periods"] {
     max-width: 80px !important;
     justify-self: end;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap,
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdates .justify_between {
+.mpwem-repeat-row--offdays ._justify_between_align_center_wrap,
+.mpwem-repeat-row--offdates .justify_between {
     align-items: start !important;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap {
+.mpwem-repeat-row--offdays ._justify_between_align_center_wrap {
     grid-template-columns: minmax(0, .5fr) .5fr !important;
     gap: 12px !important;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays .mpwem-repeat-field-group {
+.mpwem-repeat-row--offdays .mpwem-repeat-field-group {
     justify-self: stretch;
     display: grid !important;
     grid-template-columns: repeat(4, auto);
     gap: 8px !important;
 }
 
-.mpwem-ticket-modal__mount .mep-special-datetime {
+.mep-special-datetime {
     border: none !important;
     margin-top: 30px;
     padding-top: 20px;
     border-top: 2px dashed #e2e8f0 !important;
 }
 
-.mpwem-ticket-modal__mount .mpwem-repeat-times-panel .mpTabs,
-.mpwem-ticket-modal__mount .mpwem-repeat-special-panel .mpwem_settings_area {
+.mpwem-repeat-times-panel .mpTabs,
+.mpwem-repeat-special-panel .mpwem_settings_area {
     margin-top: 0;
 }
 
-.mpwem-ticket-modal__mount .mep-special-datetime::before {
+.mep-special-datetime::before {
     content: "Special Date & Time Settings";
     display: block;
     font-size: 14px;
@@ -4539,6 +4539,41 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin: 10px 22px;
+}
+
+/* Repeated Event: Starts / Ends / Repeat every in one row, Daily Start/End
+   Time in a second row - built by enhanceRepeatRangeLayout(). */
+.mpwem-repeat-range-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    margin-bottom: 14px;
+}
+
+.mpwem-repeat-time-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.mpwem-repeat-range-grid__item {
+    margin: 0 !important;
+}
+
+.mpwem-repeat-time-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.mpwem-repeat-time-label {
+    font-size: 12px;
+    font-weight: 650;
+    color: #475569;
+}
+
+@media (max-width: 640px) {
+    .mpwem-repeat-range-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-table-hint {
@@ -9477,7 +9512,7 @@ body.mpwem-drag-scroll-active {
     margin-top: 8px !important;
 }
 
-.mpwem-ticket-modal__mount .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem_add_item {
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem_add_item {
     display: inline-flex !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -9598,45 +9633,171 @@ body.mpwem-drag-scroll-active {
     border-radius: 10px !important;
 }
 
-.mpwem-offday-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(98px, 1fr));
+/* Compact pill-tag layout for "Skip specific dates" (off-dates list),
+   matching the simplified design, inside the Repeated Event section. */
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .justify_between {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 6px !important;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_settings_area {
+    width: 100% !important;
+    justify-self: stretch;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem-ticket-off-dates-actions {
+    justify-content: flex-start;
+    order: 99;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_item_insert {
+    display: flex !important;
+    flex-wrap: wrap;
     gap: 8px !important;
-    width: 100%;
+    width: auto;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_remove_area._mt_xs {
+    width: auto;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_remove_area>._dFlex {
+    display: inline-flex !important;
+    grid-template-columns: none;
+    width: auto;
+    padding: 5px 6px 5px 12px !important;
+    background: #fff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 999px !important;
+    gap: 2px;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem-date-input-wrap {
+    width: auto !important;
+    justify-self: auto;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field input.mpwem-date-input {
+    border: none !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    width: auto !important;
+    max-width: 110px;
+    font-size: 12px !important;
+    font-weight: 600;
+    background: transparent !important;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_sortable_button {
+    display: none !important;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .remove_icon,
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_item_remove {
+    position: static !important;
+    transform: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    font-size: 10px !important;
+    background: transparent !important;
+    border: none !important;
+    color: #94a3b8 !important;
+}
+
+/* Repeated Event's "Display Time?" toggle only had base styling scoped
+   to the classic-editor tab (#mp_event_all_info_in_tab); give it the
+   same look wherever it renders in the wizard step. */
+.mpwem-date-step .mpev-switch {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 21px;
+    margin: 0;
+    flex: none;
+}
+
+.mpwem-date-step .mpev-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.mpwem-date-step .mpev-switch .mpev-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    border-radius: 999px;
+    background-color: #cbd5e1;
+    transition: background-color .2s ease;
+}
+
+.mpwem-date-step .mpev-switch .mpev-slider::before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+    transition: transform .2s ease;
+}
+
+.mpwem-date-step .mpev-switch input:checked+.mpev-slider {
+    background-color: #2563eb;
+    background-color: var(--mpwem-primary, #2563eb);
+}
+
+.mpwem-date-step .mpev-switch input:checked+.mpev-slider::before {
+    transform: translateX(17px);
+}
+
+.mpwem-offday-grid {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px !important;
+    width: auto;
 }
 
 .mpwem-offday-option {
+    position: relative;
     margin: 0 !important;
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    min-height: 42px;
-    padding: 8px 10px !important;
-    background: #f8fafc;
-    border: 1px solid #d9e2ef;
-    border-radius: 10px;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0 !important;
+    background: #fff;
+    border: 1.5px solid #d9dbd9;
+    border-radius: 999px;
 }
 
 .mpwem-offday-option input {
     position: absolute;
+    inset: 0;
     opacity: 0;
-    pointer-events: none;
+    margin: 0;
+    cursor: pointer;
 }
 
 .mpwem-offday-chip {
     display: flex !important;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
     min-height: auto;
     padding: 0 !important;
     background: transparent !important;
     border: 0 !important;
-    border-radius: 0 !important;
+    border-radius: 999px !important;
     color: #334155 !important;
     font-size: 13px !important;
-    font-weight: 700 !important;
-    cursor: pointer;
+    font-weight: 650 !important;
+    pointer-events: none;
 }
 
 .mpwem-offday-chip::before,
@@ -9646,12 +9807,14 @@ body.mpwem-drag-scroll-active {
 }
 
 .mpwem-offday-option:has(input:checked) {
-    background: #fff7ed !important;
-    border-color: #fdba74 !important;
+    background: #2563eb !important;
+    background: var(--mpwem-primary, #2563eb) !important;
+    border-color: #2563eb !important;
+    border-color: var(--mpwem-primary, #2563eb) !important;
 }
 
 .mpwem-offday-option input:checked~.mpwem-offday-chip {
-    color: #9a3412 !important;
+    color: #fff !important;
 }
 
 .mpwem-date-step .mpTabs.topTabs {
@@ -10480,18 +10643,18 @@ input.mpwem-custom-calendar__year {
         grid-template-columns: 1fr;
     }
 
-    .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {
+    [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {
         grid-template-columns: 1fr !important;
         gap: 12px !important;
     }
 
-    .mpwem-ticket-modal__mount .mpwem-repeat-schedule-shell {
+    .mpwem-repeat-schedule-shell {
         padding: 14px !important;
     }
 
-    .mpwem-ticket-modal__mount .mpwem-repeat-row,
-    .mpwem-ticket-modal__mount .mpwem-repeat-times-panel,
-    .mpwem-ticket-modal__mount .mpwem-repeat-special-panel {
+    .mpwem-repeat-row,
+    .mpwem-repeat-times-panel,
+    .mpwem-repeat-special-panel {
         padding: 16px !important;
         border-radius: 16px !important;
     }
@@ -10521,11 +10684,11 @@ input.mpwem-custom-calendar__year {
         justify-self: start;
     }
 
-    .mpwem-ticket-modal__mount .mpwem-repeat-field-group {
+    .mpwem-repeat-field-group {
         grid-template-columns: 1fr;
     }
 
-    .mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
+    .mpwem-repeat-row input[name="mep_repeated_periods"] {
         max-width: 100% !important;
     }
 

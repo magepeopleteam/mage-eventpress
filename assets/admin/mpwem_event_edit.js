@@ -3090,7 +3090,11 @@
 
     function getParticularDateModalContext($root) {
         const $datePanel = getPanel($root, '#mpwem_date_settings');
-        const $allSections = $root.find('[data-collapse="#mep_normal_event"], [data-collapse="#mep_particular_event"], [data-collapse="#mep_everyday_event"]');
+        /* Repeated Event ("#mep_everyday_event") is deliberately excluded here:
+           its real fields stay inline in the step (see
+           initializeParticularDateModal) instead of being relocated into the
+           modal, so it's never part of the modal-hosted "legacy mount" set. */
+        const $modalSections = $root.find('[data-collapse="#mep_normal_event"], [data-collapse="#mep_particular_event"]');
         let $summary = $datePanel.find('#mpwem_particular_date_summary').first();
 
         if ($datePanel.length && !$summary.length) {
@@ -3125,7 +3129,7 @@
             $modal: $root.find('#mpwem_particular_date_modal').first(),
             $modalMount: $root.find('#mpwem_particular_date_modal_mount').first(),
             $footerStart: $root.find('#mpwem_particular_date_modal_footer_start').first(),
-            $legacyMounts: $allSections
+            $legacyMounts: $modalSections
         };
     }
 
@@ -3374,6 +3378,19 @@
         }
 
         const type = getActiveDateModalType($root);
+
+        if (type === 'everyday') {
+            /* Repeated Event's real fields now live inline in the step
+               (see initializeParticularDateModal) instead of behind a
+               modal, so there's nothing left for this summary card to
+               summarize or open - hide it entirely. */
+            context.$summary.hide();
+            context.$summaryList.empty();
+            return;
+        }
+
+        context.$summary.show();
+
         const config = getDateModalTypeConfig(type);
         const $modalMount = context.$modalMount.length ? context.$modalMount : getSavedDateSummaryMount($root);
         renderDateModalSummaryActions($root, context, type);
@@ -3458,58 +3475,34 @@
             return;
         }
 
-        const summaryItems = [];
-
-        if (type === 'no') {
-            Array.prototype.push.apply(summaryItems, collectSingleEventSummaryItems($modalMount));
-        } else if (type === 'everyday') {
-            const startDate = ($modalMount.find('input[name="event_start_date_everyday"]').first().val() || '').toString().trim();
-            const startTime = ($modalMount.find('input[name="event_start_time_everyday"]').first().val() || '').toString().trim();
-            const endDate = ($modalMount.find('input[name="event_end_date_everyday"]').first().val() || '').toString().trim();
-            const endTime = ($modalMount.find('input[name="event_end_time_everyday"]').first().val() || '').toString().trim();
-            const interval = ($modalMount.find('input[name="mep_repeated_periods"]').first().val() || '').toString().trim() || '1';
-            const offDays = ($modalMount.find('input[name="mep_ticket_offdays"]').first().val() || '').toString().trim();
-            const offDates = $modalMount.find('input[name="mep_ticket_off_dates[]"]').filter(function() {
-                return ($(this).val() || '').toString().trim() !== '';
-            }).length;
-
-            summaryItems.push({
-                title: buildScheduleRangeLabel(startDate, startTime, endDate, endTime) || 'Repeated date range not set',
-                detail: 'Repeats every ' + interval + ' day' + (interval === '1' ? '' : 's')
-            });
-            if (offDays || offDates) {
-                summaryItems.push({
-                    title: offDates ? 'Off dates configured' : 'Off days configured',
-                    detail: offDays ? offDays : (offDates ? offDates + ' off date' + (offDates > 1 ? 's' : '') + ' added' : '')
-                });
-            }
+        /* Only "no" (Single Event) reaches here - "yes" returned above,
+           "everyday" returned at the top of this function. The primary
+           Start/End fields render directly (always editable, no click
+           needed); only additional dates beyond the primary one get a
+           list with Edit/Delete. */
+        const $primaryFields = renderPrimaryDateFieldsBlock($root, type, $modalMount);
+        if ($primaryFields && $primaryFields.length) {
+            context.$summaryList.append($primaryFields);
         }
 
-        if (!summaryItems.length) {
-            context.$summaryList.append(
-                $('<div class="mpwem-ticket-summary__empty"></div>')
-                    .append($('<h4></h4>').text(config.summaryTitle))
-                    .append($('<p></p>').text(config.summaryText))
-            );
+        const extraItems = collectSingleEventSummaryItems($modalMount).filter(function(item) {
+            return !item.isPrimary;
+        });
+
+        if (!extraItems.length) {
             return;
         }
 
         const $header = $('<div class="mpwem-ticket-summary__header"></div>')
-            .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text(type === 'no' ? 'Start Date' : 'Schedule'));
-
-        $header.append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text(type === 'no' ? 'End Date' : 'Details'));
-
-        if (type === 'no') {
-            $header.append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
-        }
+            .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Additional Start'))
+            .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Additional End'))
+            .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
 
         context.$summaryList.append($header);
 
-        summaryItems.forEach(function(item) {
-            const $item = $('<article class="mpwem-ticket-summary__item"></article>');
-
-            if (type === 'no') {
-                $item
+        extraItems.forEach(function(item) {
+            context.$summaryList.append(
+                $('<article class="mpwem-ticket-summary__item"></article>')
                     .append(
                         $('<div class="mpwem-ticket-summary__item-main"></div>')
                             .append(
@@ -3521,25 +3514,8 @@
                         $('<div class="mpwem-ticket-summary__meta"></div>')
                             .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(item.endLabel))
                     )
-                    .append(buildDateSummaryActions($root, type, item.rowIndex, !!item.isPrimary));
-            } else {
-                $item.append(
-                    $('<div class="mpwem-ticket-summary__item-main"></div>')
-                        .append(
-                            $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                .append($('<h4></h4>').text(item.title))
-                        )
-                );
-
-                if (item.detail) {
-                    $item.append(
-                        $('<div class="mpwem-ticket-summary__meta"></div>')
-                            .append($('<span class="mpwem-ticket-summary__capacity"></span>').text(item.detail))
-                    );
-                }
-            }
-
-            context.$summaryList.append($item);
+                    .append(buildDateSummaryActions($root, type, item.rowIndex, false))
+            );
         });
     }
 
@@ -3553,6 +3529,49 @@
                 primary: { start: 'event_start_date', startTime: 'event_start_time', end: 'event_end_date', endTime: 'event_end_time' },
                 row: { start: 'event_more_start_date[]', startTime: 'event_more_start_time[]', end: 'event_more_end_date[]', endTime: 'event_more_end_time[]' }
             };
+    }
+
+    function renderPrimaryDateFieldsBlock($root, type, $modalMount) {
+        const names = getDateFieldNames(type).primary;
+
+        const $startDateInput = $modalMount.find('[name="' + names.start + '"]').first();
+        const $startTimeInput = $modalMount.find('[name="' + names.startTime + '"]').first();
+        const $endDateInput = $modalMount.find('[name="' + names.end + '"]').first();
+        const $endTimeInput = $modalMount.find('[name="' + names.endTime + '"]').first();
+
+        if (!$startDateInput.length) {
+            return $();
+        }
+
+        const $startDateProxy = $('<input type="date">').val(($startDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
+        const $startTimeProxy = $('<input type="time">').val(($startTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
+        const $endDateProxy = $('<input type="date">').val(($endDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
+        const $endTimeProxy = $('<input type="time">').val(($endTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
+
+        $startDateProxy.on('input change', function() { syncRealFieldValue($startDateInput, $(this).val()); });
+        $startTimeProxy.on('input change', function() { syncRealFieldValue($startTimeInput, $(this).val()); });
+        $endDateProxy.on('input change', function() { syncRealFieldValue($endDateInput, $(this).val()); });
+        $endTimeProxy.on('input change', function() { syncRealFieldValue($endTimeInput, $(this).val()); });
+
+        return $('<div class="mpwem-ticket-add__grid mpwem-date-primary-fields"></div>')
+            .append(
+                $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
+                    .append($('<label></label>').text('Event Starts'))
+                    .append(
+                        $('<div class="mpwem-ticket-add__date-row"></div>')
+                            .append($startDateProxy)
+                            .append($startTimeProxy)
+                    )
+            )
+            .append(
+                $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
+                    .append($('<label></label>').text('Event Ends'))
+                    .append(
+                        $('<div class="mpwem-ticket-add__date-row"></div>')
+                            .append($endDateProxy)
+                            .append($endTimeProxy)
+                    )
+            );
     }
 
     function getInlineDateAddCard($root) {
@@ -6677,6 +6696,44 @@
         });
     }
 
+    function enhanceRepeatSkipSection($panel) {
+        const $repeatSection = $panel.find('[data-collapse="#mep_everyday_event"]').first();
+        if (!$repeatSection.length || $repeatSection.data('mpwemSkipSectionEnhanced')) {
+            return;
+        }
+
+        const $offDaysRow = $repeatSection.find('.mpwem-repeat-row--offdays').first();
+        const $offDatesRow = $repeatSection.find('.mpwem-repeat-row--offdates').first();
+        if (!$offDaysRow.length && !$offDatesRow.length) {
+            return;
+        }
+
+        const $anchor = $offDaysRow.length ? $offDaysRow : $offDatesRow;
+        const $toggle = $('<button type="button" class="mpwem-ticket-add__more-toggle mpwem-repeat-skip-toggle" aria-expanded="false"></button>')
+            .append($('<span></span>').text('Skip days & dates'))
+            .append(
+                $('<span class="mpwem-ticket-add__chev"></span>')
+                    .html('<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>')
+            );
+        const $body = $('<div class="mpwem-ticket-add__more mpwem-repeat-skip-body"></div>').hide();
+
+        $anchor.before($toggle, $body);
+        if ($offDaysRow.length) {
+            $body.append($offDaysRow.detach());
+        }
+        if ($offDatesRow.length) {
+            $body.append($offDatesRow.detach());
+        }
+
+        $toggle.on('click', function() {
+            const willOpen = !$body.is(':visible');
+            $body.slideToggle(150);
+            $toggle.toggleClass('is-open', willOpen).attr('aria-expanded', willOpen ? 'true' : 'false');
+        });
+
+        $repeatSection.data('mpwemSkipSectionEnhanced', true);
+    }
+
     function enhanceDateStep($root) {
         const $panel = getDatePanel($root);
         if (!$panel.length) return;
@@ -6686,6 +6743,7 @@
         enhanceDateFields($panel);
         enhanceCustomCalendar($panel);
         enhanceOffDayPicker($panel);
+        enhanceRepeatSkipSection($panel);
         enhanceDateConditionalSelects($panel);
         syncRepeatedDateConstraints($panel);
         alignDateFormatTooltips($panel);

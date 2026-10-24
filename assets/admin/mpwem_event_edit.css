@@ -9083,14 +9083,23 @@ body.mpwem-ticket-modal-open {
 }
 
 [data-collapse="#mep_everyday_event"] .mpwem-date-card__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     flex-shrink: 0;
+    align-self: center;
     width: 38px;
     height: 38px;
+    padding: 0 !important;
+    margin: 0 !important;
     border-radius: 11px;
     background: var(--mpwem-primary, #2563eb);
+    line-height: 0;
+}
+
+[data-collapse="#mep_everyday_event"] .mpwem-date-card__icon svg {
+    display: block;
+    margin: 0 auto;
 }
 
 [data-collapse="#mep_everyday_event"] .mpwem-date-card__intro {

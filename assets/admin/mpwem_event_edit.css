@@ -4548,6 +4548,10 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     flex-wrap: nowrap !important;
 }
 
+.mpwem-repeat-row--interval > label._justify_between_align_center_wrap {
+    flex-wrap: nowrap !important;
+}
+
 .mpwem-repeat-dt-pill {
     display: inline-flex !important;
     align-items: stretch;
@@ -4622,6 +4626,23 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+}
+
+/* Groups the number input with its "day(s)" suffix as ONE flex item, so
+   the label stays a plain two-item (text, field) space-between row -
+   a bare 3rd sibling here previously wrapped onto its own line below. */
+.mpwem-repeat-interval-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    flex-shrink: 0;
+}
+
+.mpwem-repeat-interval-field input[name="mep_repeated_periods"] {
+    width: 72px !important;
+    max-width: 72px !important;
+    min-height: auto !important;
+    height: 44px !important;
 }
 
 .mpwem-repeat-interval-suffix {

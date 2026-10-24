@@ -6695,7 +6695,11 @@
             setMpwemRowLabelText($mr, 'Repeat every');
 
             const $intervalInput = $intervalRow.find('input[name="mep_repeated_periods"]').first();
-            if ($intervalInput.length && !$intervalInput.next('.mpwem-repeat-interval-suffix').length) {
+            if ($intervalInput.length && !$intervalInput.parent().hasClass('mpwem-repeat-interval-field')) {
+                // Wrap the input together with its "day(s)" suffix so the
+                // label stays a plain two-item (text, field) flex row -
+                // a bare 3rd sibling here would wrap onto its own line.
+                $intervalInput.wrap('<span class="mpwem-repeat-interval-field"></span>');
                 $intervalInput.after($('<span class="mpwem-repeat-interval-suffix"></span>').text('day(s)'));
             }
         }

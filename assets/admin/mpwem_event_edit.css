@@ -4595,10 +4595,33 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     width: 185px !important;
 }
 
+/* Force the correct positioning context regardless of what else in the
+   cascade touches .mpwem-date-input-wrap/.mpwem-time-input-wrap inside
+   the merged pill - without this, the ✕ reset button was rendering
+   centered on the wrong (taller) ancestor and poking out above the
+   pill's top edge, clipped by its overflow:hidden. */
+.mpwem-repeat-dt-pill .mpwem-date-input-wrap,
+.mpwem-repeat-dt-pill .mpwem-time-input-wrap {
+    position: relative !important;
+}
+
 .mpwem-repeat-dt-pill .mpwem-date-input-wrap .remove_icon,
 .mpwem-repeat-dt-pill .mpwem-time-input-wrap .mpwem_time_reset {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s ease;
+}
+
+.mpwem-repeat-dt-pill .mpwem-date-input-wrap:hover .remove_icon,
+.mpwem-repeat-dt-pill .mpwem-date-input-wrap:focus-within .remove_icon,
+.mpwem-repeat-dt-pill .mpwem-time-input-wrap:hover .mpwem_time_reset,
+.mpwem-repeat-dt-pill .mpwem-time-input-wrap:focus-within .mpwem_time_reset {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
 
 .mpwem-repeat-interval-suffix {

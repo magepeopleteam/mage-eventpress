@@ -3235,10 +3235,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     gap: 7px;
 }
 
-.mpwem-date-primary-fields {
-    margin-bottom: 4px;
-}
-
 .mpwem-date-primary-fields__add {
     justify-self: start;
     margin-top: 10px;

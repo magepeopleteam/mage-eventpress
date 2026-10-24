@@ -3483,23 +3483,42 @@
 
         /* Only "no" (Single Event) reaches here - "yes" returned above,
            "everyday" returned at the top of this function. The primary
-           Start/End fields render directly (always editable, no click
-           needed); only additional dates beyond the primary one get a
-           list with Edit/Delete. */
-        const $primaryFields = renderPrimaryDateFieldsBlock($root, type, $modalMount);
-        if ($primaryFields && $primaryFields.length) {
-            context.$summaryList.append($primaryFields);
+           Start/End row reads like any other summary row (Edit only, no
+           delete since it can't be removed) instead of rendering its
+           fields always-editable; its own inline edit card (opened via
+           the Edit button, same one "+ Add Schedule" opens) is the only
+           place those fields are actually editable. */
+        const items = collectSingleEventSummaryItems($modalMount);
+        const primaryItem = items.find(function(item) { return item.isPrimary; });
 
-            if (config.secondaryAction) {
-                context.$summaryList.append(
-                    $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
-                        .attr('data-mpwem-date-modal-open', 'new')
-                        .text(config.secondaryAction)
-                );
-            }
+        if (primaryItem) {
+            context.$summaryList.append(
+                $('<article class="mpwem-ticket-summary__item"></article>')
+                    .attr('data-date-row-index', -1)
+                    .append(
+                        $('<div class="mpwem-ticket-summary__item-main"></div>')
+                            .append(
+                                $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                    .append($('<h4></h4>').text(primaryItem.startLabel))
+                            )
+                    )
+                    .append(
+                        $('<div class="mpwem-ticket-summary__meta"></div>')
+                            .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryItem.endLabel))
+                    )
+                    .append(buildDateSummaryActions($root, type, -1, true))
+            );
         }
 
-        const extraItems = collectSingleEventSummaryItems($modalMount).filter(function(item) {
+        if (config.secondaryAction) {
+            context.$summaryList.append(
+                $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+                    .attr('data-mpwem-date-modal-open', 'new')
+                    .text(config.secondaryAction)
+            );
+        }
+
+        const extraItems = items.filter(function(item) {
             return !item.isPrimary;
         });
 
@@ -3579,31 +3598,6 @@
         enhanceCustomCalendar($pill);
 
         return $pill;
-    }
-
-    function renderPrimaryDateFieldsBlock($root, type, $modalMount) {
-        const names = getDateFieldNames(type).primary;
-
-        const $startDateInput = $modalMount.find('[name="' + names.start + '"]').first();
-        const $startTimeInput = $modalMount.find('[name="' + names.startTime + '"]').first();
-        const $endDateInput = $modalMount.find('[name="' + names.end + '"]').first();
-        const $endTimeInput = $modalMount.find('[name="' + names.endTime + '"]').first();
-
-        if (!$startDateInput.length) {
-            return $();
-        }
-
-        return $('<div class="mpwem-ticket-add__grid mpwem-date-primary-fields"></div>')
-            .append(
-                $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
-                    .append($('<label></label>').text('Event Starts'))
-                    .append(buildPrimaryDateTimePill($startDateInput, $startTimeInput))
-            )
-            .append(
-                $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
-                    .append($('<label></label>').text('Event Ends'))
-                    .append(buildPrimaryDateTimePill($endDateInput, $endTimeInput))
-            );
     }
 
     function getInlineDateAddCard($root) {

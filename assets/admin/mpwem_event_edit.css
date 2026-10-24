@@ -4493,20 +4493,19 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     justify-self: end;
 }
 
-.mpwem-repeat-row--offdays ._justify_between_align_center_wrap,
 .mpwem-repeat-row--offdates .justify_between {
     align-items: start !important;
 }
 
 .mpwem-repeat-row--offdays ._justify_between_align_center_wrap {
-    grid-template-columns: minmax(0, .5fr) .5fr !important;
-    gap: 12px !important;
+    flex-wrap: nowrap !important;
+    gap: 16px !important;
 }
 
 .mpwem-repeat-row--offdays .mpwem-repeat-field-group {
-    justify-self: stretch;
-    display: grid !important;
-    grid-template-columns: repeat(4, auto);
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 8px !important;
 }
 
@@ -4596,6 +4595,19 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     .mpwem-repeat-dt-pill .mpwem-date-input,
     .mpwem-repeat-dt-pill .mpwem-time-input {
         width: 100% !important;
+    }
+
+    .mpwem-repeat-row--offdays ._justify_between_align_center_wrap {
+        flex-wrap: wrap !important;
+    }
+
+    .mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .justify_between {
+        flex-wrap: wrap !important;
+    }
+
+    .mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_settings_area {
+        width: 100% !important;
+        align-items: flex-start;
     }
 }
 
@@ -9017,7 +9029,7 @@ div.mpwem-date-type-option__copy strong {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
 }
 
-[data-collapse="#mep_everyday_event"]>._layout_default_xs_mp_zero>._padding_bt:not(.mpwem-repeat-row--start):not(.mpwem-repeat-row--end) ._justify_between_align_center_wrap {
+[data-collapse="#mep_everyday_event"]>._layout_default_xs_mp_zero>._padding_bt:not(.mpwem-repeat-row--start):not(.mpwem-repeat-row--end):not(.mpwem-repeat-row--offdays) ._justify_between_align_center_wrap {
     display: grid !important;
     grid-template-columns: minmax(180px, 1fr) 510px;
     gap: 18px;
@@ -9657,20 +9669,40 @@ body.mpwem-drag-scroll-active {
 }
 
 /* Compact pill-tag layout for "Skip specific dates" (off-dates list),
-   matching the simplified design, inside the Repeated Event section. */
+   matching the simplified design, inside the Repeated Event section:
+   label on the left, "Add Off Date" + the date pills on the right,
+   on the same row instead of stacked. */
 .mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .justify_between {
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 6px !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .fdColumn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding-top: 2px;
 }
 
 .mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_settings_area {
-    width: 100% !important;
-    justify-self: stretch;
+    width: auto !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-end;
+    row-gap: 8px;
 }
 
 .mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem-ticket-off-dates-actions {
-    justify-content: flex-start;
-    order: 99;
+    justify-content: flex-end;
+}
+
+.mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_item_insert:not(:has(*))::after {
+    content: "No off dates yet.";
+    font-size: 12px;
+    color: #94a3b8;
 }
 
 .mpwem-repeat-skip-body .mpwem-ticket-off-dates-field .mpwem_item_insert {

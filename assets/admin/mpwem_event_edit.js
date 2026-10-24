@@ -6663,53 +6663,19 @@
             return;
         }
 
-        const $startRow = $repeatSection.find('.mpwem-repeat-row--start').first();
-        const $endRow = $repeatSection.find('.mpwem-repeat-row--end').first();
-        const $intervalRow = $repeatSection.find('.mpwem-repeat-row--interval').first();
+        // Start/End keep their original "Start Date & Time" / "End Date & Time"
+        // row and field names - just merge each row's date + time inputs into
+        // one bordered, single-line pill instead of two separate boxed inputs.
+        ['start', 'end'].forEach(function(kind) {
+            const $row = $repeatSection.find('.mpwem-repeat-row--' + kind).first();
+            if (!$row.length) return;
 
-        if (!$startRow.length && !$endRow.length && !$intervalRow.length) {
-            return;
-        }
-
-        const $startTimeWrap = $startRow.find('input[name="event_start_time_everyday"]').closest('label');
-        const $endTimeWrap = $endRow.find('input[name="event_end_time_everyday"]').closest('label');
-
-        $startRow.find('span._mr').first().text('Starts');
-        $endRow.find('span._mr').first().text('Ends');
-
-        const $anchor = $startRow.length ? $startRow : ($endRow.length ? $endRow : $intervalRow);
-        const $rangeGrid = $('<div class="mpwem-repeat-range-grid"></div>');
-        $anchor.before($rangeGrid);
-
-        if ($startRow.length) {
-            $rangeGrid.append($startRow.detach().addClass('mpwem-repeat-range-grid__item'));
-        }
-        if ($endRow.length) {
-            $rangeGrid.append($endRow.detach().addClass('mpwem-repeat-range-grid__item'));
-        }
-        if ($intervalRow.length) {
-            $rangeGrid.append($intervalRow.detach().addClass('mpwem-repeat-range-grid__item'));
-        }
-
-        if ($startTimeWrap.length || $endTimeWrap.length) {
-            const $timeGrid = $('<div class="mpwem-repeat-range-grid mpwem-repeat-time-grid"></div>');
-            $rangeGrid.after($timeGrid);
-
-            if ($startTimeWrap.length) {
-                $timeGrid.append(
-                    $('<div class="mpwem-repeat-range-grid__item mpwem-repeat-time-field"></div>')
-                        .append($('<span class="mpwem-repeat-time-label"></span>').text('Daily Start Time'))
-                        .append($startTimeWrap.detach())
-                );
+            const $fieldWrap = $row.find('> ._justify_between_align_center_wrap').first();
+            const $dFlex = $fieldWrap.find('> .dFlex, > ._dFlex').first();
+            if ($dFlex.length) {
+                $dFlex.addClass('mpwem-repeat-dt-pill');
             }
-            if ($endTimeWrap.length) {
-                $timeGrid.append(
-                    $('<div class="mpwem-repeat-range-grid__item mpwem-repeat-time-field"></div>')
-                        .append($('<span class="mpwem-repeat-time-label"></span>').text('Daily End Time'))
-                        .append($endTimeWrap.detach())
-                );
-            }
-        }
+        });
 
         $repeatSection.data('mpwemRangeLayoutEnhanced', true);
     }

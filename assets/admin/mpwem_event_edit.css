@@ -4432,14 +4432,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     color: #64748b;
 }
 
-.mpwem-repeat-row--start ._justify_between_align_center_wrap>label:first-child::after {
-    content: "Choose when the repeated schedule begins.";
-}
-
-.mpwem-repeat-row--end ._justify_between_align_center_wrap>label:first-child::after {
-    content: "Set when the repeated schedule should stop.";
-}
-
 .mpwem-repeat-row--interval label._justify_between_align_center_wrap>._mr::after {
     content: "Use 1 for daily repetition or a higher number to skip days.";
 }
@@ -4541,38 +4533,69 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     margin: 10px 22px;
 }
 
-/* Repeated Event: Starts / Ends / Repeat every in one row, Daily Start/End
-   Time in a second row - built by enhanceRepeatRangeLayout(). */
-.mpwem-repeat-range-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-    margin-bottom: 14px;
+/* Repeated Event Start/End rows: date + time merged into one bordered,
+   single-line pill - built by enhanceRepeatRangeLayout(). */
+.mpwem-repeat-row--start > ._justify_between_align_center_wrap,
+.mpwem-repeat-row--end > ._justify_between_align_center_wrap {
+    flex-wrap: nowrap !important;
 }
 
-.mpwem-repeat-time-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+.mpwem-repeat-dt-pill {
+    display: inline-flex !important;
+    align-items: stretch;
+    border: 1px solid #d9e2ef;
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
+    width: fit-content;
+    max-width: 100%;
+    flex-shrink: 0;
 }
 
-.mpwem-repeat-range-grid__item {
-    margin: 0 !important;
+.mpwem-repeat-dt-pill > *:first-child {
+    border-right: 1px solid #e2e8f0;
 }
 
-.mpwem-repeat-time-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.mpwem-repeat-dt-pill .mpwem-date-input-wrap,
+.mpwem-repeat-dt-pill .mpwem-time-input-wrap,
+.mpwem-repeat-dt-pill .mep_load_every_day {
+    width: auto !important;
 }
 
-.mpwem-repeat-time-label {
-    font-size: 12px;
-    font-weight: 650;
-    color: #475569;
+.mpwem-repeat-dt-pill .mpwem-date-input,
+.mpwem-repeat-dt-pill .mpwem-time-input {
+    border: none !important;
+    border-radius: 0 !important;
+    height: 42px !important;
+}
+
+.mpwem-repeat-dt-pill .mpwem-date-input {
+    width: 190px !important;
+}
+
+.mpwem-repeat-dt-pill .mpwem-time-input {
+    width: 150px !important;
 }
 
 @media (max-width: 640px) {
-    .mpwem-repeat-range-grid {
-        grid-template-columns: minmax(0, 1fr) !important;
+    .mpwem-repeat-row--start > ._justify_between_align_center_wrap,
+    .mpwem-repeat-row--end > ._justify_between_align_center_wrap {
+        flex-wrap: wrap !important;
+    }
+
+    .mpwem-repeat-dt-pill {
+        width: 100%;
+    }
+
+    .mpwem-repeat-dt-pill .mpwem-date-input-wrap,
+    .mpwem-repeat-dt-pill .mpwem-time-input-wrap,
+    .mpwem-repeat-dt-pill .mep_load_every_day {
+        flex: 1 1 0;
+    }
+
+    .mpwem-repeat-dt-pill .mpwem-date-input,
+    .mpwem-repeat-dt-pill .mpwem-time-input {
+        width: 100% !important;
     }
 }
 
@@ -8994,7 +9017,7 @@ div.mpwem-date-type-option__copy strong {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
 }
 
-[data-collapse="#mep_everyday_event"]>._layout_default_xs_mp_zero>._padding_bt ._justify_between_align_center_wrap {
+[data-collapse="#mep_everyday_event"]>._layout_default_xs_mp_zero>._padding_bt:not(.mpwem-repeat-row--start):not(.mpwem-repeat-row--end) ._justify_between_align_center_wrap {
     display: grid !important;
     grid-template-columns: minmax(180px, 1fr) 510px;
     gap: 18px;
@@ -9039,8 +9062,8 @@ div.mpwem-date-type-option__copy strong {
     text-align: left;
 }
 
-.mpwem-date-step .dFlex,
-.mpwem-date-step ._dFlex {
+.mpwem-date-step .dFlex:not(.mpwem-repeat-dt-pill),
+.mpwem-date-step ._dFlex:not(.mpwem-repeat-dt-pill) {
     display: flex !important;
     flex-wrap: wrap;
     gap: 8px;

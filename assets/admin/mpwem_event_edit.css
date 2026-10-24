@@ -4102,6 +4102,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-ticket-add__pill.is-active {
     color: #1e293b !important;
+    padding-left: 30px !important;
 }
 
 .mpwem-ticket-add__pill-caption {

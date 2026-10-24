@@ -3239,6 +3239,11 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     margin-bottom: 4px;
 }
 
+.mpwem-date-primary-fields__add {
+    justify-self: start;
+    margin-top: 10px;
+}
+
 #mpwem_ticket_summary .mpwem-ticket-summary__list {
     gap: 5px;
 }

@@ -3051,7 +3051,6 @@
                 eyebrow: 'Single Event',
                 summaryTitle: 'Single event schedule',
                 summaryText: 'Review the main event date and any extra dates, then open the full editor when you need to update the schedule.',
-                primaryAction: 'Open Settings',
                 secondaryAction: '+ Add Schedule',
                 modalTitle: 'Manage single event schedule',
                 modalDescription: 'Edit the main event date, time, and any additional single-event dates without leaving this step.',
@@ -3325,13 +3324,20 @@
         context.$summaryIntro.find('p').text(config.summaryText);
 
         context.$summaryActions.empty();
-        context.$summaryActions.append(
-            $('<button type="button" class="button button-secondary"></button>')
-                .attr('data-mpwem-date-modal-open', 'list')
-                .text(config.primaryAction)
-        );
 
-        if (config.secondaryAction) {
+        if (config.primaryAction) {
+            context.$summaryActions.append(
+                $('<button type="button" class="button button-secondary"></button>')
+                    .attr('data-mpwem-date-modal-open', 'list')
+                    .text(config.primaryAction)
+            );
+        }
+
+        // Single Event has no "Open Settings" button, and its
+        // "+ Add Schedule" renders after the Starts/Ends fields instead
+        // of here (see renderParticularDateSummary) - every other type
+        // keeps its secondary action in this header toolbar.
+        if (config.secondaryAction && type !== 'no') {
             context.$summaryActions.append(
                 $('<button type="button" class="button button-primary"></button>')
                     .attr('data-mpwem-date-modal-open', 'new')
@@ -3483,6 +3489,14 @@
         const $primaryFields = renderPrimaryDateFieldsBlock($root, type, $modalMount);
         if ($primaryFields && $primaryFields.length) {
             context.$summaryList.append($primaryFields);
+
+            if (config.secondaryAction) {
+                context.$summaryList.append(
+                    $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+                        .attr('data-mpwem-date-modal-open', 'new')
+                        .text(config.secondaryAction)
+                );
+            }
         }
 
         const extraItems = collectSingleEventSummaryItems($modalMount).filter(function(item) {

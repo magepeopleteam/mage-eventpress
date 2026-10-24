@@ -3674,30 +3674,20 @@
 
         const $body = $('<div class="mpwem-ticket-add__body"></div>');
 
-        const $startDateProxy = $('<input type="date">').val(($startDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
-        const $startTimeProxy = $('<input type="time">').val(($startTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
-        const $endDateProxy = $('<input type="date">').val(($endDateInput.val() || '').toString()).addClass('mpwem-ticket-add__date-part');
-        const $endTimeProxy = $('<input type="time">').val(($endTimeInput.val() || '').toString()).addClass('mpwem-ticket-add__time-part');
+        const $startPill = buildPrimaryDateTimePill($startDateInput, $startTimeInput);
+        const $endPill = buildPrimaryDateTimePill($endDateInput, $endTimeInput);
 
         $body.append(
             $('<div class="mpwem-ticket-add__grid"></div>')
                 .append(
                     $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
                         .append($('<label></label>').text('Starts'))
-                        .append(
-                            $('<div class="mpwem-ticket-add__date-row"></div>')
-                                .append($startDateProxy)
-                                .append($startTimeProxy)
-                        )
+                        .append($startPill)
                 )
                 .append(
                     $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
                         .append($('<label></label>').text('Ends'))
-                        .append(
-                            $('<div class="mpwem-ticket-add__date-row"></div>')
-                                .append($endDateProxy)
-                                .append($endTimeProxy)
-                        )
+                        .append($endPill)
                 )
         );
 
@@ -3709,22 +3699,24 @@
         $footer.append($cancelBtn).append($saveBtn);
         $card.append($footer);
 
-        $startDateProxy.on('input change', function() { syncRealFieldValue($startDateInput, $(this).val()); $startDateProxy.removeClass('has-error'); });
-        $startTimeProxy.on('input change', function() { syncRealFieldValue($startTimeInput, $(this).val()); });
-        $endDateProxy.on('input change', function() { syncRealFieldValue($endDateInput, $(this).val()); $endDateProxy.removeClass('has-error'); });
-        $endTimeProxy.on('input change', function() { syncRealFieldValue($endTimeInput, $(this).val()); });
+        $startPill.find('.mpwem-date-input-wrap input[type="hidden"]').on('change', function() {
+            $startPill.removeClass('has-error');
+        });
+        $endPill.find('.mpwem-date-input-wrap input[type="hidden"]').on('change', function() {
+            $endPill.removeClass('has-error');
+        });
 
         $cancelBtn.on('click', function() {
             closeInlineDateAdd($root, { save: false });
         });
 
         $saveBtn.on('click', function() {
-            const startOk = !!($startDateProxy.val() || '').toString();
-            const endOk = !!($endDateProxy.val() || '').toString();
+            const startOk = !!($startPill.find('.mpwem-date-input-wrap input[type="hidden"]').val() || '').toString();
+            const endOk = !!($endPill.find('.mpwem-date-input-wrap input[type="hidden"]').val() || '').toString();
             if (!startOk || !endOk) {
-                $startDateProxy.toggleClass('has-error', !startOk);
-                $endDateProxy.toggleClass('has-error', !endOk);
-                (startOk ? $endDateProxy : $startDateProxy).trigger('focus');
+                $startPill.toggleClass('has-error', !startOk);
+                $endPill.toggleClass('has-error', !endOk);
+                (startOk ? $endPill : $startPill).find('.mpwem-date-input').first().trigger('focus');
                 return;
             }
 
@@ -3732,7 +3724,7 @@
         });
 
         window.setTimeout(function() {
-            $startDateProxy.trigger('focus');
+            $startPill.find('.mpwem-date-input').first().trigger('focus');
         }, 0);
     }
 

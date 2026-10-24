@@ -4570,6 +4570,15 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     box-shadow: 0 2px 10px -4px rgba(30, 27, 75, 0.14);
 }
 
+/* The pill itself carries the border now (its date/time inputs are
+   borderless), so a validation error highlights the whole pill
+   instead of the old .mpwem-ticket-add__group input.has-error rule,
+   which no longer has anything to draw a border on. */
+.mpwem-repeat-dt-pill.has-error {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
 .mpwem-repeat-dt-pill > *:first-child {
     border-right: 1px solid #e2e8f0;
 }

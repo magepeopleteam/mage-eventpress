@@ -3838,14 +3838,23 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 .mpwem-ticket-summary__empty-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0;
     width: 48px;
     height: 48px;
     border-radius: 14px;
     background: #f0eefd;
     color: #5648e0;
+    line-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.mpwem-ticket-summary__empty-icon svg {
+    display: block;
+    margin: 0 auto;
 }
 
 .mpwem-ticket-summary__empty--centered h4,

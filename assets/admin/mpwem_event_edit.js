@@ -998,10 +998,6 @@
                             '<h3>Simple Ticket Type</h3>' +
                             '<p>View pricing at a glance, then open the full editor only when you need details.</p>' +
                         '</div>' +
-                        '<div class="mpwem-ticket-summary__actions">' +
-                            '<button type="button" class="button button-secondary mpwem-ticket-summary__open" data-mpwem-ticket-modal-open="list">Show Details</button>' +
-                            '<button type="button" class="button button-primary mpwem-ticket-summary__add" data-mpwem-ticket-modal-open="new">+ Add New Ticket Type</button>' +
-                        '</div>' +
                     '</div>' +
                     '<div class="mpwem-ticket-summary__list" id="mpwem_ticket_summary_list"></div>' +
                 '</div>'
@@ -1500,6 +1496,26 @@
 
         renderTicketSummaryGlobalQty($root);
 
+        if (!$rows.length) {
+            // Header row only makes sense once a ticket exists under it -
+            // same pattern as renderParticularDateSummary's empty state.
+            context.$summaryList.append(
+                $('<div class="mpwem-ticket-summary__empty mpwem-ticket-summary__empty--centered"></div>')
+                    .append(
+                        $('<span class="mpwem-ticket-summary__empty-icon" aria-hidden="true"></span>')
+                            .html('<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"></path><path d="M13 5v2M13 17v2M13 10.5v3"></path></svg>')
+                    )
+                    .append($('<h4></h4>').text('No ticket types yet'))
+                    .append($('<p></p>').text('Start with one ticket type, then open the editor whenever you need the full pricing table.'))
+                    .append(
+                        $('<button type="button" class="button button-primary"></button>')
+                            .attr('data-mpwem-ticket-modal-open', 'new')
+                            .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create First Ticket')
+                    )
+            );
+            return;
+        }
+
         const $headerRow = $('<div class="mpwem-ticket-summary__header"></div>')
             .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Ticket Type'))
             .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
@@ -1512,18 +1528,6 @@
         $headerRow.append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
 
         context.$summaryList.append($headerRow);
-
-        if (!$rows.length) {
-            context.$summaryList.append(
-                $('<div class="mpwem-ticket-summary__empty"></div>')
-                    .append($('<h4></h4>').text('No ticket types yet'))
-                    .append($('<p></p>').text('Start with one ticket type, then open the editor whenever you need the full pricing table.'))
-                    .append($('<button type="button" class="button button-primary"></button>')
-                        .attr('data-mpwem-ticket-modal-open', 'new')
-                        .text('Create First Ticket'))
-            );
-            return;
-        }
 
         $rows.each(function(index) {
             const $row = $(this);
@@ -1581,6 +1585,14 @@
 
             context.$summaryList.append($item);
         });
+
+        // "Add New Ticket Type" renders after every row, same as
+        // "Add Schedule"/"Add Particular Date" on the Date step.
+        context.$summaryList.append(
+            $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+                .attr('data-mpwem-ticket-modal-open', 'new')
+                .text('Add New Ticket Type')
+        );
 
         enableTicketSummarySort($root, context);
     }
@@ -2351,10 +2363,6 @@
                             '<h3>Simple add-on list</h3>' +
                             '<p>Review optional services at a glance, then open the full editor when you need pricing or quantity details.</p>' +
                         '</div>' +
-                        '<div class="mpwem-ticket-summary__actions">' +
-                            '<button type="button" class="button button-secondary" data-mpwem-extra-modal-open="list">Show Details</button>' +
-                            '<button type="button" class="button button-primary" data-mpwem-extra-modal-open="new">+ Add Extra Service</button>' +
-                        '</div>' +
                     '</div>' +
                     '<div class="mpwem-ticket-summary__list" id="mpwem_extra_service_summary_list"></div>' +
                 '</div>'
@@ -2494,6 +2502,26 @@
 
         context.$summaryList.empty();
 
+        if (!$rows.length) {
+            // Header row only makes sense once a service exists under it -
+            // same pattern as renderTicketSummary's empty state.
+            context.$summaryList.append(
+                $('<div class="mpwem-ticket-summary__empty mpwem-ticket-summary__empty--centered"></div>')
+                    .append(
+                        $('<span class="mpwem-ticket-summary__empty-icon" aria-hidden="true"></span>')
+                            .html('<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8.5L20 6.5V16a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg>')
+                    )
+                    .append($('<h4></h4>').text('No extra services yet'))
+                    .append($('<p></p>').text('Create optional add-ons like meals, merchandise, or upgrades, then manage them in the full editor.'))
+                    .append(
+                        $('<button type="button" class="button button-primary"></button>')
+                            .attr('data-mpwem-extra-modal-open', 'new')
+                            .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create First Extra Service')
+                    )
+            );
+            return;
+        }
+
         context.$summaryList.append(
             $('<div class="mpwem-ticket-summary__header"></div>')
                 .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Extra Service'))
@@ -2501,18 +2529,6 @@
                 .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Qty'))
                 .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'))
         );
-
-        if (!$rows.length) {
-            context.$summaryList.append(
-                $('<div class="mpwem-ticket-summary__empty"></div>')
-                    .append($('<h4></h4>').text('No extra services yet'))
-                    .append($('<p></p>').text('Create optional add-ons like meals, merchandise, or upgrades, then manage them in the full editor.'))
-                    .append($('<button type="button" class="button button-primary"></button>')
-                        .attr('data-mpwem-extra-modal-open', 'new')
-                        .text('Create First Extra Service'))
-            );
-            return;
-        }
 
         $rows.each(function(index) {
             const $row = $(this);
@@ -2538,6 +2554,14 @@
                     .append(buildExtraServiceSummaryActions($root, index))
             );
         });
+
+        // "Add New Extra Service" renders after every row, same as
+        // "Add New Ticket Type" on the Ticket & Pricing step.
+        context.$summaryList.append(
+            $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+                .attr('data-mpwem-extra-modal-open', 'new')
+                .text('Add New Extra Service')
+        );
 
         enableExtraServiceSummarySort($root, context);
     }

@@ -4632,8 +4632,10 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
    the label stays a plain two-item (text, field) space-between row -
    a bare 3rd sibling here previously wrapped onto its own line below. */
 .mpwem-repeat-interval-field {
-    display: inline-flex;
-    align-items: center;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
     gap: 9px;
     flex-shrink: 0;
 }
@@ -4643,9 +4645,13 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     max-width: 72px !important;
     min-height: auto !important;
     height: 44px !important;
+    order: 1;
 }
 
 .mpwem-repeat-interval-suffix {
+    display: inline-block;
+    order: 2;
+    white-space: nowrap;
     font-size: 13px;
     font-weight: 600;
     color: #475569;

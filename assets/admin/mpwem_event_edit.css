@@ -3642,7 +3642,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__header,
 #mpwem_extra_service_summary .mpwem-ticket-summary__item {
-    grid-template-columns: minmax(0, 1fr) minmax(88px, 0.42fr) minmax(64px, 0.28fr);
+    grid-template-columns: minmax(0, 1fr) minmax(88px, 0.42fr) minmax(64px, 0.28fr) minmax(128px, 0.5fr);
     column-gap: 16px;
 }
 

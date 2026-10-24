@@ -2365,6 +2365,7 @@
         }
 
         return {
+            $summary: $summary,
             $summaryList: $summary.find('#mpwem_extra_service_summary_list').first(),
             $modal: $root.find('#mpwem_extra_service_editor_modal').first(),
             $modalMount: $root.find('#mpwem_extra_service_modal_mount').first(),
@@ -2498,6 +2499,7 @@
                 .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Extra Service'))
                 .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
                 .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Qty'))
+                .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'))
         );
 
         if (!$rows.length) {
@@ -2533,8 +2535,330 @@
                         $('<div class="mpwem-ticket-summary__meta mpwem-ticket-summary__meta--capacity"></div>')
                             .append($('<span class="mpwem-ticket-summary__capacity"></span>').text(extraServiceRowQty($row)))
                     )
+                    .append(buildExtraServiceSummaryActions($root, index))
             );
         });
+
+        enableExtraServiceSummarySort($root, context);
+    }
+
+    function buildExtraServiceSummaryActions($root, index) {
+        const $wrap = $('<div class="mpwem-ticket-summary__item-actions"></div>');
+
+        const $editBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--edit" title="Edit" aria-label="Edit extra service"></button>')
+            .html(TICKET_SUMMARY_EDIT_ICON);
+        $editBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openInlineExtraServiceEdit($root, index);
+        });
+
+        const $deleteBtn = $('<button type="button" class="mpwem-ticket-summary__action-btn mpwem-ticket-summary__action-btn--delete" title="Delete" aria-label="Delete extra service"></button>')
+            .html(TICKET_SUMMARY_DELETE_ICON);
+        $deleteBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const $liveRow = getExtraServiceRows($root).eq(index);
+            const $realRemove = $liveRow.find('.mpwem_item_remove').first();
+            if ($realRemove.length) {
+                $realRemove.trigger('click');
+            }
+        });
+
+        const $sortHandle = $('<span class="mpwem-ticket-summary__sort-handle" title="Drag to reorder" aria-label="Drag to reorder" role="img"></span>')
+            .html(TICKET_SUMMARY_GRIP_ICON);
+        $sortHandle.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        $wrap.append($editBtn).append($deleteBtn).append($sortHandle);
+
+        return $wrap;
+    }
+
+    function enableExtraServiceSummarySort($root, context) {
+        if (!context.$summaryList.length || typeof context.$summaryList.sortable !== 'function') {
+            return;
+        }
+
+        if (context.$summaryList.data('ui-sortable')) {
+            context.$summaryList.sortable('destroy');
+        }
+
+        context.$summaryList.sortable({
+            items: '> .mpwem-ticket-summary__item',
+            handle: '.mpwem-ticket-summary__sort-handle',
+            axis: 'y',
+            update: function() {
+                const $container = getExtraServiceRowsContainer($root);
+                if (!$container.length) {
+                    return;
+                }
+
+                const $liveRows = getExtraServiceRows($root);
+                context.$summaryList.find('.mpwem-ticket-summary__item').each(function() {
+                    const oldIndex = parseInt($(this).attr('data-extra-service-row-index'), 10);
+                    if (!Number.isNaN(oldIndex) && $liveRows.eq(oldIndex).length) {
+                        $container.append($liveRows.eq(oldIndex));
+                    }
+                });
+
+                storeSavedExtraServiceSummarySnapshot($root);
+                renderExtraServiceSummary($root);
+            }
+        });
+    }
+
+    const EXTRA_SERVICE_ROW_FIELD_NAMES = [
+        'option_name[]',
+        'option_price[]',
+        'option_qty[]',
+        'option_qty_type[]'
+    ];
+
+    function captureExtraServiceRowFieldValues($row) {
+        const values = {};
+        EXTRA_SERVICE_ROW_FIELD_NAMES.forEach(function(name) {
+            const $field = $row.find('[name="' + name + '"]').first();
+            if ($field.length) {
+                values[name] = ($field.val() || '').toString();
+            }
+        });
+        return values;
+    }
+
+    function getInlineExtraServiceAddCard($root) {
+        const context = getExtraServiceModalContext($root);
+        if (!context.$summary.length) {
+            return $();
+        }
+
+        let $card = context.$summary.next('#mpwem_extra_service_summary_add');
+        if (!$card.length) {
+            $card = $('<div class="mpwem-ticket-add" id="mpwem_extra_service_summary_add"></div>');
+            context.$summary.after($card);
+        }
+
+        return $card;
+    }
+
+    function closeInlineExtraServiceAdd($root, opts) {
+        opts = opts || {};
+        const $card = getInlineExtraServiceAddCard($root);
+        const $row = $card.data('mpwemInlineAddRow');
+        const mode = $card.data('mpwemInlineAddMode') || 'add';
+        const original = $card.data('mpwemInlineAddOriginal');
+
+        if (!opts.save) {
+            if (mode === 'edit' && $row && $row.length && original) {
+                Object.keys(original).forEach(function(name) {
+                    const $field = $row.find('[name="' + name + '"]').first();
+                    if ($field.length) {
+                        syncRealFieldValue($field, original[name]);
+                    }
+                });
+            } else if ($row && $row.length && $row.closest('body').length) {
+                $row.remove();
+            }
+        }
+
+        $card.removeData('mpwemInlineAddRow mpwemInlineAddMode mpwemInlineAddOriginal').removeClass('is-open').empty();
+
+        storeSavedExtraServiceSummarySnapshot($root);
+        renderExtraServiceSummary($root);
+    }
+
+    function renderInlineExtraServiceAddForm($root, $row, opts) {
+        opts = opts || {};
+        const isEdit = opts.mode === 'edit';
+        const $card = getInlineExtraServiceAddCard($root);
+        $card.empty().addClass('is-open');
+
+        const $nameInput = $row.find('[name="option_name[]"]').first();
+        const $priceInput = $row.find('[name="option_price[]"]').first();
+        const $qtyInput = $row.find('[name="option_qty[]"]').first();
+        const $qtyTypeSelect = $row.find('[name="option_qty_type[]"]').first();
+
+        const headIcon = isEdit
+            ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+
+        const $headTitleRow = $('<div class="mpwem-ticket-add__head-title"></div>')
+            .append($('<h3></h3>').text(isEdit ? 'Edit Extra Service' : 'Add Extra Service'));
+
+        const existingName = ($nameInput.val() || '').toString().trim();
+        if (isEdit && existingName) {
+            $headTitleRow.append($('<span class="mpwem-ticket-add__head-chip"></span>').text(existingName));
+        }
+
+        $card.append(
+            $('<div class="mpwem-ticket-add__head"></div>')
+                .append($('<span class="mpwem-ticket-add__head-icon"></span>').html(headIcon))
+                .append(
+                    $('<div class="mpwem-ticket-add__head-copy"></div>')
+                        .append($headTitleRow)
+                        .append($('<p></p>').text(isEdit ? 'Update the price, quantity, or how it’s shown.' : 'Optional add-ons like meals, merchandise, or upgrades.'))
+                )
+        );
+
+        const $body = $('<div class="mpwem-ticket-add__body"></div>');
+        const $core = $('<div class="mpwem-ticket-add__core"></div>');
+
+        const $nameProxy = $('<input type="text" placeholder="e.g. T-Shirt">').val(($nameInput.val() || '').toString());
+        $core.append(
+            $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Service Name'))
+                .append($nameProxy)
+        );
+
+        const $priceProxy = $('<input type="text" inputmode="decimal" placeholder="0.00">').val(($priceInput.val() || '').toString());
+        $core.append(
+            $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Price'))
+                .append($priceProxy)
+        );
+
+        const $qtyProxy = $('<input type="number" placeholder="100">').val(($qtyInput.val() || '').toString());
+        $core.append(
+            $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Available Qty'))
+                .append($qtyProxy)
+        );
+
+        $body.append($core);
+
+        const qtyTypeVal = ($qtyTypeSelect.val() || 'inputbox').toString();
+
+        const $qtyIndicator = $('<div class="mpwem-ticket-add__pill-indicator"></div>');
+        const $pillInput = $('<button type="button" class="mpwem-ticket-add__pill"></button>')
+            .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2.5"/><path d="M7 12h6"/></svg><span>Input Box</span>')
+            .toggleClass('is-active', qtyTypeVal === 'inputbox');
+        const $pillDropdown = $('<button type="button" class="mpwem-ticket-add__pill"></button>')
+            .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2.5"/><path d="M15 10l2 2-2 2"/></svg><span>Dropdown List</span>')
+            .toggleClass('is-active', qtyTypeVal === 'dropdown');
+
+        function updateExtraQtyIndicator(type) {
+            $qtyIndicator.css('left', type === 'dropdown' ? 'calc(50% + 1px)' : '3px');
+        }
+        updateExtraQtyIndicator(qtyTypeVal);
+
+        $body.append(
+            $('<div class="mpwem-ticket-add__field"></div>')
+                .append($('<label></label>').text('Quantity shown as'))
+                .append(
+                    $('<div class="mpwem-ticket-add__pills"></div>').append($qtyIndicator).append($pillInput).append($pillDropdown)
+                )
+        );
+
+        $pillInput.on('click', function() {
+            syncRealFieldValue($qtyTypeSelect, 'inputbox');
+            $qtyTypeSelect.trigger('change');
+            $pillInput.addClass('is-active');
+            $pillDropdown.removeClass('is-active');
+            updateExtraQtyIndicator('inputbox');
+        });
+        $pillDropdown.on('click', function() {
+            syncRealFieldValue($qtyTypeSelect, 'dropdown');
+            $qtyTypeSelect.trigger('change');
+            $pillDropdown.addClass('is-active');
+            $pillInput.removeClass('is-active');
+            updateExtraQtyIndicator('dropdown');
+        });
+
+        $card.append($body);
+
+        const $footer = $('<div class="mpwem-ticket-add__footer"></div>');
+        const $cancelBtn = $('<button type="button" class="button"></button>').text('Cancel');
+        const $saveBtn = $('<button type="button" class="button button-primary mpwem-ticket-add__save"></button>').text(isEdit ? 'Save Changes' : 'Save Extra Service');
+        $footer.append($cancelBtn).append($saveBtn);
+        $card.append($footer);
+
+        $nameProxy.on('input', function() { syncRealFieldValue($nameInput, $(this).val()); $nameProxy.removeClass('has-error'); });
+        $priceProxy.on('input', function() { syncRealFieldValue($priceInput, $(this).val()); });
+        $qtyProxy.on('input', function() { syncRealFieldValue($qtyInput, $(this).val()); });
+
+        $cancelBtn.on('click', function() {
+            closeInlineExtraServiceAdd($root, { save: false });
+        });
+
+        $saveBtn.on('click', function() {
+            const name = ($nameProxy.val() || '').toString().trim();
+            if (!name) {
+                $nameProxy.addClass('has-error').trigger('focus');
+                return;
+            }
+
+            syncRealFieldValue($nameInput, name);
+            syncRealFieldValue($priceInput, ($priceProxy.val() || '').toString());
+            syncRealFieldValue($qtyInput, ($qtyProxy.val() || '').toString());
+            closeInlineExtraServiceAdd($root, { save: true });
+        });
+
+        window.setTimeout(function() {
+            $nameProxy.trigger('focus');
+        }, 0);
+    }
+
+    function openInlineExtraServiceAdd($root) {
+        const $card = getInlineExtraServiceAddCard($root);
+        if ($card.hasClass('is-open')) {
+            const wasAdding = $card.data('mpwemInlineAddMode') !== 'edit';
+            closeInlineExtraServiceAdd($root, { save: false });
+            if (wasAdding) {
+                return;
+            }
+        }
+
+        const context = getExtraServiceModalContext($root);
+        const $addButton = context.$modalMount.find('.mpwem_add_item').first();
+        if (!$addButton.length) {
+            return;
+        }
+
+        try {
+            $addButton.trigger('click');
+        } catch (err) {
+            /* A shared add-item handler may throw (e.g. a dependency not yet
+               loaded) after it has already appended the row; don't let that
+               stop the inline form below from rendering. */
+        }
+
+        window.setTimeout(function() {
+            const $row = getExtraServiceRows($root).last();
+            if (!$row.length) {
+                return;
+            }
+            $card.data('mpwemInlineAddRow', $row);
+            $card.data('mpwemInlineAddMode', 'add');
+            renderInlineExtraServiceAddForm($root, $row, { mode: 'add' });
+        }, 100);
+    }
+
+    function openInlineExtraServiceEdit($root, rowIndex) {
+        const $card = getInlineExtraServiceAddCard($root);
+        const $row = getExtraServiceRows($root).eq(rowIndex);
+        if (!$row.length) {
+            return;
+        }
+
+        const editingThisRow = $card.hasClass('is-open')
+            && $card.data('mpwemInlineAddMode') === 'edit'
+            && $card.data('mpwemInlineAddRow')
+            && $card.data('mpwemInlineAddRow')[0] === $row[0];
+
+        if ($card.hasClass('is-open')) {
+            closeInlineExtraServiceAdd($root, { save: false });
+            if (editingThisRow) {
+                return;
+            }
+        }
+
+        $card.data('mpwemInlineAddRow', $row);
+        $card.data('mpwemInlineAddMode', 'edit');
+        $card.data('mpwemInlineAddOriginal', captureExtraServiceRowFieldValues($row));
+
+        renderInlineExtraServiceAddForm($root, $row, { mode: 'edit' });
     }
 
     function openExtraServiceModal($root, mode, rowIndex) {
@@ -2636,6 +2960,12 @@
         $root.on('click.mpwemExtraModal', '[data-mpwem-extra-modal-open]', function(e) {
             e.preventDefault();
             const mode = $(this).attr('data-mpwem-extra-modal-open') || 'list';
+
+            if (mode === 'new') {
+                openInlineExtraServiceAdd($root);
+                return;
+            }
+
             const rowIndex = parseInt($(this).attr('data-extra-service-row-index'), 10);
             openExtraServiceModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
         });

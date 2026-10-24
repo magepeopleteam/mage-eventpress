@@ -10100,15 +10100,33 @@ body.mpwem-drag-scroll-active {
     width: 100%;
 }
 
+/* Empty state: a row-less tbody otherwise just leaves blank space
+   between the table and the "Add new Time Slot" button. */
+.mpwem-date-time-slots-table tbody:not(:has(*)) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 26px 16px;
+    color: #9aa5b4;
+    text-align: center;
+}
+
+.mpwem-date-time-slots-table tbody:not(:has(*))::before {
+    content: "No time slots set for this day yet.";
+    font-size: 12.5px;
+    color: #9aa5b4;
+}
+
 .mpwem-date-time-slots-table tr.mpwem_remove_area {
     display: grid;
-    grid-template-columns: minmax(220px, 1fr) 180px 86px;
-    gap: 8px;
+    grid-template-columns: minmax(160px, 1fr) auto 32px;
+    gap: 12px;
     align-items: center;
     width: 100%;
-    padding: 10px;
-    background: #f8fafc;
-    border: 1px solid #d9e2ef;
+    padding: 10px 12px;
+    background: #fafbfd;
+    border: 1px solid #e7eaf0;
     border-radius: 12px;
     box-sizing: border-box;
 }
@@ -10127,28 +10145,57 @@ body.mpwem-drag-scroll-active {
     margin: 0;
 }
 
-.mpwem-date-time-slots-table input[type="text"].formControl,
-.mpwem-date-time-slots-table .mpwem-time-input {
-    width: 100% !important;
-    height: 44px !important;
-    border: 1px solid #d9e2ef !important;
-    border-radius: 10px !important;
-    background: #fff !important;
-    font-size: 14px !important;
-}
-
+/* The row card (tr.mpwem_remove_area) already carries the border/
+   background, so its own text input reads as plain seamless text
+   instead of a second nested box. */
 .mpwem-date-time-slots-table input[type="text"].formControl {
-    padding: 10px 12px !important;
+    width: 100% !important;
+    height: auto !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding: 4px 0 !important;
+    font-size: 13.5px !important;
+    font-weight: 650;
+    color: var(--mpwem-text);
 }
 
-.mpwem-date-time-slots-table input[type="text"].formControl:focus,
-.mpwem-date-time-slots-table .mpwem-time-input:focus {
-    border-color: var(--mpwem-primary) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+.mpwem-date-time-slots-table input[type="text"].formControl:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none;
 }
 
 .mpwem-date-time-slots-table .mpwem-time-input-wrap {
-    width: 100%;
+    display: inline-flex !important;
+    align-items: center;
+    width: auto;
+    padding: 7px 12px;
+    border: 1px solid #e7eaf0;
+    border-radius: 9px;
+    background: #fff;
+    flex-shrink: 0;
+}
+
+.mpwem-date-time-slots-table .mpwem-time-input-wrap::before {
+    display: none;
+}
+
+.mpwem-date-time-slots-table .mpwem-time-input {
+    width: auto !important;
+    min-width: 76px;
+    height: auto !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: 13px !important;
+    font-weight: 650 !important;
+}
+
+.mpwem-date-time-slots-table .mpwem-time-input:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none;
 }
 
 .mpwem-date-time-slots-table ._w_150 {
@@ -10165,10 +10212,20 @@ body.mpwem-drag-scroll-active {
     width: 100%;
 }
 
-.mpwem-date-time-slots-table .mpwem_item_remove,
+/* No drag handle in the simplified row - reordering by number isn't a
+   common need here, and it decluttered Off Dates the same way. */
 .mpwem-date-time-slots-table .mpwem_sortable_button {
+    display: none !important;
+}
+
+.mpwem-date-time-slots-table .mpwem_item_remove {
     opacity: 1 !important;
     visibility: visible !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
 }
 
 #mep_disable_ticket_time .mpwem_add_item {

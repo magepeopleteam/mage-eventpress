@@ -3100,6 +3100,9 @@
             const $summaryMarkup = $(
                 '<div class="mpwem-ticket-summary" id="mpwem_particular_date_summary" style="display:none;">' +
                     '<div class="mpwem-ticket-summary__toolbar">' +
+                        '<span class="mpwem-ticket-summary__icon" aria-hidden="true">' +
+                            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>' +
+                        '</span>' +
                         '<div class="mpwem-ticket-summary__intro">' +
                             '<span class="mpwem-ticket-summary__eyebrow"></span>' +
                             '<h3></h3>' +
@@ -3492,18 +3495,21 @@
         const primaryItem = items.find(function(item) { return item.isPrimary; });
 
         if (!primaryItem) {
-            // Matches the empty state Particular Dates/Tickets/Extra
-            // Services already use - without it, this step showed
-            // nothing but a bare "+ Add Schedule" button with no
-            // explanation of what was missing.
+            // Without this, the step showed nothing but a bare
+            // "+ Add Schedule" button with no explanation of what was
+            // missing.
             context.$summaryList.append(
-                $('<div class="mpwem-ticket-summary__empty"></div>')
+                $('<div class="mpwem-ticket-summary__empty mpwem-ticket-summary__empty--centered"></div>')
+                    .append(
+                        $('<span class="mpwem-ticket-summary__empty-icon" aria-hidden="true"></span>')
+                            .html('<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>')
+                    )
                     .append($('<h4></h4>').text('No schedule set yet'))
                     .append($('<p></p>').text('Add a start and end date & time so people know when this event happens.'))
                     .append(
                         $('<button type="button" class="button button-primary"></button>')
                             .attr('data-mpwem-date-modal-open', 'new')
-                            .text('Add Schedule')
+                            .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add Schedule')
                     )
             );
             return;

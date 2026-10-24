@@ -3108,19 +3108,31 @@ select.mpwem-global-qty-field__input {
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__toolbar {
-    position: relative;
+    display: flex !important;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff;
+    border-color: #e7eaf0;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #5648e0;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__intro {
+    min-width: 0;
+    flex: 1;
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__eyebrow {
-    position: absolute;
-    top: 0;
-    left: 16px;
-    z-index: 2;
-    padding: 0 8px;
-    background: #f8fbff;
-    line-height: 1;
-    transform: translateY(-50%);
-    pointer-events: none;
+    color: #9aa5b4;
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__intro h3 {
@@ -3777,6 +3789,37 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     background: var(--mpwem-btn-primary-bg) !important;
     color: var(--mpwem-btn-primary-text) !important;
     border-color: var(--mpwem-btn-primary-bg) !important;
+}
+
+/* Single Event's empty state: centered, with an icon badge, instead
+   of the left-aligned text-only layout the shared .mpwem-ticket-
+   summary__empty block above otherwise draws. */
+.mpwem-ticket-summary__empty--centered {
+    justify-items: center;
+    text-align: center;
+    padding: 40px 24px;
+}
+
+.mpwem-ticket-summary__empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #f0eefd;
+    color: #5648e0;
+}
+
+.mpwem-ticket-summary__empty--centered h4,
+.mpwem-ticket-summary__empty--centered p {
+    max-width: 320px;
+}
+
+.mpwem-ticket-summary__empty--centered .button-primary {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 7px;
 }
 
 /* Global Quantity — Simple Ticket Type summary */

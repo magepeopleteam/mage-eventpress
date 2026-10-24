@@ -9538,70 +9538,103 @@ body.mpwem-drag-scroll-active {
 }
 
 .mep-special-datetime .mep-special-dates-wrap {
-    border: 1px solid #d9e2ef;
-    border-radius: 12px;
-    background: #fff;
-    overflow-x: auto;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    overflow: visible;
 }
 
+/* Special Dates: each row of the outer table becomes a card (label +
+   start/end date pills + remove at top, that date's own time list
+   below) instead of a scrolling, fixed-width table row. The existing
+   add/remove/clone machinery (incl. the per-row uniqid()'d time field
+   names) is untouched - only the visual treatment changes. */
 .mep-special-datetime .mep_special_on_dates_table {
+    display: block !important;
     width: 100%;
-    min-width: 980px;
+    min-width: 0;
     margin: 0 !important;
     border: 0 !important;
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
+    background: transparent !important;
     box-shadow: none !important;
-    table-layout: fixed;
+    table-layout: auto;
 }
 
-.mep-special-datetime .mep_special_on_dates_table>thead>tr>th:nth-child(1),
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td:nth-child(1) {
-    width: 15%;
+.mep-special-datetime .mep_special_on_dates_table > thead {
+    display: none;
 }
 
-.mep-special-datetime .mep_special_on_dates_table>thead>tr>th:nth-child(2),
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td:nth-child(2),
-.mep-special-datetime .mep_special_on_dates_table>thead>tr>th:nth-child(3),
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td:nth-child(3) {
-    width: 16%;
+.mep-special-datetime .mep_special_on_dates_table > tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
 }
 
-.mep-special-datetime .mep_special_on_dates_table>thead>tr>th:nth-child(4),
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td:nth-child(4) {
-    width: 43%;
+.mep-special-datetime .mep_special_on_dates_table > tbody:not(:has(*)) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    border: 1.5px dashed #e7eaf0;
+    border-radius: 14px;
+    color: #9aa5b4;
+    font-size: 12.5px;
 }
 
-.mep-special-datetime .mep_special_on_dates_table>thead>tr>th:nth-child(5),
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td:nth-child(5) {
-    width: 10%;
-    text-align: center;
+.mep-special-datetime .mep_special_on_dates_table > tbody:not(:has(*))::before {
+    content: "No special dates set yet.";
 }
 
-.mep-special-datetime .mep_special_on_dates_table>thead>tr>th {
-    padding: 10px 8px !important;
-    background: #eef4fb !important;
-    border-bottom: 1px solid #d9e2ef !important;
-    color: #31445f !important;
-    font-size: 12px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.04em !important;
-    text-transform: uppercase;
-}
-
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td {
-    padding: 8px !important;
-    border-bottom: 1px solid #eef2f7 !important;
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area {
+    display: grid !important;
+    grid-template-columns: minmax(160px, 1.2fr) auto auto 32px;
+    grid-template-areas:
+        "label start end action"
+        "times times times times";
+    gap: 10px 14px;
+    align-items: center;
+    width: 100%;
+    padding: 16px 18px !important;
+    border: 1px solid #e7eaf0 !important;
+    border-radius: 16px;
     background: #fff !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    box-sizing: border-box;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area:hover {
+    background: #fff !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td {
+    display: block !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
     vertical-align: top;
 }
 
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr:last-child>td {
-    border-bottom: 0 !important;
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(1) {
+    grid-area: label;
+    min-width: 0;
 }
 
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr:hover>td {
-    background: #fbfdff !important;
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(2) {
+    grid-area: start;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(3) {
+    grid-area: end;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(4) {
+    grid-area: times;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(5) {
+    grid-area: action;
+    justify-self: end;
 }
 
 .mep-special-datetime .mep_special_on_dates_table label {
@@ -9609,91 +9642,218 @@ body.mpwem-drag-scroll-active {
     margin: 0;
 }
 
-.mep-special-datetime .mep_special_on_dates_table input[type="text"],
-.mep-special-datetime .mep_special_on_dates_table input[type="time"],
-.mep-special-datetime .mep_special_on_dates_table .formControl,
-.mep-special-datetime .mep_special_on_dates_table .name_validation {
+/* Label reads as plain bold text - the card itself is the only box now. */
+.mep-special-datetime .mep_special_on_dates_table input[name="mep_special_date_name[]"] {
     width: 100% !important;
     max-width: 100% !important;
-    height: 40px !important;
-    padding: 9px 10px !important;
-    border: 1px solid #d9e2ef !important;
-    border-radius: 9px !important;
-    background: #fff !important;
-    font-size: 13px !important;
+    height: auto !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 2px 0 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: var(--mpwem-text) !important;
     box-sizing: border-box;
 }
 
-.mep-special-datetime .mep_special_on_dates_table .mpwem-date-input,
-.mep-special-datetime .mep_special_on_dates_table .mpwem-time-input {
-    height: 40px !important;
-    text-align: center;
+.mep-special-datetime .mep_special_on_dates_table input[name="mep_special_date_name[]"]:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none;
 }
 
-.mep-special-datetime .mep_special_on_dates_table .mpwem-date-input-wrap,
-.mep-special-datetime .mep_special_on_dates_table .mpwem-time-input-wrap {
-    width: 100%;
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area .mpwem-date-input-wrap {
+    display: inline-flex !important;
+    align-items: center;
+    width: auto !important;
+    padding: 6px 10px;
+    border: 1px solid #e7eaf0;
+    border-radius: 9px;
+    background: #fafbfd;
 }
 
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td>.mpwem_settings_area {
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area .mpwem-date-input-wrap::before {
+    display: none;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area .mpwem-date-input {
+    width: auto !important;
+    min-width: 110px;
+    max-width: none !important;
+    height: auto !important;
+    border: none !important;
+    background: transparent !important;
     padding: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 650 !important;
+    text-align: left !important;
 }
 
-.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table {
-    display: block;
-    width: 100%;
-    margin: 0 !important;
-    border: 1px solid #e2e8f0 !important;
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-    border-radius: 10px;
-    overflow: hidden;
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area .mpwem-date-input:focus {
+    border: none !important;
     box-shadow: none !important;
 }
 
-.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table thead,
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(5) .allCenter,
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(5) .buttonGroup {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    width: auto !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area .mpwem_sortable_button {
+    display: none !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(5) .mpwem_item_remove {
+    width: 28px !important;
+    height: 28px !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area > td:nth-child(4) > .mpwem_settings_area {
+    padding: 12px 0 0 !important;
+    border-top: 1px solid #f1f3f8;
+}
+
+/* Inner (per-date) times table: card rows instead of a grid-styled table. */
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table {
+    display: block !important;
+    width: 100%;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table thead {
+    display: none;
+}
+
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table tbody {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     width: 100%;
 }
 
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table tbody:not(:has(*)) {
+    padding: 8px 2px;
+    color: #9aa5b4;
+    font-size: 12px;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table tbody:not(:has(*))::before {
+    content: "No times set for this date yet.";
+}
+
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table tr {
-    display: grid;
-    grid-template-columns: minmax(90px, 1fr) 120px 76px;
-    gap: 8px;
+    display: flex !important;
     align-items: center;
+    gap: 10px;
     width: 100%;
+    padding: 9px 12px;
+    background: #fafbfd;
+    border: 1px solid #e7eaf0;
+    border-radius: 11px;
     box-sizing: border-box;
 }
 
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table th,
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table td {
-    padding: 6px !important;
-    border-bottom: 1px solid #eef2f7 !important;
+    padding: 0 !important;
+    border: 0 !important;
     width: auto !important;
     min-width: 0 !important;
     box-sizing: border-box;
     text-align: left;
 }
 
-.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table th:last-child,
-.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table td:last-child {
-    text-align: center;
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table td:first-child {
+    flex: 1;
+    min-width: 0;
 }
 
-.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table tr:last-child td {
-    border-bottom: 0 !important;
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table th:last-child,
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table td:last-child {
+    text-align: left;
+    flex-shrink: 0;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area input[name^="mep_special_time_label_"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 2px 0 !important;
+    font-size: 13px !important;
+    font-weight: 650 !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area input[name^="mep_special_time_label_"]:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem-time-input-wrap {
+    display: inline-flex !important;
+    align-items: center;
+    width: auto !important;
+    padding: 6px 11px;
+    border: 1px solid #e7eaf0;
+    border-radius: 9px;
+    background: #fff;
+    flex-shrink: 0;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem-time-input-wrap::before {
+    display: none;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem-time-input {
+    width: auto !important;
+    min-width: 60px;
+    max-width: none !important;
+    height: auto !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 650 !important;
+    text-align: left !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem-time-input:focus {
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table .allCenter,
-.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table .buttonGroup,
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td:nth-child(5) .allCenter,
-.mep-special-datetime .mep_special_on_dates_table>tbody>tr>td:nth-child(5) .buttonGroup {
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table .buttonGroup {
     display: flex !important;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
+    justify-content: flex-end;
+    gap: 6px;
+    width: auto !important;
+    flex-shrink: 0;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table .mpwem_sortable_button {
+    display: none !important;
+}
+
+.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area table .mpwem_item_remove {
+    width: 24px !important;
+    height: 24px !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    border-radius: 7px !important;
 }
 
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem_add_item {
@@ -9701,22 +9861,27 @@ body.mpwem-drag-scroll-active {
     visibility: visible !important;
     opacity: 1 !important;
     margin-top: 8px !important;
+    border: 1px dashed #d9dbe6 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: #697586 !important;
 }
 
-.mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem_add_item {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+.mpwem-date-step .mpwem_add_item {
+    margin-top: 14px !important;
 }
 
-.mep-special-datetime .mep_special_on_dates_table .buttonGroup {
-    justify-content: center;
-    gap: 8px;
-}
-
-.mpwem-date-step .mpwem_add_item,
 .mpwem-date-step .ttbm_add_new_special_date {
     margin-top: 14px !important;
+    width: 100%;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 12px !important;
+    border: 1.5px dashed #d9dbe6 !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    color: var(--mpwem-primary) !important;
 }
 
 .mpwem-ticket-off-dates-field .justify_between {
@@ -10898,6 +11063,15 @@ input.mpwem-custom-calendar__year {
     .mpwem-repeat-special-panel {
         padding: 16px !important;
         border-radius: 16px !important;
+    }
+
+    .mep-special-datetime .mep_special_on_dates_table > tbody > tr.mpwem_remove_area {
+        grid-template-columns: 1fr 32px;
+        grid-template-areas:
+            "label action"
+            "start start"
+            "end end"
+            "times times";
     }
 
     .mpwem-ticket-off-dates-field .justify_between {

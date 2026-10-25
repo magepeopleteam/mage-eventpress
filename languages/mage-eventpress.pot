@@ -4403,11 +4403,11 @@ msgid "Attendee Registration Form"
 msgstr ""
 
 #: admin/MPWEM_Welcome.php:713
-msgid "Build custom attendee forms with conditional logic. Available with the Form Builder / PRO features."
+msgid "Build custom attendee forms with conditional logic. Included in Event Booking Manager PRO, so there is no separate Form Builder plugin to install."
 msgstr ""
 
 #: admin/MPWEM_Welcome.php:715
-msgid "Edit any event → scroll to Attendee Registration Form."
+msgid "Edit any event → Advanced step → Attendee Form: switch it on, then pick Custom Form or a saved form from Events → Global Reg Form."
 msgstr ""
 
 #: admin/MPWEM_Welcome.php:716

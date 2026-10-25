@@ -710,9 +710,9 @@
                                 <div id="doc-attendee" class="mpwem-doc-panel">
                                     <div class="doc-pro-section">
                                         <h3><i class="fas fa-clipboard-list"></i> <?php esc_html_e( 'Attendee Registration Form', 'mage-eventpress' ); ?> <?php echo $pro_badge; ?></h3>
-                                        <p><?php esc_html_e( 'Build custom attendee forms with conditional logic. Available with the Form Builder / PRO features.', 'mage-eventpress' ); ?></p>
+                                        <p><?php esc_html_e( 'Build custom attendee forms with conditional logic. Included in Event Booking Manager PRO, so there is no separate Form Builder plugin to install.', 'mage-eventpress' ); ?></p>
                                         <ul>
-                                            <li><?php esc_html_e( 'Edit any event → scroll to Attendee Registration Form.', 'mage-eventpress' ); ?></li>
+                                            <li><?php esc_html_e( 'Edit any event → Advanced step → Attendee Form: switch it on, then pick Custom Form or a saved form from Events → Global Reg Form.', 'mage-eventpress' ); ?></li>
                                             <li><?php esc_html_e( 'Add text, select, checkbox, and other field types.', 'mage-eventpress' ); ?></li>
                                             <li><?php esc_html_e( 'Apply conditions (e.g. show School Name only for Child tickets).', 'mage-eventpress' ); ?></li>
                                         </ul>

@@ -627,6 +627,109 @@ body.mpwem-event-wizard-screen #wpcontent {
     display: none;
 }
 
+/* Payment status gets its own standalone card, before the "Event Mode
+   Manual" help card, in the Tickets step sidebar. JS moves
+   .mpwem-ticket-warnings into #mpwem_wizard_mode_help_card_banner (the
+   card's body) - this just removes the banner's own margin since the
+   card body padding already provides spacing, and makes the action
+   button full width to match the sidebar's other cards. */
+#mpwem_wizard_mode_help_card_banner:empty {
+    display: none;
+}
+
+#mpwem_wizard_payment_status_card:has(#mpwem_wizard_mode_help_card_banner:empty) {
+    display: none;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-ticket-warnings {
+    margin-bottom: 0 !important;
+}
+
+/* Icon-badge head + body, matching the rest of the sidebar's card
+   language, instead of one flat colored strip. Reuses the banner's
+   existing row (icon+title+desc) as the head and its button wrapper as
+   the body - no markup change, so the Classic editor (which renders
+   this same banner elsewhere) is unaffected. */
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner,
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner.mpwem-payment-banner--success,
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner.mpwem-payment-banner--warning {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    border: none !important;
+    border-radius: 14px !important;
+    overflow: hidden;
+    background: #fff !important;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner__row {
+    display: block !important;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eef1f5;
+    background: #fff !important;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner__row > .mpwem-payment-banner__icon {
+    float: left;
+    margin-right: 12px;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner__icon {
+    border-radius: 11px !important;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner__row > div:last-child {
+    overflow: hidden;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner > div:last-child {
+    padding: 14px 16px;
+    background: #fff !important;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner__btn {
+    width: 100%;
+    justify-content: center;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner__title {
+    display: block !important;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Each enabled gateway gets its own small pill now (instead of one long
+   "WooCommerce (A, B, C)" string - see the inline script in
+   MPWEM_Ticket_Price_Settings.php), so let them wrap onto their own line
+   below "Active:" rather than fighting for space on one line. */
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-banner__desc {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-status__methods {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-width: 100%;
+}
+
+#mpwem_wizard_mode_help_card_banner .mpwem-payment-method-pill {
+    display: inline-flex !important;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 9px !important;
+    font-size: 10.5px !important;
+}
+
 .mpwem-payment-method-pill {
     display: inline-flex !important;
     align-items: center;
@@ -1093,6 +1196,80 @@ body.mpwem-event-wizard-screen #wpcontent {
     border-radius: 0;
 }
 
+/* Compact Flat density: tighter padding and smaller, uppercase section
+   labels for the merged sidebar panel only - every other wizard step's
+   .mpwem-card__head/__body keeps its normal (larger) size untouched. */
+.mpwem-sidebar-single-card .mpwem-card__head {
+    padding: 12px 16px;
+}
+
+.mpwem-sidebar-single-card .mpwem-card__head p {
+    margin-top: 2px;
+    font-size: 11px;
+    color: #9aa5b4;
+}
+
+.mpwem-sidebar-single-card .mpwem-card__body {
+    padding: 13px 16px;
+}
+
+.mpwem-sidebar-single-card .mpwem-field {
+    margin-bottom: 0;
+}
+
+.mpwem-sidebar-single-card .mpwem-field__label {
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.mpwem-sidebar-single-card .mpwem-input,
+.mpwem-sidebar-single-card .mpwem-taxonomy-card__tags-input {
+    padding: 8px 10px;
+    font-size: 12.5px;
+    border-radius: 7px;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-checklist__label {
+    padding: 5px 10px;
+    font-size: 11.5px;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-card__help,
+.mpwem-sidebar-single-card .mpwem-taxonomy-card__suggestions-label {
+    font-size: 11px;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-card__manage-link {
+    height: 28px;
+    padding: 0 10px;
+    font-size: 11.5px;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-card__toggle {
+    min-height: 24px !important;
+    font-size: 11px !important;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-card__chip-suggest {
+    padding: 5px 9px !important;
+    font-size: 11px !important;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-create {
+    margin-top: 10px;
+    padding: 12px;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-create__input {
+    min-height: 36px;
+    font-size: 12.5px;
+}
+
+.mpwem-sidebar-single-card .mpwem-taxonomy-create__button {
+    min-height: 36px;
+    min-width: 90px;
+}
+
 .mpwem-card__head {
     padding: 14px 16px;
     background: #fff;
@@ -1106,6 +1283,27 @@ body.mpwem-event-wizard-screen #wpcontent {
     margin: 0;
     font-size: 16px;
     font-weight: 700;
+    text-align: left;
+}
+
+/* Section head pill tag (Option D) - the standard going forward for
+   every .mpwem-card__head's small category label, replacing icon
+   badges. Sits above the h2, so give it a bottom margin instead of
+   relying on the h2's own top margin (which stays 0 for heads that
+   don't use a pill). */
+.mpwem-section-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 10px;
+    margin-bottom: 8px;
+    border-radius: 999px;
+    background: #f0eefd;
+    color: var(--mpwem-primary, #5648e0);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 .mpwem-card__head p {
@@ -2689,6 +2887,25 @@ select.mpwem-global-qty-field__input {
     color: var(--mpwem-muted) !important;
 }
 
+/* The section-pill tag is also a <span> inside ._bg_light_padding, but
+   it must keep its own pill look rather than inherit the description
+   text styling above. */
+._bg_light_padding span.mpwem-section-pill,
+._bg_light_padding_bB span.mpwem-section-pill {
+    display: inline-flex !important;
+    align-items: center;
+    height: 22px;
+    margin: 0 0 8px !important;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: #f0eefd;
+    color: var(--mpwem-primary, #5648e0) !important;
+    font-size: 10.5px !important;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
 ._padding,
 ._padding_bt {
     padding: 24px !important;
@@ -2725,12 +2942,11 @@ select.mpwem-global-qty-field__input {
 .mpwem-featured-image__preview {
     position: relative;
     background: #f1f5f9;
-    border-radius: 8px;
+    border-radius: 12px;
     aspect-ratio: 16/9;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
     overflow: hidden;
 }
 
@@ -2740,31 +2956,93 @@ select.mpwem-global-qty-field__input {
     object-fit: cover;
 }
 
-.mpwem-featured-image__meta {
+.mpwem-featured-image__actions {
     position: absolute;
-    left: 10px;
-    bottom: 10px;
-    max-width: calc(100% - 20px);
-    padding: 4px 9px;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, 0.55);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
 }
 
-.mpwem-featured-image__actions {
+.mpwem-event-wizard .mpwem-featured-image__actions .button.mpwem-featured-select {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 13px !important;
+    border-radius: 9px !important;
+    border: none !important;
+    background: rgba(17, 20, 30, 0.55) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+.mpwem-event-wizard .mpwem-featured-image__actions .button.mpwem-featured-select:hover {
+    background: rgba(17, 20, 30, 0.72) !important;
+    transform: none;
+}
+
+.mpwem-event-wizard .mpwem-featured-image__actions .mpwem-featured-remove {
+    width: 34px;
+    height: 34px;
+    padding: 0 !important;
+    justify-content: center;
+    border-radius: 9px !important;
+    border: none !important;
+    background: rgba(224, 56, 74, 0.85) !important;
+}
+
+.mpwem-event-wizard .mpwem-featured-image__actions .mpwem-featured-remove:hover {
+    background: var(--mpwem-btn-danger-hover-bg, #e0384a) !important;
+}
+
+/* Upload dropzone - empty state */
+.mpwem-featured-image__dropzone {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: 1.5px dashed #c9cfdb !important;
+    border-radius: 12px !important;
+    background: #f9fafc !important;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+    transition: border-color .15s ease, background .15s ease;
 }
 
-.mpwem-featured-select,
-.mpwem-featured-remove {
-    width: 50%;
+.mpwem-featured-image__dropzone:hover {
+    border-color: var(--mpwem-primary, #5648e0) !important;
+    background: #f6f5ff !important;
+}
+
+.mpwem-featured-image__dropzone-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: #f0eefd;
+    color: #5648e0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.mpwem-featured-image__dropzone-icon svg {
+    display: block;
+}
+
+.mpwem-featured-image__dropzone-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0b1220;
+    margin-bottom: 4px;
+}
+
+.mpwem-featured-image__dropzone-hint {
+    font-size: 12px;
+    color: #9aa5b4;
 }
 
 /* Breakpoint: small tablets and large phones */
@@ -2826,11 +3104,6 @@ select.mpwem-global-qty-field__input {
         width: auto;
         margin-left: 0;
         justify-content: flex-start;
-    }
-
-    .mpwem-featured-image__actions {
-        flex-direction: row;
-        justify-content: stretch;
     }
 
     .mpwem-taxonomy-checklist {
@@ -2989,12 +3262,12 @@ select.mpwem-global-qty-field__input {
     }
 
     .mpwem-card__head {
-        padding: 20px 15px;
+        padding: 20px 15px 15px 15px;
         flex-direction: row !important;
     }
 
     .mpwem-card__body {
-        padding: 10px 15px;
+        padding: 15px 15px;
     }
 }
 
@@ -3049,6 +3322,69 @@ select.mpwem-global-qty-field__input {
     overflow: hidden;
 }
 
+/* Match the plain white .mpwem-card__head look used by "Registration &
+   Tickets Settings" above it - the legacy gray header strip only gets
+   overridden here, on the wizard, not on the Classic editor screen. */
+#mpwem_wizard_tickets_mount>.mpwem_style>._layout_default_xs_mp_zero:first-child>._bg_light_padding {
+    background: #fff !important;
+    padding: 14px 16px !important;
+}
+
+/* Registration Closed Message: give it the same icon-badge section look
+   as the RSVP/Announcement cards it sits next to, instead of a bare
+   label+switch+textarea row. Only on the wizard - the icon-badge intro
+   markup itself is gated server-side ($is_custom_event_edit) so the
+   Classic editor never renders it. */
+#mpwem_wizard_tickets_mount .mpwem-ticket-registration-message {
+    padding: 18px !important;
+    border-top: 1px solid #eef1f5;
+}
+
+.mpwem-reg-msg-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.mpwem-reg-msg-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #5648e0 0%, #8b7ff0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mpwem-reg-msg-head h4 {
+    margin: 0 0 2px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.mpwem-reg-msg-head p {
+    margin: 0;
+    font-size: 11.5px;
+    color: #64748b;
+}
+
+#mpwem_wizard_tickets_mount .mpwem-ticket-registration-message ._justify_between_align_center_wrap label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #374151;
+}
+
+#mpwem_wizard_tickets_mount div.mep_reg_status_show_msg_txt_sec textarea.formControl {
+    margin-top: 12px;
+    border-radius: 8px;
+    border: 1.5px solid #e2e8f0 !important;
+    background: #f9fafb;
+    font-size: 12.5px;
+}
+
 .mpwem-ticket-summary {
     display: grid;
     gap: 24px;
@@ -3082,17 +3418,41 @@ select.mpwem-global-qty-field__input {
 }
 
 #mpwem_ticket_summary .mpwem-ticket-summary__toolbar {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 18px 20px;
-    border-radius: 14px;
+    display: flex !important;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-radius: 16px;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__toolbar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: #dbe9ff;
 }
 
 #mpwem_extra_service_summary .mpwem-ticket-summary__toolbar {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 18px 20px;
-    border-radius: 14px;
+    display: flex !important;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-radius: 16px;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__toolbar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: #dbe9ff;
 }
 
 .mpwem-ticket-summary__eyebrow,
@@ -3356,7 +3716,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     border-radius: 0;
     background: #fff;
     box-shadow: none;
-    cursor: pointer;
 }
 
 #mpwem_ticket_summary .mpwem-ticket-summary__item:nth-child(even),
@@ -3373,16 +3732,28 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__item {
-    padding: 8px 14px;
+    padding: 12px 20px;
     gap: 12px;
-    border-radius: 5px;
+    border: none;
+    border-top: 1px solid #f1f5f9;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
     cursor: pointer;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item:first-child {
+    border-top: none;
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__header,
 #mpwem_particular_date_summary .mpwem-ticket-summary__item {
     grid-template-columns: minmax(0, 1fr) minmax(100px, 0.5fr) minmax(90px, 0.4fr);
     column-gap: 16px;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__header-capacity {
+    text-align: left;
 }
 
 .mpwem-ticket-summary__item:nth-child(even) {
@@ -3888,8 +4259,8 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 }
 
 .mpwem-ticket-summary__gq-title {
-    font-size: 13px;
-    font-weight: 650;
+    font-size: 14px;
+    font-weight: 600;
     color: #1e293b;
 }
 
@@ -3921,28 +4292,38 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     margin-bottom: 6px;
 }
 
+label.mpwem-ticket-summary__gq-label {
+    margin-bottom: 10px !important;
+}
+
 .mpwem-ticket-summary__gq-pills {
-    display: flex;
-    gap: 8px;
+    display: flex !important;
+    gap: 4px !important;
+    padding: 4px !important;
+    background: #f1f5f9 !important;
+    border-radius: 11px !important;
 }
 
 .mpwem-ticket-summary__gq-pill {
-    padding: 8px 14px !important;
-    border-radius: 999px !important;
-    border: 1.5px solid #d9dbd9 !important;
-    background: #fff !important;
-    color: #334155 !important;
-    font-size: 12.5px !important;
+    flex: 1 !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #64748b !important;
+    font-size: 13px !important;
     font-weight: 600 !important;
+    text-transform: none !important;
     cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .mpwem-ticket-summary__gq-pill.is-active {
-    border-color: #2563eb !important;
-    border-color: var(--mpwem-primary, #2563eb) !important;
-    background: rgba(37, 99, 235, 0.12) !important;
-    color: #2563eb !important;
-    color: var(--mpwem-primary, #2563eb) !important;
+    background: #fff !important;
+    color: #1e293b !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1) !important;
 }
 
 .mpwem-ticket-summary__gq-grid {
@@ -4071,12 +4452,29 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
 
 .mpwem-ticket-add__core {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-columns: 1.3fr 0.8fr 0.8fr 1.3fr;
     gap: 14px;
 }
 
 .mpwem-ticket-add__core--gq {
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 1.3fr 0.8fr 1.3fr;
+}
+
+/* "Quantity shown as" lives in the core grid now (4th column, or 3rd
+   when the Capacity column is hidden by the global quantity pool) - the
+   pill toggle fills its column instead of staying a fixed inline width. */
+.mpwem-ticket-add__core .mpwem-ticket-add__pills {
+    width: 100%;
+}
+
+.mpwem-ticket-add__core .mpwem-ticket-add__pill {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 7px 8px !important;
+}
+
+.mpwem-ticket-add__core .mpwem-ticket-add__pill.is-active {
+    padding-left: 8px !important;
 }
 
 .mpwem-ticket-add__hint {
@@ -4118,6 +4516,21 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     border-color: #2563eb;
     border-color: var(--mpwem-primary, #2563eb);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* "Quantity shown as" - a plain select instead of a pill toggle */
+.mpwem-ticket-add__select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 12px 36px 12px 16px !important;
+    border-radius: 12px !important;
+    font-size: 14.5px !important;
+    font-weight: 650;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
 }
 
 .mpwem-ticket-add__group input.has-error {
@@ -8867,12 +9280,7 @@ body.mpwem-ticket-modal-open {
 
 /* Gallery / media "Add Image" + single thumbnail "Image" — modern dashed upload button */
 .mpwem-event-wizard .mpwem_add_multi_image,
-#mpwem_wizard_media_mount_basic .mpwem_add_multi_image,
-#mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image,
-#mpwem_gallery_images_card .mpwem_add_multi_image,
-.mpwem-event-wizard .mpwem_add_single_image > button._button_default_xs_bgColor_1_fullWidth,
-#mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button,
-#mpwem_wizard_media_mount_basic .mpwem_add_single_image > button {
+.mpwem-event-wizard .mpwem_add_single_image > button._button_default_xs_bgColor_1_fullWidth {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -8901,18 +9309,8 @@ body.mpwem-ticket-modal-open {
 
 .mpwem-event-wizard .mpwem_add_multi_image:hover,
 .mpwem-event-wizard .mpwem_add_multi_image:focus,
-#mpwem_wizard_media_mount_basic .mpwem_add_multi_image:hover,
-#mpwem_wizard_media_mount_basic .mpwem_add_multi_image:focus,
-#mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image:hover,
-#mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image:focus,
-#mpwem_gallery_images_card .mpwem_add_multi_image:hover,
-#mpwem_gallery_images_card .mpwem_add_multi_image:focus,
 .mpwem-event-wizard .mpwem_add_single_image > button._button_default_xs_bgColor_1_fullWidth:hover,
-.mpwem-event-wizard .mpwem_add_single_image > button._button_default_xs_bgColor_1_fullWidth:focus,
-#mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button:hover,
-#mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button:focus,
-#mpwem_wizard_media_mount_basic .mpwem_add_single_image > button:hover,
-#mpwem_wizard_media_mount_basic .mpwem_add_single_image > button:focus {
+.mpwem-event-wizard .mpwem_add_single_image > button._button_default_xs_bgColor_1_fullWidth:focus {
     background: #dbeafe !important;
     border-color: #60a5fa !important;
     border-style: dashed !important;
@@ -8923,10 +9321,78 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-event-wizard .mpwem_add_multi_image span,
+.mpwem-event-wizard .mpwem_add_single_image > button span {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: 1 !important;
+}
+
+.mpwem-event-wizard .mpwem_add_multi_image .fas,
+.mpwem-event-wizard .mpwem_add_single_image > button .fas {
+    font-size: 15px !important;
+    width: auto;
+    line-height: 1 !important;
+}
+
+/* Gallery Images / Event List Thumbnail - compact flat upload button,
+   scoped to the two sidebar mounts only so the blue dashed button used
+   elsewhere in the wizard (above) stays untouched. */
+#mpwem_wizard_media_mount_basic .mpwem_add_multi_image,
+#mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image,
+#mpwem_gallery_images_card .mpwem_add_multi_image,
+#mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button,
+#mpwem_wizard_media_mount_basic .mpwem_add_single_image > button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    min-height: 34px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border: 1.5px dashed #c9cfdb !important;
+    border-radius: 8px !important;
+    background: #f9fafc !important;
+    color: #42495a !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.01em;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: pointer;
+    box-sizing: border-box !important;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+#mpwem_wizard_media_mount_basic .mpwem_add_multi_image:hover,
+#mpwem_wizard_media_mount_basic .mpwem_add_multi_image:focus,
+#mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image:hover,
+#mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image:focus,
+#mpwem_gallery_images_card .mpwem_add_multi_image:hover,
+#mpwem_gallery_images_card .mpwem_add_multi_image:focus,
+#mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button:hover,
+#mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button:focus,
+#mpwem_wizard_media_mount_basic .mpwem_add_single_image > button:hover,
+#mpwem_wizard_media_mount_basic .mpwem_add_single_image > button:focus {
+    background: #f6f5ff !important;
+    border-color: var(--mpwem-primary, #5648e0) !important;
+    border-style: dashed !important;
+    color: var(--mpwem-primary, #5648e0) !important;
+    box-shadow: none !important;
+    transform: none !important;
+    outline: none;
+}
+
 #mpwem_wizard_media_mount_basic .mpwem_add_multi_image span,
 #mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image span,
 #mpwem_gallery_images_card .mpwem_add_multi_image span,
-.mpwem-event-wizard .mpwem_add_single_image > button span,
 #mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button span,
 #mpwem_wizard_media_mount_basic .mpwem_add_single_image > button span {
     margin: 0 !important;
@@ -8937,14 +9403,12 @@ body.mpwem-ticket-modal-open {
     line-height: 1 !important;
 }
 
-.mpwem-event-wizard .mpwem_add_multi_image .fas,
 #mpwem_wizard_media_mount_basic .mpwem_add_multi_image .fas,
 #mpwem_wizard_thumbnail_mount_basic .mpwem_add_multi_image .fas,
 #mpwem_gallery_images_card .mpwem_add_multi_image .fas,
-.mpwem-event-wizard .mpwem_add_single_image > button .fas,
 #mpwem_wizard_thumbnail_mount_basic .mpwem_add_single_image > button .fas,
 #mpwem_wizard_media_mount_basic .mpwem_add_single_image > button .fas {
-    font-size: 15px !important;
+    font-size: 12px !important;
     width: auto;
     line-height: 1 !important;
 }

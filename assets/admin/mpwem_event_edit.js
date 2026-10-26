@@ -225,6 +225,21 @@
         $modal.attr('aria-hidden', 'false').addClass('is-open');
     }
 
+    /* Scroll so $el lands centered in the viewport, instead of just under
+       the top edge - used wherever focus should land on a specific card
+       or row (ticket add/edit form, newly saved ticket). */
+    function scrollToViewportCenter($el, duration) {
+        if (!$el || !$el.length) {
+            return;
+        }
+        const offset = $el.offset();
+        if (!offset) {
+            return;
+        }
+        const target = offset.top - (window.innerHeight / 2) + ($el.outerHeight() / 2);
+        $('html, body').animate({ scrollTop: Math.max(target, 0) }, duration || 200);
+    }
+
     /* Briefly pulse an element (e.g. a button) to draw attention to it. */
     function flashAttention($el) {
         if (!$el || !$el.length) {
@@ -843,6 +858,16 @@
         // Mount into Tickets Step
         mountPanel($root, '#mpwem_ticket_pricing_settings', 'mpwem_wizard_tickets_mount');
 
+        // Move the payment-method warning/status banner out of the mounted
+        // panel and into its own standalone sidebar card, right before the
+        // "Event Mode Manual" help card, instead of leaving it stacked
+        // above the ticket editor.
+        const $paymentWarnings = $('#mpwem_wizard_tickets_mount').find('.mpwem-ticket-warnings').first();
+        const $modeHelpCardBanner = $('#mpwem_wizard_mode_help_card_banner');
+        if ($paymentWarnings.length && $modeHelpCardBanner.length && !$modeHelpCardBanner.children().length) {
+            $modeHelpCardBanner.append($paymentWarnings.detach());
+        }
+
         // Only rendered by the legacy hook when WooCommerce "Enable taxes" is on.
         mountPanel($root, '#mp_event_tax_settings', 'mpwem_wizard_tax_mount');
         const $taxMount = $('#mpwem_wizard_tax_mount');
@@ -994,6 +1019,9 @@
             const $summaryMarkup = $(
                 '<div class="mpwem-ticket-summary" id="mpwem_ticket_summary">' +
                     '<div class="mpwem-ticket-summary__toolbar">' +
+                        '<span class="mpwem-ticket-summary__toolbar-icon" aria-hidden="true">' +
+                            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"></path><path d="M13 5v2M13 17v2M13 10.5v3"></path></svg>' +
+                        '</span>' +
                         '<div class="mpwem-ticket-summary__intro">' +
                             '<h3>Simple Ticket Type</h3>' +
                             '<p>View pricing at a glance, then open the full editor only when you need details.</p>' +
@@ -1323,9 +1351,13 @@
         $panel.append($pillField);
 
         $pillFull.on('click', function() {
+            $pillFull.addClass('is-active');
+            $pillDate.removeClass('is-active');
             $realTypeSelect.val('global').trigger('change');
         });
         $pillDate.on('click', function() {
+            $pillDate.addClass('is-active');
+            $pillFull.removeClass('is-active');
             $realTypeSelect.val('date_wise').trigger('change');
         });
 
@@ -1481,12 +1513,21 @@
             return;
         }
 
+        // The inline add/edit card lives inside the list, positioned right
+        // before the "Add New Ticket Type" button - detach it (not
+        // remove/empty) before clearing the list so an open card survives
+        // the rebuild, then reinsert it in the same spot below.
+        const $openAddCard = context.$summaryList.find('#mpwem_ticket_summary_add').detach();
+
         context.$summaryList.empty();
 
         getPanel($root, '#mpwem_ticket_pricing_settings').find('#mpwem_ticket_summary').toggle(!!regEnabled);
 
         if (!regEnabled) {
             closeTicketModal($root);
+            if ($openAddCard.length) {
+                context.$summaryList.append($openAddCard);
+            }
             return;
         }
 
@@ -1506,13 +1547,15 @@
                             .html('<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"></path><path d="M13 5v2M13 17v2M13 10.5v3"></path></svg>')
                     )
                     .append($('<h4></h4>').text('No ticket types yet'))
-                    .append($('<p></p>').text('Start with one ticket type, then open the editor whenever you need the full pricing table.'))
                     .append(
                         $('<button type="button" class="button button-primary"></button>')
                             .attr('data-mpwem-ticket-modal-open', 'new')
                             .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create First Ticket')
                     )
             );
+            if ($openAddCard.length) {
+                context.$summaryList.append($openAddCard);
+            }
             return;
         }
 
@@ -1588,11 +1631,17 @@
 
         // "Add New Ticket Type" renders after every row, same as
         // "Add Schedule"/"Add Particular Date" on the Date step.
-        context.$summaryList.append(
-            $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
-                .attr('data-mpwem-ticket-modal-open', 'new')
-                .text('Add New Ticket Type')
-        );
+        const $addTicketBtn = $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+            .attr('data-mpwem-ticket-modal-open', 'new')
+            .text('Add New Ticket Type');
+        context.$summaryList.append($addTicketBtn);
+
+        // The open add/edit card, if any, goes right before that button -
+        // so it shows above "Add New Ticket Type" instead of appearing
+        // further down, after the whole summary.
+        if ($openAddCard.length) {
+            $openAddCard.insertBefore($addTicketBtn);
+        }
 
         enableTicketSummarySort($root, context);
     }
@@ -1603,10 +1652,15 @@
             return $();
         }
 
-        let $card = context.$summary.next('#mpwem_ticket_summary_add');
+        let $card = $root.find('#mpwem_ticket_summary_add').first();
         if (!$card.length) {
             $card = $('<div class="mpwem-ticket-add" id="mpwem_ticket_summary_add"></div>');
-            context.$summary.after($card);
+            const $addBtn = context.$summaryList.find('.mpwem-date-primary-fields__add[data-mpwem-ticket-modal-open="new"]').last();
+            if ($addBtn.length) {
+                $card.insertBefore($addBtn);
+            } else {
+                context.$summaryList.append($card);
+            }
         }
 
         return $card;
@@ -1673,10 +1727,26 @@
             }
         }
 
+        // Remember which row to focus after the summary re-renders, before
+        // clearing the card's data - a newly saved ticket gets scrolled to
+        // and highlighted in its new spot in the list.
+        const focusRowIndex = (opts.save && mode === 'add' && $row && $row.length)
+            ? getTicketRows($root).index($row)
+            : -1;
+
         $card.removeData('mpwemInlineAddRow mpwemInlineAddMode mpwemInlineAddOriginal').removeClass('is-open').empty();
 
         storeSavedTicketSummarySnapshot($root);
         renderTicketSummary($root);
+
+        if (focusRowIndex > -1) {
+            const context = getTicketModalContext($root);
+            const $newItem = context.$summaryList.find('.mpwem-ticket-summary__item[data-ticket-row-index="' + focusRowIndex + '"]').first();
+            if ($newItem.length) {
+                scrollToViewportCenter($newItem);
+                flashAttention($newItem);
+            }
+        }
     }
 
     function renderInlineTicketAddForm($root, $row, opts) {
@@ -1752,6 +1822,22 @@
             );
         }
 
+        const qtyTypeVal = ($qtyTypeSelect.val() || 'inputbox').toString();
+
+        const $qtyTypeProxy = $('<select class="mpwem-ticket-add__select"></select>')
+            .append($('<option value="inputbox"></option>').text('Input Box'))
+            .append($('<option value="dropdown"></option>').text('Dropdown List'))
+            .val(qtyTypeVal);
+
+        // "Quantity shown as" lands in the core grid as its own column,
+        // aligned with Ticket Name / Price / Capacity, instead of its own
+        // full-width row below.
+        $core.append(
+            $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Quantity shown as'))
+                .append($qtyTypeProxy)
+        );
+
         $body.append($core);
 
         if (globalQtyOn) {
@@ -1760,47 +1846,10 @@
             );
         }
 
-        const qtyTypeVal = ($qtyTypeSelect.val() || 'inputbox').toString();
-
-        const $qtyIndicator = $('<div class="mpwem-ticket-add__pill-indicator"></div>');
-        const $pillInput = $('<button type="button" class="mpwem-ticket-add__pill"></button>')
-            .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2.5"/><path d="M7 12h6"/></svg><span>Input Box</span>')
-            .toggleClass('is-active', qtyTypeVal === 'inputbox');
-        const $pillDropdown = $('<button type="button" class="mpwem-ticket-add__pill"></button>')
-            .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2.5"/><path d="M15 10l2 2-2 2"/></svg><span>Dropdown List</span>')
-            .toggleClass('is-active', qtyTypeVal === 'dropdown');
-        const $qtyCaption = $('<p class="mpwem-ticket-add__pill-caption"></p>');
-
-        function updateQtyControl(type) {
-            $qtyIndicator.css('left', type === 'dropdown' ? 'calc(50% + 1px)' : '3px');
-            $qtyCaption.text(type === 'dropdown'
-                ? 'Attendees pick a quantity from a dropdown list.'
-                : 'Attendees type the number of tickets they want.');
-        }
-        updateQtyControl(qtyTypeVal);
-
-        $body.append(
-            $('<div class="mpwem-ticket-add__field"></div>')
-                .append($('<label></label>').text('Quantity shown as'))
-                .append(
-                    $('<div class="mpwem-ticket-add__pills"></div>').append($qtyIndicator).append($pillInput).append($pillDropdown)
-                )
-                .append($qtyCaption)
-        );
-
-        $pillInput.on('click', function() {
-            syncRealFieldValue($qtyTypeSelect, 'inputbox');
+        $qtyTypeProxy.on('change', function() {
+            const val = $(this).val();
+            syncRealFieldValue($qtyTypeSelect, val);
             $qtyTypeSelect.trigger('change');
-            $pillInput.addClass('is-active');
-            $pillDropdown.removeClass('is-active');
-            updateQtyControl('inputbox');
-        });
-        $pillDropdown.on('click', function() {
-            syncRealFieldValue($qtyTypeSelect, 'dropdown');
-            $qtyTypeSelect.trigger('change');
-            $pillDropdown.addClass('is-active');
-            $pillInput.removeClass('is-active');
-            updateQtyControl('dropdown');
         });
 
         const $moreToggle = $('<button type="button" class="mpwem-ticket-add__more-toggle" aria-expanded="false"></button>')
@@ -1912,7 +1961,7 @@
         $card.append($footer);
 
         $nameProxy.on('input', function() { syncRealFieldValue($nameInput, $(this).val()); $nameProxy.removeClass('has-error'); });
-        $priceProxy.on('input', function() { syncRealFieldValue($priceInput, $(this).val()); });
+        $priceProxy.on('input', function() { syncRealFieldValue($priceInput, $(this).val()); $priceProxy.removeClass('has-error'); });
         if ($qtyProxy) {
             $qtyProxy.on('input', function() { syncRealFieldValue($qtyInput, $(this).val()); });
         }
@@ -1930,13 +1979,19 @@
 
         $saveBtn.on('click', function() {
             const name = ($nameProxy.val() || '').toString().trim();
+            const price = ($priceProxy.val() || '').toString().trim();
+
             if (!name) {
                 $nameProxy.addClass('has-error').trigger('focus');
                 return;
             }
+            if (!price) {
+                $priceProxy.addClass('has-error').trigger('focus');
+                return;
+            }
 
             syncRealFieldValue($nameInput, name);
-            syncRealFieldValue($priceInput, ($priceProxy.val() || '').toString());
+            syncRealFieldValue($priceInput, price);
             closeInlineTicketAdd($root, { save: true });
         });
 
@@ -1977,6 +2032,9 @@
             $card.data('mpwemInlineAddRow', $row);
             $card.data('mpwemInlineAddMode', 'add');
             renderInlineTicketAddForm($root, $row, { mode: 'add' });
+
+            scrollToViewportCenter($card);
+            $card.find('.mpwem-ticket-add__core .mpwem-ticket-add__group').first().find('input').trigger('focus');
         }, 100);
     }
 
@@ -2005,10 +2063,7 @@
 
         renderInlineTicketAddForm($root, $row, { mode: 'edit' });
 
-        const offset = $card.offset();
-        if (offset) {
-            $('html, body').animate({ scrollTop: Math.max(offset.top - 100, 0) }, 200);
-        }
+        scrollToViewportCenter($card);
     }
 
     function openTicketModal($root, mode, rowIndex) {
@@ -2259,16 +2314,6 @@
             openTicketModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
         });
 
-        $root.on('click.mpwemTicketModal', '#mpwem_ticket_summary .mpwem-ticket-summary__item', function(e) {
-            if ($(e.target).closest('[data-mpwem-ticket-modal-open], button, a, input, select, textarea').length) {
-                return;
-            }
-
-            e.preventDefault();
-            const rowIndex = parseInt($(this).attr('data-ticket-row-index'), 10);
-            openTicketModal($root, 'list', Number.isNaN(rowIndex) ? null : rowIndex);
-        });
-
         $root.on('click.mpwemTicketModal', '[data-mpwem-ticket-modal-close]', function(e) {
             e.preventDefault();
             closeTicketModal($root);
@@ -2359,6 +2404,9 @@
             const $summaryMarkup = $(
                 '<div class="mpwem-ticket-summary" id="mpwem_extra_service_summary">' +
                     '<div class="mpwem-ticket-summary__toolbar">' +
+                        '<span class="mpwem-ticket-summary__toolbar-icon" aria-hidden="true">' +
+                            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8.5L20 6.5V16a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg>' +
+                        '</span>' +
                         '<div class="mpwem-ticket-summary__intro">' +
                             '<h3>Simple add-on list</h3>' +
                             '<p>Review optional services at a glance, then open the full editor when you need pricing or quantity details.</p>' +
@@ -2500,6 +2548,12 @@
             return;
         }
 
+        // The inline add/edit card lives inside the list, positioned right
+        // before the "Add New Extra Service" button - detach it (not
+        // remove/empty) before clearing the list so an open card survives
+        // the rebuild, then reinsert it in the same spot below.
+        const $openAddCard = context.$summaryList.find('#mpwem_extra_service_summary_add').detach();
+
         context.$summaryList.empty();
 
         if (!$rows.length) {
@@ -2519,6 +2573,9 @@
                             .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create First Extra Service')
                     )
             );
+            if ($openAddCard.length) {
+                context.$summaryList.append($openAddCard);
+            }
             return;
         }
 
@@ -2557,11 +2614,17 @@
 
         // "Add New Extra Service" renders after every row, same as
         // "Add New Ticket Type" on the Ticket & Pricing step.
-        context.$summaryList.append(
-            $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
-                .attr('data-mpwem-extra-modal-open', 'new')
-                .text('Add New Extra Service')
-        );
+        const $addExtraBtn = $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+            .attr('data-mpwem-extra-modal-open', 'new')
+            .text('Add New Extra Service');
+        context.$summaryList.append($addExtraBtn);
+
+        // The open add/edit card, if any, goes right before that button -
+        // so it shows above "Add New Extra Service" instead of appearing
+        // further down, after the whole summary.
+        if ($openAddCard.length) {
+            $openAddCard.insertBefore($addExtraBtn);
+        }
 
         enableExtraServiceSummarySort($root, context);
     }
@@ -2658,10 +2721,15 @@
             return $();
         }
 
-        let $card = context.$summary.next('#mpwem_extra_service_summary_add');
+        let $card = $root.find('#mpwem_extra_service_summary_add').first();
         if (!$card.length) {
             $card = $('<div class="mpwem-ticket-add" id="mpwem_extra_service_summary_add"></div>');
-            context.$summary.after($card);
+            const $addBtn = context.$summaryList.find('.mpwem-date-primary-fields__add[data-mpwem-extra-modal-open="new"]').last();
+            if ($addBtn.length) {
+                $card.insertBefore($addBtn);
+            } else {
+                context.$summaryList.append($card);
+            }
         }
 
         return $card;
@@ -3409,6 +3477,13 @@
             return;
         }
 
+        // The inline add/edit card lives inside the list, positioned right
+        // before the "+ Add Schedule"/"+ Add Particular Date" button -
+        // detach it (not remove/empty) before clearing the list so an open
+        // card survives the rebuild, then reinsert it in the same spot
+        // wherever the button ends up below.
+        const $openAddCard = context.$summaryList.find('#mpwem_particular_date_summary_add').detach();
+
         const type = getActiveDateModalType($root);
 
         if (type === 'everyday') {
@@ -3418,6 +3493,9 @@
                summarize or open - hide it entirely. */
             context.$summary.hide();
             context.$summaryList.empty();
+            if ($openAddCard.length) {
+                context.$summaryList.append($openAddCard);
+            }
             return;
         }
 
@@ -3452,6 +3530,9 @@
                                 .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create First Date')
                         )
                 );
+                if ($openAddCard.length) {
+                    context.$summaryList.append($openAddCard);
+                }
                 return;
             }
 
@@ -3515,11 +3596,15 @@
             // "+ Add Particular Date" renders after every row, same as
             // Single Event's "+ Add Schedule".
             if (config.secondaryAction) {
-                context.$summaryList.append(
-                    $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
-                        .attr('data-mpwem-date-modal-open', 'new')
-                        .text(config.secondaryAction)
-                );
+                const $addDateBtn = $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+                    .attr('data-mpwem-date-modal-open', 'new')
+                    .text(config.secondaryAction);
+                context.$summaryList.append($addDateBtn);
+                if ($openAddCard.length) {
+                    $openAddCard.insertBefore($addDateBtn);
+                }
+            } else if ($openAddCard.length) {
+                context.$summaryList.append($openAddCard);
             }
 
             return;
@@ -3560,8 +3645,21 @@
                             .html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add Schedule')
                     )
             );
+            if ($openAddCard.length) {
+                context.$summaryList.append($openAddCard);
+            }
             return;
         }
+
+        // Shown by default as soon as there's a primary date and/or any
+        // extra dates - not gated behind extraItems.length, so it's visible
+        // from the very first row instead of only once a 2nd date exists.
+        context.$summaryList.append(
+            $('<div class="mpwem-ticket-summary__header"></div>')
+                .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Start Date'))
+                .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('End Date'))
+                .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'))
+        );
 
         if (primaryItem) {
             context.$summaryList.append(
@@ -3583,13 +3681,6 @@
         }
 
         if (extraItems.length) {
-            const $header = $('<div class="mpwem-ticket-summary__header"></div>')
-                .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Additional Start'))
-                .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Additional End'))
-                .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'));
-
-            context.$summaryList.append($header);
-
             extraItems.forEach(function(item) {
                 context.$summaryList.append(
                     $('<article class="mpwem-ticket-summary__item"></article>')
@@ -3612,11 +3703,15 @@
         // "+ Add Schedule" renders after every row (the primary one and
         // any additional dates), not between them.
         if (config.secondaryAction) {
-            context.$summaryList.append(
-                $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
-                    .attr('data-mpwem-date-modal-open', 'new')
-                    .text(config.secondaryAction)
-            );
+            const $addScheduleBtn = $('<button type="button" class="button button-primary mpwem-date-primary-fields__add"></button>')
+                .attr('data-mpwem-date-modal-open', 'new')
+                .text(config.secondaryAction);
+            context.$summaryList.append($addScheduleBtn);
+            if ($openAddCard.length) {
+                $openAddCard.insertBefore($addScheduleBtn);
+            }
+        } else if ($openAddCard.length) {
+            context.$summaryList.append($openAddCard);
         }
     }
 
@@ -3676,10 +3771,15 @@
             return $();
         }
 
-        let $card = context.$summary.next('#mpwem_particular_date_summary_add');
+        let $card = $root.find('#mpwem_particular_date_summary_add').first();
         if (!$card.length) {
             $card = $('<div class="mpwem-ticket-add" id="mpwem_particular_date_summary_add"></div>');
-            context.$summary.after($card);
+            const $addBtn = context.$summaryList.find('.mpwem-date-primary-fields__add[data-mpwem-date-modal-open="new"]').last();
+            if ($addBtn.length) {
+                $card.insertBefore($addBtn);
+            } else {
+                context.$summaryList.append($card);
+            }
         }
 
         return $card;
@@ -3800,10 +3900,6 @@
 
             closeInlineDateAdd($root, { save: true });
         });
-
-        window.setTimeout(function() {
-            $startPill.find('.mpwem-date-input').first().trigger('focus');
-        }, 0);
     }
 
     function openInlineDateAdd($root) {
@@ -5855,6 +5951,14 @@
 
     function getDynamicDateMinDate($input) {
         const today = getTodayDateOnly();
+        const resolved = resolveDynamicDateMinDate($input, today);
+        // Whatever rule resolved the minimum (paired start/end, previous row,
+        // a captured legacy datepicker value, or none at all), past dates are
+        // never selectable - floor every result to today.
+        return resolved && resolved > today ? resolved : today;
+    }
+
+    function resolveDynamicDateMinDate($input, today) {
         // $input is the visible date field; its name lives on the hidden sibling.
         const $hidden = $input.closest('label').find('input[type="hidden"]').first();
         const fieldName = ($hidden.attr('name') || $input.attr('name') || '').toString();
@@ -6072,6 +6176,19 @@
         state.$input.closest('label').find('input[type="hidden"]').first().val(formatIsoDate(date)).trigger('change');
         state.$input.val(formatVisibleDate(date)).trigger('change');
         closeCustomCalendar();
+
+        // Picking a Starts/Ends date flows straight into picking its time -
+        // the matching time field sits right after the date field's own
+        // wrap, inside the same row/pill.
+        const $dateWrap = state.$input.closest('.mpwem-date-input-wrap');
+        const $timeInput = $dateWrap.length
+            ? $dateWrap.next('.mpwem-time-input-wrap').find('.mpwem-time-input.mpwem-custom-time-enabled').first()
+            : $();
+        if ($timeInput.length) {
+            window.setTimeout(function() {
+                openCustomTimePicker($timeInput);
+            }, 10);
+        }
     }
 
     function bindCustomCalendar() {
@@ -7507,7 +7624,7 @@
         if (mode === 'on') {
             $('#mpwem_wizard_ticket_details_section').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').show();
-            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-warnings').show();
+            $('.mpwem-ticket-warnings').show();
             $('#mpwem_wizard_ticket_details_section').find('._bg_light_padding').show();
             
             // Only show extra services card if it actually has content
@@ -7528,8 +7645,8 @@
             
             // Hide the main Ticket & Pricing Settings header card
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').hide();
-            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-warnings').hide();
-            
+            $('.mpwem-ticket-warnings').hide();
+
             // Hide only the ticket editor's header, not the RSVP one
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-editor-section ._bg_light_padding, .mpwem-extra-service-section ._bg_light_padding').hide();
             $('#mpwem_wizard_extra_services_card').hide();
@@ -7564,7 +7681,7 @@
             $details.show();
             // Everything that belongs to selling or RSVP is irrelevant here.
             $details.find('.mpwem-ticket-settings-head').hide();
-            $details.find('.mpwem-ticket-warnings').hide();
+            $('.mpwem-ticket-warnings').hide();
             $details.find('.mpwem-ticket-editor-section, .mpwem-extra-service-section').hide();
             $details.find('#mpwem_ticket_summary').hide();
             $details.find('.mpwem-ticket-action-bar__item, .mpwem-ticket-action-bar__divider').hide();
@@ -7580,6 +7697,7 @@
             $('#mpwem_wizard_extra_services_card').hide();
             $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
+            $('.mpwem-ticket-warnings').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
         }
@@ -7674,15 +7792,11 @@
                         src: imageUrl,
                         alt: ''
                     });
-                    const meta = [data.filename, (data.width && data.height) ? (data.width + '×' + data.height) : '']
-                        .filter(Boolean)
-                        .join(' · ');
 
                     $root.find('#mpwem_featured_image_id').val(data.id || '');
                     $wrap.attr('data-has-image', data.id ? '1' : '0');
                     $wrap.find('.mpwem-featured-image__preview').find('img').remove();
                     $wrap.find('.mpwem-featured-image__preview').prepend($image);
-                    $wrap.find('.mpwem-featured-image__meta').text(meta);
                     $wrap.find('.mpwem-featured-image__filled').show();
                     $wrap.find('.mpwem-featured-image__dropzone').hide();
                 });
@@ -7698,7 +7812,6 @@
             $root.find('#mpwem_featured_image_id').val('');
             $wrap.attr('data-has-image', '0');
             $wrap.find('.mpwem-featured-image__preview').find('img').remove();
-            $wrap.find('.mpwem-featured-image__meta').text('');
             $wrap.find('.mpwem-featured-image__filled').hide();
             $wrap.find('.mpwem-featured-image__dropzone').show();
         });

@@ -580,8 +580,11 @@
 							var methods = [];
 							if (wcSectionOn) {
 								// WC-registered gateways only count when WooCommerce is active.
+								// Each gateway gets its own small pill instead of one long
+								// "WooCommerce (A, B, C)" string, so the row wraps cleanly
+								// instead of overflowing a narrow sidebar card.
 								if (wcActive && wcGwNames.length > 0) {
-									methods.push('WooCommerce (' + wcGwNames.join(', ') + ')');
+									methods = methods.concat(wcGwNames);
 								}
 								// Built-in gateways (Bank Transfer, Cash on Delivery) are always
 								// valid regardless of WooCommerce being active.
@@ -980,6 +983,9 @@
 				?>
                 <div class="_layout_default_xs_mp_zero mpwem-ticket-settings-head" style="border-radius: var(--mpwem-radius);">
                     <div class="_bg_light_padding">
+						<?php if ( $is_custom_event_edit ) : ?>
+                        <span class="mpwem-section-pill"><?php esc_html_e( 'Tickets', 'mage-eventpress' ); ?></span>
+						<?php endif; ?>
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
                     </div>
@@ -1008,11 +1014,17 @@
 					$active_category       = $early_bird_status == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
 					$capacity_col_status   = $global_qty_status == 'on' ? 'mpwem-ticket-col-hidden' : '';
 					$event_label         = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+					$is_custom_event_edit = is_admin()
+						&& isset( $_GET['page'] )
+						&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
 				?>
                 <div class="_mt"></div>
                 <div class="_layout_default_xs_mp_zero mpwem-ticket-editor-section">
                     <div class="_bg_light_padding">
+						<?php if ( $is_custom_event_edit ) : ?>
+                        <span class="mpwem-section-pill"><?php esc_html_e( 'Tickets', 'mage-eventpress' ); ?></span>
+						<?php endif; ?>
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket Type Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Ticket Type', 'mage-eventpress' ); ?></span>
                     </div>
@@ -1177,10 +1189,16 @@
 			public function ex_service_setting( $event_id ) {
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				$ex_infos    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_events_extra_prices', [] );
+				$is_custom_event_edit = is_admin()
+					&& isset( $_GET['page'] )
+					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 				?>
                 <div class="_mt"></div>
                 <div class="_layout_default_xs_mp_zero mpwem-extra-service-section">
                     <div class="_bg_light_padding">
+						<?php if ( $is_custom_event_edit ) : ?>
+                        <span class="mpwem-section-pill"><?php esc_html_e( 'Add-ons', 'mage-eventpress' ); ?></span>
+						<?php endif; ?>
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Extra Service Area', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Extra Service Here. Extra Service as Product that you can sell and it is not included on event package', 'mage-eventpress' ); ?></span>
                     </div>
@@ -1322,6 +1340,17 @@
 				}
 				?>
                 <div class="_padding_bt reg_close_msg_dash mpwem-ticket-registration-message">
+					<?php if ( $is_custom_event_edit ) : ?>
+					<div class="mpwem-reg-msg-head">
+						<span class="mpwem-reg-msg-icon" aria-hidden="true">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+						</span>
+						<div>
+							<h4><?php esc_html_e( 'Registration Closed Message', 'mage-eventpress' ); ?></h4>
+							<p><?php esc_html_e( "Shown when the event isn't accepting registrations", 'mage-eventpress' ); ?></p>
+						</div>
+					</div>
+					<?php endif; ?>
                     <div class=" _justify_between_align_center_wrap">
                         <label><span class="_mr"><?php esc_html_e( 'Show Registration Off Message in Event details Page?', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status_show_msg', $reg_msg_checked ); ?>

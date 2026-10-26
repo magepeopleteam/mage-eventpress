@@ -544,6 +544,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card" id="mpwem_wizard_seat_plan_card">
 				<div class="mpwem-card__head">
+					<span class="mpwem-section-pill"><?php esc_html_e('Seating', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Seat Plan', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('Configure the seating layout attendees choose from at checkout.', 'mage-eventpress'); ?></p>
 				</div>
@@ -607,6 +608,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--slug">
 				<div class="mpwem-card__head" style="flex-direction: column !important;">
+					<span class="mpwem-section-pill"><?php esc_html_e('Identity', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Event URL Slug', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('The unique identifier used in the event URL.', 'mage-eventpress'); ?></p>
 				</div>
@@ -705,6 +707,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--category">
 				<div class="mpwem-card__head">
 					<div class="mpwem-card__head-copy">
+						<span class="mpwem-section-pill"><?php esc_html_e('Taxonomy', 'mage-eventpress'); ?></span>
 						<h2><?php esc_html_e('Event Category', 'mage-eventpress'); ?></h2>
 						<p><?php esc_html_e('Assign categories to this event.', 'mage-eventpress'); ?></p>
 					</div>
@@ -747,6 +750,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--organizer">
 				<div class="mpwem-card__head">
 					<div class="mpwem-card__head-copy">
+						<span class="mpwem-section-pill"><?php esc_html_e('Taxonomy', 'mage-eventpress'); ?></span>
 						<h2><?php esc_html_e('Event Organizer', 'mage-eventpress'); ?></h2>
 						<p><?php esc_html_e('Select the Organizer to this event.', 'mage-eventpress'); ?></p>
 					</div>
@@ -799,6 +803,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--tags">
 				<div class="mpwem-card__head" style="flex-direction: column !important;">
+					<span class="mpwem-section-pill"><?php esc_html_e('Tags', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Event Tags', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('Add tags to further describe your event.', 'mage-eventpress'); ?></p>
 				</div>
@@ -860,6 +865,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--settings">
 				<div class="mpwem-card__head">
+					<span class="mpwem-section-pill"><?php esc_html_e('Settings', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Event Settings', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('Control core event identity and access settings.', 'mage-eventpress'); ?></p>
 				</div>
@@ -1482,16 +1488,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 			$featured_id  = $post_id ? (int) get_post_thumbnail_id($post_id) : 0;
 			$featured_url = $featured_id ? wp_get_attachment_image_url($featured_id, 'medium') : '';
-			$featured_meta = '';
-			if ($featured_id) {
-				$attached_file     = get_attached_file($featured_id);
-				$featured_filename = $attached_file ? wp_basename($attached_file) : '';
-				$featured_sizes    = wp_get_attachment_metadata($featured_id);
-				$featured_dims     = (!empty($featured_sizes['width']) && !empty($featured_sizes['height']))
-					? $featured_sizes['width'] . '×' . $featured_sizes['height']
-					: '';
-				$featured_meta = trim($featured_filename . ($featured_dims ? ' · ' . $featured_dims : ''));
-			}
 			$classical_url = $post_id ? $this->get_editor_switch_url('classic', $post_id) : '';
 			$frontend_url = $post_id ? get_permalink($post_id) : '';
 			$is_published = $post && $post->post_status === 'publish';
@@ -1711,6 +1707,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Basic Info', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Basic Information', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('The core details of your event.', 'mage-eventpress'); ?></p>
 														</div>
@@ -1741,6 +1738,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Venue', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Venue/Location', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Where will this event take place?', 'mage-eventpress'); ?></p>
 														</div>
@@ -1758,6 +1756,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													<div class="mpwem-card" id="mpwem_wizard_speaker_card">
 														<div class="mpwem-card__head mpwem-card__head--toggle">
 															<div class="mpwem-card__head-copy">
+																<span class="mpwem-section-pill"><?php esc_html_e('Speaker', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1777,6 +1776,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-sidebar-single-card">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Media', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Featured Image', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Main event thumbnail.', 'mage-eventpress'); ?></p>
 														</div>
@@ -1788,16 +1788,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																		<?php if ($featured_url) : ?>
 																			<img src="<?php echo esc_url($featured_url); ?>" alt="" />
 																		<?php endif; ?>
-																		<span class="mpwem-featured-image__meta"><?php echo esc_html($featured_meta); ?></span>
-																	</div>
-																	<div class="mpwem-featured-image__actions">
-																		<button type="button" class="button mpwem-featured-select mpwem-featured-change">
-																			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3M16 8l-4-4-4 4M12 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-																			<?php esc_html_e('Change', 'mage-eventpress'); ?>
-																		</button>
-																		<button type="button" class="button mpwem-featured-remove" aria-label="<?php esc_attr_e('Remove image', 'mage-eventpress'); ?>">
-																			<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0v14a1 1 0 01-1 1H7a1 1 0 01-1-1V6h12z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-																		</button>
+																		<div class="mpwem-featured-image__actions">
+																			<button type="button" class="button mpwem-featured-select mpwem-featured-change">
+																				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3M16 8l-4-4-4 4M12 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																				<?php esc_html_e('Change', 'mage-eventpress'); ?>
+																			</button>
+																			<button type="button" class="button mpwem-featured-remove" aria-label="<?php esc_attr_e('Remove image', 'mage-eventpress'); ?>">
+																				<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0v14a1 1 0 01-1 1H7a1 1 0 01-1-1V6h12z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																			</button>
+																		</div>
 																	</div>
 																</div>
 																<button type="button" class="mpwem-featured-image__dropzone mpwem-featured-select"<?php echo $featured_id ? ' style="display:none;"' : ''; ?>>
@@ -1813,6 +1812,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													<div class="mpwem-card" id="mpwem_gallery_images_card">
 														<div class="mpwem-card__head">
 															<div class="mpwem-card__head-copy">
+																<span class="mpwem-section-pill"><?php esc_html_e('Media', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Gallery Images', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Additional photos.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1824,6 +1824,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Media', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Event List Thumbnail', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Thumbnail used in event listing layouts.', 'mage-eventpress'); ?></p>
 														</div>
@@ -1848,6 +1849,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card" id="mpwem_event_mode_card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Tickets', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Registration & Tickets Settings', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Configure how users register or purchase tickets for this event.', 'mage-eventpress'); ?></p>
 														</div>
@@ -1909,6 +1911,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<div class="mpwem-panel-mount mpwem-ticket-legacy-mount" id="mpwem_wizard_tickets_mount"></div>
 														<div class="mpwem-card" id="mpwem_wizard_extra_services_card" style="display:none;">
 															<div class="mpwem-card__head">
+																<span class="mpwem-section-pill"><?php esc_html_e('Add-ons', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Extra Services', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Optional add-ons that attendees can purchase with tickets.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1922,6 +1925,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<?php $this->render_seat_plan_panel($post_id); ?>
 														<div class="mpwem-card" id="mpwem_wizard_tax_card" style="display:none;">
 															<div class="mpwem-card__head">
+																<span class="mpwem-section-pill"><?php esc_html_e('Tax', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Tax Settings', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Configure how tax applies to this event\'s tickets.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1985,8 +1989,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar" id="mpwem_wizard_tickets_sidebar">
+													<div class="mpwem-card" id="mpwem_wizard_payment_status_card" style="margin-bottom: 20px;">
+														<div class="mpwem-card__body" id="mpwem_wizard_mode_help_card_banner"></div>
+													</div>
 													<div class="mpwem-card mpwem-card--help" id="mpwem_wizard_mode_help_card" style="margin-bottom: 20px;">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Guide', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Event Mode Manual', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Learn what each event mode is designed for:', 'mage-eventpress'); ?></p>
 														</div>
@@ -2032,6 +2040,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-pricing" id="mpwem_wizard_pricing_help_card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Pricing', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Pricing Help', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Quick tips for tickets.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2054,6 +2063,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Date & Time', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Date & Time', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Schedule your event start and end times.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2091,6 +2101,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<aside class="mpwem-event-wizard__sidebar">
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-schedule">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Schedule', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Schedule Summary', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Review your event dates.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2108,6 +2119,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Advanced', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Advanced', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Templates, messaging, timeline, related events, and search visibility.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2150,6 +2162,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<aside class="mpwem-event-wizard__sidebar">
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-display">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Guide', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Quick Guide', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('A simple guide for the Advanced step sections.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2161,6 +2174,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													<?php $this->render_review_sidebar_option($post_id); ?>
 													<div class="mpwem-card mpwem-card--danger mpwem-card--danger-advanced" id="mpwem_advanced_danger_zone">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Danger', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Danger Zone', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Use with care.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2181,6 +2195,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 									<div class="mpwem-edit-page-additional" id="mpwem_edit_page_additional" style="display:none;">
 										<div class="mpwem-card mpwem-card--help mpwem-card--help-additional">
 											<div class="mpwem-card__head">
+												<span class="mpwem-section-pill"><?php esc_html_e('Legacy', 'mage-eventpress'); ?></span>
 												<h2><?php esc_html_e('Additional Sections', 'mage-eventpress'); ?></h2>
 												<p><?php esc_html_e('Left in the current design for now until we place them into the new step flow.', 'mage-eventpress'); ?></p>
 											</div>

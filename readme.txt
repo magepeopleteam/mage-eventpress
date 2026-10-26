@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin, raselsha
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.10
+Stable tag: 5.7.11
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7

@@ -154,7 +154,6 @@
                 load_pagination(parent, pagination_page);
             }
         }).promise().done(function () {
-            alert('yes');
             mpwem_page_scroll_to(parent);
             mpwem_load_bg_image();
         });

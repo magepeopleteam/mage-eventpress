@@ -1114,6 +1114,9 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			if ( ! $event_id || empty( $event_date ) ) {
 				wp_send_json_error( array( 'message' => 'Missing stock parameters.' ), 400 );
 			}
+			if ( function_exists( 'mep_is_viewable_event' ) && ! mep_is_viewable_event( $event_id ) ) {
+				wp_send_json_error( array( 'message' => 'Event not found.' ), 404 );
+			}
 
 			$stock_info = $this->get_stock_info( $event_id, $event_date );
 			$min_price  = $show_price === 'yes' ? MPWEM_Functions::get_min_price( $event_id ) : 0;

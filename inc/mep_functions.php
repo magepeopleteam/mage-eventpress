@@ -5140,7 +5140,11 @@ die();
 	}
 	add_action( 'wp_ajax_mep_fb_ajax_attendee_filter_date', 'mep_fb_ajax_attendee_filter_date' );
 	function mep_fb_ajax_attendee_filter_date() {
-		$event_id  = sanitize_text_field( $_REQUEST['event_id'] );
+		// Staff screens only (attendee list, reports); not for shop customers.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die( '', '', array( 'response' => 403 ) );
+		}
+		$event_id  = isset( $_REQUEST['event_id'] ) ? absint( $_REQUEST['event_id'] ) : 0;
 		$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
 		if ( $recurring == 'everyday' ) {
 			mep_re_get_everyday_event_date_sec( $event_id );
@@ -5809,7 +5813,10 @@ die();
 	add_action( 'wp_ajax_nopriv_mep_event_list_date_schedule', 'mep_event_list_date_schedule' );
 	if ( ! function_exists( 'mep_event_list_date_schedule' ) ) {
 		function mep_event_list_date_schedule() {
-			$event_id       = isset( $_POST['event_id'] ) ? sanitize_text_field( $_POST['event_id'] ) : 0;
+			$event_id       = isset( $_POST['event_id'] ) ? absint( $_POST['event_id'] ) : 0;
+			if ( ! mep_is_viewable_event( $event_id ) ) {
+				die();
+			}
 			$recurring      = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
 			$_more_dates    = get_post_meta( $event_id, 'mep_event_more_date', true );
 			$more_date      = apply_filters( 'mep_event_date_more_date_array_event_list', $_more_dates, $event_id );
@@ -6362,13 +6369,27 @@ die();
             wp_die();
         }
 
-		$cat     = isset( $_POST['cat'] ) ? sanitize_text_field( wp_unslash( $_POST['cat'] ) ) : '0';
-		$org     = isset( $_POST['org'] ) ? sanitize_text_field( wp_unslash( $_POST['org'] ) ) : '0';
-		$tag     = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '0';
-		$city    = isset( $_POST['city'] ) ? sanitize_text_field( wp_unslash( $_POST['city'] ) ) : '';
-		$country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
-		$status  = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 'upcoming';
+		// Every value here comes from an unauthenticated request. It used to be
+		// concatenated into a "[mep-event-calendar ...]" string for do_shortcode(),
+		// and esc_attr() leaves [ and ] alone, so a value like `x] [any_shortcode]`
+		// closed the tag early and ran any shortcode on the site. The values now go
+		// to the calendar callback as an array and are never parsed as shortcode
+		// markup. Organizers are also matched by name, so the free-text values only
+		// lose the shortcode delimiters; status and year are allow-listed.
+		$text = static function ( $key, $default ) {
+			$value = isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+			return str_replace( array( '[', ']' ), '', $value );
+		};
+
+		$cat     = $text( 'cat', '0' );
+		$org     = $text( 'org', '0' );
+		$tag     = $text( 'tag', '0' );
+		$city    = $text( 'city', '' );
+		$country = $text( 'country', '' );
+		$status  = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : 'upcoming';
+		$status  = in_array( $status, array( 'upcoming', 'all', 'expired' ), true ) ? $status : 'upcoming';
 		$year    = isset( $_POST['year'] ) ? sanitize_text_field( wp_unslash( $_POST['year'] ) ) : '';
+		$year    = preg_match( '/^\d{4}$/', $year ) ? $year : '';
 
 		$shortcode_atts = array(
 			'cat'     => $cat,
@@ -6385,23 +6406,58 @@ die();
 			$shortcode_atts['year'] = $year;
 		}
 
-		$shortcode_str = '[mep-event-calendar';
+		// Empty and '0' values were left out of the old shortcode string so the
+		// calendar's own defaults applied; keep that.
+		$atts = array();
 		foreach ( $shortcode_atts as $key => $value ) {
 			if ( $value !== '' && $value !== '0' ) {
-				$shortcode_str .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+				$atts[ $key ] = $value;
 			}
 		}
-		$shortcode_str .= ']';
 
-		echo do_shortcode( $shortcode_str );
+		global $shortcode_tags;
+		$callback = isset( $shortcode_tags['mep-event-calendar'] ) ? $shortcode_tags['mep-event-calendar'] : null;
+		if ( is_callable( $callback ) ) {
+			echo call_user_func( $callback, $atts, '', 'mep-event-calendar' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- calendar markup, escaped by its renderer.
+		}
         die();
     }
+
+	if ( ! function_exists( 'mep_is_viewable_event' ) ) {
+		/**
+		 * Whether the current visitor may see this event's details.
+		 *
+		 * The public AJAX endpoints take an event id from the request; without this
+		 * they answered for drafts, private events and posts of any other type.
+		 * Editors previewing an unpublished event still get an answer.
+		 *
+		 * @param mixed $event_id Event post id.
+		 * @return bool
+		 */
+		function mep_is_viewable_event( $event_id ) {
+			$event_id = absint( $event_id );
+			if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
+				return false;
+			}
+			if ( 'publish' === get_post_status( $event_id ) ) {
+				return true;
+			}
+			return current_user_can( 'read_post', $event_id );
+		}
+	}
 
     add_action( 'wp_ajax_mep_change_date_status','mep_change_date_status' );
     add_action( 'wp_ajax_nopriv_mep_change_date_status', 'mep_change_date_status');
 function mep_change_date_status() {
-
-    $post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+    // The script on the event page always sends this nonce. On failure the date
+    // line is simply left empty rather than filled with an error payload.
+    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
+        die();
+    }
+    $post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+    if ( ! mep_is_viewable_event( $post_id ) ) {
+        die();
+    }
     $event_infos              =  MPWEM_Functions::get_all_info( $post_id );
     $_single_event_setting_sec = get_option('single_event_setting_sec');
     $icon_setting_sec = get_option('icon_setting_sec');
@@ -6421,8 +6477,12 @@ function mep_change_date_status() {
     add_action( 'wp_ajax_mep_change_time_status','mep_change_time_status' );
     add_action( 'wp_ajax_nopriv_mep_change_time_status', 'mep_change_time_status');
     function mep_change_time_status() {
-        $event_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
-        if ($event_id > 0) {
+        // Same rules as mep_change_date_status(); the page script sends this nonce too.
+        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
+            die();
+        }
+        $event_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+        if ( $event_id > 0 && mep_is_viewable_event( $event_id ) ) {
             $event_infos = MPWEM_Functions::get_all_info($event_id);
             $all_dates = MPWEM_Functions::get_dates($event_id);
             $upcoming_date = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';

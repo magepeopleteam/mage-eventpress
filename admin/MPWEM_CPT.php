@@ -151,7 +151,28 @@
 					'rest_base'           => 'mep_temp_attendee'
 				);
 				register_post_type( 'mep_temp_attendee', $argsl );
-				
+
+				// Extra services bought with an order (one record per service per order line,
+				// created at checkout). Internal records only - never shown or edited as posts -
+				// but registered so WordPress knows the type: unregistered, every capability check
+				// on one (any save_post handler calling current_user_can( 'edit_post', ... ))
+				// logged a map_meta_cap "post type is not registered" notice.
+				register_post_type( 'mep_extra_service', array(
+					'label'               => __( 'Event Extra Services', 'mage-eventpress' ),
+					'public'              => false,
+					'publicly_queryable'  => false,
+					'exclude_from_search' => true,
+					'show_ui'             => false,
+					'show_in_menu'        => false,
+					'show_in_nav_menus'   => false,
+					'show_in_rest'        => false,
+					'rewrite'             => false,
+					'query_var'           => false,
+					'supports'            => array( 'title' ),
+					'capability_type'     => 'post',
+					'map_meta_cap'        => true,
+				) );
+
 				// Register RSVP Responses CPT
 				$rsvp_args = array(
 					'labels'              => array(

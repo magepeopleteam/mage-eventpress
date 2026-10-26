@@ -3,7 +3,8 @@
 	$values = get_post_custom( get_the_id() );
 	if ( is_user_logged_in() ) {
 	$user = wp_get_current_user();
-	$ticket_user_id  = $values['ea_user_id'][0];
+	// Attendees added without a buyer (imports, hand-made records) have no ea_user_id.
+	$ticket_user_id  = isset( $values['ea_user_id'][0] ) ? $values['ea_user_id'][0] : '';
 	$current_user_id = get_current_user_id();
 	$qr_user_role = mep_get_option( 'mep_qr_user_role', 'qr_general_attendee_sec', 'administrator' );
 	if ( $ticket_user_id == $current_user_id || in_array( 'administrator', (array) $user->roles ) || in_array( $qr_user_role, (array) $user->roles ) ){

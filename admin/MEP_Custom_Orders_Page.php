@@ -340,6 +340,15 @@ class MEP_Custom_Orders_Page {
 			: number_format( (float) $amount, 2 );
 	}
 
+	/**
+	 * Whether an attendee's mep_checkin meta means "checked in". Every attendee is created with
+	 * 'No', so testing the value for truthiness showed everyone as checked in. 'checked in' is
+	 * what the QR Code add-on's scanner stored before it switched to 'Yes'.
+	 */
+	private static function is_checked_in( $checkin ) {
+		return in_array( $checkin, array( 'Yes', 'checked in' ), true );
+	}
+
 	private static function sanitize_filters_from_request() {
 		// Advanced filters are a PRO feature — free installs always get an unfiltered list.
 		if ( ! self::is_pro_active() ) {
@@ -1473,7 +1482,7 @@ class MEP_Custom_Orders_Page {
 										</td>
 										<td><span class="mep-od-ref"><?php echo esc_html( $a_ref ?: '—' ); ?></span></td>
 										<td>
-											<?php if ( $checkin ) : ?>
+											<?php if ( self::is_checked_in( $checkin ) ) : ?>
 												<span class="mep-status-pill mep-status-publish"><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></span>
 											<?php else : ?>
 												<span class="mep-status-pill mep-status-cancelled"><?php esc_html_e( 'No', 'mage-eventpress' ); ?></span>
@@ -1786,7 +1795,7 @@ class MEP_Custom_Orders_Page {
 										</td>
 										<td><span class="mep-od-ref"><?php echo esc_html( $a_ref ?: '—' ); ?></span></td>
 										<td>
-											<?php if ( $checkin ) : ?>
+											<?php if ( self::is_checked_in( $checkin ) ) : ?>
 												<span class="mep-status-pill mep-status-publish"><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></span>
 											<?php else : ?>
 												<span class="mep-status-pill mep-status-cancelled"><?php esc_html_e( 'No', 'mage-eventpress' ); ?></span>

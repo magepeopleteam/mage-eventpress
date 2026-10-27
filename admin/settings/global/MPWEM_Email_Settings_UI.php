@@ -304,11 +304,11 @@
 					? mep_get_confirmation_email_subject()
 					: mep_get_option( 'mep_email_subject', $sec, 'Confirmation Email' );
 				$body    = self::get_email_body_or_preset( 'mep_confirmation_email_text', $sec, 'confirmation' );
-				$status  = mep_get_option( 'mep_email_sending_order_status', $sec, array( 'completed' => 'completed' ) );
+				// Saved value, not mep_get_option(): that turns "nothing ticked" back into
+				// Completed, and the next Save would then switch it on again.
+				$status  = mep_get_saved_email_sending_order_statuses();
 				$billing = mep_get_option( 'mep_send_confirmation_to_billing_email', $sec, 'enable' );
-				if ( ! is_array( $status ) ) {
-					$status = array();
-				}
+				$wc_off  = mep_get_disabled_wc_emails();
 
 				$vars = array( '{name}', '{event}', '{ticket_type}', '{order_id}', '{event_date}', '{event_time}', '{event_datetime}', '{payment_method}', '{amount_paid}', '{virtual_link}', '{virtual_details}', '{calendar_ics_url}', '{google_calendar_url}' );
 				?>
@@ -380,7 +380,7 @@
 										<input type="hidden" name="<?php echo esc_attr( $sec ); ?>[mep_email_sending_order_status]" value="" />
 										<?php foreach ( array( 'processing' => __( 'Processing', 'mage-eventpress' ), 'completed' => __( 'Completed', 'mage-eventpress' ) ) as $key => $label ) : ?>
 											<label class="mep-em__check">
-												<input type="checkbox" name="<?php echo esc_attr( $sec ); ?>[mep_email_sending_order_status][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $key ); ?>" <?php checked( isset( $status[ $key ] ) && $status[ $key ] === $key ); ?> />
+												<input type="checkbox" name="<?php echo esc_attr( $sec ); ?>[mep_email_sending_order_status][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $key ); ?>" <?php checked( in_array( $key, $status, true ) ); ?> />
 												<span><?php echo esc_html( $label ); ?></span>
 											</label>
 										<?php endforeach; ?>
@@ -395,6 +395,21 @@
 									</select>
 									<p class="mep-em__hint"><?php esc_html_e( 'Send copy to the billing address.', 'mage-eventpress' ); ?></p>
 								</div>
+								<?php if ( class_exists( 'MPWEM_WC_Email_Control' ) ) : ?>
+									<div class="mep-em__field">
+										<label class="mep-em__label"><?php esc_html_e( 'Disable WooCommerce Emails for Event Orders', 'mage-eventpress' ); ?></label>
+										<div class="mep-em__check-box">
+											<input type="hidden" name="<?php echo esc_attr( $sec ); ?>[mep_disable_wc_emails]" value="" />
+											<?php foreach ( MPWEM_WC_Email_Control::get_email_choices() as $key => $label ) : ?>
+												<label class="mep-em__check">
+													<input type="checkbox" name="<?php echo esc_attr( $sec ); ?>[mep_disable_wc_emails][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $key ); ?>" <?php checked( in_array( $key, $wc_off, true ) ); ?> />
+													<span><?php echo esc_html( $label ); ?></span>
+												</label>
+											<?php endforeach; ?>
+										</div>
+										<p class="mep-em__hint"><?php esc_html_e( 'Ticked WooCommerce emails are not sent for orders that contain only event tickets. Orders with other products still get them.', 'mage-eventpress' ); ?></p>
+									</div>
+								<?php endif; ?>
 							</div>
 						</div>
 

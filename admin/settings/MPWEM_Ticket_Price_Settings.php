@@ -1294,9 +1294,18 @@
 				}
 				?>
                 <div class="<?php echo esc_attr( $wrapper_classes ); ?>">
-                    <div class="mpwem-shortcode-help__row">
+                    <div class="mpwem-shortcode-help__heading">
+                        <span class="mpwem-shortcode-help__icon" aria-hidden="true">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        </span>
                         <span class="mpwem-shortcode-help__title"><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
+                    </div>
+                    <div class="mpwem-shortcode-help__row">
                         <code class="mpwem-shortcode-help__code">[event-add-cart-section event="<?php echo esc_html( $post_id ); ?>"]</code>
+                        <button type="button" class="mpwem-shortcode-help__copy" data-mpwem-copy-shortcode aria-label="<?php esc_attr_e( 'Copy shortcode', 'mage-eventpress' ); ?>">
+                            <span class="mpwem-shortcode-help__copy-msg"><?php esc_html_e( 'Copied!', 'mage-eventpress' ); ?></span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
                     </div>
                     <p class="mpwem-shortcode-help__description"><?php esc_html_e( 'If you want to display the ticket type list with an add-to-cart button on any post or page of your website, simply copy the shortcode and paste it where desired.', 'mage-eventpress' ); ?></p>
                 </div>
@@ -1733,16 +1742,69 @@
                     <span><?php esc_html_e( 'Get Documentation', 'mage-eventpress' ) ?></span>
                 </section>
                 <section>
-					<?php if ( ! mep_check_plugin_installed( 'woocommerce-event-manager-addon-form-builder/addon-builder.php' ) ) : ?>
-                        <p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e( "Get Individual Attendee  Information, PDF Ticketing and Email Function with <a href='https://mage-people.com/product/mage-woo-event-booking-manager-pro/' target='_blank'>Event Manager Pro</a>", 'mage-eventpress' ); ?></p>
-					<?php endif;
-						if ( ! mep_check_plugin_installed( 'woocommerce-event-manager-addon-membership-price/membership-price.php' ) ): ?>
-                            <p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e( "Special Price Option for each user type or membership get <a href='https://mage-people.com/product/membership-pricing-for-event-manager-plugin' target='_blank'>Membership Pricing Addon</a>", 'mage-eventpress' ); ?></p>
-						<?php endif;
-						if ( ! mep_check_plugin_installed( 'woocommerce-event-manager-min-max-quantity-addon/mep_min_max_qty.php' ) ): ?>
-                            <p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e( "Set maximum/minimum qty buying option with <a href='https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager' target='_blank'>Max/Min Qty Addon</a>", 'mage-eventpress' ); ?></p>
+                    <div class="mpwem-docs-tiles">
+						<?php if ( ! mep_check_plugin_installed( 'woocommerce-event-manager-addon-form-builder/addon-builder.php' ) ) : ?>
+                            <a class="mpwem-docs-tile mpwem-docs-tile--indigo" href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/" target="_blank" rel="noopener">
+                                <div class="mpwem-docs-tile__row">
+                                    <span class="mpwem-docs-tile__lead">
+                                        <span class="mpwem-docs-tile__icon" aria-hidden="true">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                        </span>
+                                        <span class="mpwem-docs-tile__title"><?php esc_html_e( 'Event Manager Pro', 'mage-eventpress' ); ?></span>
+                                    </span>
+                                    <span class="mpwem-docs-tile__badge"><?php esc_html_e( 'PRO', 'mage-eventpress' ); ?></span>
+                                </div>
+                                <p class="mpwem-docs-tile__desc"><?php esc_html_e( 'Individual attendee info, PDF ticketing, and email notifications.', 'mage-eventpress' ); ?></p>
+                                <span class="mpwem-docs-tile__cta">
+									<?php esc_html_e( 'Learn more', 'mage-eventpress' ); ?>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </span>
+                            </a>
 						<?php endif; ?>
-                    <p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e( "Read Documentation <a href='https://docs.mage-people.com/woocommerce-event-manager/' target='_blank'>Read Documentation</a>", 'mage-eventpress' ); ?></p>
+						<?php if ( ! mep_check_plugin_installed( 'woocommerce-event-manager-addon-membership-price/membership-price.php' ) ) : ?>
+                            <a class="mpwem-docs-tile mpwem-docs-tile--amber" href="https://mage-people.com/product/membership-pricing-for-event-manager-plugin" target="_blank" rel="noopener">
+                                <div class="mpwem-docs-tile__row">
+                                    <span class="mpwem-docs-tile__lead">
+                                        <span class="mpwem-docs-tile__icon" aria-hidden="true">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></svg>
+                                        </span>
+                                        <span class="mpwem-docs-tile__title"><?php esc_html_e( 'Membership Pricing', 'mage-eventpress' ); ?></span>
+                                    </span>
+                                    <span class="mpwem-docs-tile__badge"><?php esc_html_e( 'ADD-ON', 'mage-eventpress' ); ?></span>
+                                </div>
+                                <p class="mpwem-docs-tile__desc"><?php esc_html_e( 'Special pricing for each user type or membership level.', 'mage-eventpress' ); ?></p>
+                                <span class="mpwem-docs-tile__cta">
+									<?php esc_html_e( 'Learn more', 'mage-eventpress' ); ?>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </span>
+                            </a>
+						<?php endif; ?>
+						<?php if ( ! mep_check_plugin_installed( 'woocommerce-event-manager-min-max-quantity-addon/mep_min_max_qty.php' ) ) : ?>
+                            <a class="mpwem-docs-tile mpwem-docs-tile--green" href="https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager" target="_blank" rel="noopener">
+                                <div class="mpwem-docs-tile__row">
+                                    <span class="mpwem-docs-tile__lead">
+                                        <span class="mpwem-docs-tile__icon" aria-hidden="true">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9a2 2 0 0 1 2-2h2V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v12"/><path d="M9 21v-4h6v4"/><path d="M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>
+                                        </span>
+                                        <span class="mpwem-docs-tile__title"><?php esc_html_e( 'Max/Min Qty Addon', 'mage-eventpress' ); ?></span>
+                                    </span>
+                                    <span class="mpwem-docs-tile__badge"><?php esc_html_e( 'ADD-ON', 'mage-eventpress' ); ?></span>
+                                </div>
+                                <p class="mpwem-docs-tile__desc"><?php esc_html_e( 'Set a maximum or minimum purchase quantity per order.', 'mage-eventpress' ); ?></p>
+                                <span class="mpwem-docs-tile__cta">
+									<?php esc_html_e( 'Learn more', 'mage-eventpress' ); ?>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </span>
+                            </a>
+						<?php endif; ?>
+                    </div>
+                    <a class="mpwem-docs-doclink" href="https://docs.mage-people.com/woocommerce-event-manager/" target="_blank" rel="noopener">
+                        <span class="mpwem-docs-doclink__label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+							<?php esc_html_e( 'Read Documentation', 'mage-eventpress' ); ?>
+                        </span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                    </a>
                 </section>
 				<?php
 			}

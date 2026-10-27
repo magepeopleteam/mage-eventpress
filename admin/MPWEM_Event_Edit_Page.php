@@ -522,6 +522,71 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<?php
 		}
 
+		/**
+		 * Shared "Live Ticket Preview" sidebar card - shown on the Ticket &
+		 * Pricing, Date & Time and Advanced steps so the live frontend preview
+		 * stays visible while editing any of them. All instances share the
+		 * same class (not id - an id can only appear once per page) so the JS
+		 * renderer updates every instance it finds at once.
+		 */
+		private function render_live_ticket_preview_card(int $post_id, string $instance_key): void
+		{
+			$live_preview_template     = class_exists('MPWEM_Functions') ? MPWEM_Functions::get_details_template_name($post_id) : 'default-theme.php';
+			$live_preview_theme_labels = array(
+				'horizon.php'        => __('Horizon', 'mage-eventpress'),
+				'default-theme.php'  => __('Default', 'mage-eventpress'),
+			);
+			$live_preview_theme_label = isset($live_preview_theme_labels[$live_preview_template])
+				? $live_preview_theme_labels[$live_preview_template]
+				: ucfirst(str_replace(array('-theme.php', '.php', '-'), array('', '', ' '), $live_preview_template));
+			$instance_id = 'mpwem_live_ticket_preview_card_' . sanitize_html_class($instance_key);
+			?>
+			<div class="mpwem-card mpwem-live-ticket-preview" id="<?php echo esc_attr($instance_id); ?>" style="margin-bottom: 20px;" data-mpwem-preview-theme="<?php echo esc_attr($live_preview_template); ?>">
+				<div class="mpwem-card__head mpwem-card__head--toggle">
+					<div class="mpwem-card__head-copy">
+						<span class="mpwem-section-pill"><?php esc_html_e('Preview', 'mage-eventpress'); ?></span>
+						<h2><?php esc_html_e('Live Ticket Preview', 'mage-eventpress'); ?></h2>
+						<p><?php esc_html_e('Exactly how this appears on your event page.', 'mage-eventpress'); ?></p>
+					</div>
+					<div class="mpwem-card__head-actions">
+						<span class="mpwem-live-ticket-preview__badge">
+							<span class="mpwem-live-ticket-preview__dot" aria-hidden="true"></span>
+							<?php esc_html_e('Live', 'mage-eventpress'); ?>
+						</span>
+					</div>
+				</div>
+				<div class="mpwem-live-ticket-preview__toolbar">
+					<span class="mpwem-live-ticket-preview__theme-label">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+						<?php
+						/* translators: %s: active frontend template name, e.g. "Horizon" */
+						echo esc_html(sprintf(__('Theme: %s', 'mage-eventpress'), $live_preview_theme_label));
+						?>
+					</span>
+					<span class="mpwem-live-ticket-preview__device-toggle">
+						<span class="mpwem-live-ticket-preview__device is-active" aria-label="<?php esc_attr_e('Desktop preview', 'mage-eventpress'); ?>" role="img">
+							<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+						</span>
+						<span class="mpwem-live-ticket-preview__device" aria-label="<?php esc_attr_e('Mobile preview', 'mage-eventpress'); ?>" role="img">
+							<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+						</span>
+					</span>
+				</div>
+				<div class="mpwem-live-ticket-preview__date-row">
+					<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+					<span class="mpwem-live-ticket-preview__date-label"><?php esc_html_e('No date set yet', 'mage-eventpress'); ?></span>
+					<select class="mpwem-live-ticket-preview__date-select" aria-label="<?php esc_attr_e('Choose a date to preview', 'mage-eventpress'); ?>" style="display:none;"></select>
+					<label class="mpwem-live-ticket-preview__date-picker" style="display:none;">
+						<input type="hidden" />
+						<input type="text" class="formControl mpwem-date-input mpwem-live-ticket-preview__date-input" autocomplete="off" readonly="readonly" aria-label="<?php esc_attr_e('Choose an occurrence to preview', 'mage-eventpress'); ?>" placeholder="<?php esc_attr_e('Select a date', 'mage-eventpress'); ?>" />
+					</label>
+				</div>
+				<div class="mpwem-live-ticket-preview__body"></div>
+				<div class="mpwem-live-ticket-preview__footer"></div>
+			</div>
+			<?php
+		}
+
 		private function is_seat_plan_addon_active(): bool
 		{
 			if (class_exists('MP_ESP_Admin_Meta')) {
@@ -1992,52 +2057,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													<div class="mpwem-card" id="mpwem_wizard_payment_status_card" style="margin-bottom: 20px;">
 														<div class="mpwem-card__body" id="mpwem_wizard_mode_help_card_banner"></div>
 													</div>
-													<div class="mpwem-card mpwem-card--help" id="mpwem_wizard_mode_help_card" style="margin-bottom: 20px;">
-														<div class="mpwem-card__head">
-															<span class="mpwem-section-pill"><?php esc_html_e('Guide', 'mage-eventpress'); ?></span>
-															<h2><?php esc_html_e('Event Mode Manual', 'mage-eventpress'); ?></h2>
-															<p><?php esc_html_e('Learn what each event mode is designed for:', 'mage-eventpress'); ?></p>
-														</div>
-														<div class="mpwem-card__body">
-															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-list-view" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('Listing-Only', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Event details only. No registration required.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-email-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('RSVP (Free)', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Free attendee registration. No WooCommerce needed.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-tickets-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Sell tickets and accept payments. Requires WooCommerce or custom payment method.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-															<div class="mpwem-mode-manual-item">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-megaphone" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('Announcement', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Publish a notice with an enquiry form instead of a ticket box. Works with or without a date.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-														</div>
-													</div>
-
+													<?php $this->render_live_ticket_preview_card($post_id, 'tickets'); ?>
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-pricing" id="mpwem_wizard_pricing_help_card">
 														<div class="mpwem-card__head">
 															<span class="mpwem-section-pill"><?php esc_html_e('Pricing', 'mage-eventpress'); ?></span>
@@ -2099,6 +2119,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
+													<?php $this->render_live_ticket_preview_card($post_id, 'date'); ?>
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-schedule">
 														<div class="mpwem-card__head">
 															<span class="mpwem-section-pill"><?php esc_html_e('Schedule', 'mage-eventpress'); ?></span>
@@ -2160,6 +2181,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
+													<?php $this->render_live_ticket_preview_card($post_id, 'advanced'); ?>
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-display">
 														<div class="mpwem-card__head">
 															<span class="mpwem-section-pill"><?php esc_html_e('Guide', 'mage-eventpress'); ?></span>

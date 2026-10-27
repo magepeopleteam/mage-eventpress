@@ -1124,7 +1124,7 @@ body.mpwem-event-wizard-screen #wpcontent {
 
 /* Grid & Cards */
 .mpwem-event-wizard__container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 16px 120px;
 }
@@ -1339,6 +1339,443 @@ body.mpwem-event-wizard-screen #wpcontent {
     margin-left: auto;
 }
 
+/* Live Ticket Preview (Ticket & Pricing sidebar) - mirrors the real
+   frontend ticket box (Horizon theme colors/layout) so edits to a
+   ticket's name/price/qty/early-bird settings are reflected here the
+   same way they'd appear on the event page. */
+@keyframes mpwem-live-preview-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.mpwem-live-ticket-preview__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #ecfdf5;
+    color: #059669;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.mpwem-live-ticket-preview__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    display: inline-block;
+    animation: mpwem-live-preview-pulse 1.8s ease-out infinite;
+}
+
+.mpwem-live-ticket-preview__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #fcfcfd;
+}
+
+/* Reflects whichever date is currently configured on the Date & Time
+   step, so switching Single Event/Particular Dates/Repeated Event (or
+   editing a date) is visible here too, not just on the Ticket &
+   Pricing step. */
+.mpwem-live-ticket-preview__date-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #fcfcfd;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.mpwem-live-ticket-preview__date-row svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.mpwem-live-ticket-preview__date-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Repeated Event has more than one occurrence date, so the row shows a
+   real date picker instead of a single static label - opens the same
+   popup calendar used throughout the Date & Time step, constrained to
+   only the dates this event actually recurs on (see
+   openCustomCalendar's allowed-dates handling). */
+/* Particular Dates: a plain native select listing each configured date -
+   a flat picker popup would be overkill for a short, specific list. */
+.mpwem-live-ticket-preview__date-select {
+    flex: 1 1 auto;
+    min-width: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 26px;
+    padding: 0 26px 0 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 7px !important;
+    background-color: #fff !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+}
+
+.mpwem-live-ticket-preview__date-picker {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+}
+
+.mpwem-live-ticket-preview__date-picker .mpwem-date-input,
+.mpwem-live-ticket-preview__date-input {
+    width: 100% !important;
+    height: 26px !important;
+    padding: 0 10px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 7px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+}
+
+.mpwem-live-ticket-preview__theme-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.mpwem-live-ticket-preview__theme-label svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.mpwem-live-ticket-preview__device-toggle {
+    display: inline-flex;
+    padding: 2px;
+    gap: 2px;
+    background: #f1f5f9;
+    border-radius: 8px;
+}
+
+.mpwem-live-ticket-preview__device {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 22px;
+    border-radius: 6px;
+    color: #94a3b8;
+}
+
+.mpwem-live-ticket-preview__device.is-active {
+    background: #fff;
+    color: #334155;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.mpwem-live-ticket-preview__body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #fafbfc;
+}
+
+.mpwem-live-ticket-preview__empty {
+    padding: 20px 14px;
+    text-align: center;
+    font-size: 12.5px;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+.mpwem-live-ticket-preview__item {
+    border: 1px solid #ede9f8;
+    border-radius: 14px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.mpwem-live-ticket-preview__item.is-disabled {
+    opacity: 0.55;
+}
+
+.mpwem-live-ticket-preview__ribbon {
+    padding: 10px 14px 0;
+}
+
+.mpwem-live-ticket-preview__ribbon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #b45309;
+    background: #ffedd5;
+    border-radius: 999px;
+    padding: 3px 8px;
+}
+
+.mpwem-live-ticket-preview__ribbon-badge.is-soldout {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+.mpwem-live-ticket-preview__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px 0;
+}
+
+.mpwem-live-ticket-preview__ribbon + .mpwem-live-ticket-preview__top {
+    padding-top: 8px;
+}
+
+/* An unlimited-stock extra service with no qty stepper has no bottom
+   row at all - give the top row its own bottom padding then instead
+   of leaving the card looking clipped. */
+.mpwem-live-ticket-preview__top:last-child {
+    padding-bottom: 14px;
+}
+
+.mpwem-live-ticket-preview__info {
+    min-width: 0;
+}
+
+.mpwem-live-ticket-preview__name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 5px;
+}
+
+.mpwem-live-ticket-preview__badge--earlybird {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #9a7400;
+    background: #fff4d6;
+    border-radius: 999px;
+    padding: 2px 7px;
+}
+
+.mpwem-live-ticket-preview__desc {
+    font-size: 12px;
+    color: #9ca3af;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.mpwem-live-ticket-preview__price {
+    flex-shrink: 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: #7b61ff;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+.mpwem-live-ticket-preview__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px 14px;
+}
+
+.mpwem-live-ticket-preview__availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #10b981;
+}
+
+.mpwem-live-ticket-preview__availability.is-low {
+    color: #b45309;
+}
+
+.mpwem-live-ticket-preview__availability-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.mpwem-live-ticket-preview__qty {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.mpwem-live-ticket-preview__qty-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.mpwem-live-ticket-preview__qty-btn:active {
+    transform: scale(0.92);
+}
+
+.mpwem-live-ticket-preview__qty-btn--dec {
+    background: #e8e8ee;
+    color: #4b4b57;
+}
+
+.mpwem-live-ticket-preview__qty-btn--inc {
+    background: #7b61ff;
+    color: #fff;
+    box-shadow: 0 5px 12px rgba(123, 97, 255, 0.32);
+}
+
+.mpwem-live-ticket-preview__qty-btn.is-disabled {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+}
+
+.mpwem-live-ticket-preview__qty-val {
+    width: 20px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.mpwem-live-ticket-preview__footer {
+    padding: 13px 16px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafbfc;
+    border-radius: 0 0 var(--mpwem-radius, 12px) var(--mpwem-radius, 12px);
+}
+
+.mpwem-live-ticket-preview__footer:empty {
+    display: none;
+}
+
+.mpwem-live-ticket-preview__footer-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.mpwem-live-ticket-preview__footer-label {
+    font-size: 12.5px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.mpwem-live-ticket-preview__footer-amount {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.mpwem-live-ticket-preview__footer-note {
+    margin: 7px 0 0;
+    font-size: 11px;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Only rendered once at least one ticket's qty is above 0 - mirrors
+   .mpwem_ex_service's own slideDown/slideUp on the real frontend. */
+.mpwem-live-ticket-preview__extras {
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px dashed #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mpwem-live-ticket-preview__extras-head {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+}
+
+/* Matches add_to_cart.php's real "Register For This Event" button -
+   disabled (not just styled so) until at least one ticket's qty is
+   above 0, same as mpwem_price_calculation() does on the frontend. */
+/* !important beats the generic .mpwem-event-wizard button:not(...):not(...)
+   rule (background: var(--mpwem-secondary)), which otherwise wins on
+   specificity over a plain single-class rule here and silently hid
+   this button's own background. */
+.mpwem-live-ticket-preview__register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px 16px;
+    border: none !important;
+    border-radius: 10px !important;
+    background: #f0eefd !important;
+    color: #5648e0 !important;
+    font-size: 13px !important;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: none !important;
+    transition: background 0.15s ease, transform 0.1s ease, opacity 0.1s ease;
+}
+
+.mpwem-live-ticket-preview__register:hover:not(:disabled) {
+    background: #e4e0fb !important;
+    transform: translateY(-1px);
+}
+
+.mpwem-live-ticket-preview__register:disabled {
+    background: #e2e8f0 !important;
+    color: #94a3b8 !important;
+    box-shadow: none !important;
+    cursor: not-allowed;
+}
+
 .mpwem-taxonomy-card .mpwem-card__head {
     display: flex;
     align-items: center;
@@ -1397,41 +1834,263 @@ body.mpwem-event-wizard-screen #wpcontent {
     --help-bg: #fffbeb;
 }
 
+/* Documentation Links sidebar card - minimal "ad" tiles for each PRO
+   add-on, plus a de-emphasized plain link for the real documentation
+   (it's a resource, not a pitch, so it doesn't get the same treatment). */
+.mpwem-docs-tiles {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mpwem-docs-tile {
+    display: block;
+    padding: 12px;
+    border: 1px solid #e9ecf2;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.mpwem-docs-tile:hover {
+    background: #fafbfc;
+}
+
+.mpwem-docs-tile__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.mpwem-docs-tile__lead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.mpwem-docs-tile__icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.mpwem-docs-tile__icon svg {
+    display: block;
+}
+
+.mpwem-docs-tile__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mpwem-docs-tile__badge {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #94a3b8;
+    padding: 2px 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+}
+
+.mpwem-docs-tile__desc {
+    margin: 0 0 6px;
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.45;
+}
+
+.mpwem-docs-tile__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.mpwem-docs-tile--indigo .mpwem-docs-tile__icon {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.mpwem-docs-tile--indigo .mpwem-docs-tile__cta {
+    color: #4f46e5;
+}
+
+.mpwem-docs-tile--amber .mpwem-docs-tile__icon {
+    background: #fef3e8;
+    color: #c2680c;
+}
+
+.mpwem-docs-tile--amber .mpwem-docs-tile__cta {
+    color: #c2680c;
+}
+
+.mpwem-docs-tile--green .mpwem-docs-tile__icon {
+    background: #e9f9f0;
+    color: #0e9f6e;
+}
+
+.mpwem-docs-tile--green .mpwem-docs-tile__cta {
+    color: #0e9f6e;
+}
+
+.mpwem-docs-doclink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafbfc;
+    color: #334155;
+    text-decoration: none;
+}
+
+.mpwem-docs-doclink__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.mpwem-docs-doclink svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
 .mpwem-shortcode-help {
     display: grid;
-    gap: 8px;
+    gap: 10px;
     margin-top: 14px;
     padding-top: 14px;
     border-top: 1px solid rgba(148, 163, 184, 0.18);
 }
 
-.mpwem-shortcode-help__row {
-    display: grid;
+.mpwem-shortcode-help__heading {
+    display: flex;
+    align-items: center;
     gap: 8px;
 }
 
+.mpwem-shortcode-help__icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    background: #eef2ff;
+    color: #6366f1;
+}
+
 .mpwem-shortcode-help__title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--mpwem-text);
 }
 
+.mpwem-shortcode-help__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1px solid #eef0f4;
+    border-radius: 9px;
+    padding: 8px 8px 8px 11px;
+}
+
 .mpwem-shortcode-help__code {
+    flex: 1;
+    min-width: 0;
     display: block;
-    padding: 10px 12px;
-    border: 1px solid #d6e0ef;
-    border-radius: 10px;
-    background: #f8fbff;
-    color: #1d4ed8;
-    font-size: 13px;
+    color: var(--mpwem-text);
+    font-weight: 600;
+    font-size: 12.5px;
     line-height: 1.5;
     white-space: normal;
     word-break: break-word;
 }
 
+.mpwem-shortcode-help__copy {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 7px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    color: #6366f1;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mpwem-shortcode-help__copy:hover {
+    background: #eef2ff;
+}
+
+.mpwem-shortcode-help__copy.is-copied {
+    color: #16a34a;
+}
+
+.mpwem-shortcode-help__copy-msg {
+    position: absolute;
+    bottom: calc(100% + 7px);
+    right: 50%;
+    transform: translateX(50%) translateY(2px);
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: #16a34a;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.mpwem-shortcode-help__copy-msg::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 50%;
+    transform: translateX(50%);
+    border: 5px solid transparent;
+    border-top-color: #16a34a;
+}
+
+.mpwem-shortcode-help__copy.is-copied .mpwem-shortcode-help__copy-msg {
+    opacity: 1;
+    transform: translateX(50%) translateY(0);
+}
+
 .mpwem-shortcode-help__description {
     margin: 0;
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1.55;
     color: var(--mpwem-muted);
 }
@@ -3147,7 +3806,7 @@ select.mpwem-global-qty-field__input {
         top: var(--mpwem-admin-bar-offset);
         left: var(--mpwem-admin-sidebar-offset);
         right: 0;
-        padding: 10px 20px;
+        padding: 25px 20px;
     }
 
     .mpwem-event-wizard__steps {
@@ -3175,9 +3834,32 @@ select.mpwem-global-qty-field__input {
 /* Breakpoint: wide tablet and small desktop */
 @media (min-width: 901px) {
     .mpwem-event-wizard__topbar-inner {
+        position: relative;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+    }
+
+    /* Centered on the topbar itself, not just between the title and
+       actions - those vary in width per event, so a flex-order position
+       between them would drift off-center. The base .mpwem-event-wizard__steps
+       rule styles it as a standalone sticky bar (background, border,
+       shadow) for when it isn't nested in the topbar; strip that back
+       to a plain inline nav here so it doesn't draw its own bar/seam
+       behind the step circles. */
+    .mpwem-event-wizard__topbar-inner .mpwem-event-wizard__steps {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-bottom: none;
+        box-shadow: none;
+        margin-bottom: 0;
+        padding: 15px 0;
     }
 
     .mpwem-event-wizard__topbar-inner .mpwem-link {
@@ -3254,7 +3936,7 @@ select.mpwem-global-qty-field__input {
 /* Breakpoint: large desktop */
 @media (min-width: 1200px) {
     .mpwem-event-wizard__grid {
-        grid-template-columns: minmax(0, 1fr) 400px;
+        grid-template-columns: minmax(0, 1fr) 320px;
     }
 
     .mpwem-event-wizard__grid:not(.is-full-width) .mpwem-event-wizard__main {
@@ -3728,7 +4410,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     padding: 8px 14px;
     gap: 12px;
     border-radius: 5px;
-    cursor: pointer;
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__item {
@@ -3739,7 +4420,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     border-radius: 0;
     background: #fff;
     box-shadow: none;
-    cursor: pointer;
 }
 
 #mpwem_particular_date_summary .mpwem-ticket-summary__item:first-child {
@@ -5111,6 +5791,44 @@ label.mpwem-ticket-summary__gq-label {
     width: 185px !important;
 }
 
+/* Inside the Add/Edit Date card the pill sits in a 2-column grid, so
+   there isn't room for the fixed 410px (225+185) width above - it was
+   overflowing the "Ends" column past the card's right edge. Let the
+   pill fill its column and split it proportionally instead. */
+.mpwem-ticket-add__grid .mpwem-repeat-dt-pill {
+    width: 100%;
+}
+
+/* A proportional split still shrank the date text below what it needs
+   ("Wed 28 Oct , 2026" was still clipped) once the pill is squeezed
+   into a ~330px grid column. Give the time side a fixed width just
+   big enough for its own short text ("08:00 PM" / "--:-- --"), and
+   let the date side take all the remaining space instead. */
+.mpwem-ticket-add__grid .mpwem-repeat-dt-pill .mpwem-date-input-wrap {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.mpwem-ticket-add__grid .mpwem-repeat-dt-pill .mpwem-time-input-wrap {
+    flex: 0 0 138px;
+    min-width: 138px;
+}
+
+/* Reset (x) buttons sit at right:8-10px and are 24px wide, so padding
+   needs to clear that even though they're only shown on hover. */
+.mpwem-ticket-add__grid .mpwem-repeat-dt-pill .mpwem-date-input {
+    padding-right: 34px !important;
+}
+
+.mpwem-ticket-add__grid .mpwem-repeat-dt-pill .mpwem-time-input {
+    padding-right: 36px !important;
+}
+
+.mpwem-ticket-add__grid .mpwem-repeat-dt-pill .mpwem-date-input,
+.mpwem-ticket-add__grid .mpwem-repeat-dt-pill .mpwem-time-input {
+    width: 100% !important;
+}
+
 /* Force the correct positioning context regardless of what else in the
    cascade touches .mpwem-date-input-wrap/.mpwem-time-input-wrap inside
    the merged pill - without this, the ✕ reset button was rendering
@@ -5237,6 +5955,14 @@ label.mpwem-ticket-summary__gq-label {
     background: #f0eefd;
     color: #5648e0;
     flex-shrink: 0;
+    line-height: 0;
+}
+
+/* Inline SVGs sit on the text baseline by default, which leaves a sliver
+   of space below them even inside a centered flex box - that was
+   nudging the arrow up and off-center. */
+.mpwem-repeat-skip-toggle__icon svg {
+    display: block;
 }
 
 .mpwem-repeat-skip-toggle__count {
@@ -9891,6 +10617,8 @@ div.mpwem-date-type-option__copy strong {
 .mpwem-time-input-wrap::before {
     position: absolute;
     left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 1;
     color: #64748b;
     font-family: dashicons;

@@ -909,6 +909,7 @@
                 
                 const $newCard = $('<div class="mpwem-card mpwem-docs-card mpwem-card--help mpwem-card--help-docs"></div>');
                 const $cardHead = $('<div class="mpwem-card__head"></div>');
+                $cardHead.append($('<span class="mpwem-section-pill"></span>').text('Docs'));
                 $cardHead.append($('<h2></h2>').text(title));
                 $cardHead.append($('<p></p>').text(desc));
                 
@@ -931,6 +932,7 @@
         initializeTicketPricingModal($root);
         initializeExtraServiceModal($root);
         initializeParticularDateModal($root);
+        bindLiveTicketPreviewQtyButtons();
 
         // Mount into Date Step
         mountPanel($root, '#mpwem_date_settings', 'mpwem_wizard_date_mount');
@@ -1528,6 +1530,7 @@
             if ($openAddCard.length) {
                 context.$summaryList.append($openAddCard);
             }
+            renderLiveTicketPreview($root, false, false, $());
             return;
         }
 
@@ -1556,6 +1559,7 @@
             if ($openAddCard.length) {
                 context.$summaryList.append($openAddCard);
             }
+            renderLiveTicketPreview($root, regEnabled, earlyBirdEnabled, $());
             return;
         }
 
@@ -1644,6 +1648,539 @@
         }
 
         enableTicketSummarySort($root, context);
+        renderLiveTicketPreview($root, regEnabled, earlyBirdEnabled, $rows);
+    }
+
+    function formatLiveTicketPreviewPrice(num) {
+        if (typeof window.mpwem_price_format === 'function' && !Number.isNaN(num)) {
+            return $('<div></div>').html(window.mpwem_price_format(num)).text();
+        }
+        return '$' + num.toFixed(2);
+    }
+
+    // Qty chosen per item in the preview persists across re-renders (every
+    // ticket/extra-service edit rebuilds the whole card) so a click doesn't
+    // get wiped out by the very re-render it triggers. Keyed by a
+    // type-prefixed name since ticket and extra-service names are separate
+    // namespaces on the real frontend too.
+    function getLiveTicketPreviewQtyState($root) {
+        let state = $root.data('mpwemLivePreviewQty');
+        if (!state) {
+            state = {};
+            $root.data('mpwemLivePreviewQty', state);
+        }
+        return state;
+    }
+
+    function buildLiveTicketPreviewItem(options) {
+        const stockState = options.stockState;
+        const max = options.max;
+        const qty = options.qty;
+
+        const $item = $('<div class="mpwem-live-ticket-preview__item"></div>')
+            .attr('data-mpwem-preview-key', options.key)
+            .attr('data-mpwem-preview-max', max === Infinity ? '' : max)
+            .attr('data-mpwem-preview-price', Number.isNaN(options.priceRaw) ? '' : options.priceRaw)
+            .toggleClass('is-disabled', stockState === 'soldout');
+
+        if (stockState === 'soldout') {
+            $item.append(
+                $('<div class="mpwem-live-ticket-preview__ribbon"></div>')
+                    .append($('<span class="mpwem-live-ticket-preview__ribbon-badge is-soldout"></span>').text('Sold Out'))
+            );
+        } else if (stockState === 'low') {
+            $item.append(
+                $('<div class="mpwem-live-ticket-preview__ribbon"></div>')
+                    .append($('<span class="mpwem-live-ticket-preview__ribbon-badge"></span>').text('Only ' + options.capacityNum + ' left'))
+            );
+        }
+
+        const $nameRow = $('<div class="mpwem-live-ticket-preview__name"></div>').text(options.name);
+        if (options.earlyBird) {
+            $nameRow.append($('<span class="mpwem-live-ticket-preview__badge--earlybird"></span>').text('Early Bird'));
+        }
+
+        const $info = $('<div class="mpwem-live-ticket-preview__info"></div>').append($nameRow);
+        if (options.description) {
+            $info.append($('<p class="mpwem-live-ticket-preview__desc"></p>').text(options.description));
+        }
+
+        $item.append(
+            $('<div class="mpwem-live-ticket-preview__top"></div>')
+                .append($info)
+                .append($('<div class="mpwem-live-ticket-preview__price"></div>').text(options.priceText))
+        );
+
+        const $bottom = $('<div class="mpwem-live-ticket-preview__bottom"></div>');
+
+        if (stockState === 'available' || stockState === 'low') {
+            $bottom.append(
+                $('<div class="mpwem-live-ticket-preview__availability"></div>')
+                    .toggleClass('is-low', stockState === 'low')
+                    .append('<span class="mpwem-live-ticket-preview__availability-dot" aria-hidden="true"></span>')
+                    .append(document.createTextNode(options.capacityNum + (options.unit || ' tickets available')))
+            );
+        } else if (stockState === 'soldout') {
+            $bottom.append(
+                $('<div class="mpwem-live-ticket-preview__availability"></div>')
+                    .css('color', '#b91c1c')
+                    .text('Sold out')
+            );
+        }
+
+        if (options.showQty) {
+            $bottom.append(
+                $('<div class="mpwem-live-ticket-preview__qty"></div>')
+                    .append($('<button type="button" class="mpwem-live-ticket-preview__qty-btn mpwem-live-ticket-preview__qty-btn--dec"></button>').attr('aria-label', 'Decrease quantity').toggleClass('is-disabled', stockState === 'soldout' || qty <= 0).text('−'))
+                    .append($('<span class="mpwem-live-ticket-preview__qty-val"></span>').text(qty))
+                    .append($('<button type="button" class="mpwem-live-ticket-preview__qty-btn mpwem-live-ticket-preview__qty-btn--inc"></button>').attr('aria-label', 'Increase quantity').toggleClass('is-disabled', stockState === 'soldout' || qty >= max).text('+'))
+            );
+        }
+
+        if ($bottom.children().length) {
+            $item.append($bottom);
+        }
+        return $item;
+    }
+
+    function renderLiveTicketPreview($root, regEnabled, earlyBirdEnabled, $rows) {
+        // Shown on the Ticket & Pricing, Date & Time and Advanced steps -
+        // every instance shares the .mpwem-live-ticket-preview class (ids
+        // can't repeat per page), so build the content once and clone it
+        // into each card instead of re-deriving it per step.
+        const $cards = $root.find('.mpwem-live-ticket-preview');
+        if (!$cards.length) {
+            return;
+        }
+
+        $cards.toggle(!!regEnabled);
+        if (!regEnabled) {
+            return;
+        }
+
+        const qtyState = getLiveTicketPreviewQtyState($root);
+
+        // Mirrors templates/layout/ticket_type.php's own enable check, so a
+        // ticket hidden from the frontend is hidden here too.
+        const $visibleRows = $rows.filter(function() {
+            return !$(this).hasClass('disable_row');
+        });
+
+        const items = [];
+        let subtotal = 0;
+        let subtotalCount = 0;
+        let totalTicketQty = 0;
+
+        $visibleRows.each(function() {
+            const $row = $(this);
+            const name = ticketRowName($row);
+            const priceText = ticketRowPrice($row);
+            const priceRaw = parseFloat(($row.find('[name="option_price_t[]"]').first().val() || '').toString().trim());
+            const description = ($row.find('[name="option_details_t[]"]').first().val() || '').toString().trim();
+
+            const capacityRaw = ($row.find('[name="option_qty_t[]"]').first().val() || '').toString().trim();
+            const capacityNum = isTicketGlobalQtyEnabled($root)
+                ? parseInt((ticketGlobalTotalQty($root) || '').toString().trim(), 10)
+                : (capacityRaw === '' ? NaN : parseInt(capacityRaw, 10));
+
+            let stockState = 'unlimited';
+            if (!Number.isNaN(capacityNum)) {
+                if (capacityNum <= 0) {
+                    stockState = 'soldout';
+                } else if (capacityNum <= 10) {
+                    stockState = 'low';
+                } else {
+                    stockState = 'available';
+                }
+            }
+
+            const max = stockState === 'soldout' ? 0 : (Number.isNaN(capacityNum) ? Infinity : capacityNum);
+            const key = 'ticket:' + name;
+
+            let qty;
+            if (Object.prototype.hasOwnProperty.call(qtyState, key)) {
+                qty = Math.max(0, Math.min(max, qtyState[key]));
+            } else {
+                const defaultQtyRaw = ($row.find('[name="option_default_qty_t[]"]').first().val() || '').toString().trim();
+                qty = stockState === 'soldout' ? 0 : Math.max(0, Math.min(max, parseInt(defaultQtyRaw, 10) || 0));
+            }
+            qtyState[key] = qty;
+
+            const dates = earlyBirdEnabled ? ticketRowEarlyBirdDates($row) : { start: '', end: '' };
+
+            items.push(buildLiveTicketPreviewItem({
+                key: key,
+                name: name,
+                priceText: priceText,
+                priceRaw: priceRaw,
+                description: description,
+                stockState: stockState,
+                capacityNum: capacityNum,
+                max: max,
+                qty: qty,
+                earlyBird: !!(dates.start || dates.end),
+                showQty: true
+            }));
+
+            totalTicketQty += qty;
+
+            if (qty > 0 && !Number.isNaN(priceRaw)) {
+                subtotal += priceRaw * qty;
+                subtotalCount += qty;
+            }
+        });
+
+        // Extra Services only show once at least one ticket is selected -
+        // same rule mpwem_price_calculation() uses on the real frontend
+        // (slideDown/slideUp .mpwem_ex_service based on total_qty).
+        const extraItems = [];
+        if (totalTicketQty > 0) {
+            getSavedExtraServiceSummaryRows($root).each(function() {
+                const $row = $(this);
+                const name = extraServiceRowName($row);
+                const priceText = extraServiceRowPrice($row);
+                const priceRaw = parseFloat(($row.find('[name="option_price[]"]').first().val() || '').toString().trim());
+
+                const capacityRaw = ($row.find('[name="option_qty[]"]').first().val() || '').toString().trim();
+                const capacityNum = capacityRaw === '' ? NaN : parseInt(capacityRaw, 10);
+
+                // Matches extra_service.php's own `$ticket_qty > 0` gate -
+                // an add-on explicitly capped at 0 never shows at all.
+                if (!Number.isNaN(capacityNum) && capacityNum <= 0) {
+                    return;
+                }
+
+                let stockState = 'unlimited';
+                if (!Number.isNaN(capacityNum)) {
+                    stockState = capacityNum <= 10 ? 'low' : 'available';
+                }
+
+                const max = Number.isNaN(capacityNum) ? Infinity : capacityNum;
+                const key = 'extra:' + name;
+
+                let qty;
+                if (Object.prototype.hasOwnProperty.call(qtyState, key)) {
+                    qty = Math.max(0, Math.min(max, qtyState[key]));
+                } else {
+                    qty = 0;
+                }
+                qtyState[key] = qty;
+
+                extraItems.push(buildLiveTicketPreviewItem({
+                    key: key,
+                    name: name,
+                    priceText: priceText,
+                    priceRaw: priceRaw,
+                    description: '',
+                    stockState: stockState,
+                    capacityNum: capacityNum,
+                    max: max,
+                    qty: qty,
+                    earlyBird: false,
+                    showQty: true,
+                    unit: ' available'
+                }));
+
+                if (qty > 0 && !Number.isNaN(priceRaw)) {
+                    subtotal += priceRaw * qty;
+                    subtotalCount += qty;
+                }
+            });
+        }
+
+        const footerNodes = [];
+        if (subtotalCount > 0) {
+            footerNodes.push(
+                $('<div class="mpwem-live-ticket-preview__footer-row"></div>')
+                    .append($('<span class="mpwem-live-ticket-preview__footer-label"></span>').text('Subtotal · ' + subtotalCount + ' item' + (subtotalCount === 1 ? '' : 's')))
+                    .append($('<span class="mpwem-live-ticket-preview__footer-amount"></span>').text(formatLiveTicketPreviewPrice(subtotal)))
+            );
+            footerNodes.push(
+                $('<p class="mpwem-live-ticket-preview__footer-note"></p>').text('Click +/- to try different quantities.')
+            );
+        }
+
+        // Matches add_to_cart.php's own button exactly (label, icon, and
+        // the disabled-until-a-ticket-is-selected rule mpwem_price_calculation()
+        // enforces on the real frontend).
+        footerNodes.push(
+            $('<button type="button" class="mpwem-live-ticket-preview__register"></button>')
+                .prop('disabled', totalTicketQty <= 0)
+                .append('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>')
+                .append($('<span></span>').text('Register For This Event'))
+        );
+
+        $cards.each(function() {
+            const $body = $(this).find('.mpwem-live-ticket-preview__body').first();
+            const $footer = $(this).find('.mpwem-live-ticket-preview__footer').first();
+
+            $body.empty();
+            $footer.empty();
+
+            if (!items.length) {
+                $body.append(
+                    $('<div class="mpwem-live-ticket-preview__empty"></div>')
+                        .text('Add a ticket type to see how it looks on your event page.')
+                );
+                return;
+            }
+
+            items.forEach(function($item) {
+                $body.append($item.clone(true));
+            });
+
+            if (extraItems.length) {
+                const $extras = $('<div class="mpwem-live-ticket-preview__extras"></div>')
+                    .append($('<div class="mpwem-live-ticket-preview__extras-head"></div>').text('Extra Services'));
+                extraItems.forEach(function($item) {
+                    $extras.append($item.clone(true));
+                });
+                $body.append($extras);
+            }
+
+            footerNodes.forEach(function($node) {
+                $footer.append($node.clone(true));
+            });
+        });
+    }
+
+    function bindLiveTicketPreviewQtyButtons() {
+        if (window.mpwemLiveTicketPreviewQtyBound) {
+            return;
+        }
+
+        $(document).on('click', '.mpwem-live-ticket-preview__qty-btn', function(e) {
+            e.preventDefault();
+            const $btn = $(this);
+            if ($btn.hasClass('is-disabled')) {
+                return;
+            }
+
+            const $item = $btn.closest('.mpwem-live-ticket-preview__item');
+            const $root = $btn.closest('.mpwem-event-wizard').first();
+            const key = $item.attr('data-mpwem-preview-key');
+            if (!key || !$root.length) {
+                return;
+            }
+
+            const maxAttr = $item.attr('data-mpwem-preview-max');
+            const max = maxAttr === '' ? Infinity : (parseInt(maxAttr, 10) || 0);
+            const delta = $btn.hasClass('mpwem-live-ticket-preview__qty-btn--inc') ? 1 : -1;
+
+            const qtyState = getLiveTicketPreviewQtyState($root);
+            const current = qtyState[key] || 0;
+            const next = Math.max(0, Math.min(max, current + delta));
+            if (next === current) {
+                return;
+            }
+
+            qtyState[key] = next;
+
+            // Full re-render keeps every preview card instance (Ticket &
+            // Pricing / Date & Time / Advanced), the subtotal, and the
+            // Extra Services visibility all in sync with the new quantity.
+            renderTicketSummary($root);
+        });
+
+        window.mpwemLiveTicketPreviewQtyBound = true;
+    }
+
+    function getLiveTicketPreviewDateLabel($root, type) {
+        const activeType = type || getActiveDateModalType($root);
+
+        if (activeType === 'no') {
+            const context = getParticularDateModalContext($root);
+            const $section = context.$modalMount.find('[data-collapse="#mep_normal_event"]').first();
+            const $scope = $section.length ? $section : context.$modalMount;
+            const startDate = ($scope.find('input[name="event_start_date_normal"]').first().val() || '').toString().trim();
+            const startTime = ($scope.find('input[name="event_start_time_normal"]').first().val() || '').toString().trim();
+            return buildScheduleDateTimeLabel(startDate, startTime) || 'No date set yet';
+        }
+
+        // Particular Dates with just one date configured: plain label, same
+        // as everywhere else. Two or more goes through the dropdown in
+        // updateLiveTicketPreviewDate instead (see getLiveTicketPreviewDateOptions).
+        const $rows = getParticularDateRows($root);
+        if (!$rows.length) {
+            return 'No date set yet';
+        }
+
+        const $first = $rows.first();
+        const startDate = ($first.find('input[name="event_more_start_date[]"]').first().val() || '').toString().trim();
+        const startTime = ($first.find('input[name="event_more_start_time[]"]').first().val() || '').toString().trim();
+        return buildScheduleDateTimeLabel(startDate, startTime) || 'No date set yet';
+    }
+
+    // Particular Dates: one option per configured date, in the same order
+    // they're listed in the Date & Time step. Unlike Repeated Event's
+    // computed occurrences, these are exact rows the admin typed in, so a
+    // flat dropdown (not a calendar) is the natural picker. Like
+    // renderParticularDateSummary's own 'yes' branch, the FIRST date lives
+    // in its own primary fields outside the rows table - missing it here
+    // was why a 2-date event only showed 1 option (the row, not the
+    // primary).
+    function getLiveTicketPreviewDateOptions($root) {
+        const context = getParticularDateModalContext($root);
+        const $modalMount = context.$modalMount.length ? context.$modalMount : getSavedDateSummaryMount($root);
+        const options = [];
+
+        const primaryDate = ($modalMount.find('input[name="event_start_date"]').first().val() || '').toString().trim();
+        const primaryTime = ($modalMount.find('input[name="event_start_time"]').first().val() || '').toString().trim();
+        if (primaryDate) {
+            options.push({
+                iso: primaryDate,
+                label: buildScheduleDateTimeLabel(primaryDate, primaryTime) || primaryDate
+            });
+        }
+
+        getParticularDateRows($root).each(function() {
+            const $row = $(this);
+            const startDate = ($row.find('input[name="event_more_start_date[]"]').first().val() || '').toString().trim();
+            const startTime = ($row.find('input[name="event_more_start_time[]"]').first().val() || '').toString().trim();
+            if (!startDate) {
+                return;
+            }
+            options.push({
+                iso: startDate,
+                label: buildScheduleDateTimeLabel(startDate, startTime) || startDate
+            });
+        });
+        return options;
+    }
+
+    // Repeated Event has many selectable occurrences (like the real
+    // frontend's own date picker for a recurring event), not one fixed
+    // date - so the preview row offers a dropdown instead of static text.
+    // Mirrors the server's own rules: step by the repeat interval between
+    // Start/End, skipping any checked off-day weekday or off-date.
+    function computeRepeatOccurrenceDates($root, limit) {
+        const $repeatSection = $root.find('[data-collapse="#mep_everyday_event"]').first();
+        if (!$repeatSection.length) {
+            return [];
+        }
+
+        const startDate = parseIsoDate(($repeatSection.find('input[name="event_start_date_everyday"]').first().val() || '').toString().trim());
+        if (!startDate) {
+            return [];
+        }
+
+        const endDate = parseIsoDate(($repeatSection.find('input[name="event_end_date_everyday"]').first().val() || '').toString().trim());
+        const interval = Math.max(1, parseInt(($repeatSection.find('input[name="mep_repeated_periods"]').first().val() || '').toString().trim(), 10) || 1);
+
+        const offDays = {};
+        $repeatSection.find('.mpwem-offday-option input[type="checkbox"]:checked').each(function() {
+            const dayIndex = parseInt(($(this).attr('data-checked') || '').toString().trim(), 10);
+            if (!Number.isNaN(dayIndex)) {
+                offDays[dayIndex] = true;
+            }
+        });
+
+        const offDates = {};
+        $repeatSection.find('input[name="mep_ticket_off_dates[]"]').each(function() {
+            const value = ($(this).val() || '').toString().trim();
+            if (value) {
+                offDates[value] = true;
+            }
+        });
+
+        // No end date configured yet: still offer a reasonable run of
+        // upcoming occurrences instead of nothing.
+        const hardStop = endDate || new Date(startDate.getFullYear() + 1, startDate.getMonth(), startDate.getDate());
+
+        const occurrences = [];
+        const cursor = new Date(startDate.getTime());
+        let guard = 0;
+
+        while (cursor <= hardStop && occurrences.length < limit && guard < 3000) {
+            guard++;
+            if (!offDays[cursor.getDay()] && !offDates[formatIsoDate(cursor)]) {
+                occurrences.push(new Date(cursor.getTime()));
+            }
+            cursor.setDate(cursor.getDate() + interval);
+        }
+
+        return occurrences;
+    }
+
+    function updateLiveTicketPreviewDate($root, type) {
+        const $labels = $root.find('.mpwem-live-ticket-preview__date-label');
+        const $selects = $root.find('.mpwem-live-ticket-preview__date-select');
+        const $pickers = $root.find('.mpwem-live-ticket-preview__date-picker');
+        if (!$labels.length && !$selects.length && !$pickers.length) {
+            return;
+        }
+
+        const activeType = type || getActiveDateModalType($root);
+
+        if (activeType === 'yes') {
+            const options = getLiveTicketPreviewDateOptions($root);
+
+            $labels.hide();
+            $pickers.hide();
+            $selects.show();
+
+            $selects.each(function() {
+                const $select = $(this);
+                const previousValue = $select.val();
+                $select.empty();
+
+                if (!options.length) {
+                    $select.append($('<option></option>').attr('value', '').text('No date set yet'));
+                    $select.val('');
+                    return;
+                }
+
+                options.forEach(function(option) {
+                    $select.append($('<option></option>').attr('value', option.iso).text(option.label));
+                });
+
+                const stillValid = previousValue && options.some(function(option) {
+                    return option.iso === previousValue;
+                });
+                $select.val(stillValid ? previousValue : options[0].iso);
+            });
+            return;
+        }
+
+        if (activeType !== 'everyday') {
+            $selects.hide();
+            $pickers.hide();
+            $labels.show().text(getLiveTicketPreviewDateLabel($root, activeType));
+            return;
+        }
+
+        const occurrences = computeRepeatOccurrenceDates($root, 60);
+
+        if (!occurrences.length) {
+            $selects.hide();
+            $pickers.hide();
+            $labels.show().text('No date set yet');
+            return;
+        }
+
+        $labels.hide();
+        $selects.hide();
+        $pickers.show();
+
+        const isoList = occurrences.map(formatIsoDate);
+
+        $pickers.each(function() {
+            const $hidden = $(this).find('input[type="hidden"]').first();
+            const $visible = $(this).find('.mpwem-live-ticket-preview__date-input').first();
+            const previousValue = $hidden.val();
+
+            const stillValid = previousValue && isoList.indexOf(previousValue) !== -1;
+            const chosenIso = stillValid ? previousValue : isoList[0];
+            const chosenDate = parseIsoDate(chosenIso);
+
+            // The popup calendar reads its allowed-dates constraint off the
+            // visible input (see openCustomCalendar), so every re-render
+            // refreshes it here even while the calendar itself is closed.
+            $visible.data('mpwemAllowedDates', isoList);
+
+            $hidden.val(chosenIso);
+            $visible.val(chosenDate ? formatVisibleDate(chosenDate) : '');
+        });
     }
 
     function getInlineTicketAddCard($root) {
@@ -2376,6 +2913,20 @@
             e.preventDefault();
             setActiveStep($root, 'date', { pushHash: true, validate: false });
             window.setTimeout(function() {
+                // Repeated Event's real controls live inline in the Date &
+                // Time step (see initializeParticularDateModal), not inside
+                // the shared date modal - openParticularDateModal has
+                // nothing to show for this type, which is why "Open Date
+                // Table" opened an empty popup. Jump to the real section
+                // instead of opening it.
+                if (getActiveDateModalType($root) === 'everyday') {
+                    const $repeatSection = getPanel($root, '#mpwem_date_settings').find('[data-collapse="#mep_everyday_event"]').first();
+                    if ($repeatSection.length) {
+                        scrollToViewportCenter($repeatSection, 250);
+                        flashAttention($repeatSection);
+                    }
+                    return;
+                }
                 openParticularDateModal($root, 'list');
             }, 120);
         });
@@ -3062,16 +3613,6 @@
             openExtraServiceModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
         });
 
-        $root.on('click.mpwemExtraModal', '#mpwem_extra_service_summary .mpwem-ticket-summary__item', function(e) {
-            if ($(e.target).closest('[data-mpwem-extra-modal-open], button, a, input, select, textarea').length) {
-                return;
-            }
-
-            e.preventDefault();
-            const rowIndex = parseInt($(this).attr('data-extra-service-row-index'), 10);
-            openExtraServiceModal($root, 'list', Number.isNaN(rowIndex) ? null : rowIndex);
-        });
-
         $root.on('click.mpwemExtraModal', '[data-mpwem-extra-modal-close]', function(e) {
             e.preventDefault();
             closeExtraServiceModal($root);
@@ -3486,6 +4027,11 @@
 
         const type = getActiveDateModalType($root);
 
+        // Keeps the Live Ticket Preview card's date line in sync regardless
+        // of which branch below this runs (type switch, empty state, or a
+        // populated list), since all of them share this one entry point.
+        updateLiveTicketPreviewDate($root, type);
+
         if (type === 'everyday') {
             /* Repeated Event's real fields now live inline in the step
                (see initializeParticularDateModal) instead of behind a
@@ -3859,12 +4405,12 @@
             $('<div class="mpwem-ticket-add__grid"></div>')
                 .append(
                     $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
-                        .append($('<label></label>').text('Starts'))
+                        .append($('<label></label>').text('Start Date'))
                         .append($startPill)
                 )
                 .append(
                     $('<div class="mpwem-ticket-add__group mpwem-ticket-add__group--date"></div>')
-                        .append($('<label></label>').text('Ends'))
+                        .append($('<label></label>').text('End Date'))
                         .append($endPill)
                 )
         );
@@ -4157,16 +4703,6 @@
 
             const rowIndex = parseInt($(this).attr('data-date-row-index'), 10);
             openParticularDateModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
-        });
-
-        $root.on('click.mpwemDateModal', '#mpwem_particular_date_summary .mpwem-ticket-summary__item', function(e) {
-            if ($(e.target).closest('[data-mpwem-date-modal-open], button, a, input, select, textarea').length) {
-                return;
-            }
-
-            e.preventDefault();
-            const rowIndex = parseInt($(this).attr('data-date-row-index'), 10);
-            openParticularDateModal($root, 'list', Number.isNaN(rowIndex) ? null : rowIndex);
         });
 
         $root.on('click.mpwemDateModal', '[data-mpwem-date-modal-close]', function(e) {
@@ -5479,7 +6015,12 @@
             || name === 'mep_conditional_parent[]'
             || name === 'mep_conditional_parent_value[]'
             || name === 'mep_conditional_child[]'
-            || /\[mep_global_single_template\]$/.test(name);
+            || /\[mep_global_single_template\]$/.test(name)
+            // Its options are (re)built after this one-time enhancement pass
+            // runs (Particular Dates' configured dates), so the custom
+            // dropdown's snapshot would go stale the moment they change -
+            // keep it a plain native <select> instead.
+            || $select.hasClass('mpwem-live-ticket-preview__date-select');
     }
 
     function normalizeCustomFormTableSelects($container) {
@@ -6127,7 +6668,8 @@
             const iso = formatIsoDate(date);
             const $button = $('<button type="button" class="mpwem-custom-calendar__day"></button>').text(day).attr('data-date', iso);
 
-            if (state.minDate && date < state.minDate) $button.prop('disabled', true).addClass('is-disabled');
+            const isAllowed = !state.allowedDates || !state.allowedDates.size || state.allowedDates.has(iso);
+            if ((state.minDate && date < state.minDate) || !isAllowed) $button.prop('disabled', true).addClass('is-disabled');
             if (iso === todayIso) $button.addClass('is-today');
             if (iso === selectedIso) $button.addClass('is-selected');
 
@@ -6152,10 +6694,18 @@
         const now = new Date();
         const minDate = getDynamicDateMinDate($input);
 
-        const viewDate = selected || minDate || now;
+        // Repeated Event's preview picker restricts selection to this
+        // event's actual occurrence dates (see updateLiveTicketPreviewDate),
+        // stored on the input rather than threaded through every caller.
+        const allowedList = $input.data('mpwemAllowedDates');
+        const allowedDates = Array.isArray(allowedList) ? new Set(allowedList) : null;
+        const firstAllowed = allowedDates && allowedDates.size ? parseIsoDate(allowedList[0]) : null;
+
+        const viewDate = selected || firstAllowed || minDate || now;
         $calendar.data('mpwemState', {
             $input: $input,
             minDate: minDate,
+            allowedDates: allowedDates,
             viewDate: new Date(viewDate.getFullYear(), viewDate.getMonth(), 1)
         });
 
@@ -6989,6 +7539,8 @@
             'input[name="event_start_date_everyday"], input[name="event_end_date_everyday"], input[name="mep_repeated_periods"], .mpwem-repeat-row--offdays input[type="checkbox"]',
             function() {
                 refreshRepeatSummaryBanner($repeatSection);
+                const $wizardRoot = $repeatSection.closest('.mpwem-event-wizard');
+                updateLiveTicketPreviewDate($wizardRoot.length ? $wizardRoot : $('.mpwem-event-wizard').first(), 'everyday');
             }
         );
 
@@ -7625,6 +8177,7 @@
             $('#mpwem_wizard_ticket_details_section').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').show();
             $('.mpwem-ticket-warnings').show();
+            $('#mpwem_wizard_payment_status_card').show();
             $('#mpwem_wizard_ticket_details_section').find('._bg_light_padding').show();
             
             // Only show extra services card if it actually has content
@@ -7646,6 +8199,7 @@
             // Hide the main Ticket & Pricing Settings header card
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').hide();
             $('.mpwem-ticket-warnings').hide();
+            $('#mpwem_wizard_payment_status_card').hide();
 
             // Hide only the ticket editor's header, not the RSVP one
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-editor-section ._bg_light_padding, .mpwem-extra-service-section ._bg_light_padding').hide();
@@ -7682,6 +8236,7 @@
             // Everything that belongs to selling or RSVP is irrelevant here.
             $details.find('.mpwem-ticket-settings-head').hide();
             $('.mpwem-ticket-warnings').hide();
+            $('#mpwem_wizard_payment_status_card').hide();
             $details.find('.mpwem-ticket-editor-section, .mpwem-extra-service-section').hide();
             $details.find('#mpwem_ticket_summary').hide();
             $details.find('.mpwem-ticket-action-bar__item, .mpwem-ticket-action-bar__divider').hide();
@@ -7698,6 +8253,7 @@
             $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
             $('.mpwem-ticket-warnings').hide();
+            $('#mpwem_wizard_payment_status_card').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-announcement-settings-area').hide();
         }
@@ -9066,6 +9622,7 @@
                 enhanceDateStep($root);
             }, 80);
         });
+
 
         // Add Premium Toaster Notification on form submit
         $('#mpwem-event-edit-form').on('submit', function(e) {

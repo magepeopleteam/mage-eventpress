@@ -22,24 +22,23 @@
 					$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 					foreach ( $all_dates as $dates ) {
 						$start_time = is_array($dates) && array_key_exists( 'time', $dates ) ? $dates['time'] : '';
-						$end_time   = is_array($dates) && array_key_exists( 'end', $dates ) ? $dates['end'] : '';
-						// Single Event + expire-on-end stores the course's last end in 'end'; show this date's own end.
-						$end_time   = is_array($dates) && array_key_exists( 'occurrence_end', $dates ) ? $dates['occurrence_end'] : $end_time;
 						if ( $start_time ) {
-							$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $start_time ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
+							$event_url  = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $start_time ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
+							$is_upcoming = $upcoming_date && strtotime( $start_time ) === strtotime( $upcoming_date );
+							$link_class  = 'mpwem-date-list__link' . ( $is_upcoming ? ' is-upcoming' : '' );
+							$start_label = MPWEM_Global_Function::date_format( $start_time, $date_format );
 							?>
                             <div class="_layout_info_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                                 <div class="date_item">
-									<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) {
-										if ( strtotime( gmdate( 'Y-m-d', strtotime( $start_time ) ) ) == strtotime( gmdate( 'Y-m-d', strtotime( $end_time ) ) ) ) { ?>
-                                            <a class="" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></a>
-										<?php } else { ?>
-                                            <a class="" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ).'-'.esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format )); ?></a>
-											<?php
-										}
-									} else { ?>
-                                        <a class="" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
-									<?php } ?>
+                                    <a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( $event_url ); ?>">
+                                        <span class="mpwem-date-list__text"><?php echo esc_html( $start_label ); ?></span>
+										<?php if ( $is_upcoming ) { ?>
+                                            <span class="mpwem-date-list__badge"><?php esc_html_e( 'Next', 'mage-eventpress' ); ?></span>
+										<?php } ?>
+                                        <span class="mpwem-date-list__arrow" aria-hidden="true">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
 							<?php

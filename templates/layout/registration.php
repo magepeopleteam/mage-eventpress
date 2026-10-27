@@ -70,7 +70,7 @@
 				// MPWEM_Layout::msg( esc_html__( 'Sorry, this event is expired and no longer available', 'mage-eventpress' ) );
 				do_action('mpwem_expired_event_notice_after',$event_id);
 			}
-		} else {
+		} elseif ( $reg_off_msg !== '' ) {
 			echo '<div class="reg_close_msg">'.esc_html($reg_off_msg).'</div>';
 		}
 		?></div><?php

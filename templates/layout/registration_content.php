@@ -58,7 +58,6 @@
 		}
 		?>
 			<input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $event_id ); ?>" />
-			<h3><?php esc_html_e( 'Free RSVP Registration', 'mage-eventpress' ); ?></h3>
 			<div id="mep-rsvp-form">
 				<input type="hidden" name="action" value="mep_submit_rsvp" />
 				<input type="hidden" name="event_id" value="<?php echo esc_attr( $event_id ); ?>" />

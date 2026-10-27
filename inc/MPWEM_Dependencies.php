@@ -44,6 +44,9 @@
 					// background; see MEP_Attendee_Repair for the opt-out.
 					require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Attendee_Repair.php';
 					MEP_Attendee_Repair::init();
+					// Optional switch-off of WooCommerce's own order emails for event orders.
+					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_WC_Email_Control.php';
+					MPWEM_WC_Email_Control::init();
 				}
 				// The custom order CPT and the "Event Orders" admin list/detail page are
 				// always loaded — the list merges native orders with WooCommerce orders

@@ -2322,6 +2322,14 @@ tr.payment_tabs_html { display: none !important; }
 									'enable'  => 'Enable',
 									'disable' => 'Disable'
 								)
+							),
+							array(
+								'name'    => 'mep_disable_wc_emails',
+								'label'   => __( 'Disable WooCommerce Emails for Event Orders', 'mage-eventpress' ),
+								'desc'    => __( 'Ticked WooCommerce emails are not sent for orders that contain only event tickets.', 'mage-eventpress' ),
+								'type'    => 'multicheck',
+								'default' => array(),
+								'options' => class_exists( 'MPWEM_WC_Email_Control' ) ? MPWEM_WC_Email_Control::get_email_choices() : array(),
 							)
 						)
 					),

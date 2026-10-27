@@ -1087,7 +1087,6 @@
 				$email                = isset( $order_meta['_billing_email'][0] ) ? $order_meta['_billing_email'][0] : $order->get_billing_email();
 				// Resolved centrally so the runtime agrees with the Email Settings screen.
 				$email_send_status    = mep_get_email_sending_order_statuses();
-				$enable_billing_email = mep_get_option( 'mep_send_confirmation_to_billing_email', 'email_setting_sec', 'enable' );
 				//  mep_email_sending_order_status
 				$order_status = $order->get_status();
 				$cn           = 1;
@@ -1108,10 +1107,9 @@
 							change_extra_service_status( $order_id, 'publish', 'trash', 'processing' );
 							change_extra_service_status( $order_id, 'publish', 'publish', 'processing' );
 							do_action( 'mep_wc_order_status_change', $order_status, $event_id, $order_id );
-							if ( $enable_billing_email == 'enable' ) {
-								if ( in_array( 'processing', $email_send_status ) ) {
-									mep_event_confirmation_email_sent( $event_id, $email, $order_id, 0, $event_ticket_info_arr );
-								}
+							// Same gate as the completed branch, so every billing switch applies here too.
+							if ( mep_should_send_billing_confirmation( 'processing' ) ) {
+								mep_event_confirmation_email_sent( $event_id, $email, $order_id, 0, $event_ticket_info_arr );
 							}
 						}
 						if ( $order->has_status( 'pending' ) ) {

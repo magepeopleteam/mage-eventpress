@@ -903,6 +903,29 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 	}
 
+	if ( ! function_exists( 'mep_get_saved_email_sending_order_statuses' ) ) {
+		/**
+		 * Confirmation email trigger statuses exactly as the admin saved them.
+		 *
+		 * A missing key means the default the screen displays (Completed); a key
+		 * saved empty means the admin deliberately unticked every status. The
+		 * settings screen must read this rather than mep_get_option(), which
+		 * swaps an empty array for its default: the screen then showed Completed
+		 * ticked after the admin unticked it, and the next Save posted it back.
+		 * Unfiltered, so a filter's runtime value is never saved into the option.
+		 *
+		 * @return array List of sanitized order status keys.
+		 */
+		function mep_get_saved_email_sending_order_statuses() {
+			$section = get_option( 'email_setting_sec' );
+			$section = is_array( $section ) ? $section : array();
+
+			return array_key_exists( 'mep_email_sending_order_status', $section )
+				? mep_normalize_order_status_list( $section['mep_email_sending_order_status'] )
+				: array( 'completed' );
+		}
+	}
+
 	if ( ! function_exists( 'mep_get_email_sending_order_statuses' ) ) {
 		/**
 		 * Order statuses that trigger the event confirmation email.
@@ -911,19 +934,12 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		 * never been saved, while every runtime caller defaulted to a
 		 * `disable_email` sentinel. A site that never opened that panel therefore
 		 * showed the trigger as on and sent nothing. Both sides now resolve from
-		 * here: a missing key means the default the screen displays, and a key
-		 * saved empty means the admin deliberately unticked every status.
+		 * mep_get_saved_email_sending_order_statuses().
 		 *
 		 * @return array List of sanitized order status keys.
 		 */
 		function mep_get_email_sending_order_statuses() {
-			$section  = get_option( 'email_setting_sec' );
-			$section  = is_array( $section ) ? $section : array();
-			$statuses = array_key_exists( 'mep_email_sending_order_status', $section )
-				? mep_normalize_order_status_list( $section['mep_email_sending_order_status'] )
-				: array( 'completed' );
-
-			$statuses = apply_filters( 'mep_email_sending_order_statuses', $statuses );
+			$statuses = apply_filters( 'mep_email_sending_order_statuses', mep_get_saved_email_sending_order_statuses() );
 
 			return is_array( $statuses ) ? array_values( $statuses ) : array();
 		}
@@ -996,7 +1012,33 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				return false;
 			}
 
+			// The PDF Email tab (PRO) has its own "Confirmation to Billing Email"
+			// switch for this same email. It was saved but never read, so "No"
+			// there changed nothing. Either switch set to off now stops the email.
+			// Only while PRO registers that tab, so a value left behind by a
+			// deactivated PRO cannot block the email with no control to undo it.
+			if ( function_exists( 'mep_pro_pdf_settings_sec' ) && 'no' === mep_get_option( 'mep_send_confirmation_to_billing', 'mep_pdf_email_settings', 'yes' ) ) {
+				return false;
+			}
+
 			return mep_email_sends_on_order_status( $order_status );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_disabled_wc_emails' ) ) {
+		/**
+		 * WooCommerce email IDs the admin switched off for event-only orders.
+		 *
+		 * Saved from Email Settings > Confirmation Email > "Disable WooCommerce
+		 * Emails for Event Orders". Nothing is disabled until the admin ticks it.
+		 *
+		 * @return array List of WooCommerce email IDs, e.g. customer_completed_order.
+		 */
+		function mep_get_disabled_wc_emails() {
+			$section = get_option( 'email_setting_sec' );
+			$value   = is_array( $section ) && array_key_exists( 'mep_disable_wc_emails', $section ) ? $section['mep_disable_wc_emails'] : array();
+
+			return mep_normalize_order_status_list( $value );
 		}
 	}
 

@@ -9623,6 +9623,45 @@
             }, 80);
         });
 
+        $(document).on('click', '[data-mpwem-copy-shortcode]', function(e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var text = $btn.closest('.mpwem-shortcode-help__row').find('.mpwem-shortcode-help__code').text().trim();
+            if (!text) {
+                return;
+            }
+
+            // Plain synchronous execCommand copy - no Clipboard API / Promise
+            // involved, so there is nothing async that can silently fail.
+            var $temp = $('<textarea readonly></textarea>').val(text).css({
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                opacity: 0
+            }).appendTo('body');
+            $temp[0].focus();
+            $temp[0].select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                // Nothing else to do - the text is at least selected for a manual copy.
+            }
+            $temp.remove();
+
+            var checkIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            var $icon = $btn.find('svg').first();
+            if (!$btn.data('mpwemCopyOriginalIcon')) {
+                $btn.data('mpwemCopyOriginalIcon', $icon.prop('outerHTML'));
+            }
+            $icon.replaceWith(checkIcon);
+            $btn.addClass('is-copied');
+            window.clearTimeout($btn.data('mpwemCopyResetTimer'));
+            var resetTimer = window.setTimeout(function() {
+                $btn.removeClass('is-copied');
+                $btn.find('svg').first().replaceWith($btn.data('mpwemCopyOriginalIcon'));
+            }, 1500);
+            $btn.data('mpwemCopyResetTimer', resetTimer);
+        });
 
         // Add Premium Toaster Notification on form submit
         $('#mpwem-event-edit-form').on('submit', function(e) {

@@ -1281,8 +1281,8 @@ body.mpwem-event-wizard-screen #wpcontent {
 
 .mpwem-card__head h2 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 16px !important;
+    font-weight: 700 !important;
     text-align: left;
 }
 
@@ -6115,18 +6115,21 @@ label.mpwem-ticket-summary__gq-label {
 }
 
 .mpwem-repeat-skip-toggle__left {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     gap: 10px;
     min-width: 0;
 }
 
 .mpwem-repeat-skip-toggle__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
     width: 26px;
     height: 26px;
+    margin: 0;
+    padding: 0;
     border-radius: 8px;
     background: #f0eefd;
     color: #5648e0;

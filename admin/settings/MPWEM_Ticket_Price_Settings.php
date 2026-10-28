@@ -1455,6 +1455,9 @@
                     margin-top: 16px;
                     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
                 }
+                /* Still used by the Announcement and Enquiry Form cards
+                   below - only the RSVP card's own head was switched to
+                   the standard .mpwem-card__head pattern. */
                 .mpwem-rsvp-card__header {
                     padding: 18px 22px;
                     background: var(--mpwem-card-header-bg, #f8fafc);
@@ -1531,6 +1534,22 @@
                 label.mpwem-rsvp-label {
                     margin-top: 10px !important;
                 }
+                /* The "Use the Attendee Form fields for RSVP" toggle gets
+                   .mpwem-switch-wrap added by JS (enhanceSwitches), which
+                   needs display:flex to vertically center the slider, text
+                   and PRO badge - but .mpwem-rsvp-label's own display:block
+                   above has equal specificity and was winning on source
+                   order, leaving the PRO badge baseline-aligned instead of
+                   centered. */
+                .mpwem-rsvp-label.mpwem-switch-wrap {
+                    display: flex !important;
+                    align-items: center !important;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+                .mpwem-rsvp-label.mpwem-switch-wrap .mpwem-pro-badge {
+                    margin-left: 0;
+                }
                 .mpwem-rsvp-input {
                     width: 100%;
                     padding: 9px 13px !important;
@@ -1576,14 +1595,10 @@
 
                 <div class="mpwem-rsvp-settings-section">
                     <div class="mpwem-rsvp-card">
-                        <div class="mpwem-rsvp-card__header">
-                            <div class="mpwem-rsvp-card__header-icon">
-                                <span class="dashicons dashicons-groups"></span>
-                            </div>
-                            <div>
-                                <h4 class="mpwem-rsvp-card__header-title"><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'RSVP Settings', 'mage-eventpress' ); ?></h4>
-                                <p class="mpwem-rsvp-card__header-sub"><?php esc_html_e( 'Configure RSVP Registration Field Labels', 'mage-eventpress' ); ?></p>
-                            </div>
+                        <div class="mpwem-card__head">
+                            <span class="mpwem-section-pill"><?php esc_html_e( 'RSVP', 'mage-eventpress' ); ?></span>
+                            <h2><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'RSVP Settings', 'mage-eventpress' ); ?></h2>
+                            <p><?php esc_html_e( 'Configure RSVP Registration Field Labels', 'mage-eventpress' ); ?></p>
                         </div>
 						<div class="mpwem-rsvp-card__body">
 							<input type="hidden" name="mep_rsvp_form_present" value="1" />

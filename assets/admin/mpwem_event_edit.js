@@ -4680,6 +4680,7 @@
             window.setTimeout(function() {
                 $card.removeClass('mpwem-date-add-reveal');
             }, 1600);
+            $card.find('.mpwem-ticket-add__group--date').first().find('.mpwem-date-input').trigger('focus');
         }, 100);
     }
 
@@ -8833,8 +8834,11 @@
         const $rows = getTicketRows($root);
         if (!message && $rows.length === 0) {
             message = 'Please add at least one ticket type.';
+            // Same as clicking "Create First Ticket" itself - opens the
+            // inline "Add New Ticket Type" form (scrolled into view and
+            // focused), not the old ticket modal popup.
             onFix = function() {
-                openTicketModal($root, 'new');
+                openInlineTicketAdd($root);
             };
         }
 
@@ -9153,6 +9157,32 @@
             findByName(mainNames.et).first(),
             'Event'
         );
+        if (error) {
+            // The main/primary slot is empty, but "+ Add Schedule" always
+            // adds to the "more" rows, never the primary one - so a user
+            // who already added a date that way has a real schedule even
+            // though the (unused) primary slot is blank. Don't block
+            // Next/Save on it, and don't re-open "Add Event Date" either.
+            const hasCompleteExtraRow = !!moreNames && findByName(moreNames.sd).toArray().some(function(el, i) {
+                const sd = ($(el).val() || '').toString().trim();
+                if (!sd) return false;
+                const st = (findByName(moreNames.st).eq(i).val() || '').toString().trim();
+                const ed = (findByName(moreNames.ed).eq(i).val() || '').toString().trim();
+                const et = (findByName(moreNames.et).eq(i).val() || '').toString().trim();
+                return !!st && !!ed && !!et;
+            });
+
+            if (hasCompleteExtraRow) {
+                error.$field.removeClass('mpwem-field-error');
+                error = null;
+            } else {
+                // No schedule set up at all yet - same "no tickets yet"
+                // shape as the Tickets step, so fix it the same way below:
+                // trigger the real "Create First Date"/"+ Add Schedule"
+                // action instead of popping the date modal open.
+                error.isMissingMainSchedule = true;
+            }
+        }
 
         // "Add More Date" rows (Single / Particular).
         if (!error && moreNames) {
@@ -9275,6 +9305,18 @@
             const $field = error.$field;
             setActiveStep($root, 'date', { pushHash: true, validate: false });
             window.setTimeout(function() {
+                // Single Event / Particular Dates with nothing scheduled yet -
+                // same fix as "Create First Date"/"+ Add Schedule" itself
+                // (openInlineDateAdd already scrolls, reveals and focuses
+                // the embedded form), not the old date modal popup.
+                // Repeated Event's fields already render inline, so this
+                // never applies there - the plain scroll/focus below
+                // already reaches them directly.
+                if (error.isMissingMainSchedule && (type === 'no' || type === 'yes')) {
+                    openInlineDateAdd($root);
+                    return;
+                }
+
                 if ($field && $field.length && !$field.is(':visible') && $field.closest('#mpwem_particular_date_modal_mount').length) {
                     openParticularDateModal($root, 'list');
                 }

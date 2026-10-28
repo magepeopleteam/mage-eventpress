@@ -9842,6 +9842,17 @@
             }, 80);
         });
 
+        // "Use the Attendee Form fields for RSVP" is disabled when the PRO
+        // form-builder add-on isn't active - a disabled checkbox never
+        // fires its own click/change, but its <label> still does, so bind
+        // there and tell the user why nothing happened.
+        $(document).on('click', 'label[for="mep_rsvp_use_attendee_form"]', function() {
+            const $checkbox = $('#mep_rsvp_use_attendee_form');
+            if ($checkbox.length && $checkbox.data('mpwemProLocked') == '1') {
+                showToast('This is a PRO feature. Activate Event Booking Manager PRO to use it.', 'warning');
+            }
+        });
+
         $(document).on('click', '[data-mpwem-copy-shortcode]', function(e) {
             e.preventDefault();
             var $btn = $(this);

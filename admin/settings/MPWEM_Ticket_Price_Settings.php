@@ -1504,6 +1504,9 @@
                     letter-spacing: 0.08em;
                     margin: 0 0 16px;
                 }
+                p.mpwem-rsvp-section-title {
+                    margin-top: 10px;
+                }
                 .mpwem-rsvp-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
@@ -1524,6 +1527,9 @@
                     color: #374151;
                     letter-spacing: 0.01em;
                     margin: 0;
+                }
+                label.mpwem-rsvp-label {
+                    margin-top: 10px !important;
                 }
                 .mpwem-rsvp-input {
                     width: 100%;
@@ -1583,8 +1589,11 @@
 							<input type="hidden" name="mep_rsvp_form_present" value="1" />
 							<div class="mpwem-rsvp-field" style="margin-bottom: 20px;">
 								<label class="mpwem-rsvp-label" for="mep_rsvp_use_attendee_form">
-									<input type="checkbox" id="mep_rsvp_use_attendee_form" name="mep_rsvp_use_attendee_form" value="on" <?php checked( $use_attendee_form, 'on' ); ?> <?php disabled( ! $form_builder_active ); ?> />
+									<input type="checkbox" id="mep_rsvp_use_attendee_form" name="mep_rsvp_use_attendee_form" value="on" <?php checked( $use_attendee_form, 'on' ); ?> <?php disabled( ! $form_builder_active ); ?> data-mpwem-pro-locked="<?php echo esc_attr( $form_builder_active ? '0' : '1' ); ?>" />
 									<?php esc_html_e( 'Use the Attendee Form fields for RSVP', 'mage-eventpress' ); ?>
+									<?php if ( ! $form_builder_active ) { ?>
+										<span class="mpwem-pro-badge"><?php esc_html_e( 'PRO', 'mage-eventpress' ); ?></span>
+									<?php } ?>
 								</label>
 								<p class="description">
 									<?php

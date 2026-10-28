@@ -1924,7 +1924,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<?php 
 																$current_mode = get_post_meta($post_id, 'mep_reg_status', true);
 																if (empty($current_mode)) {
-																	$current_mode = MPWEM_Global_Function::has_woocommerce() ? 'on' : 'off';
+																	$current_mode = 'on';
 																}
 																$has_woo = MPWEM_Global_Function::has_woocommerce();
 																?>
@@ -2419,6 +2419,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 				if ('' === $post_title) {
 					$validation_error = 'title';
+				} elseif (! $thumb_id) {
+					$validation_error = 'thumbnail';
 				} elseif (('offline' === $event_type || 'hybrid' === $event_type) && '' === $venue_value) {
 					$validation_error = 'venue';
 				} elseif (('online' === $event_type || 'hybrid' === $event_type) && '' === $virtual_value) {
@@ -2540,6 +2542,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 					if ('' === $sdv || '' === $stv || '' === $edv || '' === $etv) {
 						$validation_error = 'date_required';
+						// Name the empty field(s) so the notice says exactly what didn't arrive.
+						$date_missing = [];
+						foreach ([$keys[0] => $sdv, $keys[1] => $stv, $keys[2] => $edv, $keys[3] => $etv] as $missing_key => $missing_val) {
+							if ('' === $missing_val) {
+								$date_missing[] = $missing_key;
+							}
+						}
 					} else {
 						$start_ts = strtotime($sdv . ' ' . $stv);
 						$end_ts   = strtotime($edv . ' ' . $etv);
@@ -2619,8 +2628,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					} else {
 						$error_step = 'basic';
 					}
+					$redirect_args = ['mpwem_error' => $validation_error];
+					if (! empty($date_missing) && 'date_required' === $validation_error) {
+						$redirect_args['mpwem_missing'] = implode(',', array_map('sanitize_key', $date_missing));
+					}
 					$redirect = add_query_arg(
-						['mpwem_error' => $validation_error],
+						$redirect_args,
 						$this->edit_url($post_id, $error_step)
 					);
 					wp_safe_redirect($redirect);

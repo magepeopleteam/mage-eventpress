@@ -2126,9 +2126,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<h2><?php esc_html_e('Schedule Summary', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Review your event dates.', 'mage-eventpress'); ?></p>
 														</div>
-														<div class="mpwem-card__body">
-															<p class="description"><?php esc_html_e('Check for potential schedule conflicts with other events.', 'mage-eventpress'); ?></p>
-														</div>
+														<div class="mpwem-card__body" id="mpwem_schedule_summary_body"></div>
 													</div>
 												</aside>
 											</div>

@@ -1834,6 +1834,126 @@ body.mpwem-event-wizard-screen #wpcontent {
     --help-bg: #fffbeb;
 }
 
+/* Schedule Summary sidebar card (Step 3) - live text kept in sync with
+   the actual date/time fields and the selected event mode by JS. Lists
+   the Start/End of every event date, not just the first one. */
+.mpwem-schedule-summary__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.mpwem-schedule-summary__item + .mpwem-schedule-summary__item {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--mpwem-border);
+}
+
+.mpwem-schedule-summary__item-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-top: 1px;
+    border-radius: 8px;
+    background: #5648e0;
+    color: #fff;
+}
+
+.mpwem-schedule-summary__item-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.mpwem-schedule-summary__line {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--mpwem-text);
+}
+
+.mpwem-schedule-summary__line--muted {
+    font-weight: 400;
+    color: var(--mpwem-muted);
+}
+
+.mpwem-schedule-summary__label {
+    display: inline-block;
+    min-width: 42px;
+    margin-right: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9aa5b4;
+}
+
+/* Repeat interval / weekly off days / one-off dates, as scannable icon
+   rows instead of a single run-on sentence. */
+.mpwem-schedule-summary__rules {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--mpwem-border);
+}
+
+.mpwem-schedule-summary__rule {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 7px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--mpwem-text);
+}
+
+.mpwem-schedule-summary__rule-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: #6b7280;
+}
+
+.mpwem-schedule-summary__rule-text {
+    flex-shrink: 0;
+    font-weight: 600;
+    align-self: center;
+}
+
+.mpwem-schedule-summary__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-left: 27px;
+    width: 100%;
+}
+
+.mpwem-schedule-summary__chip {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 600;
+}
+
 /* Documentation Links sidebar card - minimal "ad" tiles for each PRO
    add-on, plus a de-emphasized plain link for the real documentation
    (it's a resource, not a pitch, so it doesn't get the same treatment). */
@@ -2009,49 +2129,70 @@ body.mpwem-event-wizard-screen #wpcontent {
 
 .mpwem-shortcode-help__row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
-    background: #f8fafc;
+    background: #dce1e5;
     border: 1px solid #eef0f4;
-    border-radius: 9px;
-    padding: 8px 8px 8px 11px;
+    border-radius: 10px;
+    padding: 10px 10px 10px 12px;
 }
 
 .mpwem-shortcode-help__code {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
     display: block;
+    padding: 2px 0;
+    background: #dce1e5;
     color: var(--mpwem-text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-weight: 600;
-    font-size: 12.5px;
-    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.6;
     white-space: normal;
     word-break: break-word;
 }
 
+/* !important throughout: WordPress's own .wp-core-ui button reset
+   (class + element selector) outranks a single plugin class and was
+   stretching this into a bare, iconless pill instead of a small
+   square icon button. */
 .mpwem-shortcode-help__copy {
-    position: relative;
+    all: unset;
+    box-sizing: border-box !important;
+    position: relative !important;
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #eef0f4 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08) !important;
+    color: #6366f1 !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.mpwem-shortcode-help__copy svg {
+    display: block;
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border: none;
-    border-radius: 7px;
-    background: #fff;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-    color: #6366f1;
-    cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
 }
 
 .mpwem-shortcode-help__copy:hover {
-    background: #eef2ff;
+    background: #eef2ff !important;
+    border-color: #e0e4ff !important;
 }
 
 .mpwem-shortcode-help__copy.is-copied {
-    color: #16a34a;
+    color: #16a34a !important;
+    border-color: #bbf0d1 !important;
 }
 
 .mpwem-shortcode-help__copy-msg {
@@ -3492,18 +3633,49 @@ select.mpwem-global-qty-field__input {
     gap: 12px;
 }
 
-.mpwem-wizard-progress {
-    font-weight: 400;
-    font-size: 14px;
-    color: #ced2d7;
-    min-width: 100px;
-    text-align: center;
-}
-
 .mpwem-event-wizard__footer-center {
     display: flex;
+    align-items: center;
     justify-content: center;
+    gap: 12px;
     min-width: 0;
+}
+
+.mpwem-wizard-step-num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--mpwem-primary, #5648e0);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.mpwem-wizard-step-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.mpwem-wizard-step-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mpwem-text);
+    line-height: 1.2;
+}
+
+.mpwem-wizard-progress {
+    display: block;
+    font-weight: 400;
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.2;
 }
 
 /* ===================================================================
@@ -3950,6 +4122,10 @@ select.mpwem-global-qty-field__input {
 
     .mpwem-card__body {
         padding: 15px 15px;
+    }
+
+    .mpwem-card--help-docs .mpwem-card__body {
+        padding: 0;
     }
 }
 
@@ -9214,60 +9390,102 @@ body.mpwem-ticket-modal-open {
     max-width: 220px;
 }
 
-.mpwem-display-section--seo #mep_rich_text_table {
+/* Rich Text / Schema panel: "Schema Preview" chips + "Schema Settings"
+   fields, replacing the old raw <table> layout. */
+.mpwem-display-section--seo .mpwem-schema-panel {
     padding: 0 !important;
     border-bottom: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
 }
 
-.mpwem-display-section--seo #mep_rich_text_table table {
-    width: 100%;
-    margin: 0 !important;
-    border: 1px solid #d9e2ef !important;
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: none !important;
+.mpwem-schema-panel__group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.mpwem-display-section--seo #mep_rich_text_table td {
-    padding: 12px 14px !important;
-    border-bottom: 1px solid #eef2f7 !important;
-    background: #fff !important;
-    color: var(--mpwem-text);
-    font-size: 14px;
-    vertical-align: middle;
-}
-
-.mpwem-display-section--seo #mep_rich_text_table tr:last-child td {
-    border-bottom: 0 !important;
-}
-
-.mpwem-display-section--seo #mep_rich_text_table td:first-child {
-    width: 220px;
-    background: #f8fafc !important;
-    color: #475569;
+.mpwem-schema-panel__group-label {
+    font-size: 11px;
     font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9aa5b4;
 }
 
-.mpwem-display-section--seo #mep_rich_text_table .event_meta_help_txt {
-    margin: 0;
+.mpwem-schema-panel__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-.mpwem-display-section--seo #mep_rich_text_table .event_meta_help_txt a {
+.mpwem-schema-panel__chip {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-height: 36px;
-    padding: 0 14px;
-    background: #eaf2ff;
-    border: 1px solid #bfd1ef;
-    border-radius: 9px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.mpwem-schema-panel__chip--warn {
+    background: #fef3e8;
+    color: #c2680c;
+}
+
+.mpwem-schema-panel__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.mpwem-schema-panel__field {
+    display: block;
+}
+
+.mpwem-schema-panel__field + .mpwem-schema-panel__field {
+    margin-top: 16px;
+}
+
+.mpwem-schema-panel__field-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    color: var(--mpwem-text);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.mpwem-schema-panel__field-hint {
+    display: block;
+    margin-top: 6px;
+    color: var(--mpwem-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.mpwem-schema-panel__check {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed #eef0f4;
     color: var(--mpwem-primary);
-    font-size: 14px;
-    font-weight: 800;
+    font-size: 13px;
+    font-weight: 700;
     text-decoration: none;
+}
+
+@media (max-width: 782px) {
+    .mpwem-schema-panel__fields {
+        grid-template-columns: 1fr;
+    }
 }
 
 .mpwem-display-section--email h5 {
@@ -10292,7 +10510,7 @@ body.mpwem-ticket-modal-open {
     padding: 0 !important;
     margin: 0 !important;
     border-radius: 11px;
-    background: var(--mpwem-primary, #2563eb);
+    background: #5648e0;
     line-height: 0;
 }
 
@@ -10305,17 +10523,33 @@ body.mpwem-ticket-modal-open {
     min-width: 0;
 }
 
+/* Match the Single Event / Particular Dates summary toolbars'
+   eyebrow/title/subtitle styling exactly, instead of the plainer
+   "section head" treatment the rest of .mpwem-date-card__head uses. */
 [data-collapse="#mep_everyday_event"] .mpwem-date-card__eyebrow {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: #9aa5b4;
 }
 
 [data-collapse="#mep_everyday_event"] .mpwem-date-card__head h4 {
-    margin-top: 2px !important;
+    margin: 4px 0 2px !important;
+    color: #10233f !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 1.15 !important;
+}
+
+[data-collapse="#mep_everyday_event"] .mpwem-date-card__head span {
+    margin-top: 0 !important;
+    color: var(--mpwem-muted) !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
 }
 
 .mpwem-date-step ._padding_bt,
@@ -12480,10 +12714,6 @@ input.mpwem-custom-calendar__year {
     .mpwem-display-section .justify_between,
     .mpwem-display-section .mpev-label {
         grid-template-columns: 1fr;
-    }
-
-    .mpwem-display-section--seo #mep_rich_text_table td:first-child {
-        width: auto;
     }
 
     .mpwem-display-section--template .mep-template-section {
@@ -15422,6 +15652,19 @@ select.mpwem-field-error,
     0%   { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.55); }
     70%  { box-shadow: 0 0 0 12px rgba(225, 29, 72, 0); }
     100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+}
+
+/* Soft, neutral reveal glow for the inline "Add/Edit Event Date" card -
+   scrolled into view and briefly highlighted so it's obvious where it
+   landed, without the red attention-highlight's "something's wrong" tone. */
+.mpwem-date-add-reveal {
+    animation: mpwemDateAddReveal 1.6s ease-out;
+}
+
+@keyframes mpwemDateAddReveal {
+    0%   { box-shadow: 0 0 0 0 rgba(86, 72, 224, 0.35); }
+    40%  { box-shadow: 0 0 0 6px rgba(86, 72, 224, 0.16); }
+    100% { box-shadow: 0 0 0 0 rgba(86, 72, 224, 0); }
 }
 
 /* Date/Time step fields (Step 3): the custom-calendar date inputs and time

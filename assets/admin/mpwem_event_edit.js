@@ -4012,6 +4012,159 @@
         return $wrap;
     }
 
+    // Live "Schedule Summary" sidebar card (Step 3) - keeps the full
+    // start/end date & time of every event date in sync with the real
+    // fields, instead of the static placeholder copy it used to show.
+    function updateScheduleSummaryCard($root, type, context) {
+        const $body = $root.find('#mpwem_schedule_summary_body').first();
+        if (!$body.length) {
+            return;
+        }
+
+        function fieldVal($scope, name) {
+            return ($scope.find('input[name="' + name + '"], select[name="' + name + '"]').first().val() || '').toString().trim();
+        }
+
+        $body.empty();
+
+        if (type === 'everyday') {
+            const $section = $root.find('[data-collapse="#mep_everyday_event"]').first();
+            const startLabel = buildScheduleDateTimeLabel(fieldVal($section, 'event_start_date_everyday'), fieldVal($section, 'event_start_time_everyday'));
+            const endLabel = buildScheduleDateTimeLabel(fieldVal($section, 'event_end_date_everyday'), fieldVal($section, 'event_end_time_everyday'));
+
+            if (startLabel || endLabel) {
+                appendScheduleSummaryItem($body, startLabel || 'Start not set', endLabel || 'End not set');
+            } else {
+                appendScheduleSummaryEmpty($body, 'Set a repeat range to see it here.');
+            }
+
+            // Repeat interval, weekly off days, and one-off skip dates -
+            // shown only when actually configured, as icon rows instead
+            // of a run-on sentence.
+            const $rules = $('<div class="mpwem-schedule-summary__rules"></div>');
+
+            const interval = parseInt(fieldVal($section, 'mep_repeated_periods'), 10) || 1;
+            const freqText = interval === 1 ? 'Every day' : 'Every ' + interval + ' days';
+            appendScheduleSummaryRule($rules, 'repeat', freqText);
+
+            const skippedDayNames = [];
+            $section.find('.mpwem-offday-option').each(function() {
+                const $opt = $(this);
+                if (!$opt.find('input[type="checkbox"]').is(':checked')) {
+                    return;
+                }
+                const full = $opt.data('mpwemOffDayFullLabel') || $opt.attr('title');
+                if (full) {
+                    skippedDayNames.push(full);
+                }
+            });
+            if (skippedDayNames.length) {
+                appendScheduleSummaryRule($rules, 'skip', 'Weekly off', skippedDayNames);
+            }
+
+            const offDateCount = $section.find('input[name="mep_ticket_off_dates[]"]').filter(function() {
+                return ($(this).val() || '').toString().trim() !== '';
+            }).length;
+            if (offDateCount > 0) {
+                appendScheduleSummaryRule($rules, 'calendar-off', offDateCount + (offDateCount === 1 ? ' one-off date skipped' : ' one-off dates skipped'));
+            }
+
+            $body.append($rules);
+            return;
+        }
+
+        let items;
+
+        if (type === 'no') {
+            // Single Event's fields use the "_normal" suffixed names (see
+            // getDateFieldNames/collectSingleEventSummaryItems) - not the
+            // plain event_start_date/event_start_time Particular Dates
+            // uses, which was why newly added Single Event dates never
+            // showed up here.
+            const modalContext = context || getParticularDateModalContext($root);
+            const $scope = modalContext.$modalMount && modalContext.$modalMount.length ? modalContext.$modalMount : getSavedDateSummaryMount($root);
+            items = collectSingleEventSummaryItems($scope);
+        } else {
+            const modalContext = context || getParticularDateModalContext($root);
+            const $scope = modalContext.$modalMount && modalContext.$modalMount.length ? modalContext.$modalMount : getSavedDateSummaryMount($root);
+            items = [];
+
+            const primaryDate = fieldVal($scope, 'event_start_date');
+            if (primaryDate) {
+                items.push({
+                    startLabel: buildScheduleDateTimeLabel(primaryDate, fieldVal($scope, 'event_start_time')) || 'Start not set',
+                    endLabel: buildScheduleDateTimeLabel(fieldVal($scope, 'event_end_date'), fieldVal($scope, 'event_end_time')) || 'End not set'
+                });
+            }
+
+            getParticularDateRows($root).each(function() {
+                const $row = $(this);
+                items.push({
+                    startLabel: buildScheduleDateTimeLabel(fieldVal($row, 'event_more_start_date[]'), fieldVal($row, 'event_more_start_time[]')) || 'Start not set',
+                    endLabel: buildScheduleDateTimeLabel(fieldVal($row, 'event_more_end_date[]'), fieldVal($row, 'event_more_end_time[]')) || 'End not set'
+                });
+            });
+        }
+
+        if (!items.length) {
+            appendScheduleSummaryEmpty($body, type === 'yes' ? 'Add a date to see it here.' : 'Set a start date to see it here.');
+            return;
+        }
+
+        items.forEach(function(item) {
+            appendScheduleSummaryItem($body, item.startLabel, item.endLabel);
+        });
+    }
+
+    function appendScheduleSummaryItem($body, startLabel, endLabel) {
+        $body.append(
+            $('<div class="mpwem-schedule-summary__item"></div>')
+                .append(
+                    $('<span class="mpwem-schedule-summary__item-icon" aria-hidden="true"></span>')
+                        .html('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>')
+                )
+                .append(
+                    $('<div class="mpwem-schedule-summary__item-body"></div>')
+                        .append(
+                            $('<p class="mpwem-schedule-summary__line"></p>')
+                                .append($('<span class="mpwem-schedule-summary__label"></span>').text('Start'))
+                                .append(document.createTextNode(startLabel))
+                        )
+                        .append(
+                            $('<p class="mpwem-schedule-summary__line mpwem-schedule-summary__line--muted"></p>')
+                                .append($('<span class="mpwem-schedule-summary__label"></span>').text('End'))
+                                .append(document.createTextNode(endLabel))
+                        )
+                )
+        );
+    }
+
+    function appendScheduleSummaryEmpty($body, message) {
+        $body.append($('<p class="mpwem-schedule-summary__line mpwem-schedule-summary__line--muted"></p>').text(message));
+    }
+
+    function appendScheduleSummaryRule($rules, iconKey, text, chips) {
+        const icons = {
+            repeat: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>',
+            skip: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><line x1="9" y1="14" x2="15" y2="18"></line><line x1="15" y1="14" x2="9" y2="18"></line></svg>',
+            'calendar-off': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>'
+        };
+
+        const $row = $('<div class="mpwem-schedule-summary__rule"></div>')
+            .append($('<span class="mpwem-schedule-summary__rule-icon" aria-hidden="true"></span>').html(icons[iconKey] || ''))
+            .append($('<span class="mpwem-schedule-summary__rule-text"></span>').text(text));
+
+        if (chips && chips.length) {
+            const $chips = $('<span class="mpwem-schedule-summary__chips"></span>');
+            chips.forEach(function(label) {
+                $chips.append($('<span class="mpwem-schedule-summary__chip"></span>').text(label));
+            });
+            $row.append($chips);
+        }
+
+        $rules.append($row);
+    }
+
     function renderParticularDateSummary($root) {
         const context = getParticularDateModalContext($root);
         if (!context.$summaryList.length) {
@@ -4031,6 +4184,7 @@
         // of which branch below this runs (type switch, empty state, or a
         // populated list), since all of them share this one entry point.
         updateLiveTicketPreviewDate($root, type);
+        updateScheduleSummaryCard($root, type, context);
 
         if (type === 'everyday') {
             /* Repeated Event's real fields now live inline in the step
@@ -4362,6 +4516,25 @@
         syncParticularDateModalFooter($root);
         storeSavedParticularDateSummarySnapshot($root);
         renderParticularDateSummary($root);
+
+        // "+ Add Schedule" always appends a brand-new row, so after the
+        // rebuild above it's the last item in the summary list - bring it
+        // into view and give it the same soft reveal glow as the
+        // "Add Event Date" form itself, instead of leaving the user to
+        // scan the whole list for what they just saved.
+        if (opts.save && mode === 'add') {
+            const context = getParticularDateModalContext($root);
+            const $newItem = context.$summaryList.find('.mpwem-ticket-summary__item').last();
+            if ($newItem.length) {
+                scrollToViewportCenter($newItem, 300);
+                $newItem.removeClass('mpwem-date-add-reveal');
+                void $newItem[0].offsetWidth;
+                $newItem.addClass('mpwem-date-add-reveal');
+                window.setTimeout(function() {
+                    $newItem.removeClass('mpwem-date-add-reveal');
+                }, 1600);
+            }
+        }
     }
 
     function renderInlineDateAddForm($root, opts) {
@@ -4493,6 +4666,20 @@
             $card.data('mpwemInlineDateMode', 'add');
             $card.data('mpwemInlineDateFieldNames', fieldNames);
             renderInlineDateAddForm($root, { mode: 'add', type: type, scope: $row, fieldNames: fieldNames });
+
+            // "+ Add Schedule" can open this card well below the fold -
+            // bring it into view and give it a soft highlight so it's
+            // obvious where the new "Add Event Date" form landed. Not
+            // flashAttention()/.mpwem-attention-highlight: that one is
+            // red, meant for validation errors, and would read as a
+            // problem here rather than a normal reveal.
+            scrollToViewportCenter($card, 300);
+            $card.removeClass('mpwem-date-add-reveal');
+            void $card[0].offsetWidth;
+            $card.addClass('mpwem-date-add-reveal');
+            window.setTimeout(function() {
+                $card.removeClass('mpwem-date-add-reveal');
+            }, 1600);
         }, 100);
     }
 
@@ -4741,6 +4928,38 @@
         $root.on('input.mpwemDateModal change.mpwemDateModal', '#mpwem_particular_date_modal_mount input', function() {
             renderParticularDateSummary($root);
         });
+
+        // Repeated Event's own date-range, interval, and skip-day fields
+        // render inline in the step (not inside the modal mount above), so
+        // they need their own listener to keep the Schedule Summary
+        // sidebar card live too.
+        $root.on(
+            'input.mpwemDateModal change.mpwemDateModal',
+            '[data-collapse="#mep_everyday_event"] input[name="event_start_date_everyday"], ' +
+            '[data-collapse="#mep_everyday_event"] input[name="event_start_time_everyday"], ' +
+            '[data-collapse="#mep_everyday_event"] input[name="event_end_date_everyday"], ' +
+            '[data-collapse="#mep_everyday_event"] input[name="event_end_time_everyday"], ' +
+            '[data-collapse="#mep_everyday_event"] input[name="mep_repeated_periods"], ' +
+            '[data-collapse="#mep_everyday_event"] .mpwem-offday-option input[type="checkbox"], ' +
+            '[data-collapse="#mep_everyday_event"] input[name="mep_ticket_off_dates[]"]',
+            function() {
+                window.setTimeout(function() {
+                    updateScheduleSummaryCard($root, 'everyday');
+                }, 20);
+            }
+        );
+
+        // Adding/removing a one-off skip date doesn't fire change on an
+        // existing field, so it needs its own click listener too.
+        $root.on(
+            'click.mpwemDateModal',
+            '[data-collapse="#mep_everyday_event"] .mpwem_add_item, [data-collapse="#mep_everyday_event"] .mp_add_item, [data-collapse="#mep_everyday_event"] .mpwem_item_remove',
+            function() {
+                window.setTimeout(function() {
+                    updateScheduleSummaryCard($root, 'everyday');
+                }, 280);
+            }
+        );
 
         $root.on('change.mpwemDateModal', 'select[name="mep_enable_recurring"]', function() {
             window.setTimeout(function() {

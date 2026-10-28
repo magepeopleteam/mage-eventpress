@@ -66,7 +66,6 @@
 			public function setting_head( $event_id ) {
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				$event_type  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-				$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 );
 				?>
                 <div class="_layout_default_xs_mp_zero" style="overflow: visible;">
                     <div class="_bg_light_padding">
@@ -84,13 +83,6 @@
                             </select>
                         </label>
                         <span class="label-text"><?php esc_html_e( 'Select your event Date type', 'mage-eventpress' ); ?></span>
-                    </div>
-                    <div class="_padding_bt">
-                        <label class="_justify_between_align_center_wrap">
-                            <span class="_mr"><?php esc_html_e( 'Ticket sales close X minutes before the event starts.', 'mage-eventpress' ); ?></span>
-                            <input type="number" class="formControl _max_100 number_validation" name='mep_buffer_time' value='<?php echo esc_attr( $buffer_time ); ?>'/>
-                        </label>
-                        <span class="label-text"><?php esc_html_e( 'Ticket sales close X minutes before the event starts.', 'mage-eventpress' ); ?></span>
                     </div>
                 </div>
 				<?php
@@ -1191,7 +1183,15 @@
 				$time_formats        = is_array($event_infos) && array_key_exists( 'mep_event_time_format', $event_infos ) ? $event_infos['mep_event_time_format'] : '';
 				$custom_time_formats = is_array($event_infos) && array_key_exists( 'mep_custom_event_time_format', $event_infos ) ? $event_infos['mep_custom_event_time_format'] : '';
 				$time_format_lists   = MPWEM_Global_Function::time_format_list();
+				$buffer_time         = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 );
 				?>
+                <div class="_padding_bt mpwem-date-buffer-field">
+                    <label class="_justify_between_align_center_wrap">
+                        <span class="_mr"><?php esc_html_e( 'Ticket sales close X minutes before the event starts.', 'mage-eventpress' ); ?></span>
+                        <input type="number" class="formControl _max_100 number_validation" name='mep_buffer_time' value='<?php echo esc_attr( $buffer_time ); ?>'/>
+                    </label>
+                    <span class="label-text"><?php esc_html_e( 'Ticket sales close X minutes before the event starts.', 'mage-eventpress' ); ?></span>
+                </div>
                 <div class="_layout_default mpwem_date_format_settings">
                     <div class="_bg_light_padding">
                         <div class="_justify_between_align_center_wrap ">

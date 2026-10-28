@@ -1,7 +1,7 @@
 /**
  * Enhanced Google Maps Styles for Mage EventPress
  * Professional styling for improved map display and user experience
- * 
+ *
  * @version 1.0.0
  * @author Cascade AI Assistant
  */
@@ -11,9 +11,9 @@
     width: 100% !important;
     height: 400px !important;
     min-height: 400px !important;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid var(--mpwem-border, #e2e8f0);
+    border-radius: 14px;
+    box-shadow: var(--mpwem-shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
 }
 
 /* Map container styling */
@@ -27,33 +27,64 @@
     width: 100% !important;
     height: 400px !important;
     min-height: 400px !important;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid var(--mpwem-border, #e2e8f0);
+    border-radius: 14px;
+    box-shadow: var(--mpwem-shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
+}
+
+/* The embed (q=<address>&output=embed) centers the map on the resolved
+   location but doesn't reliably drop its own pin for every query — e.g. an
+   approximate/ambiguous address often renders with no marker at all. This
+   overlays a fixed pin pointing at the exact center of the map, which is
+   always where the query is centered, regardless of how precisely Google
+   itself marks it. Purely decorative (pointer-events: none) so dragging and
+   zooming the embedded map underneath still works normally. */
+#show_gmap {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+#show_gmap::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 34px;
+    height: 34px;
+    margin-left: -17px;
+    margin-top: -31px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232563eb' d='M12 2C7.58 2 4 5.58 4 10c0 5.25 7 12 7.3 12.3a1 1 0 0 0 1.4 0C12.99 22 20 15.25 20 10c0-4.42-3.58-8-8-8z'/%3E%3Ccircle cx='12' cy='10' r='3.2' fill='%23fff'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 3px 4px rgba(15, 23, 42, 0.35));
+    pointer-events: none;
+    z-index: 5;
 }
 
 /* Places autocomplete input styling */
 #pac-input {
     background-color: #fff;
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 300;
+    font-family: -apple-system, system-ui, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
     margin-left: 12px;
-    padding: 0 11px 0 13px;
+    padding: 0 14px;
     text-overflow: ellipsis;
     width: 400px;
-    height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    height: 42px;
+    border: 1px solid var(--mpwem-border, #e2e8f0);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
     margin-top: 10px;
     margin-bottom: 10px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 #pac-input:focus {
-    border-color: #4285f4;
+    border-color: var(--mpwem-primary, #2563eb);
     outline: none;
-    box-shadow: 0 2px 6px rgba(66, 133, 244, 0.3);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
 }
 
 /* Map loading indicator */
@@ -62,22 +93,23 @@
     align-items: center;
     justify-content: center;
     height: 400px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #666;
-    font-size: 16px;
+    background-color: #f8fafc;
+    border: 1px solid var(--mpwem-border, #e2e8f0);
+    border-radius: 14px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .mep-map-loading::before {
     content: "";
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #666;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid var(--mpwem-primary, #2563eb);
     border-radius: 50%;
     border-top-color: transparent;
-    animation: mep-spin 1s linear infinite;
+    animation: mep-spin 0.8s linear infinite;
     margin-right: 10px;
 }
 
@@ -89,12 +121,14 @@
 
 /* Error message styling */
 .mep-map-error {
-    background-color: #fee;
-    border: 1px solid #fcc;
-    color: #c33;
-    padding: 15px;
-    border-radius: 4px;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    padding: 14px 16px;
+    border-radius: 10px;
     margin: 10px 0;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 /* Notification styling */
@@ -103,26 +137,26 @@
     top: 20px;
     right: 20px;
     padding: 12px 16px;
-    border-radius: 4px;
+    border-radius: 10px;
     color: white;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 600;
     z-index: 9999;
     max-width: 300px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
     animation: mep-slide-in 0.3s ease-out;
 }
 
 .mep-notification-success {
-    background-color: #4caf50;
+    background-color: #16a34a;
 }
 
 .mep-notification-warning {
-    background-color: #ff9800;
+    background-color: #d97706;
 }
 
 .mep-notification-error {
-    background-color: #f44336;
+    background-color: #dc2626;
 }
 
 @keyframes mep-slide-in {
@@ -140,44 +174,49 @@
 .mep-map-controls {
     margin: 10px 0;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 }
 
 .mep-map-controls button {
-    background: #4285f4;
+    background: var(--mpwem-primary, #2563eb);
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 9px 16px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s;
+    font-size: 13px;
+    font-weight: 650;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .mep-map-controls button:hover {
-    background: #3367d6;
+    background: var(--mpwem-primary-hover, #1d4ed8);
+}
+
+.mep-map-controls button:active {
+    transform: translateY(1px);
 }
 
 .mep-map-controls button:disabled {
-    background: #ccc;
+    background: #cbd5e1;
     cursor: not-allowed;
 }
 
 /* Coordinate display */
 .mep-coordinates-display {
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 4px;
+    background: #f8fafc;
+    border: 1px solid var(--mpwem-border, #e2e8f0);
+    padding: 10px 14px;
+    border-radius: 10px;
     margin: 10px 0;
-    font-family: monospace;
-    font-size: 12px;
-    color: #666;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12.5px;
+    color: #64748b;
 }
 
 .mep-coordinates-display strong {
-    color: #333;
+    color: #1e293b;
 }
 
 /* Responsive design */
@@ -187,23 +226,23 @@
         height: 300px !important;
         min-height: 300px !important;
     }
-    
+
     #pac-input {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .mep-notification {
         right: 10px;
         left: 10px;
         max-width: none;
     }
-    
+
     .mep-map-controls {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .mep-map-controls button {
         width: 100%;
         margin: 2px 0;
@@ -221,49 +260,53 @@
 
 /* Status indicators */
 .mep-status {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 3px;
-    font-size: 12px;
-    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
 }
 
 .mep-status.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
 }
 
 .mep-status.warning {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeaa7;
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
 }
 
 .mep-status.error,
 .mep-status.err {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
 }
 
 /* Map marker info window styling */
 .mep-info-window {
     max-width: 300px;
     padding: 10px;
+    font-family: -apple-system, system-ui, 'Segoe UI', sans-serif;
 }
 
 .mep-info-window h4 {
     margin: 0 0 8px 0;
-    color: #333;
-    font-size: 16px;
+    color: #1e293b;
+    font-size: 15px;
+    font-weight: 700;
 }
 
 .mep-info-window p {
     margin: 0;
-    color: #666;
-    font-size: 14px;
+    color: #64748b;
+    font-size: 13px;
     line-height: 1.4;
 }
 
@@ -274,12 +317,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    border-radius: 4px;
+    border-radius: 14px;
 }
 
 .mep-map-overlay.hidden {

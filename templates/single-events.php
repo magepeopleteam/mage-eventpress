@@ -16,6 +16,21 @@
 			ob_start();
 			block_header_area();
 			$header_html = trim( ob_get_clean() );
+			// Pre-render the footer here too, alongside the header and before
+			// wp_head() runs below. WordPress collects each block's generated
+			// layout CSS (e.g. the justify-content rule for the footer's nav
+			// row) as blocks are rendered, then flushes it inside wp_head().
+			// Rendering the footer only at the bottom of the page - after
+			// wp_head() already ran - meant its generated CSS never made it
+			// into <head>, so the footer lost styling (e.g. the "Event" title
+			// and nav columns collapsed to the left instead of spreading
+			// edge-to-edge) that a normal page's footer always has.
+			$footer_html = '';
+			if ( function_exists( 'block_footer_area' ) ) {
+				ob_start();
+				block_footer_area();
+				$footer_html = trim( ob_get_clean() );
+			}
 			if ( $header_html ) {
 				global $mep_used_block_header;
 				$mep_used_block_header = true;
@@ -28,7 +43,13 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<div class="wp-site-blocks">
 <?php
+				// WordPress core wraps the whole block template in
+				// .wp-site-blocks (see wp-includes/block-template.php) and the
+				// theme's own alignment/spacing styles target descendants of
+				// it - without this wrapper the footer rendered here lost
+				// that spacing and looked different from a normal page.
 				echo '<header class="wp-block-template-part site-header">';
 				echo $header_html;
 				echo '</header>';
@@ -106,10 +127,11 @@
 	global $mep_used_block_header;
 	if ( ! empty( $mep_used_block_header ) && function_exists( 'block_footer_area' ) && function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
 		echo '<footer class="wp-block-template-part mep-site-footer">';
-		block_footer_area();
+		echo ! empty( $footer_html ) ? $footer_html : '';
 		echo '</footer>';
-		wp_footer();
 		?>
+</div>
+<?php wp_footer(); ?>
 </body>
 </html>
 		<?php

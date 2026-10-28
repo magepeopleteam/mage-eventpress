@@ -23,7 +23,7 @@
                     <input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($icon); ?>"/>
                     <div class="mpwem_icon_item <?php echo esc_attr($icon_class); ?>">
                         <button type="button" class="_button_theme">
-                            <span class="<?php echo esc_attr($icon); ?>" data-add-icon></span>
+                            <span class="<?php echo esc_attr($icon); ?>" data-add-icon data-target-popup="#mpwem_add_icon_popup" title="<?php esc_attr_e('Change Icon', 'mage-eventpress'); ?>"></span>
                             <span class="fas fa-times remove_icon mpwem_icon_remove" title="<?php esc_attr_e('Remove Icon', 'mage-eventpress'); ?>"></span>
                         </button>
                     </div>
@@ -148,7 +148,7 @@
 					<input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>"/>
 					<div class="mpwem_icon_item <?php echo esc_attr($icon_class); ?>">
 						<button type="button" class="_button_theme">
-							<span class="<?php echo esc_attr($icon); ?>" data-add-icon></span>
+							<span class="<?php echo esc_attr($icon); ?>" data-add-icon data-target-popup="#mpwem_add_icon_popup" title="<?php esc_attr_e('Change Icon', 'mage-eventpress'); ?>"></span>
 						</button>
 						<span class="fas fa-times remove_icon mpwem_icon_remove" title="<?php esc_html_e('Remove Icon', 'mage-eventpress'); ?>"></span>
 					</div>

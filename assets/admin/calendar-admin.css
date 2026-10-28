@@ -59,8 +59,8 @@
 .mep-cal-eyebrow {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	font-size: 11px;
+	gap: 8px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: .08em;
 	text-transform: uppercase;
@@ -91,7 +91,7 @@
 .mep-cal-chip {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	padding: 10px 14px;
 	background: rgba(255, 255, 255, .9);
 	border: 1px solid var(--mep-cal-line);
@@ -113,7 +113,7 @@
 .mep-cal-chip-icon .dashicons { font-size: 18px; width: 18px; height: 18px; }
 .mep-cal-chip code {
 	display: block;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	color: var(--mep-cal-ink);
 	background: transparent;
@@ -121,7 +121,7 @@
 }
 .mep-cal-chip small {
 	display: block;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	color: var(--mep-cal-muted);
 	text-transform: uppercase;
@@ -159,7 +159,7 @@
 	border-radius: 999px;
 	background: transparent;
 	color: var(--mep-cal-muted);
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	line-height: 1.35;
 	cursor: pointer;
@@ -190,7 +190,7 @@
 .mep-cal-panel-meta {
 	display: flex;
 	align-items: baseline;
-	gap: 10px;
+	gap: 8px;
 	flex-wrap: wrap;
 	margin: 0 0 14px;
 	padding: 0 4px;
@@ -201,7 +201,7 @@
 	color: var(--mep-cal-ink);
 }
 .mep-cal-panel-meta span {
-	font-size: 13px;
+	font-size: 14px;
 	color: var(--mep-cal-muted);
 }
 
@@ -221,7 +221,7 @@
 .mep-cal-card-head {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	padding: 16px 20px;
 	border-bottom: 1px solid var(--mep-cal-line);
 	background: linear-gradient(180deg, #fafbff, #fff);
@@ -272,7 +272,7 @@
 .mep-cal-settings-section .form-table th {
 	width: 34%;
 	color: var(--mep-cal-ink);
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	background: #fafafa;
 }
@@ -282,15 +282,15 @@
 .mep-cal-settings-section input[type="date"],
 .mep-cal-settings-section select,
 .mep-cal-settings-section textarea {
-	min-height: 40px;
+	min-height: 42px;
 	max-width: 420px;
 	border: 1px solid var(--mep-cal-line);
 	border-radius: var(--mep-cal-radius-sm);
-	padding: 8px 12px;
+	padding: 10px 12px;
 	box-shadow: none;
 	background: #fff;
 	color: var(--mep-cal-ink);
-	font-size: 13px;
+	font-size: 14px;
 }
 .mep-cal-settings-section select {
 	appearance: none;
@@ -311,7 +311,7 @@
 .mep-cal-settings-section .description {
 	margin-top: 6px;
 	color: var(--mep-cal-muted);
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 1.45;
 }
 
@@ -330,7 +330,7 @@
 }
 .mep-cal-shortcode-ref > h4 {
 	margin: 20px 0 10px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 	color: var(--mep-cal-ink);
 }
@@ -340,7 +340,7 @@
 	background: #0f172a;
 	color: #c7d2fe;
 	border-radius: 10px;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 1.55;
 	word-break: break-word;
 }
@@ -364,7 +364,7 @@
 	background: #f8fafc;
 	color: var(--mep-cal-muted);
 	font-weight: 700;
-	font-size: 11px;
+	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: .05em;
 }
@@ -382,13 +382,13 @@
 	color: var(--mep-cal-accent-dark);
 	padding: 3px 8px;
 	border-radius: 6px;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
 }
 
 /* Day rules */
 .mep-cal-day-rule-list { max-width: 100%; }
-.mep-cal-day-rule-items { display: grid; gap: 14px; margin-top: 14px; }
+.mep-cal-day-rule-items { display: grid; gap: 12px; margin-top: 14px; }
 .mep-cal-day-rule-item {
 	border: 1px solid var(--mep-cal-line);
 	border-radius: 12px;
@@ -398,14 +398,14 @@
 .mep-cal-day-rule-grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 14px 16px;
+	gap: 12px 16px;
 	align-items: end;
 }
 .mep-cal-day-rule-field label {
 	display: block;
 	margin-bottom: 6px;
 	font-weight: 700;
-	font-size: 12px;
+	font-size: 13px;
 	color: var(--mep-cal-muted);
 	text-transform: uppercase;
 	letter-spacing: .04em;
@@ -414,7 +414,7 @@
 .mep-cal-day-rule-image-input {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
+	gap: 8px;
 	align-items: center;
 }
 .mep-cal-day-rule-image-input .regular-text {
@@ -426,7 +426,7 @@
 .mep-cal-add-day-rule {
 	display: inline-flex !important;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 	border-radius: 8px !important;
 	border-color: #c7d2fe !important;
 	background: var(--mep-cal-accent-soft) !important;
@@ -449,7 +449,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: .06em;
 	text-transform: uppercase;
@@ -489,7 +489,7 @@
 	align-items: flex-start;
 	gap: 8px;
 	color: var(--mep-cal-muted);
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	flex: 1;
 	min-width: 0;
@@ -520,7 +520,7 @@
 }
 
 /* Color picker polish */
-.mep-cal-settings-section .wp-picker-container { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.mep-cal-settings-section .wp-picker-container { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 
 @media (max-width: 782px) {
 	.mep-calendar-settings-wrap { margin: 10px 12px 32px 0; }

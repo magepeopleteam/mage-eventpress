@@ -54,10 +54,10 @@
 					return;
 				}
 				wp_enqueue_style(
-					'mep-dummy-installer',
-					plugins_url('mage-eventpress/assets/admin/mpwem_woo_installer.css'),
+					'mep-onboarding',
+					plugins_url('mage-eventpress/assets/admin/mep_onboarding.css'),
 					array(),
-					filemtime(ABSPATH . 'wp-content/plugins/mage-eventpress/assets/admin/mpwem_woo_installer.css')
+					filemtime(ABSPATH . 'wp-content/plugins/mage-eventpress/assets/admin/mep_onboarding.css')
 				);
 			}
 
@@ -66,54 +66,115 @@
 					return;
 				}
 				$display_style = $this->should_auto_show_popup() ? '' : 'display: none;';
+
+				$testimonials = array(
+					array(
+						'title'  => __( 'Great and quick support', 'mage-eventpress' ),
+						'quote'  => __( 'Thanks for the quick support and good solution!', 'mage-eventpress' ),
+						'name'   => 'fswagerman',
+					),
+					array(
+						'title'  => __( 'Great Support!', 'mage-eventpress' ),
+						'quote'  => __( 'We\'ve been using a number of Mage People\'s plugins for a number of years and on the whole they work very well and allow us to accept online bookings for our events and manage attendees etc. We have had a few issues but the support team always resolves these within 24 hours (weekdays). I wouldn\'t hesitate to recommend. — Mark Exell, Chairman of CAAP', 'mage-eventpress' ),
+						'name'   => 'markexell',
+					),
+					array(
+						'title'  => __( 'Great support and plugin', 'mage-eventpress' ),
+						'quote'  => __( 'They were very helpful in their support. The plugin seamlessly integrates with WooCommerce, I recommend it.', 'mage-eventpress' ),
+						'name'   => 'medkon',
+					),
+				);
 				?>
-				<!-- MPWEM Dummy Import Popup Overlay -->
-				<div id="mpwem-woo-overlay" class="mpwem-woo-overlay mep-dummy-overlay" style="<?php echo esc_attr($display_style); ?>">
-					<div class="mpwem-woo-popup">
-						<div class="mpwem-woo-header">
-							<div class="mpwem-woo-header-icon">
+				<!-- MEP Onboarding Popup Overlay -->
+				<div id="mep-onboard-overlay" class="mep-onboard-overlay mep-dummy-overlay" style="<?php echo esc_attr($display_style); ?>">
+					<div class="mep-onboard-card">
+						<button type="button" class="mep-onboard-close" id="mep-dummy-dismiss-btn-x" aria-label="<?php esc_attr_e( 'Close', 'mage-eventpress' ); ?>">&times;</button>
+
+						<div class="mep-onboard-logo">
+							<span class="mep-onboard-logo-icon">
 								<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
 									<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 								</svg>
-							</div>
-							<span class="mpwem-woo-header-text"><?php esc_html_e( 'Event Booking Manager', 'mage-eventpress' ); ?></span>
+							</span>
+							<span class="mep-onboard-logo-text"><?php esc_html_e( 'Event Booking Manager', 'mage-eventpress' ); ?></span>
 						</div>
 
-						<div class="mpwem-woo-icon-wrapper">
-							<div class="mpwem-woo-icon">
-								<svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-									<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
-									<path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-								</svg>
-							</div>
-						</div>
+						<h2 class="mep-onboard-title" id="mep-onboard-title"><?php esc_html_e( 'Create amazing events in minutes', 'mage-eventpress' ); ?></h2>
+						<p class="mep-onboard-subtitle" id="mep-onboard-subtitle"><?php esc_html_e( 'Everything you need to manage successful events', 'mage-eventpress' ); ?></p>
 
-						<div class="mpwem-woo-content">
-							<h2 class="mpwem-woo-title"><?php esc_html_e( 'Import Dummy Events?', 'mage-eventpress' ); ?></h2>
-							<p class="mpwem-woo-desc">
-								<?php esc_html_e( 'Would you like to import dummy events, categories, and settings to see how Event Booking Manager works?', 'mage-eventpress' ); ?>
-							</p>
-						</div>
-
-						<div id="mpwem-woo-progress" class="mpwem-woo-progress" style="display:none;">
-							<div class="mpwem-woo-progress-bar">
-								<div id="mpwem-woo-progress-fill" class="mpwem-woo-progress-fill"></div>
-							</div>
-							<p id="mpwem-woo-status-text" class="mpwem-woo-status-text"></p>
-						</div>
-
-						<div class="mpwem-woo-actions">
-							<button type="button" id="mep-dummy-install-btn" class="mpwem-woo-btn mpwem-woo-btn-primary">
-								<span class="mpwem-woo-btn-icon">
-									<svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-										<path d="M10 3v10m0 0l-4-4m4 4l4-4M3 17h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<div class="mep-onboard-features" id="mep-onboard-features">
+							<div class="mep-onboard-feature-card">
+								<div class="mep-onboard-feature-icon">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+										<path d="M11 2L4 13h6l-1 9 8-12h-6l1-8z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 									</svg>
-								</span>
-								<span class="mpwem-woo-btn-text"><?php esc_html_e( 'Yes, Import Data', 'mage-eventpress' ); ?></span>
+								</div>
+								<h3 class="mep-onboard-feature-title"><?php esc_html_e( 'Quick Event Creation', 'mage-eventpress' ); ?></h3>
+								<p class="mep-onboard-feature-desc"><?php esc_html_e( 'Get started in minutes', 'mage-eventpress' ); ?></p>
+							</div>
+							<div class="mep-onboard-feature-card">
+								<div class="mep-onboard-feature-icon">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+										<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+										<path d="M3 12h18M12 3c2.8 2.4 2.8 15.6 0 18M12 3c-2.8 2.4-2.8 15.6 0 18" stroke="currentColor" stroke-width="1.6"/>
+									</svg>
+								</div>
+								<h3 class="mep-onboard-feature-title"><?php esc_html_e( 'Virtual & Offline Events', 'mage-eventpress' ); ?></h3>
+								<p class="mep-onboard-feature-desc"><?php esc_html_e( 'Host events anywhere', 'mage-eventpress' ); ?></p>
+							</div>
+							<div class="mep-onboard-feature-card">
+								<div class="mep-onboard-feature-icon">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+										<path d="M3 8a2 2 0 012-2h14a2 2 0 012 2v1a1.5 1.5 0 000 3v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1a1.5 1.5 0 000-3V8z" stroke="currentColor" stroke-width="1.6"/>
+										<path d="M14 6v2M14 16v2M14 10.5v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+									</svg>
+								</div>
+								<h3 class="mep-onboard-feature-title"><?php esc_html_e( 'Boost Ticket Selling', 'mage-eventpress' ); ?></h3>
+								<p class="mep-onboard-feature-desc"><?php esc_html_e( 'Monetize your events', 'mage-eventpress' ); ?></p>
+							</div>
+						</div>
+
+						<div class="mep-onboard-trust" id="mep-onboard-trust">
+							<span class="mep-onboard-trust-stars" aria-hidden="true">★★★★☆</span>
+							<span><strong>4.5/5</strong> <?php esc_html_e( 'from 167+ Verified Reviews', 'mage-eventpress' ); ?></span>
+						</div>
+
+						<div id="mpwem-woo-progress" class="mep-onboard-progress" style="display:none;">
+							<div class="mep-onboard-progress-bar">
+								<div id="mpwem-woo-progress-fill" class="mep-onboard-progress-fill"></div>
+							</div>
+							<p id="mpwem-woo-status-text" class="mep-onboard-status-text"></p>
+						</div>
+
+						<div class="mep-onboard-actions" id="mep-onboard-actions">
+							<button type="button" id="mep-setup-event-btn" class="mep-onboard-btn mep-onboard-btn-secondary">
+								<?php esc_html_e( "Let's set up your first event", 'mage-eventpress' ); ?>
 							</button>
-							<button type="button" id="mep-dummy-dismiss-btn" class="mpwem-woo-btn mpwem-woo-btn-secondary">
-								<?php esc_html_e( 'No, Skip', 'mage-eventpress' ); ?>
+							<button type="button" id="mep-dummy-install-btn" class="mep-onboard-btn mep-onboard-btn-primary">
+								<?php esc_html_e( 'Import dummy Data', 'mage-eventpress' ); ?>
 							</button>
+						</div>
+
+						<div class="mep-onboard-testimonial-wrap">
+							<p class="mep-onboard-testimonial-label"><?php esc_html_e( 'Our users love us', 'mage-eventpress' ); ?></p>
+							<?php foreach ( $testimonials as $i => $t ) : ?>
+								<div class="mep-onboard-testimonial<?php echo 0 === $i ? ' is-active' : ''; ?>" data-index="<?php echo esc_attr( $i ); ?>">
+									<p class="mep-onboard-quote-title"><?php echo esc_html( $t['title'] ); ?></p>
+									<p class="mep-onboard-quote">&ldquo;<?php echo esc_html( $t['quote'] ); ?>&rdquo;</p>
+									<div class="mep-onboard-reviewer">
+										<span class="mep-onboard-avatar"><?php echo esc_html( strtoupper( substr( $t['name'], 0, 1 ) ) ); ?></span>
+										<span class="mep-onboard-reviewer-meta">
+											<span class="mep-onboard-reviewer-name"><?php echo esc_html( $t['name'] ); ?></span><br/>
+											<span class="mep-onboard-reviewer-badge"><?php esc_html_e( 'Verified WordPress.org review', 'mage-eventpress' ); ?></span>
+										</span>
+									</div>
+								</div>
+							<?php endforeach; ?>
+							<div class="mep-onboard-dots">
+								<?php foreach ( $testimonials as $i => $t ) : ?>
+									<button type="button" class="mep-onboard-dot<?php echo 0 === $i ? ' is-active' : ''; ?>" data-index="<?php echo esc_attr( $i ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %d: testimonial number */ __( 'Show testimonial %d', 'mage-eventpress' ), $i + 1 ) ); ?>"></button>
+								<?php endforeach; ?>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -121,14 +182,16 @@
 				<script>
 				(function($) {
 					$(document).ready(function() {
-						var $overlay = $('#mpwem-woo-overlay.mep-dummy-overlay');
-						var $popup = $overlay.find('.mpwem-woo-popup');
-						var $btn = $('#mep-dummy-install-btn');
-						var $dismissBtn = $('#mep-dummy-dismiss-btn');
+						var $overlay = $('#mep-onboard-overlay.mep-dummy-overlay');
+						var $card = $overlay.find('.mep-onboard-card');
+						var $importBtn = $('#mep-dummy-install-btn');
+						var $setupBtn = $('#mep-setup-event-btn');
+						var $dismissX = $('#mep-dummy-dismiss-btn-x');
 						var $progress = $('#mpwem-woo-progress');
 						var $fill = $('#mpwem-woo-progress-fill');
 						var $status = $('#mpwem-woo-status-text');
-						var $actions = $overlay.find('.mpwem-woo-actions');
+						var $actions = $overlay.find('.mep-onboard-actions');
+						var $onboardBlocks = $overlay.find('#mep-onboard-features, #mep-onboard-trust, .mep-onboard-testimonial-wrap');
 						var isWorking = false;
 
 						if (!$overlay.length) return;
@@ -139,18 +202,97 @@
 							$overlay.css('display', 'flex').hide().fadeIn(300);
 						});
 
-						$btn.on('click', function(e) {
+						// Testimonial carousel
+						var $testimonials = $overlay.find('.mep-onboard-testimonial');
+						var $dots = $overlay.find('.mep-onboard-dot');
+						var activeIndex = 0;
+						var rotateTimer = null;
+
+						function showTestimonial(index) {
+							activeIndex = index;
+							$testimonials.removeClass('is-active').eq(index).addClass('is-active');
+							$dots.removeClass('is-active').eq(index).addClass('is-active');
+						}
+
+						function startRotation() {
+							stopRotation();
+							if ($testimonials.length < 2) return;
+							rotateTimer = setInterval(function() {
+								showTestimonial((activeIndex + 1) % $testimonials.length);
+							}, 6000);
+						}
+
+						function stopRotation() {
+							if (rotateTimer) {
+								clearInterval(rotateTimer);
+								rotateTimer = null;
+							}
+						}
+
+						$dots.on('click', function() {
+							showTestimonial($(this).data('index'));
+							startRotation();
+						});
+
+						$overlay.find('.mep-onboard-testimonial-wrap').on('mouseenter', stopRotation).on('mouseleave', startRotation);
+
+						startRotation();
+
+						function closePopup() {
+							if (isWorking) return;
+							isWorking = true;
+							$overlay.css('opacity', '0.5');
+
+							$.ajax({
+								url: ajaxurl,
+								type: 'POST',
+								data: {
+									action: 'mep_dismiss_dummy_import',
+									nonce: '<?php echo wp_create_nonce("mep_dismiss_dummy"); ?>'
+								},
+								success: function() {
+									$overlay.fadeOut(300, function() { $(this).remove(); });
+								},
+								error: function() {
+									$overlay.fadeOut(300, function() { $(this).remove(); });
+								}
+							});
+						}
+
+						$setupBtn.on('click', function(e) {
 							e.preventDefault();
 							if (isWorking) return;
 							isWorking = true;
-							$btn.prop('disabled', true);
-							$dismissBtn.prop('disabled', true);
+							$setupBtn.prop('disabled', true);
+							$importBtn.prop('disabled', true);
 
+							$.ajax({
+								url: ajaxurl,
+								type: 'POST',
+								data: {
+									action: 'mep_dismiss_dummy_import',
+									nonce: '<?php echo wp_create_nonce("mep_dismiss_dummy"); ?>'
+								},
+								complete: function() {
+									window.location.href = '<?php echo esc_js( admin_url( 'post-new.php?post_type=mep_events' ) ); ?>';
+								}
+							});
+						});
+
+						$importBtn.on('click', function(e) {
+							e.preventDefault();
+							if (isWorking) return;
+							isWorking = true;
+							stopRotation();
+							$importBtn.prop('disabled', true);
+							$setupBtn.prop('disabled', true);
+
+							$onboardBlocks.slideUp(200);
 							$actions.slideUp(250);
 							$progress.slideDown(300);
 
 							$fill.css('width', '0%');
-							$status.text('<?php echo esc_js(__("Starting import...", "mage-eventpress")); ?>').removeClass('mpwem-success mpwem-error');
+							$status.text('<?php echo esc_js(__("Starting import...", "mage-eventpress")); ?>').removeClass('mep-success mep-error');
 
 							function doStep(stepName, index, totalEvents) {
 								$.ajax({
@@ -178,7 +320,7 @@
 												var percent = 10 + Math.floor((nextIndex / totalEvents) * 80);
 												$fill.css('width', percent + '%');
 												$status.text('<?php echo esc_js(__("Importing events...", "mage-eventpress")); ?> (' + nextIndex + '/' + totalEvents + ')');
-												
+
 												if (nextIndex < totalEvents) {
 													doStep('event', nextIndex, totalEvents);
 												} else {
@@ -186,16 +328,10 @@
 												}
 											} else if (stepName === 'finalize') {
 												$fill.css('width', '100%');
-												$status.text('<?php echo esc_js(__("Import complete! 100%", "mage-eventpress")); ?>').addClass('mpwem-success');
-												$popup.addClass('mpwem-state-success');
-												$popup.find('.mpwem-woo-icon').html(
-													'<svg width="40" height="40" viewBox="0 0 24 24" fill="none">' +
-													'<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>' +
-													'<path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
-													'</svg>'
-												);
-												$popup.find('.mpwem-woo-title').text('<?php echo esc_js(__("Success", "mage-eventpress")); ?>');
-												$popup.find('.mpwem-woo-desc').text('<?php echo esc_js(__("Dummy data imported successfully. Reloading page...", "mage-eventpress")); ?>');
+												$status.text('<?php echo esc_js(__("Import complete! 100%", "mage-eventpress")); ?>').addClass('mep-success');
+												$card.addClass('mep-onboard-state-success');
+												$('#mep-onboard-title').text('<?php echo esc_js(__("You\'re all set!", "mage-eventpress")); ?>');
+												$('#mep-onboard-subtitle').text('<?php echo esc_js(__("Sample events imported successfully. Reloading page...", "mage-eventpress")); ?>');
 												setTimeout(function() { window.location.reload(); }, 1500);
 											}
 										} else {
@@ -211,41 +347,24 @@
 							doStep('init', 0, 0);
 						});
 
-						$dismissBtn.on('click', function(e) {
+						$dismissX.on('click', function(e) {
 							e.preventDefault();
-							if (isWorking) return;
-							isWorking = true;
-							
-							$overlay.css('opacity', '0.5');
-							
-							$.ajax({
-								url: ajaxurl,
-								type: 'POST',
-								data: {
-									action: 'mep_dismiss_dummy_import',
-									nonce: '<?php echo wp_create_nonce("mep_dismiss_dummy"); ?>'
-								},
-								success: function() {
-									$overlay.fadeOut(300, function() { $(this).remove(); });
-								},
-								error: function() {
-									$overlay.fadeOut(300, function() { $(this).remove(); });
-								}
-							});
+							closePopup();
 						});
 
 						function showError(message) {
 							isWorking = false;
-							$popup.addClass('mpwem-state-error');
-							$status.text(message).addClass('mpwem-error');
+							$card.addClass('mep-onboard-state-error');
+							$status.text(message).addClass('mep-error');
 							$fill.css('width', '100%');
 
-							$btn.prop('disabled', false);
-							$dismissBtn.prop('disabled', false);
+							$importBtn.prop('disabled', false);
+							$setupBtn.prop('disabled', false);
+							$onboardBlocks.slideDown(250);
 							$actions.slideDown(250);
 
 							setTimeout(function() {
-								$popup.removeClass('mpwem-state-error');
+								$card.removeClass('mep-onboard-state-error');
 								$progress.slideUp(250);
 								$fill.css('width', '0%');
 							}, 3000);

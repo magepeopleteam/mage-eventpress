@@ -522,6 +522,71 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<?php
 		}
 
+		/**
+		 * Shared "Live Ticket Preview" sidebar card - shown on the Ticket &
+		 * Pricing, Date & Time and Advanced steps so the live frontend preview
+		 * stays visible while editing any of them. All instances share the
+		 * same class (not id - an id can only appear once per page) so the JS
+		 * renderer updates every instance it finds at once.
+		 */
+		private function render_live_ticket_preview_card(int $post_id, string $instance_key): void
+		{
+			$live_preview_template     = class_exists('MPWEM_Functions') ? MPWEM_Functions::get_details_template_name($post_id) : 'default-theme.php';
+			$live_preview_theme_labels = array(
+				'horizon.php'        => __('Horizon', 'mage-eventpress'),
+				'default-theme.php'  => __('Default', 'mage-eventpress'),
+			);
+			$live_preview_theme_label = isset($live_preview_theme_labels[$live_preview_template])
+				? $live_preview_theme_labels[$live_preview_template]
+				: ucfirst(str_replace(array('-theme.php', '.php', '-'), array('', '', ' '), $live_preview_template));
+			$instance_id = 'mpwem_live_ticket_preview_card_' . sanitize_html_class($instance_key);
+			?>
+			<div class="mpwem-card mpwem-live-ticket-preview" id="<?php echo esc_attr($instance_id); ?>" style="margin-bottom: 20px;" data-mpwem-preview-theme="<?php echo esc_attr($live_preview_template); ?>">
+				<div class="mpwem-card__head mpwem-card__head--toggle">
+					<div class="mpwem-card__head-copy">
+						<span class="mpwem-section-pill"><?php esc_html_e('Preview', 'mage-eventpress'); ?></span>
+						<h2><?php esc_html_e('Live Ticket Preview', 'mage-eventpress'); ?></h2>
+						<p><?php esc_html_e('Exactly how this appears on your event page.', 'mage-eventpress'); ?></p>
+					</div>
+					<div class="mpwem-card__head-actions">
+						<span class="mpwem-live-ticket-preview__badge">
+							<span class="mpwem-live-ticket-preview__dot" aria-hidden="true"></span>
+							<?php esc_html_e('Live', 'mage-eventpress'); ?>
+						</span>
+					</div>
+				</div>
+				<div class="mpwem-live-ticket-preview__toolbar">
+					<span class="mpwem-live-ticket-preview__theme-label">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+						<?php
+						/* translators: %s: active frontend template name, e.g. "Horizon" */
+						echo esc_html(sprintf(__('Theme: %s', 'mage-eventpress'), $live_preview_theme_label));
+						?>
+					</span>
+					<span class="mpwem-live-ticket-preview__device-toggle">
+						<span class="mpwem-live-ticket-preview__device is-active" aria-label="<?php esc_attr_e('Desktop preview', 'mage-eventpress'); ?>" role="img">
+							<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+						</span>
+						<span class="mpwem-live-ticket-preview__device" aria-label="<?php esc_attr_e('Mobile preview', 'mage-eventpress'); ?>" role="img">
+							<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+						</span>
+					</span>
+				</div>
+				<div class="mpwem-live-ticket-preview__date-row">
+					<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+					<span class="mpwem-live-ticket-preview__date-label"><?php esc_html_e('No date set yet', 'mage-eventpress'); ?></span>
+					<select class="mpwem-live-ticket-preview__date-select" aria-label="<?php esc_attr_e('Choose a date to preview', 'mage-eventpress'); ?>" style="display:none;"></select>
+					<label class="mpwem-live-ticket-preview__date-picker" style="display:none;">
+						<input type="hidden" />
+						<input type="text" class="formControl mpwem-date-input mpwem-live-ticket-preview__date-input" autocomplete="off" readonly="readonly" aria-label="<?php esc_attr_e('Choose an occurrence to preview', 'mage-eventpress'); ?>" placeholder="<?php esc_attr_e('Select a date', 'mage-eventpress'); ?>" />
+					</label>
+				</div>
+				<div class="mpwem-live-ticket-preview__body"></div>
+				<div class="mpwem-live-ticket-preview__footer"></div>
+			</div>
+			<?php
+		}
+
 		private function is_seat_plan_addon_active(): bool
 		{
 			if (class_exists('MP_ESP_Admin_Meta')) {
@@ -544,6 +609,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card" id="mpwem_wizard_seat_plan_card">
 				<div class="mpwem-card__head">
+					<span class="mpwem-section-pill"><?php esc_html_e('Seating', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Seat Plan', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('Configure the seating layout attendees choose from at checkout.', 'mage-eventpress'); ?></p>
 				</div>
@@ -607,6 +673,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--slug">
 				<div class="mpwem-card__head" style="flex-direction: column !important;">
+					<span class="mpwem-section-pill"><?php esc_html_e('Identity', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Event URL Slug', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('The unique identifier used in the event URL.', 'mage-eventpress'); ?></p>
 				</div>
@@ -705,8 +772,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--category">
 				<div class="mpwem-card__head">
 					<div class="mpwem-card__head-copy">
+						<span class="mpwem-section-pill"><?php esc_html_e('Taxonomy', 'mage-eventpress'); ?></span>
 						<h2><?php esc_html_e('Event Category', 'mage-eventpress'); ?></h2>
-						<p><?php esc_html_e('Assign categories to help attendees find this event.', 'mage-eventpress'); ?></p>
+						<p><?php esc_html_e('Assign categories to this event.', 'mage-eventpress'); ?></p>
 					</div>
 					<div class="mpwem-card__head-actions">
 						<button
@@ -747,8 +815,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--organizer">
 				<div class="mpwem-card__head">
 					<div class="mpwem-card__head-copy">
+						<span class="mpwem-section-pill"><?php esc_html_e('Taxonomy', 'mage-eventpress'); ?></span>
 						<h2><?php esc_html_e('Event Organizer', 'mage-eventpress'); ?></h2>
-						<p><?php esc_html_e('Select the organization or person hosting this event.', 'mage-eventpress'); ?></p>
+						<p><?php esc_html_e('Select the Organizer to this event.', 'mage-eventpress'); ?></p>
 					</div>
 					<div class="mpwem-card__head-actions">
 						<button
@@ -799,6 +868,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--tags">
 				<div class="mpwem-card__head" style="flex-direction: column !important;">
+					<span class="mpwem-section-pill"><?php esc_html_e('Tags', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Event Tags', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('Add tags to further describe your event.', 'mage-eventpress'); ?></p>
 				</div>
@@ -826,6 +896,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<span class="mpwem-taxonomy-card__chip"><?php echo esc_html($tag_name); ?></span>
 							<?php endforeach; ?>
 						</div>
+						<?php if (!empty($tag_suggestions)) : ?>
+							<div class="mpwem-taxonomy-card__suggestions" data-tag-suggestions>
+								<span class="mpwem-taxonomy-card__suggestions-label"><?php esc_html_e('Suggested', 'mage-eventpress'); ?></span>
+								<div class="mpwem-taxonomy-card__suggestions-list">
+									<?php foreach ($tag_suggestions as $tag_name) : ?>
+										<button
+											type="button"
+											class="mpwem-taxonomy-card__chip-suggest"
+											data-tag-suggest="<?php echo esc_attr($tag_name); ?>"
+											<?php echo in_array($tag_name, $selected_tags, true) ? ' hidden' : ''; ?>>
+											+ <?php echo esc_html($tag_name); ?>
+										</button>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 						<div class="mpwem-taxonomy-card__meta">
 							<p class="mpwem-taxonomy-card__help"><?php esc_html_e('Type existing tags or add new ones. Separate each tag with a comma.', 'mage-eventpress'); ?></p>
 							<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=mep_tag&post_type=' . self::POST_TYPE)); ?>" target="_blank" rel="noopener noreferrer">
@@ -844,6 +930,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--settings">
 				<div class="mpwem-card__head">
+					<span class="mpwem-section-pill"><?php esc_html_e('Settings', 'mage-eventpress'); ?></span>
 					<h2><?php esc_html_e('Event Settings', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('Control core event identity and access settings.', 'mage-eventpress'); ?></p>
 				</div>
@@ -1573,30 +1660,51 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				</div>
 				<header class="mpwem-event-wizard__topbar">
 					<div class="mpwem-event-wizard__topbar-inner">
-						<a class="mpwem-link" href="<?php echo esc_url($back_to_list); ?>">
-							<span class="dashicons dashicons-arrow-left-alt"></span>
-							<?php esc_html_e('Back to Events', 'mage-eventpress'); ?>
+						<a class="mpwem-link mpwem-event-wizard__back" href="<?php echo esc_url($back_to_list); ?>" aria-label="<?php esc_attr_e('Back to Events', 'mage-eventpress'); ?>" title="<?php esc_attr_e('Back to Events', 'mage-eventpress'); ?>">
+							<span class="dashicons dashicons-arrow-left-alt" aria-hidden="true"></span>
 						</a>
 						<div class="mpwem-event-wizard__title">
 							<h1 title="<?php echo esc_attr($screen_title); ?>"><?php echo esc_html($screen_title); ?></h1>
 						</div>
+						<nav class="mpwem-event-wizard__steps" aria-label="<?php esc_attr_e('Event steps', 'mage-eventpress'); ?>">
+							<div class="mpwem-event-wizard__steps-inner">
+								<?php foreach ($steps as $step) : ?>
+									<button
+										type="button"
+										class="mpwem-step"
+										data-step-key="<?php echo esc_attr($step['key']); ?>"
+										data-panel="<?php echo esc_attr($step['panel']); ?>">
+										<span class="mpwem-step__label"><?php echo esc_html($step['label']); ?></span>
+									</button>
+								<?php endforeach; ?>
+							</div>
+						</nav>
 						<div class="mpwem-event-wizard__actions">
-							<?php if ($classical_url) : ?>
-								<a class="mpwem-link mpwem-modern-to-classic-btn" href="<?php echo esc_url($classical_url); ?>">
-									<span class="dashicons dashicons-editor-code" aria-hidden="true"></span>
-									<span><?php esc_html_e('Classic editor', 'mage-eventpress'); ?></span>
-								</a>
-							<?php endif; ?>
 							<?php if (! $is_published) : ?>
 								<button type="button" class="button mpwem-wizard-save-draft"><?php esc_html_e('Save as Draft', 'mage-eventpress'); ?></button>
 							<?php endif; ?>
+							<?php
+							$show_status_menu = $classical_url || $frontend_url || ($is_published && $can_publish) || $can_trash;
+							$current_status   = $post ? $post->post_status : 'draft';
+							$status_object    = get_post_status_object($current_status);
+							$status_label     = $status_object ? $status_object->label : ucfirst($current_status);
+							$status_modifiers = array(
+								'publish' => 'is-published',
+								'draft'   => 'is-draft',
+								'pending' => 'is-pending',
+								'future'  => 'is-scheduled',
+								'private' => 'is-private',
+							);
+							$status_modifier  = isset($status_modifiers[$current_status]) ? $status_modifiers[$current_status] : 'is-draft';
+							?>
+							<span class="mpwem-status-badge <?php echo esc_attr($status_modifier); ?>"><?php echo esc_html($status_label); ?></span>
 							<div class="mpwem-status-actions">
 								<?php if ($is_published) : ?>
 									<button type="button" class="button button-primary mpwem-status-actions__primary" data-status-action=""><?php esc_html_e('Update', 'mage-eventpress'); ?></button>
 								<?php elseif ($can_publish) : ?>
 									<button type="button" class="button button-primary mpwem-status-actions__primary" data-status-action="publish"><?php esc_html_e('Publish', 'mage-eventpress'); ?></button>
 								<?php endif; ?>
-								<?php if (($is_published && ($can_publish || $can_trash)) || (! $is_published && $can_trash && $can_publish)) : ?>
+								<?php if ($show_status_menu) : ?>
 									<div class="mpwem-status-actions__menu-wrap">
 										<button
 											type="button"
@@ -1607,6 +1715,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 											<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
 										</button>
 										<div class="mpwem-status-actions__menu" role="menu">
+											<?php if ($classical_url) : ?>
+												<a href="<?php echo esc_url($classical_url); ?>" class="mpwem-status-actions__menu-item">
+													<span class="dashicons dashicons-editor-code" aria-hidden="true"></span>
+													<?php esc_html_e('Classic editor', 'mage-eventpress'); ?>
+												</a>
+											<?php endif; ?>
 											<?php if ($frontend_url) : ?>
 												<a href="<?php echo esc_url($frontend_url); ?>" class="mpwem-status-actions__menu-item" target="_blank">
 													<span class="dashicons dashicons-external" aria-hidden="true"></span>
@@ -1626,20 +1740,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						</div>
 					</div>
 				</header>
-
-				<nav class="mpwem-event-wizard__steps" aria-label="<?php esc_attr_e('Event steps', 'mage-eventpress'); ?>">
-					<div class="mpwem-event-wizard__steps-inner">
-						<?php foreach ($steps as $step) : ?>
-							<button
-								type="button"
-								class="mpwem-step"
-								data-step-key="<?php echo esc_attr($step['key']); ?>"
-								data-panel="<?php echo esc_attr($step['panel']); ?>">
-								<span class="mpwem-step__label"><?php echo esc_html($step['label']); ?></span>
-							</button>
-						<?php endforeach; ?>
-					</div>
-				</nav>
 
 				<main class="mpwem-event-wizard__main">
 					<div class="mpwem-event-wizard__container">
@@ -1672,6 +1772,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Basic Info', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Basic Information', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('The core details of your event.', 'mage-eventpress'); ?></p>
 														</div>
@@ -1689,7 +1790,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	'mpwem_wizard_content',
 																	[
 																		'textarea_name' => 'content',
-																		'textarea_rows' => 10,
+																		'textarea_rows' => 28,
 																		'media_buttons' => true,
 																		'tinymce'       => [
 																			'content_style' => 'body{padding:16px 18px!important;margin:0;box-sizing:border-box;}body.mce-content-body{padding:16px 18px!important;}p{margin:0 0 1em;}',
@@ -1702,6 +1803,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Venue', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Venue/Location', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Where will this event take place?', 'mage-eventpress'); ?></p>
 														</div>
@@ -1719,6 +1821,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													<div class="mpwem-card" id="mpwem_wizard_speaker_card">
 														<div class="mpwem-card__head mpwem-card__head--toggle">
 															<div class="mpwem-card__head-copy">
+																<span class="mpwem-section-pill"><?php esc_html_e('Speaker', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1735,33 +1838,46 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
+												<div class="mpwem-sidebar-single-card">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Media', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Featured Image', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Main event thumbnail.', 'mage-eventpress'); ?></p>
 														</div>
 														<div class="mpwem-card__body">
 															<input type="hidden" name="_thumbnail_id" id="mpwem_featured_image_id" value="<?php echo esc_attr($featured_id); ?>" />
 															<div class="mpwem-featured-image" data-has-image="<?php echo esc_attr($featured_id ? '1' : '0'); ?>">
-																<div class="mpwem-featured-image__preview">
-																	<?php if ($featured_url) : ?>
-																		<img src="<?php echo esc_url($featured_url); ?>" alt="" />
-																	<?php else : ?>
-																		<div class="mpwem-featured-image__placeholder"><?php esc_html_e('No image selected', 'mage-eventpress'); ?></div>
-																	<?php endif; ?>
+																<div class="mpwem-featured-image__filled"<?php echo $featured_id ? '' : ' style="display:none;"'; ?>>
+																	<div class="mpwem-featured-image__preview">
+																		<?php if ($featured_url) : ?>
+																			<img src="<?php echo esc_url($featured_url); ?>" alt="" />
+																		<?php endif; ?>
+																		<div class="mpwem-featured-image__actions">
+																			<button type="button" class="button mpwem-featured-select mpwem-featured-change">
+																				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3M16 8l-4-4-4 4M12 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																				<?php esc_html_e('Change', 'mage-eventpress'); ?>
+																			</button>
+																			<button type="button" class="button mpwem-featured-remove" aria-label="<?php esc_attr_e('Remove image', 'mage-eventpress'); ?>">
+																				<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0v14a1 1 0 01-1 1H7a1 1 0 01-1-1V6h12z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																			</button>
+																		</div>
+																	</div>
 																</div>
-																<div class="mpwem-featured-image__actions">
-																	<button type="button" class="button button-primary mpwem-featured-select"><?php esc_html_e('Select', 'mage-eventpress'); ?></button>
-																	<button type="button" class="button mpwem-featured-remove" <?php echo $featured_id ? '' : 'disabled'; ?>>
-																		<?php esc_html_e('Remove', 'mage-eventpress'); ?>
-																	</button>
-																</div>
+																<button type="button" class="mpwem-featured-image__dropzone mpwem-featured-select"<?php echo $featured_id ? ' style="display:none;"' : ''; ?>>
+																	<span class="mpwem-featured-image__dropzone-icon" aria-hidden="true">
+																		<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5l5 5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+																	</span>
+																	<span class="mpwem-featured-image__dropzone-title"><?php esc_html_e('Click to upload a featured image', 'mage-eventpress'); ?></span>
+																	<span class="mpwem-featured-image__dropzone-hint"><?php esc_html_e('JPG or PNG, up to 10MB', 'mage-eventpress'); ?></span>
+																</button>
 															</div>
 														</div>
 													</div>
 													<div class="mpwem-card" id="mpwem_gallery_images_card">
 														<div class="mpwem-card__head">
 															<div class="mpwem-card__head-copy">
+																<span class="mpwem-section-pill"><?php esc_html_e('Media', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Gallery Images', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Additional photos.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1773,6 +1889,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Media', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Event List Thumbnail', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Thumbnail used in event listing layouts.', 'mage-eventpress'); ?></p>
 														</div>
@@ -1786,6 +1903,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													$this->render_organizer_card($post_id);
 													$this->render_tag_card($post_id);
 													?>
+												</div>
 												</aside>
 											</div>
 										</section>
@@ -1796,6 +1914,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card" id="mpwem_event_mode_card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Tickets', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Registration & Tickets Settings', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Configure how users register or purchase tickets for this event.', 'mage-eventpress'); ?></p>
 														</div>
@@ -1857,6 +1976,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<div class="mpwem-panel-mount mpwem-ticket-legacy-mount" id="mpwem_wizard_tickets_mount"></div>
 														<div class="mpwem-card" id="mpwem_wizard_extra_services_card" style="display:none;">
 															<div class="mpwem-card__head">
+																<span class="mpwem-section-pill"><?php esc_html_e('Add-ons', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Extra Services', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Optional add-ons that attendees can purchase with tickets.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1870,6 +1990,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<?php $this->render_seat_plan_panel($post_id); ?>
 														<div class="mpwem-card" id="mpwem_wizard_tax_card" style="display:none;">
 															<div class="mpwem-card__head">
+																<span class="mpwem-section-pill"><?php esc_html_e('Tax', 'mage-eventpress'); ?></span>
 																<h2><?php esc_html_e('Tax Settings', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Configure how tax applies to this event\'s tickets.', 'mage-eventpress'); ?></p>
 															</div>
@@ -1933,53 +2054,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar" id="mpwem_wizard_tickets_sidebar">
-													<div class="mpwem-card mpwem-card--help" id="mpwem_wizard_mode_help_card" style="margin-bottom: 20px;">
-														<div class="mpwem-card__head">
-															<h2><?php esc_html_e('Event Mode Manual', 'mage-eventpress'); ?></h2>
-															<p><?php esc_html_e('Learn what each event mode is designed for:', 'mage-eventpress'); ?></p>
-														</div>
-														<div class="mpwem-card__body">
-															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-list-view" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('Listing-Only', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Event details only. No registration required.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-email-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('RSVP (Free)', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Free attendee registration. No WooCommerce needed.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-tickets-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Sell tickets and accept payments. Requires WooCommerce or custom payment method.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-															<div class="mpwem-mode-manual-item">
-																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-																	<span class="dashicons dashicons-megaphone" style="font-size: 18px; width: 18px; height: 18px;"></span>
-																	<?php esc_html_e('Announcement', 'mage-eventpress'); ?>
-																</h4>
-																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Publish a notice with an enquiry form instead of a ticket box. Works with or without a date.', 'mage-eventpress'); ?>
-																</p>
-															</div>
-														</div>
+													<div class="mpwem-card" id="mpwem_wizard_payment_status_card" style="margin-bottom: 20px;">
+														<div class="mpwem-card__body" id="mpwem_wizard_mode_help_card_banner"></div>
 													</div>
-
+													<?php $this->render_live_ticket_preview_card($post_id, 'tickets'); ?>
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-pricing" id="mpwem_wizard_pricing_help_card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Pricing', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Pricing Help', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Quick tips for tickets.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2002,6 +2083,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Date & Time', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Date & Time', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Schedule your event start and end times.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2037,14 +2119,14 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
+													<?php $this->render_live_ticket_preview_card($post_id, 'date'); ?>
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-schedule">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Schedule', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Schedule Summary', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Review your event dates.', 'mage-eventpress'); ?></p>
 														</div>
-														<div class="mpwem-card__body">
-															<p class="description"><?php esc_html_e('Check for potential schedule conflicts with other events.', 'mage-eventpress'); ?></p>
-														</div>
+														<div class="mpwem-card__body" id="mpwem_schedule_summary_body"></div>
 													</div>
 												</aside>
 											</div>
@@ -2056,6 +2138,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 												<div class="mpwem-event-wizard__main">
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Advanced', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Advanced', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Templates, messaging, timeline, related events, and search visibility.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2096,8 +2179,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
+													<?php $this->render_live_ticket_preview_card($post_id, 'advanced'); ?>
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-display">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Guide', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Quick Guide', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('A simple guide for the Advanced step sections.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2109,6 +2194,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													<?php $this->render_review_sidebar_option($post_id); ?>
 													<div class="mpwem-card mpwem-card--danger mpwem-card--danger-advanced" id="mpwem_advanced_danger_zone">
 														<div class="mpwem-card__head">
+															<span class="mpwem-section-pill"><?php esc_html_e('Danger', 'mage-eventpress'); ?></span>
 															<h2><?php esc_html_e('Danger Zone', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Use with care.', 'mage-eventpress'); ?></p>
 														</div>
@@ -2129,6 +2215,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 									<div class="mpwem-edit-page-additional" id="mpwem_edit_page_additional" style="display:none;">
 										<div class="mpwem-card mpwem-card--help mpwem-card--help-additional">
 											<div class="mpwem-card__head">
+												<span class="mpwem-section-pill"><?php esc_html_e('Legacy', 'mage-eventpress'); ?></span>
 												<h2><?php esc_html_e('Additional Sections', 'mage-eventpress'); ?></h2>
 												<p><?php esc_html_e('Left in the current design for now until we place them into the new step flow.', 'mage-eventpress'); ?></p>
 											</div>
@@ -2139,10 +2226,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 									</div>
 								</div>
 								<footer class="mpwem-event-wizard__footer">
+									<div class="mpwem-wizard-footer-progress" aria-hidden="true"><span style="width: <?php echo esc_attr( round( 100 / max( 1, count( $steps ) ), 2 ) ); ?>%"></span></div>
 									<div class="mpwem-event-wizard__footer-inner">
-										<button type="button" class="button mpwem-wizard-prev"><?php esc_html_e('Back', 'mage-eventpress'); ?></button>
+										<button type="button" class="button mpwem-wizard-prev" disabled><?php esc_html_e('Back', 'mage-eventpress'); ?></button>
 										<div class="mpwem-event-wizard__footer-center">
-											<span class="mpwem-wizard-progress" aria-live="polite"></span>
+											<span class="mpwem-wizard-step-num" aria-hidden="true">1</span>
+											<div class="mpwem-wizard-step-text">
+												<strong class="mpwem-wizard-step-name"><?php echo esc_html( $steps ? $steps[0]['label'] : '' ); ?></strong>
+												<span class="mpwem-wizard-progress" aria-live="polite"></span>
+											</div>
 										</div>
 										<button type="button" class="button button-primary mpwem-wizard-next"><?php esc_html_e('Next', 'mage-eventpress'); ?></button>
 									</div>

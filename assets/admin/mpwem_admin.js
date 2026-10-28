@@ -800,7 +800,10 @@ function mpwem_load_sortable_datepicker(parent, item) {
             item = parent.find('.mpwem_hidden_content').first().find('.mpwem_hidden_item').html();
         }
         mpwem_load_sortable_datepicker(parent, item);
-        parent.find('.mpwem_item_insert').find('.add_mpwem_select2').select2({});
+        var $select2Targets = parent.find('.mpwem_item_insert').find('.add_mpwem_select2');
+        if ($select2Targets.length && typeof $select2Targets.select2 === 'function') {
+            $select2Targets.select2({});
+        }
         return true;
     });
 }(jQuery));
@@ -829,7 +832,7 @@ function mpwem_load_sortable_datepicker(parent, item) {
         parent.find('.mpwem_image_item').slideUp('fast');
         parent.find('.add_icon_image_button_area').slideDown('fast');
     });
-    $(document).on('click', '.mpwem_add_icon_image_area button.mpwem_icon_add', function () {
+    $(document).on('click', '.mpwem_add_icon_image_area button.mpwem_icon_add, .mpwem_add_icon_image_area [data-add-icon][data-target-popup]', function () {
         let target_popup = $('.mpwem_add_icon_popup');
         target_popup.find('.iconItem').click(function () {
             let parent = $('[data-active-popup]').closest('.mpwem_add_icon_image_area');

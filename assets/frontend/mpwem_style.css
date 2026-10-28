@@ -808,6 +808,24 @@ div.mpwem_style .kera_ticket_area [data-tabs-target] {
 	box-sizing: border-box;
 }
 
+/* The select sits on the colored header as a white pill - browsers add
+   their own default focus outline/background on click or keyboard
+   focus, which flashed against that design. Keep the same white
+   background in every state and use a clean branded focus ring
+   instead of the native one. */
+.mpwem_registration_area .date-time-area select.formControl,
+.mpwem_registration_area .mpwem_time_area select.formControl {
+	background-color: #fff;
+	outline: none;
+}
+
+.mpwem_registration_area .date-time-area select.formControl:focus,
+.mpwem_registration_area .mpwem_time_area select.formControl:focus {
+	background-color: #fff;
+	outline: none;
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--color_theme) 25%, transparent);
+}
+
 .mpwem_registration_area .mpwem_booking_panel {
 	margin-bottom: 20px;
 }
@@ -1143,6 +1161,56 @@ div.mpwem_form_submit_area button[type=submit] {
 	background-color: var(--color_theme);
 	border: 1px solid var(--color_theme);
 	padding: var(--dmp);
+}
+
+/* The "Register For This Event" button only had the nicer treatment
+   below when .mep_smart_theme was active - plain/classic themes fell
+   back to the bare button[type=submit] rule above, which doesn't even
+   match this button's type="button". Give it its own polished look
+   that applies regardless of theme. */
+div.mpwem_form_submit_area button.mpwem_book_now {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-width: 220px;
+	min-height: 48px;
+	margin-left: auto;
+	padding: 12px 22px;
+	border: 1px solid var(--color_theme, #2563eb);
+	border-radius: 12px;
+	background: var(--color_theme, #2563eb);
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: 0.01em;
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--color_theme, #2563eb) 26%, transparent);
+	cursor: pointer;
+	transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+div.mpwem_form_submit_area button.mpwem_book_now i {
+	margin: 0;
+	color: inherit;
+	font-size: 15px;
+	line-height: 1;
+}
+
+div.mpwem_form_submit_area button.mpwem_book_now:hover:not([disabled]) {
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 88%, #000);
+	border-color: color-mix(in srgb, var(--color_theme, #2563eb) 88%, #000);
+	color: #fff;
+	transform: translateY(-1px);
+	box-shadow: 0 16px 30px color-mix(in srgb, var(--color_theme, #2563eb) 34%, transparent);
+}
+
+div.mpwem_form_submit_area button.mpwem_book_now[disabled] {
+	opacity: 0.45;
+	cursor: not-allowed;
+	transform: none;
+	box-shadow: none;
+	filter: grayscale(0.15);
 }
 
 /* ========== Smart Theme — Booking Submit ========== */
@@ -2973,6 +3041,129 @@ div.event_date_list_area .date-list-item {
 	}
 }
 
+/* ========== Event Schedule Details - compact pills (Option D) ==========
+   Shared across default_theme and mep_smart_theme (date_list.php emits the
+   same .mpwem-date-list__link markup for both). Full pill-shaped rows;
+   the upcoming date gets a tinted pill background plus both the "Next"
+   badge and a filled accent circular arrow button, every other date gets
+   a plain white pill with a muted gray circular arrow button and no
+   badge - instead of the old left-dot + corner-chevron pseudo-elements.
+
+   The link selector is written out to the full
+   ".date_list_area .date-list-item .date_item .mpwem-date-list__link"
+   chain (5 classes) rather than a short ".event_date_list_area
+   .mpwem-date-list__link" one: the existing per-theme rules it replaces
+   (".default_theme:not(.mep_smart_theme) .event_date_list_area .date_item
+   a" etc.) are both !important AND 4 classes + 1 element, so a shorter
+   selector here - even with !important of its own - loses ties on
+   specificity for every property both sides mark important (padding,
+   color, font-size, font-weight, line-height, white-space...). Matching
+   the real DOM chain is what actually wins outright. */
+.event_date_list_area .mpwem-date-list__link::before,
+.event_date_list_area .mpwem-date-list__link::after {
+	content: none !important;
+}
+
+/* The base (non-theme-gated) rule near the top of this file still draws
+   its own small dot via .date_item::before - default_theme/mep_smart_theme
+   already disable it, but a theme without that gating (e.g. virtual.php)
+   would otherwise show it alongside the new pill rows. */
+.event_date_list_area .date_item::before {
+	display: none !important;
+	content: none !important;
+}
+
+.event_date_list_area .date_list_area .date-list-item .date_item .mpwem-date-list__link {
+	--mpwem-dl-accent: var(--mep-sched-accent, var(--color_theme, #2563eb));
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+	/* A long range (e.g. a multi-week recurring span) needs to wrap onto
+	   its own line instead of being clipped - nowrap/ellipsis here was
+	   hiding the end date entirely for anything longer than a short
+	   single-day range. */
+	flex-wrap: wrap !important;
+	gap: 6px 10px !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box !important;
+	padding: 10px 14px !important;
+	margin: 0 !important;
+	border: 1px solid #f1f5f9 !important;
+	border-radius: 16px !important;
+	background: #fff !important;
+	color: inherit !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	line-height: 1.4 !important;
+	white-space: normal !important;
+	overflow: visible !important;
+	text-overflow: clip !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+	transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.event_date_list_area .date_list_area .date-list-item .date_item .mpwem-date-list__link.is-upcoming {
+	border-color: color-mix(in srgb, var(--mpwem-dl-accent) 30%, #f1f5f9) !important;
+	background: color-mix(in srgb, var(--mpwem-dl-accent) 6%, #fff) !important;
+}
+
+.event_date_list_area .date_list_area .date-list-item .date_item .mpwem-date-list__link:hover {
+	border-color: color-mix(in srgb, var(--mpwem-dl-accent) 32%, #f1f5f9) !important;
+	color: inherit !important;
+}
+
+.event_date_list_area .mpwem-date-list__text {
+	flex: 1 1 160px;
+	min-width: 0;
+	overflow: visible;
+	text-overflow: clip;
+	white-space: normal;
+	font-weight: 700;
+	color: #0f172a;
+}
+
+.event_date_list_area .mpwem-date-list__badge {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	height: 20px;
+	padding: 0 8px;
+	border-radius: 999px;
+	background: var(--mep-sched-accent, var(--color_theme, #2563eb));
+	color: #fff;
+	font-size: 9px;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.event_date_list_area .mpwem-date-list__arrow {
+	flex-shrink: 0;
+	margin-left: auto;
+	width: 26px;
+	height: 26px;
+	border-radius: 999px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #f1f5f9;
+	color: #94a3b8;
+	transition: background 0.18s ease, color 0.18s ease;
+}
+
+/* The upcoming row already has the "Next" badge - the arrow next to it
+   was redundant, so it's hidden only on that row. */
+.event_date_list_area .mpwem-date-list__link.is-upcoming .mpwem-date-list__arrow {
+	display: none !important;
+}
+
+.event_date_list_area .mpwem-date-list__link:hover .mpwem-date-list__arrow {
+	background: var(--mep-sched-accent, var(--color_theme, #2563eb));
+	color: #fff;
+}
+
 button.mpwem_get_date_list {
 	border-radius: 20px;
 }
@@ -2983,11 +3174,31 @@ div.event_speaker_list_area {
 
 /* Default theme — modern speaker cards */
 div.default_theme .event_speaker_list_area > h5 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 	margin: 0 0 16px;
 	font-size: 18px;
 	font-weight: 700;
 	line-height: 1.3;
 	color: #0f172a;
+}
+
+/* Same icon-badge treatment as the "Share This Event" title. */
+div.default_theme .event_speaker_list_area > h5 > span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 !important;
+	border-radius: 10px;
+	border: 1px solid color-mix(in srgb, var(--color_theme, #2563eb) 22%, #e6e8ee);
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 10%, #fff);
+	color: var(--color_theme, #2563eb) !important;
+	font-size: 13px;
+	flex-shrink: 0;
+	box-shadow: 0 4px 12px color-mix(in srgb, var(--color_theme, #2563eb) 10%, transparent);
 }
 
 div.default_theme .speaker_list.mep-default-speakers,
@@ -3547,7 +3758,7 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	gap: 10px;
+	gap: 12px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -3563,16 +3774,15 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	display: inline-flex !important;
 	align-items: center;
 	justify-content: center;
-	width: 44px;
-	height: 44px;
+	width: 32px;
+	height: 32px;
 	margin: 0 !important;
 	padding: 0 !important;
-	border: 1px solid var(--mep-share-border);
-	border-radius: var(--mep-share-radius);
-	background: #fff;
-	box-shadow: 0 4px 14px rgba(26, 26, 31, 0.04);
+	border: none;
+	border-radius: 50%;
+	box-shadow: 0 4px 14px rgba(26, 26, 31, 0.1);
 	text-decoration: none !important;
-	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+	transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 
 .default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list i {
@@ -3585,120 +3795,43 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	padding: 0 !important;
 	border-radius: 0 !important;
 	background: transparent !important;
-	font-size: 16px !important;
+	color: #fff !important;
+	font-size: 13px !important;
 	line-height: 1 !important;
-	transition: color 0.18s ease;
 }
 
 .default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 10px 22px rgba(26, 26, 31, 0.1);
+	box-shadow: 0 10px 22px rgba(26, 26, 31, 0.18);
+	filter: brightness(1.08);
 }
 
 .default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook {
-	border-color: color-mix(in srgb, #1877F2 22%, var(--mep-share-border));
-	background: color-mix(in srgb, #1877F2 8%, #fff);
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook i {
-	color: #1877F2 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook:hover {
-	background: #1877F2 !important;
-	border-color: #1877F2 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.facebook:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #1877F2;
 }
 
 .default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter {
-	border-color: color-mix(in srgb, #111827 18%, var(--mep-share-border));
-	background: color-mix(in srgb, #111827 6%, #fff);
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter i {
-	color: #111827 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter:hover {
-	background: #111827 !important;
-	border-color: #111827 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.twitter:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #000;
 }
 
 .default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin {
-	border-color: color-mix(in srgb, #0A66C2 22%, var(--mep-share-border));
-	background: color-mix(in srgb, #0A66C2 8%, #fff);
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin i {
-	color: #0A66C2 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin:hover {
-	background: #0A66C2 !important;
-	border-color: #0A66C2 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.linkedin:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #0A66C2;
 }
 
 .default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp {
-	border-color: color-mix(in srgb, #25D366 22%, var(--mep-share-border));
-	background: color-mix(in srgb, #25D366 8%, #fff);
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp i {
-	color: #25D366 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp:hover {
-	background: #25D366 !important;
-	border-color: #25D366 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.whatsapp:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #25D366;
 }
 
 .default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email {
-	border-color: color-mix(in srgb, #EA4335 22%, var(--mep-share-border));
-	background: color-mix(in srgb, #EA4335 8%, #fff);
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email i {
-	color: #EA4335 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email:hover {
-	background: #EA4335 !important;
-	border-color: #EA4335 !important;
-}
-
-.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a.email:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	/* Neutral gray, not a brand color (Gmail red) - email isn't a
+	   platform brand the way Facebook/X/LinkedIn/WhatsApp are. */
+	background: #64748b;
 }
 
 @media (max-width: 640px) {
 	.default_theme:not(.mep_smart_theme) .share_widgets,
 	.default_theme:not(.mep_smart_theme) .share_widgets--default {
 		padding: 14px;
-	}
-
-	.default_theme:not(.mep_smart_theme) .share_widgets .share_widgets_list a {
-		width: 42px;
-		height: 42px;
 	}
 }
 
@@ -3745,7 +3878,7 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	gap: 10px;
+	gap: 12px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -3761,16 +3894,15 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	display: inline-flex !important;
 	align-items: center;
 	justify-content: center;
-	width: 44px;
-	height: 44px;
+	width: 32px;
+	height: 32px;
 	margin: 0 !important;
 	padding: 0 !important;
-	border: 1px solid #e8edf5;
-	border-radius: 12px;
-	background: #fff;
-	box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+	border: none;
+	border-radius: 50%;
+	box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
 	text-decoration: none !important;
-	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+	transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 
 .mep_smart_theme .share_widgets .share_widgets_list i {
@@ -3783,119 +3915,42 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	padding: 0 !important;
 	border-radius: 0 !important;
 	background: transparent !important;
-	font-size: 16px !important;
+	color: #fff !important;
+	font-size: 13px !important;
 	line-height: 1 !important;
-	transition: color 0.18s ease;
 }
 
 .mep_smart_theme .share_widgets .share_widgets_list a:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.2);
+	filter: brightness(1.08);
 }
 
 .mep_smart_theme .share_widgets .share_widgets_list a.facebook {
-	border-color: color-mix(in srgb, #1877F2 22%, #e8edf5);
-	background: color-mix(in srgb, #1877F2 8%, #fff);
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.facebook i {
-	color: #1877F2 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.facebook:hover {
-	background: #1877F2 !important;
-	border-color: #1877F2 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.facebook:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #1877F2;
 }
 
 .mep_smart_theme .share_widgets .share_widgets_list a.twitter {
-	border-color: color-mix(in srgb, #111827 18%, #e8edf5);
-	background: color-mix(in srgb, #111827 6%, #fff);
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.twitter i {
-	color: #111827 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.twitter:hover {
-	background: #111827 !important;
-	border-color: #111827 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.twitter:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #000;
 }
 
 .mep_smart_theme .share_widgets .share_widgets_list a.linkedin {
-	border-color: color-mix(in srgb, #0A66C2 22%, #e8edf5);
-	background: color-mix(in srgb, #0A66C2 8%, #fff);
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.linkedin i {
-	color: #0A66C2 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.linkedin:hover {
-	background: #0A66C2 !important;
-	border-color: #0A66C2 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.linkedin:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #0A66C2;
 }
 
 .mep_smart_theme .share_widgets .share_widgets_list a.whatsapp {
-	border-color: color-mix(in srgb, #25D366 22%, #e8edf5);
-	background: color-mix(in srgb, #25D366 8%, #fff);
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.whatsapp i {
-	color: #25D366 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.whatsapp:hover {
-	background: #25D366 !important;
-	border-color: #25D366 !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.whatsapp:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	background: #25D366;
 }
 
 .mep_smart_theme .share_widgets .share_widgets_list a.email {
-	border-color: color-mix(in srgb, var(--color_theme, #2563eb) 22%, #e8edf5);
-	background: color-mix(in srgb, var(--color_theme, #2563eb) 8%, #fff);
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.email i {
-	color: var(--color_theme, #2563eb) !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.email:hover {
-	background: var(--color_theme, #2563eb) !important;
-	border-color: var(--color_theme, #2563eb) !important;
-}
-
-.mep_smart_theme .share_widgets .share_widgets_list a.email:hover i {
-	color: #fff !important;
-	background: transparent !important;
+	/* Neutral gray, not the theme accent - email isn't a platform brand
+	   the way Facebook/X/LinkedIn/WhatsApp are. */
+	background: #64748b;
 }
 
 @media (max-width: 640px) {
 	.mep_smart_theme .share_widgets {
 		padding: 14px;
-	}
-
-	.mep_smart_theme .share_widgets .share_widgets_list a {
-		width: 42px;
-		height: 42px;
 	}
 }
 
@@ -12618,10 +12673,6 @@ div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .inputIncDec 
 		max-width: 124px;
 	}
 
-	.default_theme:not(.mep_smart_theme):not(.virtual_theme) .share_widgets .share_widgets_list a {
-		width: 40px;
-		height: 40px;
-	}
 }
 
 /* Font Awesome 5.15.4 is what this plugin bundles, and the X mark only arrived in

@@ -70,7 +70,7 @@ body.mpwem-deact-lock {
 }
 .mpwem-deact-option {
 	display: flex;
-	gap: 10px;
+	gap: 8px;
 	align-items: flex-start;
 	padding: 12px 14px;
 	border: 1px solid #dcdcde;
@@ -96,7 +96,7 @@ body.mpwem-deact-lock {
 	color: #1d2327;
 }
 .mpwem-deact-option__desc {
-	font-size: 12.5px;
+	font-size: 13px;
 	color: #50575e;
 	line-height: 1.5;
 }
@@ -118,21 +118,21 @@ body.mpwem-deact-lock {
 	display: flex;
 	gap: 8px;
 	align-items: flex-start;
-	font-size: 13px;
+	font-size: 14px;
 	color: #b32d2e;
 	font-weight: 600;
 }
 .mpwem-deact-error {
 	margin: 12px 0 0;
 	color: #d63638;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 }
 .mpwem-deact-foot {
 	flex: 0 0 auto;
 	display: flex;
 	justify-content: flex-end;
-	gap: 10px;
+	gap: 8px;
 	padding: 14px 20px;
 	border-top: 1px solid #e2e4e7;
 	background: #f6f7f7;
@@ -157,7 +157,7 @@ body.mpwem-deact-lock {
 .mpwem-deact-reason-list {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 8px;
 	margin-bottom: 10px;
 }
 .mpwem-deact-reason-option {
@@ -168,7 +168,7 @@ body.mpwem-deact-lock {
 	border: 1px solid #dcdcde;
 	border-radius: 6px;
 	cursor: pointer;
-	font-size: 13px;
+	font-size: 14px;
 	color: #1d2327;
 	transition: border-color 0.12s ease;
 }
@@ -183,7 +183,7 @@ body.mpwem-deact-lock {
 }
 .mpwem-deact-reason-note {
 	margin: 0;
-	font-size: 12px;
+	font-size: 13px;
 	color: #757575;
 }
 
@@ -194,7 +194,7 @@ body.mpwem-deact-lock {
 }
 .mpwem-deact-survey-loading {
 	margin: 0 0 10px;
-	font-size: 13px;
+	font-size: 14px;
 	color: #757575;
 }
 .mpwem-deact-question {
@@ -208,7 +208,7 @@ body.mpwem-deact-lock {
 .mpwem-deact-question legend {
 	padding: 0;
 	margin-bottom: 6px;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	color: #1d2327;
 }
@@ -216,7 +216,7 @@ body.mpwem-deact-lock {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	gap: 6px;
+	gap: 8px;
 }
 .mpwem-deact-question .mpwem-deact-reason-option--select,
 .mpwem-deact-question .mpwem-deact-reason-option--text {
@@ -237,7 +237,7 @@ body.mpwem-deact-lock {
 .mpwem-deact-rating {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 6px;
+	gap: 8px;
 }
 .mpwem-deact-rating .mpwem-deact-reason-option {
 	flex-direction: row;
@@ -250,7 +250,7 @@ body.mpwem-deact-lock {
 	width: 100%;
 	box-sizing: border-box;
 	resize: vertical;
-	min-height: 50px;
+	min-height: 52px;
 }
 
 /* Progress */
@@ -279,6 +279,6 @@ body.mpwem-deact-lock {
 }
 .mpwem-deact-progress__count {
 	margin: 10px 0 0;
-	font-size: 12.5px;
+	font-size: 13px;
 	color: #50575e;
 }

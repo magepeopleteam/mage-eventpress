@@ -448,12 +448,12 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 					gap:6px;
 					margin-left:auto;
 					padding:8px 14px;
-					border:1px solid #c7d2fe;
-					border-radius:10px;
-					background:#f5f7ff;
-					color:#4f46e5;
+					border:1px solid var(--mpwem-primary-soft-border, rgba(37, 99, 235, 0.35));
+					border-radius:9px;
+					background:var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12));
+					color:var(--mpwem-primary, #2563eb);
 					font-size:12px;
-					font-weight:600;
+					font-weight:650;
 					line-height:1.3;
 					text-decoration:none;
 					box-shadow:none;
@@ -461,9 +461,9 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 				}
 				.mep-wc-pm-wc-link:hover,
 				.mep-wc-pm-wc-link:focus {
-					background:#eef2ff;
-					border-color:#a5b4fc;
-					color:#4338ca;
+					background:rgba(37, 99, 235, 0.18);
+					border-color:rgba(37, 99, 235, 0.45);
+					color:#1d4ed8;
 					text-decoration:none;
 					box-shadow:none;
 				}
@@ -474,13 +474,13 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 					line-height:1;
 				}
 
-				.mep-gw-card { border:1px solid #dcdcde; border-radius:8px; background:#fff; margin-bottom:14px; overflow:hidden; }
-				.mep-gw-card.is-enabled { border-left:3px solid #2271b1; }
+				.mep-gw-card { border:1px solid #e2e8f0; border-radius:10px; background:#fff; margin-bottom:14px; overflow:hidden; transition:border-color .15s ease, background .15s ease; }
+				.mep-gw-card.is-enabled { border-color:var(--mpwem-primary, #2563eb); background:rgba(37, 99, 235, 0.04); }
 				.mep-gw-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; }
 				.mep-gw-head-main { display:flex; align-items:center; gap:12px; }
-				.mep-gw-title { font-size:14px; font-weight:600; color:#1d2327; }
-				.mep-gw-badge { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; padding:2px 8px; border-radius:9px; background:#f0f0f1; color:#646970; }
-				.mep-gw-card.is-enabled .mep-gw-badge { background:#e6f4ea; color:#0a7c2f; }
+				.mep-gw-title { font-size:13.5px; font-weight:650; color:#1e293b; }
+				.mep-gw-badge { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:3px 9px; border-radius:999px; background:#f1f5f9; color:#64748b; }
+				.mep-gw-card.is-enabled .mep-gw-badge { background:var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12)); color:var(--mpwem-primary, #2563eb); }
 				.mep-gw-configure-btn {
 					display:inline-flex;
 					align-items:center;
@@ -488,12 +488,12 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 					flex-shrink:0;
 					margin:0;
 					padding:8px 14px;
-					border:1px solid #c7d2fe;
-					border-radius:10px;
-					background:#f5f7ff;
-					color:#4f46e5;
+					border:1px solid var(--mpwem-primary-soft-border, rgba(37, 99, 235, 0.35));
+					border-radius:9px;
+					background:var(--mpwem-primary-soft, rgba(37, 99, 235, 0.12));
+					color:var(--mpwem-primary, #2563eb);
 					font-size:13px;
-					font-weight:600;
+					font-weight:650;
 					line-height:1.3;
 					cursor:pointer;
 					box-shadow:none;
@@ -502,13 +502,13 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 				}
 				.mep-gw-configure-btn:hover,
 				.mep-gw-configure-btn:focus {
-					background:#eef2ff;
-					border-color:#a5b4fc;
-					color:#4338ca;
+					background:rgba(37, 99, 235, 0.18);
+					border-color:rgba(37, 99, 235, 0.45);
+					color:#1d4ed8;
 					box-shadow:none;
 					outline:none;
 				}
-				.mep-gw-desc { padding:0 16px 12px; color:#50575e; font-size:13px; }
+				.mep-gw-desc { padding:0 16px 12px; color:#64748b; font-size:13px; }
 				.mep-gw-desc p { margin:0 0 6px; }
 
 				.mep-gw-body { padding:6px 16px 16px; border-top:1px solid #f0f0f1; background:#fbfbfc; }
@@ -538,9 +538,9 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 				}
 				.mep-gw-toggle-input::before,
 				.mep-gw-toggle-input::after { content:none !important; display:none !important; }
-				.mep-gw-toggle-slider { position:absolute; inset:0; background:#b5b5ba; border-radius:24px; transition:background .2s; }
+				.mep-gw-toggle-slider { position:absolute; inset:0; background:#cbd5e1; border-radius:24px; transition:background .2s; }
 				.mep-gw-toggle-slider::before { content:''; position:absolute; height:18px; width:18px; left:3px; top:3px; background:#fff; border-radius:50%; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.3); }
-				.mep-gw-toggle-input:checked + .mep-gw-toggle-slider { background:#2271b1; }
+				.mep-gw-toggle-input:checked + .mep-gw-toggle-slider { background:var(--mpwem-primary, #2563eb); }
 				.mep-gw-toggle-input:checked + .mep-gw-toggle-slider::before { transform:translateX(18px); }
 				.mep-gw-toggle-input:disabled + .mep-gw-toggle-slider { opacity:.5; cursor:not-allowed; }
 			</style>

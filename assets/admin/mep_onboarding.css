@@ -1,0 +1,450 @@
+/* ============================================
+   MEP Onboarding Popup
+   First-activation welcome screen shown on the
+   events list page before any events exist.
+   ============================================ */
+
+/* ---------- Overlay ---------- */
+.mep-onboard-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: rgba(29, 23, 41, 0.55);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	animation: mepOnboardOverlayIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes mepOnboardOverlayIn {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+/* ---------- Card ---------- */
+.mep-onboard-card {
+	position: relative;
+	width: 560px;
+	max-width: 100%;
+	max-height: 90vh;
+	overflow-y: auto;
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 24px 70px rgba(29, 23, 41, 0.25);
+	text-align: center;
+	padding: 36px 40px 32px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	animation: mepOnboardCardIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+
+@keyframes mepOnboardCardIn {
+	from { opacity: 0; transform: translateY(24px) scale(0.97); }
+	to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mep-onboard-close {
+	position: absolute;
+	top: 16px;
+	right: 18px;
+	background: transparent;
+	border: none;
+	color: #98a2b3;
+	font-size: 24px;
+	font-weight: 300;
+	line-height: 1;
+	cursor: pointer;
+	padding: 4px;
+}
+
+.mep-onboard-close:hover {
+	color: #1d2327;
+}
+
+/* ---------- Logo ---------- */
+.mep-onboard-logo {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 20px;
+}
+
+.mep-onboard-logo-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	background: linear-gradient(135deg, #7b5ea7 0%, #9b72cf 100%);
+	color: #fff;
+}
+
+.mep-onboard-logo-icon svg {
+	width: 17px;
+	height: 17px;
+}
+
+.mep-onboard-logo-text {
+	font-size: 17px;
+	font-weight: 700;
+	color: #1d2327;
+	letter-spacing: -0.01em;
+}
+
+/* ---------- Headline ---------- */
+.mep-onboard-title {
+	font-size: 26px;
+	font-weight: 700;
+	color: #1d2327;
+	margin: 0 0 8px;
+	line-height: 1.3;
+}
+
+.mep-onboard-subtitle {
+	font-size: 14.5px;
+	color: #667085;
+	margin: 0 0 28px;
+}
+
+/* ---------- Feature Cards ---------- */
+.mep-onboard-features {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 22px;
+}
+
+.mep-onboard-feature-card {
+	flex: 1;
+	background: #faf8fd;
+	border: 1px solid #eee6f7;
+	border-radius: 12px;
+	padding: 18px 12px;
+}
+
+.mep-onboard-feature-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	margin: 0 auto 12px;
+	border-radius: 10px;
+	background: #f1eaf9;
+	color: #7b5ea7;
+}
+
+.mep-onboard-feature-icon svg {
+	width: 20px;
+	height: 20px;
+}
+
+.mep-onboard-feature-title {
+	font-size: 13.5px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0 0 4px;
+	line-height: 1.3;
+}
+
+.mep-onboard-feature-desc {
+	font-size: 14px;
+	color: #667085;
+	margin: 0;
+	line-height: 1.35;
+}
+
+/* ---------- Trust Row ---------- */
+.mep-onboard-trust {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	font-size:14px;
+	color: #475467;
+	margin-bottom: 24px;
+}
+
+.mep-onboard-trust-stars {
+	display: inline-flex;
+	align-items: center;
+	color: #f79009;
+	letter-spacing: 1px;
+	font-size: 14px;
+}
+
+.mep-onboard-trust strong {
+	color: #1d2327;
+	font-weight: 600;
+}
+
+/* ---------- Progress ---------- */
+.mep-onboard-progress {
+	margin: 0 0 20px;
+	animation: mepOnboardFadeIn 0.35s ease both;
+}
+
+@keyframes mepOnboardFadeIn {
+	from { opacity: 0; transform: translateY(6px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+.mep-onboard-progress-bar {
+	width: 100%;
+	height: 8px;
+	background: #f0f0f1;
+	border-radius: 100px;
+	overflow: hidden;
+}
+
+.mep-onboard-progress-fill {
+	height: 100%;
+	width: 0%;
+	border-radius: 100px;
+	background: linear-gradient(90deg, #7b5ea7, #9b72cf);
+	transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+	position: relative;
+}
+
+.mep-onboard-progress-fill::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+	animation: mepOnboardShimmer 1.5s linear infinite;
+}
+
+@keyframes mepOnboardShimmer {
+	from { transform: translateX(-100%); }
+	to   { transform: translateX(100%); }
+}
+
+.mep-onboard-status-text {
+	font-size:14px;
+	color: #50575e;
+	margin: 10px 0 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
+.mep-onboard-status-text::before {
+	content: '';
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border: 2px solid #dcdde1;
+	border-top-color: #7b5ea7;
+	border-radius: 50%;
+	animation: mepOnboardSpin 0.7s linear infinite;
+	flex-shrink: 0;
+}
+
+@keyframes mepOnboardSpin {
+	to { transform: rotate(360deg); }
+}
+
+.mep-onboard-status-text.mep-success {
+	color: #039855;
+}
+
+.mep-onboard-status-text.mep-success::before {
+	display: none;
+}
+
+.mep-onboard-status-text.mep-error {
+	color: #d92d20;
+}
+
+.mep-onboard-status-text.mep-error::before {
+	display: none;
+}
+
+/* ---------- Actions ---------- */
+.mep-onboard-actions {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 28px;
+}
+
+.mep-onboard-btn {
+	flex: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	border: none;
+	border-radius: 9px;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 13px 16px;
+	line-height: 1;
+	transition: all 0.2s ease;
+}
+
+.mep-onboard-btn-secondary {
+	flex: 0 0 auto;
+	background: #f2f4f7;
+	color: #344054;
+}
+
+.mep-onboard-btn-secondary:hover {
+	background: #e4e7ec;
+}
+
+.mep-onboard-btn-primary {
+	flex: 1;
+	background: linear-gradient(135deg, #7b5ea7 0%, #9b72cf 100%);
+	color: #fff;
+	box-shadow: 0 1px 2px rgba(123, 94, 167, 0.2), 0 4px 12px rgba(123, 94, 167, 0.15);
+}
+
+.mep-onboard-btn-primary:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(123, 94, 167, 0.25), 0 8px 24px rgba(123, 94, 167, 0.2);
+	color: #fff;
+}
+
+.mep-onboard-btn:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+	transform: none !important;
+}
+
+/* ---------- Testimonial ---------- */
+.mep-onboard-testimonial-wrap {
+	border-top: 1px solid #eef0f3;
+	padding-top: 22px;
+}
+
+.mep-onboard-testimonial-label {
+	font-size: 14px;
+	font-weight: 600;
+	color: #98a2b3;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	margin: 0 0 14px;
+}
+
+.mep-onboard-testimonial {
+	display: none;
+}
+
+.mep-onboard-testimonial.is-active {
+	display: block;
+	animation: mepOnboardFadeIn 0.35s ease both;
+}
+
+.mep-onboard-quote-title {
+	font-size: 14.5px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0 0 6px;
+}
+
+.mep-onboard-quote {
+	font-size: 13.5px;
+	color: #475467;
+	line-height: 1.55;
+	margin: 0 0 14px;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.mep-onboard-reviewer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
+.mep-onboard-avatar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #7b5ea7 0%, #9b72cf 100%);
+	color: #fff;
+	font-size:14px;
+	font-weight: 700;
+	flex-shrink: 0;
+}
+
+.mep-onboard-reviewer-meta {
+	text-align: left;
+}
+
+.mep-onboard-reviewer-name {
+	font-size:14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.mep-onboard-reviewer-badge {
+	font-size: 13px;
+	color: #98a2b3;
+}
+
+.mep-onboard-dots {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 16px;
+}
+
+.mep-onboard-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #e4e7ec;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+}
+
+.mep-onboard-dot.is-active {
+	background: #7b5ea7;
+	width: 16px;
+	border-radius: 100px;
+	transition: width 0.25s ease;
+}
+
+/* ---------- Success / Error ---------- */
+.mep-onboard-card.mep-onboard-state-success .mep-onboard-progress-fill {
+	background: linear-gradient(90deg, #039855, #12b76a);
+}
+
+.mep-onboard-card.mep-onboard-state-error .mep-onboard-progress-fill {
+	background: linear-gradient(90deg, #d92d20, #f04438);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+	.mep-onboard-card {
+		padding: 28px 22px 24px;
+	}
+
+	.mep-onboard-title {
+		font-size: 21px;
+	}
+
+	.mep-onboard-features {
+		flex-direction: column;
+	}
+
+	.mep-onboard-actions {
+		flex-direction: column-reverse;
+	}
+
+	.mep-onboard-btn-secondary {
+		width: 100%;
+	}
+}

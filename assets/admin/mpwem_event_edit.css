@@ -5571,7 +5571,11 @@ label.mpwem-ticket-summary__gq-label {
 .mpwem-ticket-add__footer .mpwem-ticket-add__save,
 .mpwem-ticket-add__footer .mpwem-ticket-add__save.button-primary,
 .mpwem-ticket-add__footer .mpwem-ticket-add__save.button-primary:hover,
-.mpwem-ticket-add__footer .mpwem-ticket-add__save.button-primary:focus {
+.mpwem-ticket-add__footer .mpwem-ticket-add__save.button-primary:focus,
+.mpwem-ticket-add__footer .mpwem-ticket-add__save-close,
+.mpwem-ticket-add__footer .mpwem-ticket-add__save-close.button-primary,
+.mpwem-ticket-add__footer .mpwem-ticket-add__save-close.button-primary:hover,
+.mpwem-ticket-add__footer .mpwem-ticket-add__save-close.button-primary:focus {
     background: #2563eb !important;
     background: var(--mpwem-btn-primary-bg, #2563eb) !important;
     color: #fff !important;
@@ -16166,4 +16170,457 @@ textarea.mpwem-field-error:focus,
 #mpwem_wizard_seat_plan_card .close_seat_settings:hover {
     background: #e2e8f0;
     color: #1e293b;
+}
+
+/* Inline required-field message + featured-image error state (Basic step) */
+.mpwem-field-error-msg {
+    margin: 6px 0 0;
+    color: #e11d48;
+    font-size: 12.5px;
+    line-height: 1.4;
+    font-weight: 500;
+}
+.mpwem-featured-image.mpwem-field-error {
+    border-radius: var(--mpwem-radius, 10px);
+    box-shadow: 0 0 0 2px #e11d48, 0 0 0 5px rgba(225, 29, 72, 0.14);
+}
+.mpwem-featured-image.mpwem-field-error .mpwem-featured-image__dropzone {
+    border-color: #e11d48;
+    background: #fff7f8;
+}
+
+/* Hide "Add New Ticket Type" while the inline ticket form is open */
+#mpwem_ticket_summary_list:has(#mpwem_ticket_summary_add.is-open) .mpwem-date-primary-fields__add[data-mpwem-ticket-modal-open="new"] {
+    display: none !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Ticket & Pricing step — saved ticket list (card rows + add tile)
+   ────────────────────────────────────────────────────────────────────── */
+#mpwem_ticket_summary .mpwem-ticket-summary__list {
+    gap: 10px;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__header {
+    border-radius: 10px;
+    background: #f1f5fb;
+    color: #64748b;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item {
+    position: relative;
+    padding: 16px 20px 16px 24px;
+    border: 1px solid #e6ecf5;
+    border-top: 1px solid #e6ecf5;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 20px -16px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #3b82f6, #2563eb);
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item:nth-child(even),
+#mpwem_ticket_summary .mpwem-ticket-summary__item:nth-child(odd) {
+    background: #fff;
+    border-color: #e6ecf5;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item:hover {
+    transform: translateY(-1px);
+    background: #fff;
+    border-color: #bfd3f7;
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05), 0 14px 28px -18px rgba(37, 99, 235, 0.35);
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item.is-disabled {
+    background: #f8fafc;
+    opacity: .85;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item.is-disabled::before {
+    background: #cbd5e1;
+}
+
+/* Ticket icon badge before the name */
+#mpwem_ticket_summary .mpwem-ticket-summary__item-head {
+    flex-wrap: nowrap;
+    gap: 12px;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item-head::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #eaf1ff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z'/%3E%3Cpath d='M13 5v2M13 17v2M13 10.5v3'/%3E%3C/svg%3E") center / 18px no-repeat;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item.is-disabled .mpwem-ticket-summary__item-head::before {
+    background-color: #eef1f5;
+    filter: grayscale(1);
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item-head h4 {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #0f172a;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__item-desc {
+    padding-left: 48px;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__price {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1d4ed8;
+}
+
+#mpwem_ticket_summary .mpwem-ticket-summary__capacity {
+    display: inline-block;
+    min-width: 34px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: #334155;
+}
+
+/* "Add New Ticket Type" — full-width dashed tile under the list */
+#mpwem_ticket_summary_list .mpwem-date-primary-fields__add[data-mpwem-ticket-modal-open="new"] {
+    display: flex !important;
+    width: 100%;
+    justify-content: center;
+    margin-top: 4px;
+    padding: 14px 16px !important;
+    border: 1.5px dashed #93b4f0 !important;
+    border-radius: 12px !important;
+    background: #f5f8ff !important;
+    color: #2563eb !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+}
+
+#mpwem_ticket_summary_list .mpwem-date-primary-fields__add[data-mpwem-ticket-modal-open="new"]:hover,
+#mpwem_ticket_summary_list .mpwem-date-primary-fields__add[data-mpwem-ticket-modal-open="new"]:focus {
+    border-color: #2563eb !important;
+    background: #eaf1ff !important;
+    color: #1d4ed8 !important;
+    transform: none;
+}
+
+/* keep the earlier hide-while-form-is-open rule winning over the tile style */
+#mpwem_ticket_summary_list:has(#mpwem_ticket_summary_add.is-open) .mpwem-date-primary-fields__add[data-mpwem-ticket-modal-open="new"] {
+    display: none !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Extra Services — saved service list (mirrors ticket list) (card rows + add tile)
+   ────────────────────────────────────────────────────────────────────── */
+#mpwem_extra_service_summary .mpwem-ticket-summary__list {
+    gap: 10px;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__header {
+    border-radius: 10px;
+    background: #f1f5fb;
+    color: #64748b;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item {
+    position: relative;
+    padding: 16px 20px 16px 24px;
+    border: 1px solid #e6ecf5;
+    border-top: 1px solid #e6ecf5;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 20px -16px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #3b82f6, #2563eb);
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item:nth-child(even),
+#mpwem_extra_service_summary .mpwem-ticket-summary__item:nth-child(odd) {
+    background: #fff;
+    border-color: #e6ecf5;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item:hover {
+    transform: translateY(-1px);
+    background: #fff;
+    border-color: #bfd3f7;
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05), 0 14px 28px -18px rgba(37, 99, 235, 0.35);
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item.is-disabled {
+    background: #f8fafc;
+    opacity: .85;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item.is-disabled::before {
+    background: #cbd5e1;
+}
+
+/* Ticket icon badge before the name */
+#mpwem_extra_service_summary .mpwem-ticket-summary__item-head {
+    flex-wrap: nowrap;
+    gap: 12px;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item-head::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #f1ebff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8 12 3 3 8v8l9 5 9-5Z'/%3E%3Cpath d='m3 8 9 5 9-5M12 13v8'/%3E%3C/svg%3E") center / 18px no-repeat;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item.is-disabled .mpwem-ticket-summary__item-head::before {
+    background-color: #eef1f5;
+    filter: grayscale(1);
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item-head h4 {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #0f172a;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item-desc {
+    padding-left: 48px;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__price {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1d4ed8;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__capacity {
+    display: inline-block;
+    min-width: 34px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: #334155;
+}
+
+/* "Add New Extra Service" — full-width dashed tile under the list */
+#mpwem_extra_service_summary_list .mpwem-date-primary-fields__add[data-mpwem-extra-modal-open="new"] {
+    display: flex !important;
+    width: 100%;
+    justify-content: center;
+    margin-top: 4px;
+    padding: 14px 16px !important;
+    border: 1.5px dashed #93b4f0 !important;
+    border-radius: 12px !important;
+    background: #f5f8ff !important;
+    color: #2563eb !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+}
+
+#mpwem_extra_service_summary_list .mpwem-date-primary-fields__add[data-mpwem-extra-modal-open="new"]:hover,
+#mpwem_extra_service_summary_list .mpwem-date-primary-fields__add[data-mpwem-extra-modal-open="new"]:focus {
+    border-color: #2563eb !important;
+    background: #eaf1ff !important;
+    color: #1d4ed8 !important;
+    transform: none;
+}
+
+/* keep the earlier hide-while-form-is-open rule winning over the tile style */
+#mpwem_extra_service_summary_list:has(#mpwem_extra_service_summary_add.is-open) .mpwem-date-primary-fields__add[data-mpwem-extra-modal-open="new"] {
+    display: none !important;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__header,
+#mpwem_extra_service_summary .mpwem-ticket-summary__item {
+    grid-template-columns: minmax(0, 1fr) minmax(96px, 0.42fr) minmax(80px, 0.3fr) minmax(160px, 0.55fr);
+    column-gap: 24px;
+}
+
+#mpwem_extra_service_summary .mpwem-ticket-summary__item-head h4 {
+    font-weight: 700 !important;
+}
+
+/* Hide the empty-state while the add form is open (tickets + extra services) */
+#mpwem_extra_service_summary_list:has(#mpwem_extra_service_summary_add.is-open) .mpwem-ticket-summary__empty,
+#mpwem_ticket_summary_list:has(#mpwem_ticket_summary_add.is-open) .mpwem-ticket-summary__empty {
+    display: none;
+}
+
+/* Time picker: options that would put the End time at/before the Start */
+.mpwem-custom-time-picker .is-disabled {
+    opacity: .35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Date step: hide the add buttons / empty state while the inline form is open */
+#mpwem_particular_date_summary_list:has(#mpwem_particular_date_summary_add.is-open) [data-mpwem-date-modal-open="new"],
+#mpwem_particular_date_summary_list:has(#mpwem_particular_date_summary_add.is-open) .mpwem-ticket-summary__empty {
+    display: none !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Date step — schedule list (card rows + add tile), mirrors ticket list
+   ────────────────────────────────────────────────────────────────────── */
+#mpwem_particular_date_summary .mpwem-ticket-summary__list {
+    gap: 10px;
+}
+
+/* Starts / Ends captions sit inside each card, so the column header goes */
+#mpwem_particular_date_summary .mpwem-ticket-summary__header {
+    display: none;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    column-gap: 24px;
+    padding: 16px 20px 16px 24px;
+    border: 1px solid #e6ecf5;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 20px -16px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item:first-child {
+    border-top: 1px solid #e6ecf5;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #7c6cf0, #5648e0);
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item:hover {
+    transform: translateY(-1px);
+    border-color: #cfc9f7;
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05), 0 14px 28px -18px rgba(86, 72, 224, 0.35);
+}
+
+/* Calendar badge + "Starts" caption */
+#mpwem_particular_date_summary .mpwem-ticket-summary__item-head {
+    flex-wrap: nowrap;
+    gap: 12px;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item-head::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #efedff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%235648e0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='3'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E") center / 18px no-repeat;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item-head h4,
+#mpwem_particular_date_summary .mpwem-ticket-summary__datetime {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.35;
+    color: #0f172a;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item-head h4::before,
+#mpwem_particular_date_summary .mpwem-ticket-summary__datetime::before {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #8b95a7;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__item-head h4::before {
+    content: "Starts";
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__datetime::before {
+    content: "Ends";
+}
+
+/* "Add Schedule" / "Add Particular Date" — full-width dashed tile */
+#mpwem_particular_date_summary_list .mpwem-date-primary-fields__add[data-mpwem-date-modal-open="new"] {
+    display: flex !important;
+    width: 100%;
+    justify-content: center;
+    margin-top: 4px;
+    padding: 14px 16px !important;
+    border: 1.5px dashed #b4abf5 !important;
+    border-radius: 12px !important;
+    background: #f7f6ff !important;
+    color: #5648e0 !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+}
+
+#mpwem_particular_date_summary_list .mpwem-date-primary-fields__add[data-mpwem-date-modal-open="new"]:hover,
+#mpwem_particular_date_summary_list .mpwem-date-primary-fields__add[data-mpwem-date-modal-open="new"]:focus {
+    border-color: #5648e0 !important;
+    background: #efedff !important;
+    color: #4338ca !important;
+    transform: none;
+}
+
+/* keep hide-while-form-is-open winning over the tile style */
+#mpwem_particular_date_summary_list:has(#mpwem_particular_date_summary_add.is-open) .mpwem-date-primary-fields__add[data-mpwem-date-modal-open="new"] {
+    display: none !important;
+}
+
+@media (max-width: 782px) {
+    #mpwem_particular_date_summary .mpwem-ticket-summary__item {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+    #mpwem_particular_date_summary .mpwem-ticket-summary__item .mpwem-ticket-summary__meta {
+        grid-column: 1;
+        grid-row: 2;
+    }
+}
+
+/* Saved rows open for editing on click */
+.mpwem-ticket-summary__list > .mpwem-ticket-summary__item {
+    cursor: pointer;
+}
+
+/* Tickets step: drop the "Simple Ticket Type" / "Simple add-on list" intro cards */
+#mpwem_ticket_summary > .mpwem-ticket-summary__toolbar,
+#mpwem_extra_service_summary > .mpwem-ticket-summary__toolbar {
+    display: none !important;
 }

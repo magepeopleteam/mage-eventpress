@@ -16618,3 +16618,9 @@ textarea.mpwem-field-error:focus,
 .mpwem-ticket-summary__list > .mpwem-ticket-summary__item {
     cursor: pointer;
 }
+
+/* Tickets step: drop the "Simple Ticket Type" / "Simple add-on list" intro cards */
+#mpwem_ticket_summary > .mpwem-ticket-summary__toolbar,
+#mpwem_extra_service_summary > .mpwem-ticket-summary__toolbar {
+    display: none !important;
+}

@@ -10027,6 +10027,15 @@
             }
         })();
 
+        // Keep the top-left heading in step with the Event Title field as it's typed.
+        $root.on('input change', 'input[name="post_title"]', function() {
+            const typed = ($(this).val() || '').toString().trim();
+            const $heading = $root.find('.mpwem-event-wizard__title h1').first();
+            if (!$heading.length) return;
+            const text = typed !== '' ? typed : 'Untitled Event';
+            $heading.text(text).attr('title', text);
+        });
+
         // Clear the required-field highlight as soon as the user fills the field.
         $root.on('input change', '.mpwem-field-error', function() {
             const value = ($(this).val() || '').toString().trim();

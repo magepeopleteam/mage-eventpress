@@ -2353,8 +2353,72 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return false;
 		}
 
+		/**
+		 * The wizard form has more fields than PHP's max_input_vars (default 1000)
+		 * allows, so PHP silently drops everything past the limit (e.g. the Date
+		 * step's fields). The browser therefore sends every field as one JSON
+		 * list of [name, value] pairs; rebuild $_POST / $_REQUEST from it here,
+		 * handling array-style names like `a[]` and `a[b][c]`.
+		 */
+		private function unpack_form_payload(): void
+		{
+			if (empty($_POST['mpwem_form_json']) || ! is_string($_POST['mpwem_form_json'])) {
+				return;
+			}
+
+			$pairs = json_decode(wp_unslash($_POST['mpwem_form_json']), true);
+			unset($_POST['mpwem_form_json'], $_REQUEST['mpwem_form_json']);
+			if (! is_array($pairs)) {
+				return;
+			}
+
+			$unpacked = [];
+			foreach ($pairs as $pair) {
+				if (! is_array($pair) || count($pair) !== 2 || ! is_string($pair[0]) || ! is_scalar($pair[1])) {
+					continue;
+				}
+				$name  = $pair[0];
+				$value = (string) $pair[1];
+				if ('' === $name || ! preg_match('/^[^\[\]]+((\[[^\[\]]*\])*)$/', $name)) {
+					continue;
+				}
+				preg_match_all('/^[^\[]+|(?<=\[)[^\]]*(?=\])/', $name, $m);
+				$keys = $m[0];
+				$ref  = &$unpacked;
+				foreach ($keys as $i => $key) {
+					$last = ($i === count($keys) - 1);
+					if ('' === $key && $i > 0) {
+						if ($last) {
+							$ref[] = $value;
+						} else {
+							$ref[] = [];
+							$ref   = &$ref[array_key_last($ref)];
+						}
+						continue;
+					}
+					if ($last) {
+						$ref[$key] = $value;
+					} else {
+						if (! isset($ref[$key]) || ! is_array($ref[$key])) {
+							$ref[$key] = [];
+						}
+						$ref = &$ref[$key];
+					}
+				}
+				unset($ref);
+			}
+
+			// WordPress keeps superglobals slashed; handle_save() wp_unslash()es them.
+			foreach ($unpacked as $key => $value) {
+				$_POST[$key]    = wp_slash($value);
+				$_REQUEST[$key] = $_POST[$key];
+			}
+		}
+
 		public function handle_save(): void
 		{
+			$this->unpack_form_payload();
+
 			if (! $this->can_manage_events()) {
 				wp_die(esc_html__('Sorry, you are not allowed to do that.', 'mage-eventpress'));
 			}

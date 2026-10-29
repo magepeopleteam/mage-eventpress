@@ -4583,7 +4583,7 @@
         const mode = opts.mode;
         const $scope = opts.scope;
         const fieldNames = opts.fieldNames;
-        const isEdit = mode !== 'add';
+        const isEdit = mode !== 'add' && !opts.firstEntry;
         const $card = getInlineDateAddCard($root);
         $card.empty().addClass('is-open');
 
@@ -4705,6 +4705,18 @@
         }
 
         const $activeSection = getActiveDateModalSection($root, type);
+
+        // The event's main Start/End fields (event_start_date_normal etc.) are
+        // what publish requires. While they are still empty, the first schedule
+        // belongs in them - "Add" would otherwise only create an extra
+        // "more dates" row and leave the main date unset.
+        const primaryStartName = getDateFieldNames(type).primary.start;
+        const primaryStartVal = ($activeSection.find('[name="' + primaryStartName + '"]').first().val() || '').toString().trim();
+        if (!primaryStartVal) {
+            openInlineDateEdit($root, type, -1, { firstEntry: true });
+            return;
+        }
+
         const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
         if (!$addButton.length) {
             return;
@@ -4752,7 +4764,7 @@
         }, 100);
     }
 
-    function openInlineDateEdit($root, type, rowIndex) {
+    function openInlineDateEdit($root, type, rowIndex, editOptions) {
         const $card = getInlineDateAddCard($root);
         const names = getDateFieldNames(type);
         const context = getParticularDateModalContext($root);
@@ -4800,7 +4812,7 @@
         $card.data('mpwemInlineDateOriginal', original);
         $card.data('mpwemInlineDateFieldNames', fieldNames);
 
-        renderInlineDateAddForm($root, { mode: mode, type: type, scope: $scope, fieldNames: fieldNames });
+        renderInlineDateAddForm($root, { mode: mode, type: type, scope: $scope, fieldNames: fieldNames, firstEntry: !!(editOptions && editOptions.firstEntry) });
     }
 
     function openParticularDateModal($root, mode, rowIndex) {
@@ -8503,6 +8515,67 @@
         );
     }
 
+    // Quietly saves the whole wizard form in the background (no status change,
+    // no validation, no page reload) when the user moves between steps, so
+    // what was entered in the step being left is stored before the next one
+    // opens. Same server path as a Save as Draft / Update, flagged quiet.
+    // PHP drops form fields past max_input_vars (default 1000), and this form
+    // is bigger than that. Every field travels as one JSON string instead;
+    // MPWEM_Event_Edit_Page::unpack_form_payload() rebuilds $_POST from it.
+    function packFormEntries(form) {
+        const entries = [];
+        new window.FormData(form).forEach(function(value, key) {
+            if (typeof value === 'string' && key !== 'mpwem_form_json') {
+                entries.push([key, value]);
+            }
+        });
+        return JSON.stringify(entries);
+    }
+
+    let stepAutoSaveRunning = false;
+    let stepAutoSaveQueued = false;
+
+    function autoSaveEventForm($root) {
+        const form = document.getElementById('mpwem-event-edit-form');
+        if (!form || typeof window.fetch !== 'function' || typeof window.FormData !== 'function') {
+            return;
+        }
+        if (stepAutoSaveRunning) {
+            stepAutoSaveQueued = true;
+            return;
+        }
+
+        if (window.tinymce && typeof window.tinymce.triggerSave === 'function') {
+            window.tinymce.triggerSave();
+        }
+
+        $('#mpwem_post_status_action').val('');
+        $('#mpwem_quiet_save').val('1');
+        $('#mpwem_active_step').val(($root.find('.mpwem-step.is-active').data('step-key') || STEP_KEY_FALLBACK).toString());
+
+        const data = new window.FormData();
+        data.set('action', 'mpwem_event_edit_save');
+        data.set('mpwem_form_json', packFormEntries(form));
+
+        stepAutoSaveRunning = true;
+        window.fetch(form.action, {
+            method: 'POST',
+            body: data,
+            credentials: 'same-origin',
+            redirect: 'manual'
+        }).then(function() {
+            showToast('Progress saved', 'success');
+        }).catch(function() {
+            showToast('Could not save your progress. Check your connection.', 'error');
+        }).then(function() {
+            stepAutoSaveRunning = false;
+            if (stepAutoSaveQueued) {
+                stepAutoSaveQueued = false;
+                autoSaveEventForm($root);
+            }
+        });
+    }
+
     function setActiveStep($root, stepKey, options) {
         if (stepKey !== 'tickets') {
             closeTicketModal($root);
@@ -8532,6 +8605,11 @@
             if (!validateDateWiseGlobalQty($root)) {
                 return;
             }
+        }
+
+        // Leaving a step by Next / the stepper: store what was entered so far.
+        if (options && options.validate && $activeStep.length && $targetStep[0] !== $activeStep[0]) {
+            autoSaveEventForm($root);
         }
 
         $steps.removeClass('is-active is-complete');
@@ -9441,30 +9519,12 @@
             'Event'
         );
         if (error) {
-            // The main/primary slot is empty, but "+ Add Schedule" always
-            // adds to the "more" rows, never the primary one - so a user
-            // who already added a date that way has a real schedule even
-            // though the (unused) primary slot is blank. Don't block
-            // Next/Save on it, and don't re-open "Add Event Date" either.
-            const hasCompleteExtraRow = !!moreNames && findByName(moreNames.sd).toArray().some(function(el, i) {
-                const sd = ($(el).val() || '').toString().trim();
-                if (!sd) return false;
-                const st = (findByName(moreNames.st).eq(i).val() || '').toString().trim();
-                const ed = (findByName(moreNames.ed).eq(i).val() || '').toString().trim();
-                const et = (findByName(moreNames.et).eq(i).val() || '').toString().trim();
-                return !!st && !!ed && !!et;
-            });
-
-            if (hasCompleteExtraRow) {
-                error.$field.removeClass('mpwem-field-error');
-                error = null;
-            } else {
-                // No schedule set up at all yet - same "no tickets yet"
-                // shape as the Tickets step, so fix it the same way below:
-                // trigger the real "Create First Date"/"+ Add Schedule"
-                // action instead of popping the date modal open.
-                error.isMissingMainSchedule = true;
-            }
+            // The event's main schedule is what the server requires (and what the
+            // front end reads first). An extra "more dates" row can't stand in
+            // for it, so send the user to fill the main slot: the fix below
+            // triggers "+ Add Schedule", which now writes into the empty main
+            // fields before it ever creates an extra row.
+            error.isMissingMainSchedule = true;
         }
 
         // "Add More Date" rows (Single / Particular).
@@ -9792,6 +9852,32 @@
         $form.find('#mpwem_quiet_save').val(options.skipOtherSteps ? '1' : '');
         $form.trigger('submit');
     }
+
+    // Native submits of the wizard form (Publish / Update / Draft / mini-saves):
+    // send the fields as one JSON value (see packFormEntries) and keep the
+    // individual inputs out of the request so max_input_vars can't truncate it.
+    $(document).on('submit.mpwemPack', '#mpwem-event-edit-form', function(e) {
+        if (e.isDefaultPrevented()) return;
+        const form = this;
+        let $json = $(form).find('#mpwem_form_json');
+        if (!$json.length) {
+            $json = $('<input type="hidden" name="mpwem_form_json" id="mpwem_form_json" />').appendTo(form);
+        }
+        $json.val('');
+        $json.val(packFormEntries(form));
+
+        const muted = [];
+        $(form).find('input, select, textarea, button').each(function() {
+            if (this.name && this.name !== 'mpwem_form_json' && this.name !== 'action' && !this.disabled) {
+                this.disabled = true;
+                muted.push(this);
+            }
+        });
+        // The request body is built synchronously at submit; restore right after.
+        window.setTimeout(function() {
+            muted.forEach(function(el) { el.disabled = false; });
+        }, 0);
+    });
 
     function closeStatusActionMenus() {
         $('.mpwem-status-actions__menu-wrap').removeClass('is-open')

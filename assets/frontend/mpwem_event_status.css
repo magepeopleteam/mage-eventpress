@@ -1,0 +1,242 @@
+/* ============================================================
+   Cancelled events
+   - .mpwem_cancelled_notice       event page (banner under the title, and the
+                                   booking slot; --compact when the banner is shown)
+   - .mpwem_list_cancelled_notice  one-line notice on event-list cards
+   - .mepev-ribbon.cancelled       image ribbon on list / related cards
+   - .mep-event-is-cancelled       state class on every list card root
+   ============================================================ */
+:root {
+	--mpwem-cancel-red: #dc2626;
+	--mpwem-cancel-red-dark: #991b1b;
+	--mpwem-cancel-red-soft: #fef2f2;
+	--mpwem-cancel-red-line: #fecaca;
+}
+
+/* ── Event page notice ─────────────────────────────────────────── */
+.mpwem_style .mpwem_cancelled_notice,
+.mpwem_cancelled_notice {
+	box-sizing: border-box;
+	display: flex;
+	align-items: flex-start;
+	gap: 18px;
+	width: 100%;
+	margin: 0 0 24px;
+	padding: 22px 26px;
+	background: #ffffff;
+	border: 1px solid var(--mpwem-cancel-red-line);
+	border-left: 4px solid var(--mpwem-cancel-red);
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(153, 27, 27, 0.06);
+	text-align: left;
+}
+
+.mpwem_cancelled_notice--banner {
+	margin-top: 4px;
+}
+
+/* Scoped under the notice: mpwem_global.css sets .mpwem_style span { display: inline-block }. */
+.mpwem_cancelled_notice .mpwem_cancelled_notice__icon {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	margin-top: 2px;
+	border-radius: 50%;
+	background: var(--mpwem-cancel-red-soft);
+	color: var(--mpwem-cancel-red);
+	font-size: 18px;
+	line-height: 1;
+}
+
+.mpwem_cancelled_notice .mpwem_cancelled_notice__body {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+}
+
+.mpwem_cancelled_notice .mpwem_cancelled_notice__eyebrow {
+	display: inline-flex;
+	align-items: center;
+	margin: 0 0 8px;
+	padding: 3px 10px;
+	border-radius: 999px;
+	background: var(--mpwem-cancel-red-soft);
+	color: var(--mpwem-cancel-red-dark);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+.mpwem_cancelled_notice .mpwem_cancelled_notice__title {
+	margin: 0 0 6px;
+	padding: 0;
+	font-size: 19px;
+	font-weight: 700;
+	line-height: 1.35;
+	color: #111827;
+}
+
+.mpwem_cancelled_notice .mpwem_cancelled_notice__text {
+	margin: 0 0 12px;
+	font-size: 15px;
+	line-height: 1.65;
+	color: #374151;
+}
+
+.mpwem_cancelled_notice .mpwem_cancelled_notice__text > *:first-child {
+	margin-top: 0;
+}
+
+.mpwem_cancelled_notice .mpwem_cancelled_notice__text > *:last-child {
+	margin-bottom: 0;
+}
+
+.mpwem_cancelled_notice ul.mpwem_cancelled_notice__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 18px;
+	margin: 10px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.mpwem_cancelled_notice ul.mpwem_cancelled_notice__meta li {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	margin: 0;
+	padding: 0;
+	font-size: 13.5px;
+	line-height: 1.5;
+	color: #4b5563;
+}
+
+.mpwem_cancelled_notice ul.mpwem_cancelled_notice__meta li::before {
+	content: none;
+}
+
+.mpwem_cancelled_notice ul.mpwem_cancelled_notice__meta i {
+	width: 14px;
+	color: var(--mpwem-cancel-red);
+	text-align: center;
+}
+
+/* Booking slot when the banner already said it all. */
+.mpwem_style .mpwem_cancelled_notice--compact,
+.mpwem_cancelled_notice--compact {
+	gap: 14px;
+	padding: 16px 20px;
+	border-left: 1px solid var(--mpwem-cancel-red-line);
+	background: var(--mpwem-cancel-red-soft);
+	box-shadow: none;
+}
+
+.mpwem_cancelled_notice.mpwem_cancelled_notice--compact .mpwem_cancelled_notice__icon {
+	width: 36px;
+	height: 36px;
+	margin-top: 0;
+	background: #ffffff;
+	font-size: 15px;
+}
+
+.mpwem_cancelled_notice--compact .mpwem_cancelled_notice__title {
+	margin-bottom: 2px;
+	font-size: 16px;
+}
+
+.mpwem_cancelled_notice--compact .mpwem_cancelled_notice__text {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.55;
+}
+
+/* Narrow booking columns (Horizon sidebar ticket card) */
+.horizon_ticket_body .mpwem_cancelled_notice {
+	flex-direction: column;
+	gap: 12px;
+	margin-bottom: 0;
+	padding: 20px;
+}
+
+@media (max-width: 600px) {
+	.mpwem_style .mpwem_cancelled_notice,
+	.mpwem_cancelled_notice {
+		flex-direction: column;
+		gap: 12px;
+		padding: 18px;
+	}
+
+	.mpwem_cancelled_notice--compact {
+		flex-direction: row;
+	}
+
+	.mpwem_cancelled_notice .mpwem_cancelled_notice__title {
+		font-size: 17px;
+	}
+}
+
+/* ── Event-list cards ──────────────────────────────────────────── */
+.mep-event-list-loop .mpwem_list_cancelled_notice,
+.mpwem_list_cancelled_notice {
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 7px;
+	max-width: 100%;
+	margin: 6px 0 10px;
+	padding: 6px 10px;
+	border: 1px solid var(--mpwem-cancel-red-line);
+	border-radius: 8px;
+	background: var(--mpwem-cancel-red-soft);
+	color: var(--mpwem-cancel-red-dark);
+	font-size: 12.5px;
+	font-weight: 600;
+	line-height: 1.45;
+	text-align: left;
+	text-decoration: none;
+}
+
+.mpwem_list_cancelled_notice i {
+	flex: 0 0 auto;
+	margin-top: 2px;
+	color: var(--mpwem-cancel-red);
+}
+
+.mpwem_list_cancelled_notice span {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+/* The image stays recognisable but reads as inactive. */
+.mep-event-is-cancelled .mep_list_thumb img,
+.mep-event-is-cancelled .mep_list_thumb [data-bg-image] {
+	filter: grayscale(0.85);
+	opacity: 0.85;
+}
+
+/* ── Ribbon ────────────────────────────────────────────────────── */
+.mepev-ribbon.cancelled,
+.list_with_filter_section.mep_event_list .mepev-ribbon.cancelled,
+.list_with_filter_section.mep_event_list div.mep-event-list-loop .mepev-ribbons .mepev-ribbon.cancelled,
+.mpwem_related_area .mepev-ribbon.cancelled {
+	background: rgba(185, 28, 28, 0.94);
+	color: #ffffff;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+/* ── Horizon theme hero badge ──────────────────────────────────── */
+.horizon_theme .horizon_hero_badge.is-cancelled {
+	padding-left: 16px;
+	background: rgba(185, 28, 28, 0.92);
+	color: #ffffff;
+}
+
+.horizon_theme .horizon_hero_badge.is-cancelled .horizon_hero_live {
+	display: none;
+}

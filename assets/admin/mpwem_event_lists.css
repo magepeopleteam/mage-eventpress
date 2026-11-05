@@ -1063,6 +1063,58 @@
     background: #fee2e2;
     color: #991b1b;
 }
+.mpwem_event_list .status-cancelled {
+    background: #f1f5f9;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+.mpwem_event_list .status-cancelled-inline {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 1px 7px 1px 4px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-top: 4px;
+}
+.mpwem_event_list .status-cancelled-inline .dashicons {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+}
+/* Cancelled rows: red accent on the first cell, muted image and title. */
+.mpwem_event_list .event-table tr.is-cancelled td:first-child {
+    box-shadow: inset 3px 0 0 #dc2626;
+}
+.mpwem_event_list .event-table tr.is-cancelled .mpwem_event_feature_image {
+    filter: grayscale(0.85);
+    opacity: 0.8;
+}
+.mpwem_event_list .event-table tr.is-cancelled .row-title-link {
+    color: #64748b;
+}
+/* "Cancelled" filter chip */
+.mpwem_event_list .stat-item.mpwem_filter_cancelled {
+    background: #fef2f2;
+    color: #991b1b;
+}
+.mpwem_event_list .stat-item.mpwem_filter_cancelled:hover {
+    background: #fee2e2;
+}
+.mpwem_event_list .stat-item.mpwem_filter_cancelled .dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+.mpwem_event_list .stat-item.mpwem_filter_cancelled.mpwem_filter_btn_active_bg_color,
+.mpwem_event_list .stat-item.mpwem_filter_cancelled.mpwem_filter_btn_active_bg_color:hover {
+    background: #b91c1c !important;
+    box-shadow: 0 6px 16px rgba(185, 28, 28, 0.25);
+}
 .mpwem_event_list .location {
     color: #64748b;
     font-size: 0.9rem;

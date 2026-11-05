@@ -35,6 +35,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Event_List.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Event_Cancellation.php';
 				if ( MPWEM_Global_Function::has_woocommerce() ) {
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';

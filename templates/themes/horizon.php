@@ -112,7 +112,7 @@
 			<aside class="horizon_sidebar">
 				<div class="horizon_ticket_card">
 					<div class="horizon_ticket_head">
-						<span class="horizon_ticket_eyebrow"><?php esc_html_e( 'Reserve Your Spot', 'mage-eventpress' ); ?></span>
+						<span class="horizon_ticket_eyebrow"><?php echo MPWEM_Global_Function::is_cancelled_event( $event_id ) ? esc_html__( 'Event Cancelled', 'mage-eventpress' ) : esc_html__( 'Reserve Your Spot', 'mage-eventpress' ); ?></span>
 						<h3 class="horizon_ticket_title"><?php echo esc_html( get_the_title( $event_id ) ); ?></h3>
 						<?php
 							$venue = is_array( $event_infos ) && ! empty( $event_infos['mep_location_venue'] ) ? $event_infos['mep_location_venue'] : '';

@@ -9154,6 +9154,11 @@
         if (!isRegistrationEnabled($root)) {
             return true;
         }
+        // A cancelled event sells nothing, so cancelling it (or editing it while
+        // cancelled) is never blocked by ticket or payment requirements.
+        if ($('#mpwem_event_status_card [data-mpwem-event-status-toggle]').is(':checked')) {
+            return true;
+        }
 
         let message = '';
         let onFix = null;

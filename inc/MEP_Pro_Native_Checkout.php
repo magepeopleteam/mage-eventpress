@@ -70,6 +70,9 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
 				wp_send_json_error( array( 'message' => __( 'Invalid event.', 'mage-eventpress' ) ) );
 			}
+			if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+				wp_send_json_error( array( 'message' => __( 'This event has been cancelled and is no longer available for booking.', 'mage-eventpress' ) ) );
+			}
 			// Same rule as the WooCommerce and RSVP paths: a published event (its editors may
 			// test-book a draft or private one) in a booking mode with a date still open.
 			// MPWEM_Woocommerce is not loaded without WooCommerce, so it is repeated here.

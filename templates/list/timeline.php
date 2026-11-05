@@ -24,7 +24,7 @@
 		$first_category = $category_parts[0] ?? '';
 	}
 ?>
-<div class="timeline__item mep-event-list-loop"
+<div class="timeline__item mep-event-list-loop<?php echo esc_attr( MPWEM_Global_Function::is_cancelled_event( $event_id ) ? ' mep-event-is-cancelled' : '' ); ?>"
      data-title="<?php echo esc_attr( $title ); ?>"
      data-date="<?php echo esc_attr( MPWEM_Global_Function::get_list_display_date( $event_infos ) ? date( 'Y-m-d', strtotime( MPWEM_Global_Function::get_list_display_date( $event_infos ) ) ) : '' ); ?>"
      data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
@@ -45,6 +45,7 @@
                 <a class="mep_event_timeline_list__link" href="<?php echo esc_url( $permalink ); ?>">
                     <h5 class="mep_list_title"><?php echo esc_html( $title ); ?></h5>
 					<?php
+						do_action( 'mpwem_list_status_notice', $event_id, $event_infos );
 						do_action( 'mep_event_minimal_list_after_title', $event_id );
 						if ( $available_seat == 0 ) {
 							do_action( 'mep_show_waitlist_label' );

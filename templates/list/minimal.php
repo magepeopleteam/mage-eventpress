@@ -33,7 +33,7 @@
 	$date_day   = $display_date ? date_i18n( 'd', strtotime( $display_date ) ) : '';
 	$date_year  = $display_date ? date_i18n( 'Y', strtotime( $display_date ) ) : '';
 ?>
-    <div class="filter_item mep-event-list-loop mep_event_list_item mep_event_minimal_list mix <?php echo esc_attr( $org_class . ' ' . $cat_class ); ?>"
+    <div class="filter_item mep-event-list-loop mep_event_list_item mep_event_minimal_list mix <?php echo esc_attr( $org_class . ' ' . $cat_class . ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ? ' mep-event-is-cancelled' : '' ) ); ?>"
          data-title="<?php echo esc_attr( $title ); ?>"
          data-city-name="<?php echo esc_attr( is_array( $event_infos ) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
          data-state="<?php echo esc_attr( is_array( $event_infos ) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"
@@ -61,6 +61,7 @@
 					<?php endif; ?>
                     <h5 class="mep_list_title"><?php echo esc_html( $title ); ?></h5>
 					<?php
+						do_action( 'mpwem_list_status_notice', $event_id, $event_infos );
 						do_action( 'mep_event_minimal_list_after_title', $event_id );
 						if ( $available_seat == 0 ) {
 							do_action( 'mep_show_waitlist_label' );

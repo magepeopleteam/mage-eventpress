@@ -132,6 +132,7 @@ if ( ! function_exists( 'mep_cal_enqueue_assets' ) ) {
 				'noEvents'        => __( 'No events to display', 'mage-eventpress' ),
 				'allDay'          => __( 'All Day', 'mage-eventpress' ),
 				'soldOut'         => __( 'Sold Out', 'mage-eventpress' ),
+				'cancelled'       => __( 'Cancelled', 'mage-eventpress' ),
 				'available'       => __( 'Available', 'mage-eventpress' ),
 				'total'           => __( 'Total', 'mage-eventpress' ),
 				'sold'            => __( 'Sold', 'mage-eventpress' ),
@@ -1148,6 +1149,14 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$total_reserved  = 0;
 			$ticket_details  = array();
 
+			// A cancelled event shows neither seats nor price, so it can never read as
+			// sold out or on sale; the calendar script marks it as cancelled instead.
+			$is_cancelled = MPWEM_Global_Function::is_cancelled_event( $event_id );
+			if ( $is_cancelled ) {
+				$show_stock = 'no';
+				$show_price = 'no';
+			}
+
 			if ( $show_stock === 'yes' ) {
 				$stock_info      = $this->get_stock_info( $event_id, $start_dt );
 				$total_seats     = $stock_info['total'];
@@ -1167,6 +1176,11 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					$bg_color   = $low_stock_color;
 					$text_color = '#333333';
 				}
+			}
+
+			if ( $is_cancelled ) {
+				$bg_color   = '#6b7280';
+				$text_color = '#ffffff';
 			}
 
 			$bg_color = apply_filters( 'mep_calendar_event_color', $bg_color, $event_id, $available_seats, $total_seats );
@@ -1206,6 +1220,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				'borderColor'     => $bg_color,
 				'textColor'       => $text_color,
 				'allDay'          => $all_day,
+				'classNames'      => $is_cancelled ? array( 'mep-cal-cancelled-event' ) : array(),
 				'extendedProps'   => array(
 					'eventId'                => $event_id,
 					'eventType'              => $event_type,
@@ -1234,6 +1249,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					'hideTime'               => $hide_time,
 					'isExpired'              => $is_expired,
 					'expiredBadge'           => $is_expired,
+					'isCancelled'            => $is_cancelled,
 				),
 			);
 		}

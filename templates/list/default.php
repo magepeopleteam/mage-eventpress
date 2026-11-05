@@ -33,8 +33,9 @@
 		$category_parts = array_map( 'trim', explode( ',', $taxonomy_category ) );
 		$first_category = $category_parts[0] ?? '';
 	}
+	$cancelled_class                = MPWEM_Global_Function::is_cancelled_event( $event_id ) ? ' mep-event-is-cancelled' : '';
 ?>
-    <div class='filter_item mep-event-list-loop mix mep_event_card <?php echo esc_attr( $column_number . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class . ( $large_list_layout === 'yes' ? ' mep_event_card--large' : '' ) ); ?>'
+    <div class='filter_item mep-event-list-loop mix mep_event_card <?php echo esc_attr( $column_number . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class . ( $large_list_layout === 'yes' ? ' mep_event_card--large' : '' ) . $cancelled_class ); ?>'
          data-title="<?php echo esc_attr( $title ); ?>"
          data-city-name="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
          data-state="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"
@@ -57,6 +58,7 @@
             <a class="event_details_link" href="<?php echo esc_url( $permalink ); ?>">
 				<h2 class='mep_list_title' title="<?php echo esc_attr( $title ); ?>"><?php echo esc_html( mb_strimwidth( $title, 0, 80, '...' ) ); ?></h2>
 				<?php
+					do_action( 'mpwem_list_status_notice', $event_id, $event_infos );
 					if ( $available_seat == 0 ) {
 						do_action( 'mep_show_waitlist_label' );
 					}

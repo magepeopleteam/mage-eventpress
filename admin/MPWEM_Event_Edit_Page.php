@@ -1698,6 +1698,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 							$status_modifier  = isset($status_modifiers[$current_status]) ? $status_modifiers[$current_status] : 'is-draft';
 							?>
 							<span class="mpwem-status-badge <?php echo esc_attr($status_modifier); ?>"><?php echo esc_html($status_label); ?></span>
+							<?php if ($post_id && 'yes' === get_post_meta($post_id, 'mep_event_cancelled', true)) : ?>
+								<span class="mpwem-status-badge is-cancelled"><?php esc_html_e('Cancelled', 'mage-eventpress'); ?></span>
+							<?php endif; ?>
 							<div class="mpwem-status-actions">
 								<?php if ($is_published) : ?>
 									<button type="button" class="button button-primary mpwem-status-actions__primary" data-status-action=""><?php esc_html_e('Update', 'mage-eventpress'); ?></button>
@@ -1729,6 +1732,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 											<?php endif; ?>
 											<?php if ($is_published && $can_publish) : ?>
 												<button type="button" class="mpwem-status-actions__menu-item" role="menuitem" data-status-action="draft"><?php esc_html_e('Switch to Draft', 'mage-eventpress'); ?></button>
+											<?php endif; ?>
+											<?php if ($post_id && class_exists('MPWEM_Event_Status_Settings')) : ?>
+												<?php // A link, not a button: every button in this menu submits the form. ?>
+												<a href="#mpwem_event_status_card" class="mpwem-status-actions__menu-item" role="menuitem" data-mpwem-goto-event-status>
+													<span class="dashicons dashicons-dismiss" aria-hidden="true"></span>
+													<?php echo 'yes' === get_post_meta($post_id, 'mep_event_cancelled', true) ? esc_html__('Restore Event', 'mage-eventpress') : esc_html__('Cancel Event', 'mage-eventpress'); ?>
+												</a>
 											<?php endif; ?>
 											<?php if ($can_trash) : ?>
 												<button type="button" class="mpwem-status-actions__menu-item is-danger" role="menuitem" data-status-action="trash"><?php esc_html_e('Move to Trash', 'mage-eventpress'); ?></button>
@@ -1912,6 +1922,18 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 										<section class="mpwem-wizard-panel mp_tab_item" data-tab-item="#mpwem_wizard_tickets">
 											<div class="mpwem-event-wizard__grid">
 												<div class="mpwem-event-wizard__main">
+													<?php if (class_exists('MPWEM_Event_Status_Settings')) : ?>
+														<div class="mpwem-card" id="mpwem_event_status_card">
+															<div class="mpwem-card__head">
+																<span class="mpwem-section-pill"><?php esc_html_e('Status', 'mage-eventpress'); ?></span>
+																<h2><?php esc_html_e('Event Status', 'mage-eventpress'); ?></h2>
+																<p><?php esc_html_e('Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book.', 'mage-eventpress'); ?></p>
+															</div>
+															<div class="mpwem-card__body">
+																<?php MPWEM_Event_Status_Settings::render_fields($post_id); ?>
+															</div>
+														</div>
+													<?php endif; ?>
 													<div class="mpwem-card" id="mpwem_event_mode_card">
 														<div class="mpwem-card__head">
 															<span class="mpwem-section-pill"><?php esc_html_e('Tickets', 'mage-eventpress'); ?></span>

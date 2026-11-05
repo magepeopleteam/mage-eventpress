@@ -339,12 +339,56 @@
 				return '' === $start && '' === $upcoming;
 			}
 			/**
+			 * Whether the organiser has cancelled this event.
+			 *
+			 * Driven by the "Cancel this event" switch (MPWEM_Event_Status_Settings). A
+			 * cancelled event keeps its page, its place in every event list and its saved
+			 * Event Mode, but takes no new bookings: is_bookable_event() is false for it, so
+			 * the WooCommerce, native checkout and RSVP paths all refuse it. Restoring the
+			 * event brings the ticket / RSVP setup back unchanged.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return bool
+			 */
+			public static function is_cancelled_event( $event_id ): bool {
+				$event_id  = absint( $event_id );
+				$cancelled = $event_id > 0 && 'yes' === get_post_meta( $event_id, 'mep_event_cancelled', true );
+				return (bool) apply_filters( 'mpwem_is_cancelled_event', $cancelled, $event_id );
+			}
+			/**
+			 * Visitor-facing wording for a cancelled event.
+			 *
+			 * 'title' is the fixed heading; 'message' is the organiser's own notice (stored
+			 * through wp_kses_post(), so it may carry basic formatting) or '' when none was
+			 * saved; 'summary' is a one-line plain-text version for list cards.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return array{title: string, message: string, summary: string}
+			 */
+			public static function get_cancellation_notice( $event_id ): array {
+				$title   = __( 'This event has been cancelled', 'mage-eventpress' );
+				$message = (string) get_post_meta( $event_id, 'mep_event_cancel_message', true );
+				if ( '' === trim( wp_strip_all_tags( $message ) ) ) {
+					$message = '';
+				}
+				$summary = '' !== $message ? wp_trim_words( wp_strip_all_tags( $message ), 18, '…' ) : $title;
+				$notice  = [
+					'title'   => $title,
+					'message' => $message,
+					'summary' => $summary,
+				];
+				return (array) apply_filters( 'mpwem_cancellation_notice', $notice, $event_id );
+			}
+			/**
 			 * Whether an event can actually be booked from a listing card.
 			 *
-			 * False for Listing-Only and Announcement modes (nothing to buy or reserve)
-			 * and for any undated event (no occurrence to book).
+			 * False for cancelled events, for Listing-Only and Announcement modes (nothing
+			 * to buy or reserve) and for any undated event (no occurrence to book).
 			 */
 			public static function is_bookable_event( $event_id ): bool {
+				if ( self::is_cancelled_event( $event_id ) ) {
+					return false;
+				}
 				$mode = self::get_event_mode( $event_id );
 				if ( in_array( $mode, [ 'off', 'announcement' ], true ) ) {
 					return false;

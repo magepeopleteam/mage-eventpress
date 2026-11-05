@@ -7372,7 +7372,7 @@ msgstr "Carrossel"
 #: admin/MEP_Custom_Orders_Page.php:122
 #: admin/MEP_Custom_Orders_Page.php:520
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancelado"
 
 #: admin/MEP_Custom_Orders_Page.php:123
 msgid "Refunded"
@@ -8235,7 +8235,7 @@ msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:830
 msgid "Scheduled"
-msgstr ""
+msgstr "Agendado"
 
 #: admin/MPWEM_Post_List_Modern.php:876
 msgid "You do not have permission to edit this speaker."
@@ -12178,3 +12178,187 @@ msgstr ""
 #: templates/themes/horizon.php:145
 msgid "Share"
 msgstr ""
+
+# Cancelled events (Event Status)
+
+msgid "%1$s was cancelled. Refund %2$s for its tickets manually: this payment method cannot refund automatically."
+msgstr "%1$s foi cancelado. Reembolse manualmente %2$s pelos bilhetes: este método de pagamento não permite reembolsos automáticos."
+
+msgid "%1$s was cancelled. This order is \"%2$s\", so it was not refunded or cancelled automatically: please settle it by hand."
+msgstr "%1$s foi cancelado. Esta encomenda está \"%2$s\", por isso não foi reembolsada nem cancelada automaticamente: trate-a manualmente."
+
+msgid "%d existing registration"
+msgid_plural "%d existing registrations"
+msgstr[0] "%d inscrição existente"
+msgstr[1] "%d inscrições existentes"
+
+msgid "%d order."
+msgid_plural "%d orders."
+msgstr[0] "%d encomenda."
+msgstr[1] "%d encomendas."
+
+msgid "%d recipient. Each address is emailed once per cancellation."
+msgid_plural "%d recipients. Each address is emailed once per cancellation."
+msgstr[0] "%d destinatário. Cada endereço recebe um único e-mail por cancelamento."
+msgstr[1] "%d destinatários. Cada endereço recebe um único e-mail por cancelamento."
+
+msgid "%s was cancelled. This unpaid order also holds other items, so it was left open: remove the event from it or cancel it."
+msgstr "%s foi cancelado. Esta encomenda por pagar contém outros artigos, por isso ficou em aberto: retire o evento ou cancele-a."
+
+msgid "%s was removed from your cart because the event has been cancelled."
+msgstr "%s foi removido do seu carrinho porque o evento foi cancelado."
+
+msgid "(optional)"
+msgstr "(opcional)"
+
+msgid "Booking closed"
+msgstr "Reservas encerradas"
+
+msgid "Booking is closed for this event."
+msgstr "As reservas para este evento estão encerradas."
+
+msgid "Booking is closed. Restore it from the event's Event Status card."
+msgstr "As reservas estão encerradas. Reponha-o no cartão \"Estado do evento\"."
+
+msgid "CANCELLED"
+msgstr "CANCELADO"
+
+msgid "Cancel Event"
+msgstr "Cancelar evento"
+
+msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
+msgstr "Cancele o evento sem o eliminar. Os visitantes continuam a vê-lo, claramente marcado como cancelado, mas não podem reservar."
+
+msgid "Cancel this event"
+msgstr "Cancelar este evento"
+
+msgid "Cancellation notice"
+msgstr "Aviso de cancelamento"
+
+msgid "Cancelled because the event %s was cancelled."
+msgstr "Cancelada porque o evento %s foi cancelado."
+
+msgid "Cancelled: {event_name}"
+msgstr "Cancelado: {event_name}"
+
+msgid "Check:"
+msgstr "Verificar:"
+
+msgid "Could not send to: %s"
+msgstr "Não foi possível enviar para: %s"
+
+msgid "Email everyone who booked"
+msgstr "Avisar por e-mail todos os inscritos"
+
+msgid "Email message"
+msgstr "Mensagem do e-mail"
+
+msgid "Email subject"
+msgstr "Assunto do e-mail"
+
+msgid "Emails sent to %1$d of %2$d people (%3$s)."
+msgstr "E-mails enviados a %1$d de %2$d pessoas (%3$s)."
+
+msgid "Emails stopped: the event was restored."
+msgstr "Envio de e-mails interrompido: o evento foi reposto."
+
+msgid "Event Status"
+msgstr "Estado do evento"
+
+msgid "Event cancelled"
+msgstr "Evento cancelado"
+
+msgid "Event cancelled: %s"
+msgstr "Evento cancelado: %s"
+
+msgid "Hello {attendee_name},\n\nWe are sorry to let you know that {event_name}, scheduled for {event_date}, has been cancelled.\n\n{cancel_message}\n\nIf you paid for your booking, your refund is on its way or we will be in touch about it shortly.\n\n{site_name}"
+msgstr "Olá {attendee_name},\n\nLamentamos informar que {event_name}, agendado para {event_date}, foi cancelado.\n\n{cancel_message}\n\nSe já pagou a sua reserva, o reembolso está a caminho ou entraremos em contacto consigo em breve.\n\n{site_name}"
+
+msgid "Only this event's tickets are refunded, through the order's own payment method. Orders it cannot settle automatically get an order note and are listed below."
+msgstr "Só são reembolsados os bilhetes deste evento, através do método de pagamento de cada encomenda. As encomendas que não puderem ser tratadas automaticamente recebem uma nota e aparecem abaixo."
+
+msgid "Order settlement stopped: the event was restored."
+msgstr "Tratamento das encomendas interrompido: o evento foi reposto."
+
+msgid "Orders settled:"
+msgstr "Encomendas tratadas:"
+
+msgid "Originally scheduled for %s"
+msgstr "Inicialmente agendado para %s"
+
+msgid "Placeholders:"
+msgstr "Marcadores:"
+
+msgid "Refund paid orders and cancel unpaid ones"
+msgstr "Reembolsar encomendas pagas e cancelar as por pagar"
+
+msgid "Sending emails in the background: %1$d of %2$d sent."
+msgstr "A enviar e-mails em segundo plano: %1$d de %2$d enviados."
+
+msgid "Settle %d order when you save? Paid tickets are refunded to the customer through the order's payment method, and refunds cannot be undone."
+msgid_plural "Settle %d orders when you save? Paid tickets are refunded to the customers through each order's payment method, and refunds cannot be undone."
+msgstr[0] "Tratar %d encomenda ao guardar? Os bilhetes pagos são reembolsados ao cliente através do método de pagamento da encomenda e os reembolsos não podem ser anulados."
+msgstr[1] "Tratar %d encomendas ao guardar? Os bilhetes pagos são reembolsados aos clientes através do método de pagamento de cada encomenda e os reembolsos não podem ser anulados."
+
+msgid "Settling orders in the background:"
+msgstr "A tratar encomendas em segundo plano:"
+
+msgid "Shown under the title on the event page and, shortened, on event list cards. Leave empty to show \"This event has been cancelled\"."
+msgstr "Mostrado por baixo do título na página do evento e, abreviado, nos cartões das listas de eventos. Deixe vazio para mostrar \"Este evento foi cancelado\"."
+
+msgid "The automatic refund for the cancelled event %1$s failed: %2$s Please refund it manually."
+msgstr "O reembolso automático do evento cancelado %1$s falhou: %2$s Reembolse-o manualmente."
+
+msgid "The event stays on its page and in every event list with a cancellation notice. Tickets, RSVP and checkout are switched off."
+msgstr "O evento continua na sua página e em todas as listas de eventos com um aviso de cancelamento. Bilhetes, RSVP e pagamento são desativados."
+
+msgid "This event has been cancelled"
+msgstr "Este evento foi cancelado"
+
+msgid "This event has been cancelled and is no longer accepting RSVP responses."
+msgstr "Este evento foi cancelado e já não aceita respostas RSVP."
+
+msgid "This event has been cancelled and is no longer available for booking."
+msgstr "Este evento foi cancelado e já não está disponível para reserva."
+
+msgid "Tickets and registration are no longer available because this event has been cancelled."
+msgstr "Os bilhetes e as inscrições já não estão disponíveis porque este evento foi cancelado."
+
+msgid "Use the options below to email them and settle their orders, or contact them yourself."
+msgstr "Use as opções abaixo para os avisar por e-mail e tratar as encomendas, ou contacte-os diretamente."
+
+msgid "When you save"
+msgstr "Ao guardar"
+
+msgid "already refunded"
+msgstr "já reembolsadas"
+
+msgid "e.g. Unfortunately this course has been cancelled. Everyone who booked will be contacted about a refund."
+msgstr "ex.: Infelizmente este curso foi cancelado. Todos os inscritos serão contactados sobre o reembolso."
+
+msgid "native checkout, refund by hand"
+msgstr "checkout nativo, reembolsar manualmente"
+
+msgid "need settling by hand"
+msgstr "a tratar manualmente"
+
+msgid "nothing to do yet"
+msgstr "nada a fazer por agora"
+
+msgid "refund failed"
+msgstr "reembolso falhado"
+
+msgid "refunded"
+msgstr "reembolsadas"
+
+msgid "since %s"
+msgstr "desde %s"
+
+msgid "there"
+msgstr "participante"
+
+msgid "unpaid with other items, left open"
+msgstr "por pagar com outros artigos, deixadas em aberto"
+
+msgid "unpaid, cancelled"
+msgstr "por pagar, canceladas"

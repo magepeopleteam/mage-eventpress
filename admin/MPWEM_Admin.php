@@ -66,6 +66,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Venue_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Ticket_Price_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Event_Status_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Seo_content_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_event_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Tax_Settings.php';

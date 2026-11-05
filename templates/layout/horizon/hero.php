@@ -18,8 +18,14 @@
 	if ( empty( $badge_parts ) ) {
 		$badge_parts = [ __( 'EVENT', 'mage-eventpress' ) ];
 	}
-	$badge_parts[] = __( 'LIVE', 'mage-eventpress' );
-	$badge_text    = implode( ' • ', array_slice( $badge_parts, 0, 3 ) );
+	$is_cancelled = MPWEM_Global_Function::is_cancelled_event( $event_id );
+	if ( $is_cancelled ) {
+		// A cancelled event is never "live", and its status must survive the 3-part cut.
+		$badge_text = implode( ' • ', array_merge( array_slice( $badge_parts, 0, 2 ), [ __( 'CANCELLED', 'mage-eventpress' ) ] ) );
+	} else {
+		$badge_parts[] = __( 'LIVE', 'mage-eventpress' );
+		$badge_text    = implode( ' • ', array_slice( $badge_parts, 0, 3 ) );
+	}
 
 	$desc_full = '';
 	$excerpt   = get_the_excerpt( $event_id );
@@ -85,7 +91,7 @@
 
 	<div class="horizon_hero_inner">
 		<div class="horizon_hero_content">
-			<span class="horizon_hero_badge">
+			<span class="horizon_hero_badge<?php echo $is_cancelled ? ' is-cancelled' : ''; ?>">
 				<span class="horizon_hero_live" aria-hidden="true"></span>
 				<?php echo esc_html( $badge_text ); ?>
 			</span>

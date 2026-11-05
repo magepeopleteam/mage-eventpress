@@ -7371,7 +7371,7 @@ msgstr "băng chuyền"
 #: admin/MEP_Custom_Orders_Page.php:122
 #: admin/MEP_Custom_Orders_Page.php:520
 msgid "Cancelled"
-msgstr ""
+msgstr "Đã hủy"
 
 #: admin/MEP_Custom_Orders_Page.php:123
 msgid "Refunded"
@@ -8228,7 +8228,7 @@ msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:830
 msgid "Scheduled"
-msgstr ""
+msgstr "Đã lên lịch"
 
 #: admin/MPWEM_Post_List_Modern.php:876
 msgid "You do not have permission to edit this speaker."
@@ -12170,3 +12170,183 @@ msgstr ""
 #: templates/themes/horizon.php:145
 msgid "Share"
 msgstr ""
+
+# Cancelled events (Event Status)
+
+msgid "%1$s was cancelled. Refund %2$s for its tickets manually: this payment method cannot refund automatically."
+msgstr "%1$s đã bị hủy. Hãy hoàn tiền thủ công %2$s cho vé: phương thức thanh toán này không hỗ trợ hoàn tiền tự động."
+
+msgid "%1$s was cancelled. This order is \"%2$s\", so it was not refunded or cancelled automatically: please settle it by hand."
+msgstr "%1$s đã bị hủy. Đơn hàng này đang ở trạng thái \"%2$s\" nên không được hoàn tiền hay hủy tự động: vui lòng xử lý thủ công."
+
+msgid "%d existing registration"
+msgid_plural "%d existing registrations"
+msgstr[0] "%d lượt đăng ký hiện có"
+
+msgid "%d order."
+msgid_plural "%d orders."
+msgstr[0] "%d đơn hàng."
+
+msgid "%d recipient. Each address is emailed once per cancellation."
+msgid_plural "%d recipients. Each address is emailed once per cancellation."
+msgstr[0] "%d người nhận. Mỗi địa chỉ chỉ nhận một email cho mỗi lần hủy."
+
+msgid "%s was cancelled. This unpaid order also holds other items, so it was left open: remove the event from it or cancel it."
+msgstr "%s đã bị hủy. Đơn hàng chưa thanh toán này còn có sản phẩm khác nên được giữ nguyên: hãy xóa sự kiện khỏi đơn hoặc hủy đơn."
+
+msgid "%s was removed from your cart because the event has been cancelled."
+msgstr "%s đã bị xóa khỏi giỏ hàng vì sự kiện đã bị hủy."
+
+msgid "(optional)"
+msgstr "(không bắt buộc)"
+
+msgid "Booking closed"
+msgstr "Đã đóng đặt chỗ"
+
+msgid "Booking is closed for this event."
+msgstr "Sự kiện này đã đóng đặt chỗ."
+
+msgid "Booking is closed. Restore it from the event's Event Status card."
+msgstr "Đã đóng đặt chỗ. Khôi phục sự kiện trong thẻ \"Trạng thái sự kiện\"."
+
+msgid "CANCELLED"
+msgstr "ĐÃ HỦY"
+
+msgid "Cancel Event"
+msgstr "Hủy sự kiện"
+
+msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
+msgstr "Hủy sự kiện mà không xóa. Khách vẫn thấy sự kiện, được đánh dấu rõ là đã hủy, nhưng không thể đặt chỗ."
+
+msgid "Cancel this event"
+msgstr "Hủy sự kiện này"
+
+msgid "Cancellation notice"
+msgstr "Thông báo hủy"
+
+msgid "Cancelled because the event %s was cancelled."
+msgstr "Đã hủy vì sự kiện %s đã bị hủy."
+
+msgid "Cancelled: {event_name}"
+msgstr "Đã hủy: {event_name}"
+
+msgid "Check:"
+msgstr "Kiểm tra:"
+
+msgid "Could not send to: %s"
+msgstr "Không gửi được tới: %s"
+
+msgid "Email everyone who booked"
+msgstr "Gửi email cho tất cả người đã đặt"
+
+msgid "Email message"
+msgstr "Nội dung email"
+
+msgid "Email subject"
+msgstr "Tiêu đề email"
+
+msgid "Emails sent to %1$d of %2$d people (%3$s)."
+msgstr "Đã gửi email tới %1$d/%2$d người (%3$s)."
+
+msgid "Emails stopped: the event was restored."
+msgstr "Đã dừng gửi email: sự kiện đã được khôi phục."
+
+msgid "Event Status"
+msgstr "Trạng thái sự kiện"
+
+msgid "Event cancelled"
+msgstr "Sự kiện đã hủy"
+
+msgid "Event cancelled: %s"
+msgstr "Sự kiện đã hủy: %s"
+
+msgid "Hello {attendee_name},\n\nWe are sorry to let you know that {event_name}, scheduled for {event_date}, has been cancelled.\n\n{cancel_message}\n\nIf you paid for your booking, your refund is on its way or we will be in touch about it shortly.\n\n{site_name}"
+msgstr "Xin chào {attendee_name},\n\nRất tiếc phải thông báo rằng {event_name}, dự kiến diễn ra vào {event_date}, đã bị hủy.\n\n{cancel_message}\n\nNếu bạn đã thanh toán, khoản hoàn tiền đang được xử lý hoặc chúng tôi sẽ sớm liên hệ với bạn.\n\n{site_name}"
+
+msgid "Only this event's tickets are refunded, through the order's own payment method. Orders it cannot settle automatically get an order note and are listed below."
+msgstr "Chỉ hoàn tiền vé của sự kiện này, qua phương thức thanh toán của từng đơn hàng. Các đơn không thể xử lý tự động sẽ được thêm ghi chú và liệt kê bên dưới."
+
+msgid "Order settlement stopped: the event was restored."
+msgstr "Đã dừng xử lý đơn hàng: sự kiện đã được khôi phục."
+
+msgid "Orders settled:"
+msgstr "Đơn hàng đã xử lý:"
+
+msgid "Originally scheduled for %s"
+msgstr "Dự kiến ban đầu vào %s"
+
+msgid "Placeholders:"
+msgstr "Biến thay thế:"
+
+msgid "Refund paid orders and cancel unpaid ones"
+msgstr "Hoàn tiền đơn đã thanh toán và hủy đơn chưa thanh toán"
+
+msgid "Sending emails in the background: %1$d of %2$d sent."
+msgstr "Đang gửi email trong nền: đã gửi %1$d/%2$d."
+
+msgid "Settle %d order when you save? Paid tickets are refunded to the customer through the order's payment method, and refunds cannot be undone."
+msgid_plural "Settle %d orders when you save? Paid tickets are refunded to the customers through each order's payment method, and refunds cannot be undone."
+msgstr[0] "Xử lý %d đơn hàng khi lưu? Vé đã thanh toán sẽ được hoàn tiền cho khách qua phương thức thanh toán của đơn, và không thể hoàn tác."
+
+msgid "Settling orders in the background:"
+msgstr "Đang xử lý đơn hàng trong nền:"
+
+msgid "Shown under the title on the event page and, shortened, on event list cards. Leave empty to show \"This event has been cancelled\"."
+msgstr "Hiển thị dưới tiêu đề trên trang sự kiện và rút gọn trên thẻ danh sách sự kiện. Để trống để hiển thị \"Sự kiện này đã bị hủy\"."
+
+msgid "The automatic refund for the cancelled event %1$s failed: %2$s Please refund it manually."
+msgstr "Hoàn tiền tự động cho sự kiện đã hủy %1$s thất bại: %2$s Vui lòng hoàn tiền thủ công."
+
+msgid "The event stays on its page and in every event list with a cancellation notice. Tickets, RSVP and checkout are switched off."
+msgstr "Sự kiện vẫn có trang riêng và xuất hiện trong mọi danh sách sự kiện kèm thông báo hủy. Vé, RSVP và thanh toán bị tắt."
+
+msgid "This event has been cancelled"
+msgstr "Sự kiện này đã bị hủy"
+
+msgid "This event has been cancelled and is no longer accepting RSVP responses."
+msgstr "Sự kiện này đã bị hủy và không còn nhận phản hồi RSVP."
+
+msgid "This event has been cancelled and is no longer available for booking."
+msgstr "Sự kiện này đã bị hủy và không còn nhận đặt chỗ."
+
+msgid "Tickets and registration are no longer available because this event has been cancelled."
+msgstr "Vé và đăng ký không còn khả dụng vì sự kiện này đã bị hủy."
+
+msgid "Use the options below to email them and settle their orders, or contact them yourself."
+msgstr "Dùng các tùy chọn bên dưới để gửi email cho họ và xử lý đơn hàng, hoặc tự liên hệ với họ."
+
+msgid "When you save"
+msgstr "Khi lưu"
+
+msgid "already refunded"
+msgstr "đã hoàn tiền trước đó"
+
+msgid "e.g. Unfortunately this course has been cancelled. Everyone who booked will be contacted about a refund."
+msgstr "VD: Rất tiếc khóa học này đã bị hủy. Chúng tôi sẽ liên hệ với tất cả người đã đặt về việc hoàn tiền."
+
+msgid "native checkout, refund by hand"
+msgstr "thanh toán riêng, hoàn tiền thủ công"
+
+msgid "need settling by hand"
+msgstr "cần xử lý thủ công"
+
+msgid "nothing to do yet"
+msgstr "chưa có gì cần làm"
+
+msgid "refund failed"
+msgstr "hoàn tiền thất bại"
+
+msgid "refunded"
+msgstr "đã hoàn tiền"
+
+msgid "since %s"
+msgstr "từ %s"
+
+msgid "there"
+msgstr "bạn"
+
+msgid "unpaid with other items, left open"
+msgstr "chưa thanh toán, có sản phẩm khác, giữ nguyên"
+
+msgid "unpaid, cancelled"
+msgstr "chưa thanh toán, đã hủy"

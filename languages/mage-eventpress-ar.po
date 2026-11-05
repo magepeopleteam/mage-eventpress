@@ -7375,7 +7375,7 @@ msgstr "دائري"
 #: admin/MEP_Custom_Orders_Page.php:122
 #: admin/MEP_Custom_Orders_Page.php:520
 msgid "Cancelled"
-msgstr ""
+msgstr "ملغى"
 
 #: admin/MEP_Custom_Orders_Page.php:123
 msgid "Refunded"
@@ -8262,7 +8262,7 @@ msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:830
 msgid "Scheduled"
-msgstr ""
+msgstr "مجدول"
 
 #: admin/MPWEM_Post_List_Modern.php:876
 msgid "You do not have permission to edit this speaker."
@@ -12209,3 +12209,203 @@ msgstr ""
 #: templates/themes/horizon.php:145
 msgid "Share"
 msgstr ""
+
+# Cancelled events (Event Status)
+
+msgid "%1$s was cancelled. Refund %2$s for its tickets manually: this payment method cannot refund automatically."
+msgstr "تم إلغاء %1$s. يرجى رد %2$s مقابل التذاكر يدويًا: طريقة الدفع هذه لا تدعم الاسترداد التلقائي."
+
+msgid "%1$s was cancelled. This order is \"%2$s\", so it was not refunded or cancelled automatically: please settle it by hand."
+msgstr "تم إلغاء %1$s. حالة هذا الطلب \"%2$s\"، لذلك لم يُسترد أو يُلغَ تلقائيًا: يرجى معالجته يدويًا."
+
+msgid "%d existing registration"
+msgid_plural "%d existing registrations"
+msgstr[0] "%d تسجيل موجود"
+msgstr[1] "%d تسجيل موجود"
+msgstr[2] "%d تسجيلان موجودان"
+msgstr[3] "%d تسجيلات موجودة"
+msgstr[4] "%d تسجيلًا موجودًا"
+msgstr[5] "%d تسجيل موجود"
+
+msgid "%d order."
+msgid_plural "%d orders."
+msgstr[0] "%d طلب."
+msgstr[1] "%d طلب."
+msgstr[2] "%d طلبان."
+msgstr[3] "%d طلبات."
+msgstr[4] "%d طلبًا."
+msgstr[5] "%d طلب."
+
+msgid "%d recipient. Each address is emailed once per cancellation."
+msgid_plural "%d recipients. Each address is emailed once per cancellation."
+msgstr[0] "%d مستلم. يتلقى كل عنوان رسالة واحدة لكل إلغاء."
+msgstr[1] "%d مستلم. يتلقى كل عنوان رسالة واحدة لكل إلغاء."
+msgstr[2] "%d مستلمان. يتلقى كل عنوان رسالة واحدة لكل إلغاء."
+msgstr[3] "%d مستلمين. يتلقى كل عنوان رسالة واحدة لكل إلغاء."
+msgstr[4] "%d مستلمًا. يتلقى كل عنوان رسالة واحدة لكل إلغاء."
+msgstr[5] "%d مستلم. يتلقى كل عنوان رسالة واحدة لكل إلغاء."
+
+msgid "%s was cancelled. This unpaid order also holds other items, so it was left open: remove the event from it or cancel it."
+msgstr "تم إلغاء %s. هذا الطلب غير المدفوع يحتوي على عناصر أخرى، لذلك تُرك مفتوحًا: أزل الحدث منه أو ألغِه."
+
+msgid "%s was removed from your cart because the event has been cancelled."
+msgstr "تمت إزالة %s من سلتك لأن الحدث أُلغي."
+
+msgid "(optional)"
+msgstr "(اختياري)"
+
+msgid "Booking closed"
+msgstr "الحجز مغلق"
+
+msgid "Booking is closed for this event."
+msgstr "الحجز مغلق لهذا الحدث."
+
+msgid "Booking is closed. Restore it from the event's Event Status card."
+msgstr "الحجز مغلق. استعد الحدث من بطاقة \"حالة الحدث\"."
+
+msgid "CANCELLED"
+msgstr "ملغى"
+
+msgid "Cancel Event"
+msgstr "إلغاء الحدث"
+
+msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
+msgstr "ألغِ الحدث دون حذفه. سيظل الزوار يرونه مع علامة واضحة بأنه ملغى، لكن لا يمكنهم الحجز."
+
+msgid "Cancel this event"
+msgstr "إلغاء هذا الحدث"
+
+msgid "Cancellation notice"
+msgstr "إشعار الإلغاء"
+
+msgid "Cancelled because the event %s was cancelled."
+msgstr "أُلغي لأن الحدث %s أُلغي."
+
+msgid "Cancelled: {event_name}"
+msgstr "ملغى: {event_name}"
+
+msgid "Check:"
+msgstr "تحقق من:"
+
+msgid "Could not send to: %s"
+msgstr "تعذّر الإرسال إلى: %s"
+
+msgid "Email everyone who booked"
+msgstr "مراسلة كل من حجز بالبريد الإلكتروني"
+
+msgid "Email message"
+msgstr "نص الرسالة"
+
+msgid "Email subject"
+msgstr "موضوع الرسالة"
+
+msgid "Emails sent to %1$d of %2$d people (%3$s)."
+msgstr "أُرسلت الرسائل إلى %1$d من أصل %2$d شخصًا (%3$s)."
+
+msgid "Emails stopped: the event was restored."
+msgstr "توقف إرسال الرسائل: تمت استعادة الحدث."
+
+msgid "Event Status"
+msgstr "حالة الحدث"
+
+msgid "Event cancelled"
+msgstr "تم إلغاء الحدث"
+
+msgid "Event cancelled: %s"
+msgstr "تم إلغاء الحدث: %s"
+
+msgid "Hello {attendee_name},\n\nWe are sorry to let you know that {event_name}, scheduled for {event_date}, has been cancelled.\n\n{cancel_message}\n\nIf you paid for your booking, your refund is on its way or we will be in touch about it shortly.\n\n{site_name}"
+msgstr "مرحبًا {attendee_name}،\n\nيؤسفنا إبلاغك بأن {event_name} المقرر في {event_date} قد أُلغي.\n\n{cancel_message}\n\nإذا كنت قد دفعت ثمن حجزك، فإن المبلغ المسترد في الطريق أو سنتواصل معك قريبًا بشأنه.\n\n{site_name}"
+
+msgid "Only this event's tickets are refunded, through the order's own payment method. Orders it cannot settle automatically get an order note and are listed below."
+msgstr "تُسترد تذاكر هذا الحدث فقط، عبر طريقة الدفع الخاصة بكل طلب. الطلبات التي لا يمكن معالجتها تلقائيًا تحصل على ملاحظة وتُدرج أدناه."
+
+msgid "Order settlement stopped: the event was restored."
+msgstr "توقفت معالجة الطلبات: تمت استعادة الحدث."
+
+msgid "Orders settled:"
+msgstr "الطلبات المعالجة:"
+
+msgid "Originally scheduled for %s"
+msgstr "كان مقررًا في %s"
+
+msgid "Placeholders:"
+msgstr "العناصر النائبة:"
+
+msgid "Refund paid orders and cancel unpaid ones"
+msgstr "استرداد الطلبات المدفوعة وإلغاء غير المدفوعة"
+
+msgid "Sending emails in the background: %1$d of %2$d sent."
+msgstr "جارٍ إرسال الرسائل في الخلفية: أُرسلت %1$d من %2$d."
+
+msgid "Settle %d order when you save? Paid tickets are refunded to the customer through the order's payment method, and refunds cannot be undone."
+msgid_plural "Settle %d orders when you save? Paid tickets are refunded to the customers through each order's payment method, and refunds cannot be undone."
+msgstr[0] "معالجة %d طلب عند الحفظ؟ تُسترد التذاكر المدفوعة للعملاء عبر طريقة الدفع الخاصة بالطلب، ولا يمكن التراجع عن الاسترداد."
+msgstr[1] "معالجة %d طلب عند الحفظ؟ تُسترد التذاكر المدفوعة للعملاء عبر طريقة الدفع الخاصة بالطلب، ولا يمكن التراجع عن الاسترداد."
+msgstr[2] "معالجة %d طلب عند الحفظ؟ تُسترد التذاكر المدفوعة للعملاء عبر طريقة الدفع الخاصة بالطلب، ولا يمكن التراجع عن الاسترداد."
+msgstr[3] "معالجة %d طلب عند الحفظ؟ تُسترد التذاكر المدفوعة للعملاء عبر طريقة الدفع الخاصة بالطلب، ولا يمكن التراجع عن الاسترداد."
+msgstr[4] "معالجة %d طلب عند الحفظ؟ تُسترد التذاكر المدفوعة للعملاء عبر طريقة الدفع الخاصة بالطلب، ولا يمكن التراجع عن الاسترداد."
+msgstr[5] "معالجة %d طلب عند الحفظ؟ تُسترد التذاكر المدفوعة للعملاء عبر طريقة الدفع الخاصة بالطلب، ولا يمكن التراجع عن الاسترداد."
+
+msgid "Settling orders in the background:"
+msgstr "جارٍ معالجة الطلبات في الخلفية:"
+
+msgid "Shown under the title on the event page and, shortened, on event list cards. Leave empty to show \"This event has been cancelled\"."
+msgstr "يظهر أسفل العنوان في صفحة الحدث، وبشكل مختصر على بطاقات قوائم الأحداث. اتركه فارغًا لعرض \"تم إلغاء هذا الحدث\"."
+
+msgid "The automatic refund for the cancelled event %1$s failed: %2$s Please refund it manually."
+msgstr "فشل الاسترداد التلقائي للحدث الملغى %1$s: %2$s يرجى الاسترداد يدويًا."
+
+msgid "The event stays on its page and in every event list with a cancellation notice. Tickets, RSVP and checkout are switched off."
+msgstr "يبقى الحدث في صفحته وفي جميع قوائم الأحداث مع إشعار الإلغاء. يتم إيقاف التذاكر وRSVP والدفع."
+
+msgid "This event has been cancelled"
+msgstr "تم إلغاء هذا الحدث"
+
+msgid "This event has been cancelled and is no longer accepting RSVP responses."
+msgstr "تم إلغاء هذا الحدث ولم يعد يقبل ردود RSVP."
+
+msgid "This event has been cancelled and is no longer available for booking."
+msgstr "تم إلغاء هذا الحدث ولم يعد متاحًا للحجز."
+
+msgid "Tickets and registration are no longer available because this event has been cancelled."
+msgstr "التذاكر والتسجيل لم تعد متاحة لأن هذا الحدث أُلغي."
+
+msgid "Use the options below to email them and settle their orders, or contact them yourself."
+msgstr "استخدم الخيارات أدناه لمراسلتهم ومعالجة طلباتهم، أو تواصل معهم بنفسك."
+
+msgid "When you save"
+msgstr "عند الحفظ"
+
+msgid "already refunded"
+msgstr "مستردة مسبقًا"
+
+msgid "e.g. Unfortunately this course has been cancelled. Everyone who booked will be contacted about a refund."
+msgstr "مثال: للأسف تم إلغاء هذه الدورة. سيتم التواصل مع جميع من حجز بشأن الاسترداد."
+
+msgid "native checkout, refund by hand"
+msgstr "دفع مباشر، استرداد يدوي"
+
+msgid "need settling by hand"
+msgstr "تحتاج إلى معالجة يدوية"
+
+msgid "nothing to do yet"
+msgstr "لا شيء للقيام به بعد"
+
+msgid "refund failed"
+msgstr "فشل الاسترداد"
+
+msgid "refunded"
+msgstr "مستردة"
+
+msgid "since %s"
+msgstr "منذ %s"
+
+msgid "there"
+msgstr "بك"
+
+msgid "unpaid with other items, left open"
+msgstr "غير مدفوعة مع عناصر أخرى، تُركت مفتوحة"
+
+msgid "unpaid, cancelled"
+msgstr "غير مدفوعة، أُلغيت"

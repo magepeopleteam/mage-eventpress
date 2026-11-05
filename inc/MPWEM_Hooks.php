@@ -8,6 +8,13 @@
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Hooks' ) ) {
 		class MPWEM_Hooks {
+			/**
+			 * Events whose cancellation banner has already been printed on this request,
+			 * so the booking slot further down shows a short note instead of repeating it.
+			 *
+			 * @var array<int, bool>
+			 */
+			private static $cancelled_banner_shown = [];
 			public function __construct() {
 				add_action( 'mpwem_title', [ $this, 'title' ], 10, 2 );
 				add_action( 'mpwem_description', [ $this, 'description' ], 10, 2 );
@@ -68,6 +75,12 @@
 				add_action( 'mpwem_list_more_date_button', [ $this, 'list_more_date_button' ], 10, 3 );
 				add_action( 'mpwem_list_hover', [ $this, 'list_hover' ], 10, 3 );
 				add_action( 'mpwem_list_ribbon', [ $this, 'list_ribbon' ], 10, 3 );
+				add_action( 'mpwem_list_status_notice', [ $this, 'list_status_notice' ], 10, 2 );
+				/*********** Cancelled events ***********/
+				add_action( 'mpwem_title', [ $this, 'cancelled_banner' ], 20, 2 );
+				add_filter( 'body_class', [ $this, 'cancelled_body_class' ] );
+				add_filter( 'mpwem_event_schema', [ $this, 'cancelled_event_schema' ], 10, 2 );
+				add_action( 'add_mpwem_frontend_script', [ $this, 'enqueue_event_status_style' ] );
 			}
 			public function title( $event_id, $only = '' ): void { require MPWEM_Functions::template_path( 'layout/title.php' ); }
 			public function description( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/description.php' ); }
@@ -111,8 +124,26 @@
 			/*******************************/
 			public function date_select( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/date_select.php' ); }
 			public function time( $event_id, $all_dates = [], $all_times = [], $date = '', $single = true ): void { require MPWEM_Functions::template_path( 'layout/time.php' ); }
-			public function registration( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/registration.php' ); }
-			public function registration_content( $event_id, $all_dates = [], $all_times = [], $date = '' ): void { require MPWEM_Functions::template_path( 'layout/registration_content.php' ); }
+			public function registration( $event_id, $event_infos = [] ): void {
+				// A cancelled event shows its cancellation in place of the booking box,
+				// whatever its Event Mode. Checked here rather than in the template so a
+				// theme override of registration.php cannot bring the ticket form back.
+				if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					$cancel_context = 'booking';
+					$compact        = ! empty( self::$cancelled_banner_shown[ (int) $event_id ] );
+					echo '<div class="mpwem_style">';
+					require MPWEM_Functions::template_path( 'layout/cancelled_notice.php' );
+					echo '</div>';
+					return;
+				}
+				require MPWEM_Functions::template_path( 'layout/registration.php' );
+			}
+			public function registration_content( $event_id, $all_dates = [], $all_times = [], $date = '' ): void {
+				if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					return;
+				}
+				require MPWEM_Functions::template_path( 'layout/registration_content.php' );
+			}
 			public function announcement( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/announcement.php' ); }
 			/*******************************/
 			public function event_date_list( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
@@ -145,7 +176,13 @@
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_single_tags', $content, $event_id );
 			}
-			public function event_add_calender( $event_id, $all_dates = [], $upcoming_date = '' ) { require MPWEM_Functions::template_path( 'layout/add_calendar.php' ); }
+			public function event_add_calender( $event_id, $all_dates = [], $upcoming_date = '' ) {
+				// Nobody should be invited to save a cancelled event to their calendar.
+				if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					return;
+				}
+				require MPWEM_Functions::template_path( 'layout/add_calendar.php' );
+			}
 			public function speakers( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/speaker_list.php' ); }
 			/**************************/
 			public function get_mpwem_ticket() {
@@ -159,6 +196,10 @@
 				}
 				// The event page withholds the booking panel from non-members; this endpoint
 				// must not hand it (and its RSVP nonce) out either.
+				// A cancelled event's page shows no booking panel at all.
+				if ( MPWEM_Global_Function::is_cancelled_event( $post_id ) ) {
+					wp_send_json_error( __( 'This event has been cancelled and is no longer available for booking.', 'mage-eventpress' ), 403 );
+				}
 				if ( ! MPWEM_Global_Function::user_can_register_for_event( $post_id ) ) {
 					wp_send_json_error( __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ), 403 );
 				}
@@ -354,6 +395,10 @@
 			}
 			/***********************/
 			public function seat_status( $event_id, $event_infos = [], $date = '' ) {
+				// "Seats available" on a cancelled event would read as an invitation to book.
+				if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					return;
+				}
 				$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
 				$event_recurring			= is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$show_available_seat       = is_array($event_infos) && array_key_exists( 'mep_available_seat', $event_infos ) ? $event_infos['mep_available_seat'] : 'on';
@@ -467,8 +512,9 @@
 				$show_price             = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
 				$event_id_for_mode = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
 				$list_reg_status   = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
-				// Announcement events sell nothing - printing "Price: 0.00" would be wrong.
-				if ( $show_price == 'yes' && 'announcement' !== $list_reg_status ) {
+				// Announcement events sell nothing - printing "Price: 0.00" would be wrong -
+				// and a cancelled event sells nothing any more.
+				if ( $show_price == 'yes' && 'announcement' !== $list_reg_status && ! MPWEM_Global_Function::is_cancelled_event( $event_id_for_mode ) ) {
 					$event_id         = $event_id_for_mode;
 					$ticket_types     = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
 					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
@@ -655,7 +701,9 @@
                     </div>
 				<?php }
                 else{
-                    if($show_msg=='no'){
+                    // "Ending Soon", "Limited stock" or "Add To Calendar" would all invite a
+                    // booking; a cancelled card already carries its cancellation notice.
+                    if($show_msg=='no' && ! MPWEM_Global_Function::is_cancelled_event( $event_id )){
                     ?>
 					<div class="mpwem_status_area">
 						<?php
@@ -813,7 +861,11 @@
                         //echo '<pre>';print_r($upcoming_date);echo '</pre>';
                         //echo '<pre>';print_r($available);echo '</pre>';
 						$is_undated = MPWEM_Global_Function::is_undated_event( $event_id );
-						if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $available <= 0 && ! $is_undated ) {
+						// A cancelled event is flagged as such, never as sold out or scarce.
+						if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+							?>
+                            <div class="mepev-ribbon cancelled"><i class="fas fa-ban" aria-hidden="true"></i> <?php esc_html_e( 'Cancelled', 'mage-eventpress' ); ?></div><?php
+						} elseif ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $available <= 0 && ! $is_undated ) {
 							?>
                             <div class="mepev-ribbon sold-out"><?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div><?php
 						} elseif ( $limited_availability_ribbon == 'yes' && $available > 0 && $available <= $limited_availability_threshold && ! $is_undated ) {
@@ -823,6 +875,82 @@
 					?>
                 </div>
 				<?php
+			}
+			/**
+			 * One-line cancellation notice under the title of an event-list card.
+			 *
+			 * Fired by every templates/list/*.php layout right after the title. A theme
+			 * override that predates the hook still shows the "Cancelled" image ribbon
+			 * and the "View More" button, and booking stays refused server-side.
+			 *
+			 * @param int   $event_id    Event post ID.
+			 * @param array $event_infos Card data from MPWEM_Functions::get_all_info().
+			 */
+			public function list_status_notice( $event_id, $event_infos = [] ) {
+				if ( ! MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					return;
+				}
+				$notice = MPWEM_Global_Function::get_cancellation_notice( $event_id );
+				?>
+                <div class="mpwem_list_cancelled_notice" role="status">
+                    <i class="fas fa-ban" aria-hidden="true"></i>
+                    <span><?php echo esc_html( $notice['summary'] ); ?></span>
+                </div>
+				<?php
+			}
+			/**
+			 * Full cancellation notice under the event title on the details page.
+			 *
+			 * Hooked late on mpwem_title so it follows the title in the Default, Smart and
+			 * Virtual layouts. The title-text-only call ($only) is left alone.
+			 *
+			 * @param int    $event_id Event post ID.
+			 * @param string $only     Non-empty when only the title text is wanted.
+			 */
+			public function cancelled_banner( $event_id, $only = '' ) {
+				if ( ! empty( $only ) || ! MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					return;
+				}
+				if ( ! apply_filters( 'mpwem_show_cancelled_banner', true, $event_id ) ) {
+					return;
+				}
+				self::$cancelled_banner_shown[ (int) $event_id ] = true;
+				$cancel_context = 'banner';
+				$compact        = false;
+				echo '<div class="mpwem_style">';
+				require MPWEM_Functions::template_path( 'layout/cancelled_notice.php' );
+				echo '</div>';
+			}
+			/**
+			 * Adds mep-event-cancelled to the body of a cancelled event's page, so a theme
+			 * can restyle it without knowing the plugin's markup.
+			 *
+			 * @param array $classes Body classes.
+			 * @return array
+			 */
+			public function cancelled_body_class( $classes ) {
+				if ( is_singular( 'mep_events' ) && MPWEM_Global_Function::is_cancelled_event( get_queried_object_id() ) ) {
+					$classes[] = 'mep-event-cancelled';
+				}
+				return $classes;
+			}
+			/**
+			 * Tells search engines the event is cancelled, whatever the SEO tab's
+			 * "Event Status" says. Restoring the event brings the saved value back.
+			 *
+			 * @param array $schema   schema.org/Event graph.
+			 * @param int   $event_id Event post ID.
+			 * @return array
+			 */
+			public function cancelled_event_schema( $schema, $event_id ) {
+				if ( is_array( $schema ) && ! empty( $schema ) && MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					$schema['eventStatus'] = 'https://schema.org/EventCancelled';
+					unset( $schema['previousStartDate'] );
+				}
+				return $schema;
+			}
+			public function enqueue_event_status_style() {
+				wp_enqueue_style( 'mpwem_event_status', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_event_status.css', array( 'mep_event_list_modern' ), MPWEM_Dependencies::asset_version( 'assets/frontend/mpwem_event_status.css' ) );
 			}
 
 			public function mep_submit_rsvp() {
@@ -845,6 +973,11 @@
 				// the user can edit it and is test-booking a draft or private one.
 				if ( 'publish' !== get_post_status( $event_id ) && ! current_user_can( 'edit_post', $event_id ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'This event is not accepting RSVP responses.', 'mage-eventpress' ) ) );
+				}
+				// A cancelled event keeps its RSVP mode so it can be restored as it was, but
+				// takes no responses while it is cancelled.
+				if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event has been cancelled and is no longer accepting RSVP responses.', 'mage-eventpress' ) ) );
 				}
 				if ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ) ), 403 );

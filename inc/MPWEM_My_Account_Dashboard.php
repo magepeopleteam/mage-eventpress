@@ -327,6 +327,9 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 									<i class="dashicons dashicons-calendar-alt"></i>
 									<?php echo esc_html( date_i18n( 'M j, Y g:i a', strtotime( get_post_meta($first_attendee_id,'ea_event_date',true) ) ) ); ?>
 								</span>
+								<?php if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) { ?>
+									<span class="mpwem-event-cancelled-pill"><?php esc_html_e( 'Event cancelled', 'mage-eventpress' ); ?></span>
+								<?php } ?>
 							</div>
 						</div>
 					</td>

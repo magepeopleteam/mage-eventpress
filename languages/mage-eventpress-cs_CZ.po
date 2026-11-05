@@ -7373,7 +7373,7 @@ msgstr "Kolotoč"
 #: admin/MEP_Custom_Orders_Page.php:122
 #: admin/MEP_Custom_Orders_Page.php:520
 msgid "Cancelled"
-msgstr ""
+msgstr "Zrušeno"
 
 #: admin/MEP_Custom_Orders_Page.php:123
 msgid "Refunded"
@@ -8242,7 +8242,7 @@ msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:830
 msgid "Scheduled"
-msgstr ""
+msgstr "Naplánováno"
 
 #: admin/MPWEM_Post_List_Modern.php:876
 msgid "You do not have permission to edit this speaker."
@@ -12186,3 +12186,191 @@ msgstr ""
 #: templates/themes/horizon.php:145
 msgid "Share"
 msgstr ""
+
+# Cancelled events (Event Status)
+
+msgid "%1$s was cancelled. Refund %2$s for its tickets manually: this payment method cannot refund automatically."
+msgstr "%1$s bylo zrušeno. Vraťte %2$s za vstupenky ručně: tato platební metoda neumí vracet platby automaticky."
+
+msgid "%1$s was cancelled. This order is \"%2$s\", so it was not refunded or cancelled automatically: please settle it by hand."
+msgstr "%1$s bylo zrušeno. Tato objednávka je ve stavu „%2$s“, proto nebyla automaticky vrácena ani zrušena: vyřiďte ji ručně."
+
+msgid "%d existing registration"
+msgid_plural "%d existing registrations"
+msgstr[0] "%d existující registrace"
+msgstr[1] "%d existující registrace"
+msgstr[2] "%d existujících registrací"
+
+msgid "%d order."
+msgid_plural "%d orders."
+msgstr[0] "%d objednávka."
+msgstr[1] "%d objednávky."
+msgstr[2] "%d objednávek."
+
+msgid "%d recipient. Each address is emailed once per cancellation."
+msgid_plural "%d recipients. Each address is emailed once per cancellation."
+msgstr[0] "%d příjemce. Každá adresa dostane jeden e-mail za jedno zrušení."
+msgstr[1] "%d příjemci. Každá adresa dostane jeden e-mail za jedno zrušení."
+msgstr[2] "%d příjemců. Každá adresa dostane jeden e-mail za jedno zrušení."
+
+msgid "%s was cancelled. This unpaid order also holds other items, so it was left open: remove the event from it or cancel it."
+msgstr "%s bylo zrušeno. Tato nezaplacená objednávka obsahuje i jiné položky, proto zůstala otevřená: odeberte z ní událost nebo ji zrušte."
+
+msgid "%s was removed from your cart because the event has been cancelled."
+msgstr "%s bylo odebráno z košíku, protože událost byla zrušena."
+
+msgid "(optional)"
+msgstr "(nepovinné)"
+
+msgid "Booking closed"
+msgstr "Rezervace uzavřeny"
+
+msgid "Booking is closed for this event."
+msgstr "Rezervace na tuto událost jsou uzavřeny."
+
+msgid "Booking is closed. Restore it from the event's Event Status card."
+msgstr "Rezervace jsou uzavřeny. Obnovte událost na kartě „Stav události“."
+
+msgid "CANCELLED"
+msgstr "ZRUŠENO"
+
+msgid "Cancel Event"
+msgstr "Zrušit událost"
+
+msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
+msgstr "Zrušte událost bez jejího smazání. Návštěvníci ji stále uvidí, zřetelně označenou jako zrušenou, ale nebudou moci rezervovat."
+
+msgid "Cancel this event"
+msgstr "Zrušit tuto událost"
+
+msgid "Cancellation notice"
+msgstr "Oznámení o zrušení"
+
+msgid "Cancelled because the event %s was cancelled."
+msgstr "Zrušeno, protože událost %s byla zrušena."
+
+msgid "Cancelled: {event_name}"
+msgstr "Zrušeno: {event_name}"
+
+msgid "Check:"
+msgstr "Zkontrolujte:"
+
+msgid "Could not send to: %s"
+msgstr "Nepodařilo se odeslat na: %s"
+
+msgid "Email everyone who booked"
+msgstr "Poslat e-mail všem, kdo si rezervovali"
+
+msgid "Email message"
+msgstr "Text e-mailu"
+
+msgid "Email subject"
+msgstr "Předmět e-mailu"
+
+msgid "Emails sent to %1$d of %2$d people (%3$s)."
+msgstr "E-maily odeslány %1$d z %2$d lidí (%3$s)."
+
+msgid "Emails stopped: the event was restored."
+msgstr "Odesílání e-mailů zastaveno: událost byla obnovena."
+
+msgid "Event Status"
+msgstr "Stav události"
+
+msgid "Event cancelled"
+msgstr "Událost zrušena"
+
+msgid "Event cancelled: %s"
+msgstr "Událost zrušena: %s"
+
+msgid "Hello {attendee_name},\n\nWe are sorry to let you know that {event_name}, scheduled for {event_date}, has been cancelled.\n\n{cancel_message}\n\nIf you paid for your booking, your refund is on its way or we will be in touch about it shortly.\n\n{site_name}"
+msgstr "Dobrý den, {attendee_name},\n\nje nám líto, ale událost {event_name} plánovaná na {event_date} byla zrušena.\n\n{cancel_message}\n\nPokud jste rezervaci již zaplatili, vrácení peněz je na cestě, nebo se vám brzy ozveme.\n\n{site_name}"
+
+msgid "Only this event's tickets are refunded, through the order's own payment method. Orders it cannot settle automatically get an order note and are listed below."
+msgstr "Vracejí se pouze vstupenky této události, a to platební metodou dané objednávky. Objednávky, které nelze vyřídit automaticky, dostanou poznámku a jsou uvedeny níže."
+
+msgid "Order settlement stopped: the event was restored."
+msgstr "Vyřizování objednávek zastaveno: událost byla obnovena."
+
+msgid "Orders settled:"
+msgstr "Vyřízené objednávky:"
+
+msgid "Originally scheduled for %s"
+msgstr "Původně plánováno na %s"
+
+msgid "Placeholders:"
+msgstr "Zástupné symboly:"
+
+msgid "Refund paid orders and cancel unpaid ones"
+msgstr "Vrátit zaplacené objednávky a zrušit nezaplacené"
+
+msgid "Sending emails in the background: %1$d of %2$d sent."
+msgstr "E-maily se odesílají na pozadí: odesláno %1$d z %2$d."
+
+msgid "Settle %d order when you save? Paid tickets are refunded to the customer through the order's payment method, and refunds cannot be undone."
+msgid_plural "Settle %d orders when you save? Paid tickets are refunded to the customers through each order's payment method, and refunds cannot be undone."
+msgstr[0] "Vyřídit %d objednávku při uložení? Zaplacené vstupenky budou vráceny zákazníkovi platební metodou objednávky a vrácení nelze vzít zpět."
+msgstr[1] "Vyřídit %d objednávky při uložení? Zaplacené vstupenky budou vráceny zákazníkům platební metodou každé objednávky a vrácení nelze vzít zpět."
+msgstr[2] "Vyřídit %d objednávek při uložení? Zaplacené vstupenky budou vráceny zákazníkům platební metodou každé objednávky a vrácení nelze vzít zpět."
+
+msgid "Settling orders in the background:"
+msgstr "Objednávky se vyřizují na pozadí:"
+
+msgid "Shown under the title on the event page and, shortened, on event list cards. Leave empty to show \"This event has been cancelled\"."
+msgstr "Zobrazuje se pod názvem na stránce události a ve zkrácené podobě na kartách v seznamech událostí. Ponechte prázdné pro zobrazení „Tato událost byla zrušena“."
+
+msgid "The automatic refund for the cancelled event %1$s failed: %2$s Please refund it manually."
+msgstr "Automatické vrácení peněz za zrušenou událost %1$s selhalo: %2$s Vraťte je prosím ručně."
+
+msgid "The event stays on its page and in every event list with a cancellation notice. Tickets, RSVP and checkout are switched off."
+msgstr "Událost zůstává na své stránce a ve všech seznamech událostí s oznámením o zrušení. Vstupenky, RSVP a pokladna jsou vypnuty."
+
+msgid "This event has been cancelled"
+msgstr "Tato událost byla zrušena"
+
+msgid "This event has been cancelled and is no longer accepting RSVP responses."
+msgstr "Tato událost byla zrušena a již nepřijímá odpovědi RSVP."
+
+msgid "This event has been cancelled and is no longer available for booking."
+msgstr "Tato událost byla zrušena a již ji nelze rezervovat."
+
+msgid "Tickets and registration are no longer available because this event has been cancelled."
+msgstr "Vstupenky a registrace již nejsou k dispozici, protože tato událost byla zrušena."
+
+msgid "Use the options below to email them and settle their orders, or contact them yourself."
+msgstr "Pomocí možností níže jim pošlete e-mail a vyřiďte jejich objednávky, nebo je kontaktujte sami."
+
+msgid "When you save"
+msgstr "Při uložení"
+
+msgid "already refunded"
+msgstr "již vráceno"
+
+msgid "e.g. Unfortunately this course has been cancelled. Everyone who booked will be contacted about a refund."
+msgstr "např. Bohužel byl tento kurz zrušen. Všechny, kdo si rezervovali, budeme kontaktovat ohledně vrácení peněz."
+
+msgid "native checkout, refund by hand"
+msgstr "vlastní pokladna, vrátit ručně"
+
+msgid "need settling by hand"
+msgstr "vyřídit ručně"
+
+msgid "nothing to do yet"
+msgstr "zatím není co dělat"
+
+msgid "refund failed"
+msgstr "vrácení selhalo"
+
+msgid "refunded"
+msgstr "vráceno"
+
+msgid "since %s"
+msgstr "od %s"
+
+msgid "there"
+msgstr "účastníku"
+
+msgid "unpaid with other items, left open"
+msgstr "nezaplaceno s jinými položkami, ponecháno otevřené"
+
+msgid "unpaid, cancelled"
+msgstr "nezaplaceno, zrušeno"

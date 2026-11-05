@@ -7370,7 +7370,7 @@ msgstr "轮播"
 #: admin/MEP_Custom_Orders_Page.php:122
 #: admin/MEP_Custom_Orders_Page.php:520
 msgid "Cancelled"
-msgstr ""
+msgstr "已取消"
 
 #: admin/MEP_Custom_Orders_Page.php:123
 msgid "Refunded"
@@ -8227,7 +8227,7 @@ msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:830
 msgid "Scheduled"
-msgstr ""
+msgstr "已安排"
 
 #: admin/MPWEM_Post_List_Modern.php:876
 msgid "You do not have permission to edit this speaker."
@@ -12169,3 +12169,183 @@ msgstr ""
 #: templates/themes/horizon.php:145
 msgid "Share"
 msgstr ""
+
+# Cancelled events (Event Status)
+
+msgid "%1$s was cancelled. Refund %2$s for its tickets manually: this payment method cannot refund automatically."
+msgstr "%1$s 已取消。请手动退还其门票的 %2$s：此支付方式不支持自动退款。"
+
+msgid "%1$s was cancelled. This order is \"%2$s\", so it was not refunded or cancelled automatically: please settle it by hand."
+msgstr "%1$s 已取消。此订单状态为“%2$s”，因此未自动退款或取消：请手动处理。"
+
+msgid "%d existing registration"
+msgid_plural "%d existing registrations"
+msgstr[0] "%d 个现有报名"
+
+msgid "%d order."
+msgid_plural "%d orders."
+msgstr[0] "%d 个订单。"
+
+msgid "%d recipient. Each address is emailed once per cancellation."
+msgid_plural "%d recipients. Each address is emailed once per cancellation."
+msgstr[0] "%d 位收件人。每次取消，每个地址只会收到一封邮件。"
+
+msgid "%s was cancelled. This unpaid order also holds other items, so it was left open: remove the event from it or cancel it."
+msgstr "%s 已取消。此未付款订单还包含其他商品，因此保持未处理：请从中移除该活动或取消订单。"
+
+msgid "%s was removed from your cart because the event has been cancelled."
+msgstr "%s 已从您的购物车中移除，因为该活动已取消。"
+
+msgid "(optional)"
+msgstr "（可选）"
+
+msgid "Booking closed"
+msgstr "预订已关闭"
+
+msgid "Booking is closed for this event."
+msgstr "此活动已停止预订。"
+
+msgid "Booking is closed. Restore it from the event's Event Status card."
+msgstr "预订已关闭。可在“活动状态”卡片中恢复该活动。"
+
+msgid "CANCELLED"
+msgstr "已取消"
+
+msgid "Cancel Event"
+msgstr "取消活动"
+
+msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
+msgstr "取消活动但不删除。访客仍可看到它并清楚标注为已取消，但无法预订。"
+
+msgid "Cancel this event"
+msgstr "取消此活动"
+
+msgid "Cancellation notice"
+msgstr "取消通知"
+
+msgid "Cancelled because the event %s was cancelled."
+msgstr "因活动 %s 已取消而取消。"
+
+msgid "Cancelled: {event_name}"
+msgstr "已取消：{event_name}"
+
+msgid "Check:"
+msgstr "请检查："
+
+msgid "Could not send to: %s"
+msgstr "无法发送至：%s"
+
+msgid "Email everyone who booked"
+msgstr "给所有已预订者发送邮件"
+
+msgid "Email message"
+msgstr "邮件内容"
+
+msgid "Email subject"
+msgstr "邮件主题"
+
+msgid "Emails sent to %1$d of %2$d people (%3$s)."
+msgstr "已向 %2$d 人中的 %1$d 人发送邮件（%3$s）。"
+
+msgid "Emails stopped: the event was restored."
+msgstr "邮件发送已停止：活动已恢复。"
+
+msgid "Event Status"
+msgstr "活动状态"
+
+msgid "Event cancelled"
+msgstr "活动已取消"
+
+msgid "Event cancelled: %s"
+msgstr "活动已取消：%s"
+
+msgid "Hello {attendee_name},\n\nWe are sorry to let you know that {event_name}, scheduled for {event_date}, has been cancelled.\n\n{cancel_message}\n\nIf you paid for your booking, your refund is on its way or we will be in touch about it shortly.\n\n{site_name}"
+msgstr "{attendee_name}，您好：\n\n很遗憾地通知您，原定于 {event_date} 举行的 {event_name} 已取消。\n\n{cancel_message}\n\n如果您已为预订付款，退款正在处理中，或我们将很快与您联系。\n\n{site_name}"
+
+msgid "Only this event's tickets are refunded, through the order's own payment method. Orders it cannot settle automatically get an order note and are listed below."
+msgstr "仅通过各订单原支付方式退还此活动的门票。无法自动处理的订单会添加订单备注，并列在下方。"
+
+msgid "Order settlement stopped: the event was restored."
+msgstr "订单处理已停止：活动已恢复。"
+
+msgid "Orders settled:"
+msgstr "订单处理结果："
+
+msgid "Originally scheduled for %s"
+msgstr "原定于 %s"
+
+msgid "Placeholders:"
+msgstr "占位符："
+
+msgid "Refund paid orders and cancel unpaid ones"
+msgstr "退款已付款订单并取消未付款订单"
+
+msgid "Sending emails in the background: %1$d of %2$d sent."
+msgstr "正在后台发送邮件：已发送 %1$d / %2$d。"
+
+msgid "Settle %d order when you save? Paid tickets are refunded to the customer through the order's payment method, and refunds cannot be undone."
+msgid_plural "Settle %d orders when you save? Paid tickets are refunded to the customers through each order's payment method, and refunds cannot be undone."
+msgstr[0] "保存时处理 %d 个订单？已付款的门票将通过订单的支付方式退还给客户，退款无法撤销。"
+
+msgid "Settling orders in the background:"
+msgstr "正在后台处理订单："
+
+msgid "Shown under the title on the event page and, shortened, on event list cards. Leave empty to show \"This event has been cancelled\"."
+msgstr "显示在活动页面标题下方，并以简短形式显示在活动列表卡片上。留空则显示“此活动已取消”。"
+
+msgid "The automatic refund for the cancelled event %1$s failed: %2$s Please refund it manually."
+msgstr "已取消活动 %1$s 的自动退款失败：%2$s 请手动退款。"
+
+msgid "The event stays on its page and in every event list with a cancellation notice. Tickets, RSVP and checkout are switched off."
+msgstr "活动仍保留在其页面和所有活动列表中，并显示取消通知。门票、RSVP 和结账均已关闭。"
+
+msgid "This event has been cancelled"
+msgstr "此活动已取消"
+
+msgid "This event has been cancelled and is no longer accepting RSVP responses."
+msgstr "此活动已取消，不再接受 RSVP 回复。"
+
+msgid "This event has been cancelled and is no longer available for booking."
+msgstr "此活动已取消，不再接受预订。"
+
+msgid "Tickets and registration are no longer available because this event has been cancelled."
+msgstr "由于此活动已取消，门票和报名已不可用。"
+
+msgid "Use the options below to email them and settle their orders, or contact them yourself."
+msgstr "使用下方选项通过邮件通知他们并处理其订单，或自行联系他们。"
+
+msgid "When you save"
+msgstr "保存时"
+
+msgid "already refunded"
+msgstr "此前已退款"
+
+msgid "e.g. Unfortunately this course has been cancelled. Everyone who booked will be contacted about a refund."
+msgstr "例如：很遗憾，本课程已取消。我们将联系所有已预订者办理退款。"
+
+msgid "native checkout, refund by hand"
+msgstr "原生结账，需手动退款"
+
+msgid "need settling by hand"
+msgstr "需手动处理"
+
+msgid "nothing to do yet"
+msgstr "暂无需处理"
+
+msgid "refund failed"
+msgstr "退款失败"
+
+msgid "refunded"
+msgstr "已退款"
+
+msgid "since %s"
+msgstr "自 %s 起"
+
+msgid "there"
+msgstr "朋友"
+
+msgid "unpaid with other items, left open"
+msgstr "未付款且含其他商品，保持未处理"
+
+msgid "unpaid, cancelled"
+msgstr "未付款，已取消"

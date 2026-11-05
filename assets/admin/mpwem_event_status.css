@@ -1,0 +1,401 @@
+/* ============================================================
+   Event Status (cancel / restore an event)
+   Shared by the Modern editor card (#mpwem_event_status_card) and the
+   Classic editor side meta box (#mpwem_event_status).
+   ============================================================ */
+.mpwem-event-status {
+	--mpwem-es-red: #dc2626;
+	--mpwem-es-red-dark: #991b1b;
+	--mpwem-es-red-soft: #fef2f2;
+	--mpwem-es-red-line: #fecaca;
+	--mpwem-es-green: #16a34a;
+	--mpwem-es-ink: #0f172a;
+	--mpwem-es-muted: #64748b;
+	--mpwem-es-line: #e2e8f0;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	color: var(--mpwem-es-ink);
+}
+
+/* Current state chip: only the one matching the switch is shown. */
+.mpwem-event-status__current {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.mpwem-event-status__chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 26px;
+	padding: 0 10px;
+	border-radius: 999px;
+	border: 1px solid transparent;
+	font-size: 12px;
+	font-weight: 650;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.mpwem-event-status__chip--scheduled {
+	background: #dcfce7;
+	border-color: #86efac;
+	color: #166534;
+}
+
+.mpwem-event-status__chip--cancelled {
+	display: none;
+	background: var(--mpwem-es-red-soft);
+	border-color: var(--mpwem-es-red-line);
+	color: var(--mpwem-es-red-dark);
+}
+
+.mpwem-event-status__chip .dashicons {
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+}
+
+.mpwem-event-status__dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--mpwem-es-green);
+}
+
+.mpwem-event-status.is-cancelled .mpwem-event-status__chip--scheduled {
+	display: none;
+}
+
+.mpwem-event-status.is-cancelled .mpwem-event-status__chip--cancelled {
+	display: inline-flex;
+}
+
+.mpwem-event-status__since {
+	font-size: 12px;
+	color: var(--mpwem-es-muted);
+}
+
+/* The "since" line describes the saved state; hide it while the switch says otherwise. */
+.mpwem-event-status:not(.is-cancelled) .mpwem-event-status__since {
+	display: none;
+}
+
+/* Toggle row */
+.mpwem-event-status__toggle {
+	display: flex;
+	align-items: flex-start;
+	gap: 14px;
+	margin: 0;
+	padding: 14px 16px;
+	border: 1px solid var(--mpwem-es-line);
+	border-radius: 12px;
+	background: #f8fafc;
+	cursor: pointer;
+	transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.mpwem-event-status__toggle:hover {
+	border-color: #cbd5e1;
+}
+
+.mpwem-event-status.is-cancelled .mpwem-event-status__toggle {
+	border-color: var(--mpwem-es-red-line);
+	background: var(--mpwem-es-red-soft);
+}
+
+.mpwem-event-status__switch {
+	position: relative;
+	flex: 0 0 auto;
+	display: inline-flex;
+	margin-top: 1px;
+}
+
+.mpwem-event-status__switch input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.mpwem-event-status__switch-ui {
+	position: relative;
+	display: inline-block;
+	width: 44px;
+	height: 24px;
+	border-radius: 999px;
+	background: #cbd5e1;
+	transition: background 0.2s ease;
+}
+
+.mpwem-event-status__switch-ui::after {
+	content: '';
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+	transition: transform 0.2s ease;
+}
+
+.mpwem-event-status__switch input:checked + .mpwem-event-status__switch-ui {
+	background: linear-gradient(135deg, #ef4444 0%, var(--mpwem-es-red) 100%);
+}
+
+.mpwem-event-status__switch input:checked + .mpwem-event-status__switch-ui::after {
+	transform: translateX(20px);
+}
+
+.mpwem-event-status__switch input:focus-visible + .mpwem-event-status__switch-ui {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
+.mpwem-event-status__toggle-copy {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+.mpwem-event-status__toggle-copy strong {
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.mpwem-event-status__toggle-copy small {
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: var(--mpwem-es-muted);
+}
+
+/* Details (shown while the switch is on) */
+.mpwem-event-status__details {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.mpwem-event-status__details[hidden] {
+	display: none;
+}
+
+.mpwem-event-status__label {
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.mpwem-event-status__label span {
+	font-weight: 400;
+	color: var(--mpwem-es-muted);
+}
+
+.mpwem-event-status textarea.mpwem-event-status__message {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 84px;
+	padding: 10px 12px;
+	border: 1px solid #cbd5e1;
+	border-radius: 10px;
+	font-size: 13px;
+	line-height: 1.55;
+	resize: vertical;
+}
+
+.mpwem-event-status textarea.mpwem-event-status__message:focus {
+	border-color: var(--mpwem-es-red);
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+	outline: none;
+}
+
+.mpwem-event-status__help {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--mpwem-es-muted);
+}
+
+.mpwem-event-status__warning {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	margin-top: 4px;
+	padding: 12px 14px;
+	border: 1px solid #fde68a;
+	border-radius: 10px;
+	background: #fffbeb;
+	color: #78350f;
+}
+
+.mpwem-event-status__warning .dashicons {
+	flex: 0 0 auto;
+	color: #d97706;
+}
+
+.mpwem-event-status__warning p {
+	margin: 0;
+	font-size: 12.5px;
+	line-height: 1.55;
+}
+
+.mpwem-event-status__warning strong {
+	display: block;
+	margin-bottom: 2px;
+}
+
+/* Follow-up actions (email attendees, settle orders) */
+.mpwem-event-status__followup {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 6px;
+	padding-top: 14px;
+	border-top: 1px dashed var(--mpwem-es-line);
+}
+
+.mpwem-event-status__option {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	margin: 0;
+	padding: 12px 14px;
+	border: 1px solid var(--mpwem-es-line);
+	border-radius: 10px;
+	background: #ffffff;
+	cursor: pointer;
+}
+
+.mpwem-event-status__option:hover {
+	border-color: #cbd5e1;
+}
+
+.mpwem-event-status__option.is-disabled {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+.mpwem-event-status__option input[type="checkbox"] {
+	flex: 0 0 auto;
+	margin: 2px 0 0;
+}
+
+.mpwem-event-status__option > span {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+.mpwem-event-status__option strong {
+	font-size: 13.5px;
+	font-weight: 600;
+}
+
+.mpwem-event-status__option small {
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--mpwem-es-muted);
+}
+
+.mpwem-event-status__email {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: -2px 0 4px 26px;
+}
+
+.mpwem-event-status__email[hidden] {
+	display: none;
+}
+
+.mpwem-event-status input.mpwem-event-status__input {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 36px;
+	padding: 6px 12px;
+	border: 1px solid #cbd5e1;
+	border-radius: 10px;
+	font-size: 13px;
+}
+
+.mpwem-event-status__help code {
+	padding: 1px 4px;
+	border-radius: 4px;
+	background: #f1f5f9;
+	font-size: 11px;
+}
+
+ul.mpwem-event-status__jobs {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 4px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+ul.mpwem-event-status__jobs li {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	margin: 0;
+	padding: 10px 12px;
+	border-radius: 10px;
+	background: #f0f9ff;
+	color: #075985;
+	font-size: 12.5px;
+	line-height: 1.5;
+}
+
+ul.mpwem-event-status__jobs li.is-done {
+	background: #f0fdf4;
+	color: #166534;
+}
+
+ul.mpwem-event-status__jobs li.is-aborted {
+	background: #f8fafc;
+	color: var(--mpwem-es-muted);
+}
+
+ul.mpwem-event-status__jobs .dashicons {
+	flex: 0 0 auto;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+/* Modern editor: card accent while cancelled, and the topbar badge. */
+#mpwem_event_status_card.is-cancelled {
+	border-color: var(--mpwem-es-red-line, #fecaca);
+}
+
+.mpwem-status-badge.is-cancelled {
+	margin-left: -10px;
+	background: #fef2f2;
+	border-color: #fecaca;
+	color: #991b1b;
+}
+
+/* Classic editor side box: tighter spacing in the narrow column. */
+#mpwem_event_status .inside {
+	margin-top: 12px;
+}
+
+#mpwem_event_status .mpwem-event-status__toggle {
+	padding: 12px;
+	gap: 10px;
+}
+
+#mpwem_event_status .mpwem-event-status__toggle-copy small {
+	font-size: 12px;
+}

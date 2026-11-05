@@ -277,8 +277,34 @@
 			 * payment flows too, which woocommerce_after_checkout_validation never sees.
 			 */
 			public function check_cart_items() {
+				self::remove_cancelled_event_items();
 				self::remove_ticketless_event_items();
 				self::validate_cart_seat_availability();
+			}
+			/**
+			 * Takes lines for events cancelled after they were added out of the cart.
+			 *
+			 * The add-to-cart guards refuse a cancelled event, but a visitor may have put
+			 * tickets in the cart before the organiser cancelled it. Runs in the same three
+			 * places as remove_ticketless_event_items(), so neither the classic nor the
+			 * block / express checkout can still place the order.
+			 */
+			private static function remove_cancelled_event_items() {
+				if ( ! function_exists( 'WC' ) || is_null( WC()->cart ) ) {
+					return;
+				}
+				foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+					$event_id = is_array( $values ) && array_key_exists( 'event_id', $values ) ? (int) $values['event_id'] : 0;
+					if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' || ! MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+						continue;
+					}
+					WC()->cart->remove_cart_item( $cart_item_key );
+					wc_add_notice( sprintf(
+					/* translators: %s: event name. */
+						__( '%s was removed from your cart because the event has been cancelled.', 'mage-eventpress' ),
+						esc_html( get_the_title( $event_id ) )
+					), 'error' );
+				}
 			}
 			public function after_checkout_validation( $posted ) {
 				self::validate_cart_seat_availability();
@@ -660,7 +686,9 @@
 			 */
 			private static function get_booking_rejection( $event_id, $ticket_info ) {
 				$rejection = '';
-				if ( ! self::is_event_on_sale( $event_id ) ) {
+				if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+					$rejection = __( 'This event has been cancelled and is no longer available for booking.', 'mage-eventpress' );
+				} elseif ( ! self::is_event_on_sale( $event_id ) ) {
 					$rejection = __( 'Sorry, this event is not available for booking.', 'mage-eventpress' );
 				} elseif ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 					$rejection = __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' );

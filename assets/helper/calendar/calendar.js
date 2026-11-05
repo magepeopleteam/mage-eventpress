@@ -563,6 +563,9 @@
                         info.el.title = mepCalendar.i18n.expired + ': ' + info.event.title;
                     }
                 }
+                if (props.isCancelled) {
+                    info.el.title = (mepCalendar.i18n.cancelled || 'Cancelled') + ': ' + info.event.title;
+                }
 
                 styleCalendarEventCard(info, explicitEventColor);
                 stabilizeMonthGridEvent(info);
@@ -643,6 +646,9 @@
                 }
                 
                 // Title
+                if (props.isCancelled) {
+                    html += '<span class="mep-cal-event-cancelled-tag">' + escapeHtml(mepCalendar.i18n.cancelled || 'Cancelled') + '</span> ';
+                }
                 html += '<span class="mep-cal-event-title">' + escapeHtml(arg.event.title) + '</span>';
 
                 // Badge
@@ -989,7 +995,9 @@
         if (props.eventMode === 'online') {
             html += '<span class="mep-cal-tooltip-badge mep-cal-badge-virtual">' + mepCalendar.i18n.virtual + '</span>';
         }
-        if (props.regStatus === 'on' && props.totalSeats > 0 && props.availableSeats <= 0) {
+        if (props.isCancelled) {
+            html += '<span class="mep-cal-tooltip-badge mep-cal-badge-cancelled">' + escapeHtml(mepCalendar.i18n.cancelled || 'Cancelled') + '</span>';
+        } else if (props.regStatus === 'on' && props.totalSeats > 0 && props.availableSeats <= 0) {
             html += '<span class="mep-cal-tooltip-badge mep-cal-badge-soldout">' + mepCalendar.i18n.soldOut + '</span>';
         }
         html += '</div>';
@@ -1263,7 +1271,7 @@
     }
 
     function applyStockStylesToEvent(event, props) {
-        if (!event || !props || props.isExpired || props.showStock !== 'yes' || props.regStatus !== 'on') {
+        if (!event || !props || props.isExpired || props.isCancelled || props.showStock !== 'yes' || props.regStatus !== 'on') {
             return;
         }
 
@@ -1304,7 +1312,8 @@
         }
 
         var props = info.event.extendedProps || {};
-        if (props.isExpired) {
+        // Expired and cancelled events keep their flat grey instead of the soft palette.
+        if (props.isExpired || props.isCancelled) {
             return;
         }
 

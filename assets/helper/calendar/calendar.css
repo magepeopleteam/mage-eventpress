@@ -1390,3 +1390,36 @@
 	font-size: inherit !important;
 	line-height: inherit !important;
 }
+
+/* Cancelled events: flat grey block, struck-through title and a "Cancelled" tag,
+   so they never read as sold out or bookable. */
+.mep-calendar-container .fc-event.mep-cal-cancelled-event .mep-cal-event-title {
+	text-decoration: line-through;
+	text-decoration-thickness: 1px;
+	opacity: 0.9;
+}
+
+.mep-calendar-container .fc-event.mep-cal-cancelled-event .mep-cal-event-cancelled-tag {
+	display: inline-block;
+	margin-right: 4px;
+	padding: 0 5px;
+	border-radius: 3px;
+	background: rgba(0, 0, 0, 0.22);
+	font-size: 0.78em;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	line-height: 1.5;
+	text-transform: uppercase;
+	text-decoration: none;
+	vertical-align: baseline;
+}
+
+.mep-calendar-container .fc-list-event.mep-cal-cancelled-event .mep-cal-event-cancelled-tag {
+	background: #fef2f2;
+	color: #991b1b;
+}
+
+.mep-cal-badge-cancelled {
+	background: #6b7280;
+	color: #fff;
+}

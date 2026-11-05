@@ -30,7 +30,7 @@
 	$date_year  = $upcoming_date ? date_i18n( 'Y', strtotime( $upcoming_date ) ) : '';
 	$date_full  = $upcoming_date ? MPWEM_Global_Function::date_format( $upcoming_date, '', $event_id ) : '';
 ?>
-<div class='filter_item mep-event-list-loop mep_event_list_item mep_event_spring_list mix <?php echo esc_attr( $org_class ) . ' ' . esc_attr( $cat_class ); ?>'
+<div class='filter_item mep-event-list-loop mep_event_list_item mep_event_spring_list mix <?php echo esc_attr( $org_class ) . ' ' . esc_attr( $cat_class ) . esc_attr( MPWEM_Global_Function::is_cancelled_event( $event_id ) ? ' mep-event-is-cancelled' : '' ); ?>'
      data-title="<?php echo esc_attr( $title ); ?>"
      data-city-name="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
      data-state="<?php echo esc_attr( is_array($event_infos) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"
@@ -61,6 +61,7 @@
             <a class="spring_item_3" href="<?php echo esc_url( $permalink ); ?>">
                 <h5 class="mep_list_title"><?php echo esc_html( $title ); ?></h5>
 				<?php
+					do_action( 'mpwem_list_status_notice', $event_id, $event_infos );
 					if ( $available_seat == 0 ) {
 						do_action( 'mep_show_waitlist_label' );
 					}

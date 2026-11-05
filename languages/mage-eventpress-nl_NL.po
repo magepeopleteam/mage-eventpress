@@ -7372,7 +7372,7 @@ msgstr "Carrousel"
 #: admin/MEP_Custom_Orders_Page.php:122
 #: admin/MEP_Custom_Orders_Page.php:520
 msgid "Cancelled"
-msgstr ""
+msgstr "Geannuleerd"
 
 #: admin/MEP_Custom_Orders_Page.php:123
 msgid "Refunded"
@@ -8235,7 +8235,7 @@ msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:830
 msgid "Scheduled"
-msgstr ""
+msgstr "Gepland"
 
 #: admin/MPWEM_Post_List_Modern.php:876
 msgid "You do not have permission to edit this speaker."
@@ -12178,3 +12178,187 @@ msgstr ""
 #: templates/themes/horizon.php:145
 msgid "Share"
 msgstr ""
+
+# Cancelled events (Event Status)
+
+msgid "%1$s was cancelled. Refund %2$s for its tickets manually: this payment method cannot refund automatically."
+msgstr "%1$s is geannuleerd. Betaal %2$s voor de tickets handmatig terug: deze betaalmethode kan niet automatisch terugbetalen."
+
+msgid "%1$s was cancelled. This order is \"%2$s\", so it was not refunded or cancelled automatically: please settle it by hand."
+msgstr "%1$s is geannuleerd. Deze bestelling heeft de status \"%2$s\" en is daarom niet automatisch terugbetaald of geannuleerd: handel haar handmatig af."
+
+msgid "%d existing registration"
+msgid_plural "%d existing registrations"
+msgstr[0] "%d bestaande inschrijving"
+msgstr[1] "%d bestaande inschrijvingen"
+
+msgid "%d order."
+msgid_plural "%d orders."
+msgstr[0] "%d bestelling."
+msgstr[1] "%d bestellingen."
+
+msgid "%d recipient. Each address is emailed once per cancellation."
+msgid_plural "%d recipients. Each address is emailed once per cancellation."
+msgstr[0] "%d ontvanger. Elk adres krijgt per annulering maar één e-mail."
+msgstr[1] "%d ontvangers. Elk adres krijgt per annulering maar één e-mail."
+
+msgid "%s was cancelled. This unpaid order also holds other items, so it was left open: remove the event from it or cancel it."
+msgstr "%s is geannuleerd. Deze onbetaalde bestelling bevat ook andere artikelen en blijft daarom open: verwijder het evenement eruit of annuleer haar."
+
+msgid "%s was removed from your cart because the event has been cancelled."
+msgstr "%s is uit je winkelwagen verwijderd omdat het evenement is geannuleerd."
+
+msgid "(optional)"
+msgstr "(optioneel)"
+
+msgid "Booking closed"
+msgstr "Boeken gesloten"
+
+msgid "Booking is closed for this event."
+msgstr "Boeken is gesloten voor dit evenement."
+
+msgid "Booking is closed. Restore it from the event's Event Status card."
+msgstr "Boeken is gesloten. Herstel het via de kaart \"Evenementstatus\"."
+
+msgid "CANCELLED"
+msgstr "GEANNULEERD"
+
+msgid "Cancel Event"
+msgstr "Evenement annuleren"
+
+msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
+msgstr "Annuleer het evenement zonder het te verwijderen. Bezoekers zien het nog steeds, duidelijk gemarkeerd als geannuleerd, maar kunnen niet boeken."
+
+msgid "Cancel this event"
+msgstr "Dit evenement annuleren"
+
+msgid "Cancellation notice"
+msgstr "Annuleringsmelding"
+
+msgid "Cancelled because the event %s was cancelled."
+msgstr "Geannuleerd omdat het evenement %s is geannuleerd."
+
+msgid "Cancelled: {event_name}"
+msgstr "Geannuleerd: {event_name}"
+
+msgid "Check:"
+msgstr "Controleren:"
+
+msgid "Could not send to: %s"
+msgstr "Kon niet verzenden naar: %s"
+
+msgid "Email everyone who booked"
+msgstr "Iedereen die geboekt heeft e-mailen"
+
+msgid "Email message"
+msgstr "E-mailbericht"
+
+msgid "Email subject"
+msgstr "E-mailonderwerp"
+
+msgid "Emails sent to %1$d of %2$d people (%3$s)."
+msgstr "E-mails verzonden naar %1$d van %2$d personen (%3$s)."
+
+msgid "Emails stopped: the event was restored."
+msgstr "E-mails gestopt: het evenement is hersteld."
+
+msgid "Event Status"
+msgstr "Evenementstatus"
+
+msgid "Event cancelled"
+msgstr "Evenement geannuleerd"
+
+msgid "Event cancelled: %s"
+msgstr "Evenement geannuleerd: %s"
+
+msgid "Hello {attendee_name},\n\nWe are sorry to let you know that {event_name}, scheduled for {event_date}, has been cancelled.\n\n{cancel_message}\n\nIf you paid for your booking, your refund is on its way or we will be in touch about it shortly.\n\n{site_name}"
+msgstr "Hallo {attendee_name},\n\nHelaas moeten we je laten weten dat {event_name}, gepland op {event_date}, is geannuleerd.\n\n{cancel_message}\n\nAls je je boeking al hebt betaald, is je terugbetaling onderweg of nemen we binnenkort contact met je op.\n\n{site_name}"
+
+msgid "Only this event's tickets are refunded, through the order's own payment method. Orders it cannot settle automatically get an order note and are listed below."
+msgstr "Alleen de tickets van dit evenement worden terugbetaald, via de betaalmethode van de bestelling. Bestellingen die niet automatisch kunnen worden afgehandeld, krijgen een notitie en staan hieronder."
+
+msgid "Order settlement stopped: the event was restored."
+msgstr "Afhandeling van bestellingen gestopt: het evenement is hersteld."
+
+msgid "Orders settled:"
+msgstr "Bestellingen afgehandeld:"
+
+msgid "Originally scheduled for %s"
+msgstr "Oorspronkelijk gepland op %s"
+
+msgid "Placeholders:"
+msgstr "Plaatshouders:"
+
+msgid "Refund paid orders and cancel unpaid ones"
+msgstr "Betaalde bestellingen terugbetalen en onbetaalde annuleren"
+
+msgid "Sending emails in the background: %1$d of %2$d sent."
+msgstr "E-mails worden op de achtergrond verzonden: %1$d van %2$d verzonden."
+
+msgid "Settle %d order when you save? Paid tickets are refunded to the customer through the order's payment method, and refunds cannot be undone."
+msgid_plural "Settle %d orders when you save? Paid tickets are refunded to the customers through each order's payment method, and refunds cannot be undone."
+msgstr[0] "%d bestelling afhandelen bij opslaan? Betaalde tickets worden via de betaalmethode van de bestelling aan de klant terugbetaald, en terugbetalingen kunnen niet ongedaan worden gemaakt."
+msgstr[1] "%d bestellingen afhandelen bij opslaan? Betaalde tickets worden via de betaalmethode van elke bestelling aan de klanten terugbetaald, en terugbetalingen kunnen niet ongedaan worden gemaakt."
+
+msgid "Settling orders in the background:"
+msgstr "Bestellingen worden op de achtergrond afgehandeld:"
+
+msgid "Shown under the title on the event page and, shortened, on event list cards. Leave empty to show \"This event has been cancelled\"."
+msgstr "Wordt onder de titel op de evenementpagina en ingekort op de kaarten in evenementlijsten getoond. Laat leeg om \"Dit evenement is geannuleerd\" te tonen."
+
+msgid "The automatic refund for the cancelled event %1$s failed: %2$s Please refund it manually."
+msgstr "De automatische terugbetaling voor het geannuleerde evenement %1$s is mislukt: %2$s Betaal handmatig terug."
+
+msgid "The event stays on its page and in every event list with a cancellation notice. Tickets, RSVP and checkout are switched off."
+msgstr "Het evenement blijft op zijn pagina en in alle evenementlijsten staan met een annuleringsmelding. Tickets, RSVP en afrekenen worden uitgeschakeld."
+
+msgid "This event has been cancelled"
+msgstr "Dit evenement is geannuleerd"
+
+msgid "This event has been cancelled and is no longer accepting RSVP responses."
+msgstr "Dit evenement is geannuleerd en neemt geen RSVP-reacties meer aan."
+
+msgid "This event has been cancelled and is no longer available for booking."
+msgstr "Dit evenement is geannuleerd en kan niet meer worden geboekt."
+
+msgid "Tickets and registration are no longer available because this event has been cancelled."
+msgstr "Tickets en inschrijving zijn niet meer beschikbaar omdat dit evenement is geannuleerd."
+
+msgid "Use the options below to email them and settle their orders, or contact them yourself."
+msgstr "Gebruik de opties hieronder om hen te e-mailen en hun bestellingen af te handelen, of neem zelf contact op."
+
+msgid "When you save"
+msgstr "Bij opslaan"
+
+msgid "already refunded"
+msgstr "al terugbetaald"
+
+msgid "e.g. Unfortunately this course has been cancelled. Everyone who booked will be contacted about a refund."
+msgstr "bijv. Helaas is deze cursus geannuleerd. Iedereen die geboekt heeft, wordt benaderd over een terugbetaling."
+
+msgid "native checkout, refund by hand"
+msgstr "eigen afrekening, handmatig terugbetalen"
+
+msgid "need settling by hand"
+msgstr "handmatig af te handelen"
+
+msgid "nothing to do yet"
+msgstr "nog niets te doen"
+
+msgid "refund failed"
+msgstr "terugbetaling mislukt"
+
+msgid "refunded"
+msgstr "terugbetaald"
+
+msgid "since %s"
+msgstr "sinds %s"
+
+msgid "there"
+msgstr "daar"
+
+msgid "unpaid with other items, left open"
+msgstr "onbetaald met andere artikelen, open gelaten"
+
+msgid "unpaid, cancelled"
+msgstr "onbetaald, geannuleerd"

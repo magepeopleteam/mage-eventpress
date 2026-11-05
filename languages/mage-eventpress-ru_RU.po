@@ -7372,7 +7372,7 @@ msgstr "Карусель"
 #: admin/MEP_Custom_Orders_Page.php:122
 #: admin/MEP_Custom_Orders_Page.php:520
 msgid "Cancelled"
-msgstr ""
+msgstr "Отменено"
 
 #: admin/MEP_Custom_Orders_Page.php:123
 msgid "Refunded"
@@ -8241,7 +8241,7 @@ msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:830
 msgid "Scheduled"
-msgstr ""
+msgstr "Запланировано"
 
 #: admin/MPWEM_Post_List_Modern.php:876
 msgid "You do not have permission to edit this speaker."
@@ -12185,3 +12185,191 @@ msgstr ""
 #: templates/themes/horizon.php:145
 msgid "Share"
 msgstr ""
+
+# Cancelled events (Event Status)
+
+msgid "%1$s was cancelled. Refund %2$s for its tickets manually: this payment method cannot refund automatically."
+msgstr "%1$s отменено. Верните %2$s за билеты вручную: этот способ оплаты не поддерживает автоматический возврат."
+
+msgid "%1$s was cancelled. This order is \"%2$s\", so it was not refunded or cancelled automatically: please settle it by hand."
+msgstr "%1$s отменено. Заказ в статусе «%2$s», поэтому он не был автоматически возвращён или отменён: обработайте его вручную."
+
+msgid "%d existing registration"
+msgid_plural "%d existing registrations"
+msgstr[0] "%d существующая регистрация"
+msgstr[1] "%d существующие регистрации"
+msgstr[2] "%d существующих регистраций"
+
+msgid "%d order."
+msgid_plural "%d orders."
+msgstr[0] "%d заказ."
+msgstr[1] "%d заказа."
+msgstr[2] "%d заказов."
+
+msgid "%d recipient. Each address is emailed once per cancellation."
+msgid_plural "%d recipients. Each address is emailed once per cancellation."
+msgstr[0] "%d получатель. Каждый адрес получает одно письмо за отмену."
+msgstr[1] "%d получателя. Каждый адрес получает одно письмо за отмену."
+msgstr[2] "%d получателей. Каждый адрес получает одно письмо за отмену."
+
+msgid "%s was cancelled. This unpaid order also holds other items, so it was left open: remove the event from it or cancel it."
+msgstr "%s отменено. В этом неоплаченном заказе есть другие товары, поэтому он оставлен открытым: удалите из него мероприятие или отмените заказ."
+
+msgid "%s was removed from your cart because the event has been cancelled."
+msgstr "%s удалено из корзины, так как мероприятие отменено."
+
+msgid "(optional)"
+msgstr "(необязательно)"
+
+msgid "Booking closed"
+msgstr "Бронирование закрыто"
+
+msgid "Booking is closed for this event."
+msgstr "Бронирование на это мероприятие закрыто."
+
+msgid "Booking is closed. Restore it from the event's Event Status card."
+msgstr "Бронирование закрыто. Восстановите мероприятие в карточке «Статус мероприятия»."
+
+msgid "CANCELLED"
+msgstr "ОТМЕНЕНО"
+
+msgid "Cancel Event"
+msgstr "Отменить мероприятие"
+
+msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
+msgstr "Отмените мероприятие, не удаляя его. Посетители по-прежнему его видят с явной пометкой «отменено», но не могут забронировать."
+
+msgid "Cancel this event"
+msgstr "Отменить это мероприятие"
+
+msgid "Cancellation notice"
+msgstr "Сообщение об отмене"
+
+msgid "Cancelled because the event %s was cancelled."
+msgstr "Отменён, так как мероприятие %s отменено."
+
+msgid "Cancelled: {event_name}"
+msgstr "Отменено: {event_name}"
+
+msgid "Check:"
+msgstr "Проверьте:"
+
+msgid "Could not send to: %s"
+msgstr "Не удалось отправить: %s"
+
+msgid "Email everyone who booked"
+msgstr "Сообщить по email всем, кто забронировал"
+
+msgid "Email message"
+msgstr "Текст письма"
+
+msgid "Email subject"
+msgstr "Тема письма"
+
+msgid "Emails sent to %1$d of %2$d people (%3$s)."
+msgstr "Письма отправлены %1$d из %2$d человек (%3$s)."
+
+msgid "Emails stopped: the event was restored."
+msgstr "Рассылка остановлена: мероприятие восстановлено."
+
+msgid "Event Status"
+msgstr "Статус мероприятия"
+
+msgid "Event cancelled"
+msgstr "Мероприятие отменено"
+
+msgid "Event cancelled: %s"
+msgstr "Мероприятие отменено: %s"
+
+msgid "Hello {attendee_name},\n\nWe are sorry to let you know that {event_name}, scheduled for {event_date}, has been cancelled.\n\n{cancel_message}\n\nIf you paid for your booking, your refund is on its way or we will be in touch about it shortly.\n\n{site_name}"
+msgstr "Здравствуйте, {attendee_name}!\n\nК сожалению, мероприятие {event_name}, запланированное на {event_date}, отменено.\n\n{cancel_message}\n\nЕсли вы уже оплатили бронирование, возврат средств уже в пути, или мы скоро свяжемся с вами.\n\n{site_name}"
+
+msgid "Only this event's tickets are refunded, through the order's own payment method. Orders it cannot settle automatically get an order note and are listed below."
+msgstr "Возвращаются только билеты этого мероприятия — через способ оплаты каждого заказа. Заказы, которые нельзя обработать автоматически, получают примечание и перечислены ниже."
+
+msgid "Order settlement stopped: the event was restored."
+msgstr "Обработка заказов остановлена: мероприятие восстановлено."
+
+msgid "Orders settled:"
+msgstr "Заказы обработаны:"
+
+msgid "Originally scheduled for %s"
+msgstr "Изначально запланировано на %s"
+
+msgid "Placeholders:"
+msgstr "Подстановки:"
+
+msgid "Refund paid orders and cancel unpaid ones"
+msgstr "Вернуть деньги за оплаченные заказы и отменить неоплаченные"
+
+msgid "Sending emails in the background: %1$d of %2$d sent."
+msgstr "Письма отправляются в фоне: отправлено %1$d из %2$d."
+
+msgid "Settle %d order when you save? Paid tickets are refunded to the customer through the order's payment method, and refunds cannot be undone."
+msgid_plural "Settle %d orders when you save? Paid tickets are refunded to the customers through each order's payment method, and refunds cannot be undone."
+msgstr[0] "Обработать %d заказ при сохранении? Оплаченные билеты будут возвращены клиенту через способ оплаты заказа; возврат нельзя отменить."
+msgstr[1] "Обработать %d заказа при сохранении? Оплаченные билеты будут возвращены клиентам через способ оплаты каждого заказа; возврат нельзя отменить."
+msgstr[2] "Обработать %d заказов при сохранении? Оплаченные билеты будут возвращены клиентам через способ оплаты каждого заказа; возврат нельзя отменить."
+
+msgid "Settling orders in the background:"
+msgstr "Заказы обрабатываются в фоне:"
+
+msgid "Shown under the title on the event page and, shortened, on event list cards. Leave empty to show \"This event has been cancelled\"."
+msgstr "Показывается под заголовком на странице мероприятия и в сокращённом виде на карточках списков мероприятий. Оставьте пустым, чтобы показать «Это мероприятие отменено»."
+
+msgid "The automatic refund for the cancelled event %1$s failed: %2$s Please refund it manually."
+msgstr "Автоматический возврат за отменённое мероприятие %1$s не удался: %2$s Выполните возврат вручную."
+
+msgid "The event stays on its page and in every event list with a cancellation notice. Tickets, RSVP and checkout are switched off."
+msgstr "Мероприятие остаётся на своей странице и во всех списках с сообщением об отмене. Билеты, RSVP и оформление заказа отключаются."
+
+msgid "This event has been cancelled"
+msgstr "Это мероприятие отменено"
+
+msgid "This event has been cancelled and is no longer accepting RSVP responses."
+msgstr "Это мероприятие отменено и больше не принимает ответы RSVP."
+
+msgid "This event has been cancelled and is no longer available for booking."
+msgstr "Это мероприятие отменено и больше недоступно для бронирования."
+
+msgid "Tickets and registration are no longer available because this event has been cancelled."
+msgstr "Билеты и регистрация больше недоступны, так как это мероприятие отменено."
+
+msgid "Use the options below to email them and settle their orders, or contact them yourself."
+msgstr "Используйте параметры ниже, чтобы уведомить их по email и обработать их заказы, или свяжитесь с ними сами."
+
+msgid "When you save"
+msgstr "При сохранении"
+
+msgid "already refunded"
+msgstr "уже возвращено"
+
+msgid "e.g. Unfortunately this course has been cancelled. Everyone who booked will be contacted about a refund."
+msgstr "например: К сожалению, этот курс отменён. Со всеми, кто забронировал, свяжутся по поводу возврата средств."
+
+msgid "native checkout, refund by hand"
+msgstr "собственная оплата, вернуть вручную"
+
+msgid "need settling by hand"
+msgstr "требуют ручной обработки"
+
+msgid "nothing to do yet"
+msgstr "пока нечего делать"
+
+msgid "refund failed"
+msgstr "возврат не удался"
+
+msgid "refunded"
+msgstr "возвращено"
+
+msgid "since %s"
+msgstr "с %s"
+
+msgid "there"
+msgstr "участник"
+
+msgid "unpaid with other items, left open"
+msgstr "не оплачены, с другими товарами, оставлены открытыми"
+
+msgid "unpaid, cancelled"
+msgstr "не оплачены, отменены"

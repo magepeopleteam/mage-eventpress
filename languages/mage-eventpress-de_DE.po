@@ -11621,7 +11621,7 @@ msgstr ""
 #: inc/MPWEM_Hooks.php:630
 #: templates/layout/date_list.php:123
 msgid "View More Dates"
-msgstr ""
+msgstr "Weitere Termine anzeigen"
 
 #: inc/mep_functions.php:5316
 msgid "Closed"

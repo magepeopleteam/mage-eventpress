@@ -3572,10 +3572,77 @@ die();
 		function mep_get_events_custom_meta_for_api( $object ) {
 			$post_id                          = $object['id'];
 			$post_meta                        = get_post_meta( $post_id );
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				$post_meta = mep_rest_public_event_meta( $post_meta, $post_id );
+			}
 			$post_image                       = get_post_thumbnail_id( $post_id );
 			$image_src                        = wp_get_attachment_image_src( $post_image, 'full' );
 			$post_meta["event_feature_image"] = is_array( $image_src ) ? $image_src[0] : '';
 			return $post_meta;
+		}
+	}
+	if ( ! function_exists( 'mep_rest_public_event_meta' ) ) {
+		/**
+		 * Event meta for the REST "event_informations" field as seen by visitors who
+		 * cannot edit the event. The field used to return every stored value to
+		 * anyone, including the text of the post-purchase email, virtual-event join
+		 * details meant for buyers, ticket print text and WordPress-internal keys.
+		 *
+		 * @param array $meta     get_post_meta() of the event.
+		 * @param int   $event_id Event id.
+		 * @return array
+		 */
+		function mep_rest_public_event_meta( $meta, $event_id ) {
+			$private = apply_filters( 'mep_rest_private_event_meta_keys', array(
+				'mep_event_cc_email_text',
+				'mp_event_virtual_type_des',
+				'mep_event_virtual_link',
+				'mep_pdf_custom_text',
+				'mep_event_cancel_email_subject',
+				'mep_event_cancel_email_body',
+			), $event_id );
+			foreach ( array_keys( (array) $meta ) as $key ) {
+				if ( is_protected_meta( $key, 'post' ) || in_array( $key, $private, true ) || preg_match( '/(password|secret|token|api_?key)/i', $key ) ) {
+					unset( $meta[ $key ] );
+				}
+			}
+			return $meta;
+		}
+	}
+	if ( ! function_exists( 'mep_user_can_view_attendee_page' ) ) {
+		/**
+		 * Who may open an attendee's ticket detail page (the page QR codes link to):
+		 * the buyer, an administrator or the QR check-in role. Same rule as
+		 * templates/single-mep_events_attendees.php.
+		 *
+		 * @param int $attendee_id Attendee post id.
+		 * @return bool
+		 */
+		function mep_user_can_view_attendee_page( $attendee_id ) {
+			if ( ! is_user_logged_in() ) {
+				return false;
+			}
+			$user    = wp_get_current_user();
+			$owner   = (string) get_post_meta( $attendee_id, 'ea_user_id', true );
+			$qr_role = mep_get_option( 'mep_qr_user_role', 'qr_general_attendee_sec', 'administrator' );
+			return ( '' !== $owner && (int) $owner === (int) $user->ID )
+				|| in_array( 'administrator', (array) $user->roles, true )
+				|| in_array( $qr_role, (array) $user->roles, true );
+		}
+	}
+	add_filter( 'redirect_canonical', 'mep_attendee_page_canonical_redirect', 10, 2 );
+	if ( ! function_exists( 'mep_attendee_page_canonical_redirect' ) ) {
+		/**
+		 * WordPress redirects /?p=ID to the pretty permalink, whose slug is the
+		 * attendee's name, before the page's own access check runs. Anyone counting
+		 * ids could read attendee names from those redirects, so the canonical
+		 * redirect only happens for people allowed to see the page.
+		 */
+		function mep_attendee_page_canonical_redirect( $redirect_url, $requested_url ) {
+			if ( $redirect_url && is_singular( 'mep_events_attendees' ) && ! mep_user_can_view_attendee_page( get_queried_object_id() ) ) {
+				return false;
+			}
+			return $redirect_url;
 		}
 	}
 	if ( ! function_exists( 'mep_elementor_get_tax_term' ) ) {

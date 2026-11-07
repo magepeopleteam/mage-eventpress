@@ -81,7 +81,10 @@
 	}
 	do_action( 'at_footer' );
 	} else {
-	wp_redirect( wp_login_url( get_the_permalink() ) );
+	// The plain ?p= address, not the permalink: an attendee's slug is their name,
+	// and this login link goes to anyone who opens the page.
+	wp_safe_redirect( wp_login_url( add_query_arg( array( 'post_type' => 'mep_events_attendees', 'p' => get_the_ID() ), home_url( '/' ) ) ) );
+	exit;
 }
 	wp_footer();
 ?>

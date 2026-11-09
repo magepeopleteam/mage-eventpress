@@ -241,6 +241,13 @@
 				//$min_qty = max($default_qty, $min_qty);
 				$max_qty = $max_qty > 0 ? $max_qty : $available_seat;
 				$max_qty = min( $available_seat, $max_qty );
+				$unlimited = is_array( $data ) && ! empty( $data['unlimited'] );
+				if ( $unlimited && $input_type == 'dropdown' ) {
+					// A dropdown lists every quantity, and an unlimited ticket type has
+					// MPWEM_Functions::UNLIMITED_TICKET_QTY seats: offer a sensible range.
+					// Never below the minimum quantity, or the ticket would read "not available".
+					$max_qty = min( $max_qty, max( 1, $min_qty, (int) apply_filters( 'mpwem_unlimited_ticket_dropdown_max', 100, $data ) ) );
+				}
 				if ( $max_qty >= $min_qty && $max_qty > 0 ) {
 					if ( $input_type == 'dropdown' ) {
 						$text = is_array($data) && array_key_exists( 'text', $data ) ? $data['text'] : '';

@@ -229,6 +229,21 @@
 					$dflt_qty             = isset( $_POST['option_default_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_default_qty_t'] ) ) : [];
 					$rsv                  = isset( $_POST['option_rsv_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_rsv_t'] ) ) : [];
 					$qty_type             = isset( $_POST['option_qty_t_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t_type'] ) ) : [];
+					// "Unlimited" switch beside Capacity: one 'yes'/'no' per ticket row, aligned with the other arrays.
+					$qty_unlimited        = isset( $_POST['option_qty_t_unlimited'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['option_qty_t_unlimited'] ) ) : [];
+					// A form that predates the switch does not post it at all. Keep each ticket type's
+					// saved setting then, matched by name, rather than silently switching it off.
+					$saved_unlimited      = [];
+					if ( ! isset( $_POST['option_qty_t_unlimited'] ) ) {
+						$saved_ticket_types = get_post_meta( $post_id, 'mep_event_ticket_type', true );
+						foreach ( is_array( $saved_ticket_types ) ? $saved_ticket_types : [] as $saved_ticket_type ) {
+							// The raw saved value, not is_unlimited_ticket(): that answers false while the
+							// feature is switched off, which is exactly when this branch runs.
+							if ( is_array( $saved_ticket_type ) && isset( $saved_ticket_type['option_name_t'], $saved_ticket_type['option_qty_t_unlimited'] ) && 'yes' === $saved_ticket_type['option_qty_t_unlimited'] ) {
+								$saved_unlimited[ $saved_ticket_type['option_name_t'] ] = true;
+							}
+						}
+					}
 					$sale_end_date        = isset( $_POST['option_sale_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_date'] ) ) : [];
 					$sale_end_time        = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
 					$sale_start_date      = isset( $_POST['option_sale_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_date'] ) ) : [];
@@ -242,6 +257,7 @@
 							$new_ticket_type[ $i ]['option_details_t']       = $details[ $i ];
 							$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ] ?? 0;
+							$new_ticket_type[ $i ]['option_qty_t_unlimited'] = ( isset( $qty_unlimited[ $i ] ) ? 'yes' === $qty_unlimited[ $i ] : isset( $saved_unlimited[ $names[ $i ] ] ) ) ? 'yes' : 'no';
 							$new_ticket_type[ $i ]['option_rsv_t']           = $rsv[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';

@@ -450,12 +450,16 @@
 			 * @param string $ticket_name Ticket type name as stored on the cart line.
 			 * @param string $event_date  Event date on the cart line.
 			 * @return int|null Seats left, negative when already oversold, or null when the
-			 *                  ticket type cannot be resolved - in which case nothing is blocked.
+			 *                  ticket type cannot be resolved or is unlimited - in which
+			 *                  case nothing is blocked.
 			 */
 			private static function ticket_type_seats_left( $event_id, $ticket_name, $event_date ) {
 				// mep_get_ticket_type_info_by_name() strips apostrophes from the stored name
 				// before comparing, so the name being looked up has to be stripped as well.
 				$lookup_name = str_replace( "'", '', (string) $ticket_name );
+				if ( MPWEM_Functions::unlimited_tickets_enabled() && 'yes' === mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_qty_t_unlimited' ) ) {
+					return null;
+				}
 				$capacity    = mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_qty_t' );
 				if ( $capacity === '' || is_null( $capacity ) ) {
 					return null;

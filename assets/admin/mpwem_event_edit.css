@@ -16624,3 +16624,30 @@ textarea.mpwem-field-error:focus,
 #mpwem_extra_service_summary > .mpwem-ticket-summary__toolbar {
     display: none !important;
 }
+
+/* "Unlimited" switch under Capacity in the inline ticket form (only rendered
+   while Global Settings > General > Unlimited Ticket Capacity is on). */
+.mpwem-ticket-add__group label.mpwem-ticket-add__unlimited {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 0 !important;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+}
+
+.mpwem-ticket-add__group .mpwem-ticket-add__unlimited input[type="checkbox"] {
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    border-radius: 4px;
+}
+
+.mpwem-ticket-add__group--capacity.is-unlimited input[type="number"] {
+    opacity: .45;
+    cursor: not-allowed;
+}

@@ -1572,6 +1572,17 @@ tr.payment_tabs_html { display: none !important; }
 								)
 							),
 							array(
+								'name'    => 'mep_enable_unlimited_ticket',
+								'label'   => __( 'Unlimited Ticket Capacity', 'mage-eventpress' ),
+								'desc'    => __( 'Adds an "Unlimited" switch beside each ticket type\'s Capacity in the event editor. An unlimited ticket type never sells out, unless Global Quantity caps the event.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
 								'name'    => 'mep_hide_location_from_order_page',
 								'label'   => __( 'Hide Location in Orders & Emails', 'mage-eventpress' ),
 								'desc'    => __( 'Hide the event location on the thank-you page and in confirmation emails.', 'mage-eventpress' ),

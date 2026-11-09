@@ -1493,3 +1493,19 @@ document.addEventListener('click', function (e) {
         */
     }
 });
+//=========Ticket type "Unlimited" capacity switch==============//
+// Rendered beside Capacity only while Global Settings > General > Unlimited
+// Ticket Capacity is on. The hidden input is what saves (one value per row,
+// aligned with the other ticket arrays); the checkbox only drives it. Capacity
+// stays readonly - never disabled, which would drop it from the POST and shift
+// every later row - so its value comes back when the switch is turned off.
+(function ($) {
+    "use strict";
+    $(document).on('change', '.mpwem_unlimited_capacity', function () {
+        let unlimited = $(this).is(':checked');
+        let $cell = $(this).closest('.mpwem-ticket-card__capacity');
+        $cell.find('input[name="option_qty_t_unlimited[]"]').val(unlimited ? 'yes' : 'no').attr('value', unlimited ? 'yes' : 'no');
+        $cell.find('input[name="option_qty_t[]"]').prop('readonly', unlimited).attr('aria-disabled', unlimited ? 'true' : 'false');
+        $cell.toggleClass('mpwem-ticket-card__capacity--unlimited', unlimited);
+    });
+}(jQuery));

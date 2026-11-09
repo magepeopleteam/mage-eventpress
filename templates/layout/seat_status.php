@@ -12,17 +12,19 @@
 		$total_reserve       = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
 		$temp_count = mep_temp_attendee_count( $event_id, '', $date );
 		$total_available     = $total_ticket - ($total_sold + $temp_count + $total_reserve );
+		// An unlimited ticket type leaves no total to count down from.
+		$is_unlimited        = MPWEM_Functions::has_unlimited_capacity( $event_id );
 		?>
 		<div class="mep-default-sidrbar-price-seat">
 			<div class="setas-info">
 				<div class="total-seats">
 					<div><?php esc_html_e( 'Total Seats', 'mage-eventpress' ); ?></div>
-					<strong><?php echo esc_html( $total_ticket ); ?></strong>
+					<strong><?php echo $is_unlimited ? esc_html__( 'Unlimited', 'mage-eventpress' ) : esc_html( $total_ticket ); ?></strong>
 				</div>
 				<?php if ( $show_available_seat == 'on' ) { ?>
 					<div class="available-seats">
 						<div><?php esc_html_e( 'Available Seats', 'mage-eventpress' ); ?></div>
-						<strong><?php echo esc_html( $total_available ); ?></strong>
+						<strong><?php echo $is_unlimited ? esc_html__( 'Unlimited', 'mage-eventpress' ) : esc_html( $total_available ); ?></strong>
 					</div>
 				<?php } ?>
 			</div>

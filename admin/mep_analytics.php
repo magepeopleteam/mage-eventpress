@@ -334,6 +334,11 @@ function mep_analytics_collect_from_attendees( $events, $start_ts, $end_ts, $sta
 			$available_seats = mep_get_event_total_available_seat( $eid, $date );
 			$available_seats = is_numeric( $available_seats ) ? intval( $available_seats ) : 0;
 			$occupancy       = $total_seats > 0 ? round( ( $d_data['tickets_sold'] / $total_seats ) * 100, 2 ) : 0;
+			// An unlimited ticket type leaves no seat total to count against.
+			if ( MPWEM_Functions::has_unlimited_capacity( $eid ) ) {
+				$available_seats = __( 'Unlimited', 'mage-eventpress' );
+				$occupancy       = 0;
+			}
 			$norm_date       = ! empty( $date ) ? date( 'Y-m-d', strtotime( $date ) ) : '';
 			if ( empty( $norm_date ) ) {
 				continue;
@@ -481,6 +486,11 @@ function mep_analytics_collect_from_orders( $events, $start_ts, $end_ts, $status
 			$available_seats = mep_get_event_total_available_seat( $eid, $date );
 			$available_seats = is_numeric( $available_seats ) ? intval( $available_seats ) : 0;
 			$occupancy       = $total_seats > 0 ? round( ( $d_data['tickets_sold'] / $total_seats ) * 100, 2 ) : 0;
+			// An unlimited ticket type leaves no seat total to count against.
+			if ( MPWEM_Functions::has_unlimited_capacity( $eid ) ) {
+				$available_seats = __( 'Unlimited', 'mage-eventpress' );
+				$occupancy       = 0;
+			}
 			$norm_date       = ! empty( $date ) ? date( 'Y-m-d', strtotime( $date ) ) : '';
 			if ( empty( $norm_date ) ) {
 				continue;

@@ -1083,7 +1083,10 @@
 				$option_name_text     = preg_replace( "/[{}()<>+ ]/", '_', $option_name ) . '_' . $event_id;
 				$option_price         = is_array($ticket_info) && array_key_exists( 'option_price_t', $ticket_info ) ? $ticket_info['option_price_t'] : '';
 				$option_qty           = is_array($ticket_info) && array_key_exists( 'option_qty_t', $ticket_info ) ? $ticket_info['option_qty_t'] : 0;
-				$option_default_qty   = is_array($ticket_info) && array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
+				// The "Unlimited" switch exists only while the feature is enabled in Global Settings.
+				$unlimited_enabled    = MPWEM_Functions::unlimited_tickets_enabled();
+				$option_unlimited     = MPWEM_Functions::is_unlimited_ticket( $ticket_info );
+				$option_default_qty   =is_array($ticket_info) && array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
 				$option_rsv_qty       = is_array($ticket_info) && array_key_exists( 'option_rsv_t', $ticket_info ) ? $ticket_info['option_rsv_t'] : 0;
 				$sale_end             = is_array($ticket_info) && array_key_exists( 'option_sale_end_date_t', $ticket_info ) ? $ticket_info['option_sale_end_date_t'] : '';
 				$ticket_mode          = is_array($ticket_info) && array_key_exists( 'option_ticket_mode_t', $ticket_info ) ? $ticket_info['option_ticket_mode_t'] : 'inperson';
@@ -1120,9 +1123,16 @@
                         </div>
                     </td>
 
-	                    <td class="mpwem-ticket-card__group mpwem-ticket-card__capacity <?php echo esc_attr( $global_qty_status == 'on' ? 'mpwem-ticket-col-hidden' : '' ); ?>">
+	                    <td class="mpwem-ticket-card__group mpwem-ticket-card__capacity <?php echo esc_attr( $global_qty_status == 'on' ? 'mpwem-ticket-col-hidden' : '' ); ?><?php echo esc_attr( $option_unlimited ? ' mpwem-ticket-card__capacity--unlimited' : '' ); ?>">
                         <label class="mpwem-card-label"><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></label>
-                        <input type="number" size="4" pattern="[0-9]*" step="1" class="mpwem-card-input" name="option_qty_t[]" placeholder="100" value="<?php echo esc_attr( $option_qty ) ?>"/>
+                        <input type="number" size="4" pattern="[0-9]*" step="1" class="mpwem-card-input" name="option_qty_t[]" placeholder="100" value="<?php echo esc_attr( $option_qty ) ?>"<?php echo $option_unlimited ? ' readonly aria-disabled="true"' : ''; ?>/>
+                        <?php if ( $unlimited_enabled ) { ?>
+                            <label class="mpwem-ticket-card__unlimited" title="<?php esc_attr_e( 'Sell this ticket type without a seat limit. The Capacity is kept and applies again when this is switched off.', 'mage-eventpress' ); ?>">
+                                <input type="hidden" name="option_qty_t_unlimited[]" value="<?php echo esc_attr( $option_unlimited ? 'yes' : 'no' ); ?>"/>
+                                <input type="checkbox" class="mpwem_unlimited_capacity" data-no-mpwem-switch="1" <?php checked( $option_unlimited ); ?>/>
+                                <span><?php esc_html_e( 'Unlimited', 'mage-eventpress' ); ?></span>
+                            </label>
+                        <?php } ?>
                     </td>
 
 					<td class="mpwem-ticket-card__group mpwem-ticket-card__qty-box">

@@ -120,11 +120,14 @@
 														$available         = apply_filters( 'mpwem_group_ticket_qty', $available, $event_id, $ticket_name );
 														$available         = apply_filters( 'mpwem_group_qty', $available, $event_id, $ticket_name );
 														$available         = max( 0, floor( $available ) );
-														if ( $ticket_name && $ticket_qty > 0 ) {
+														// No seat limit: never show a remaining count, and never hidden for a blank Capacity.
+														$is_unlimited      = MPWEM_Functions::is_unlimited_ticket_on_event( $event_id, $ticket_type );
+														if ( $ticket_name && ( $ticket_qty > 0 || MPWEM_Functions::is_unlimited_ticket( $ticket_type ) ) ) {
 															$input_data              = [];
 															$input_data['name']      = 'option_qty[]';
 															$input_data['price']     = $ticket_price;
 															$input_data['available'] = $available;
+															$input_data['unlimited'] = $is_unlimited;
 															$input_data['d_qty']     = $ticket_d_qty;
 															$input_data['min_qty']   = $ticket_min_qty;
 															$input_data['max_qty']   = $ticket_max_qty;
@@ -150,8 +153,8 @@
 																		<?php if ( $ticket_details ) { ?>
                                                                             <p><?php echo esc_html( $ticket_details ); ?></p>
 																		<?php } ?>
-																		<?php if ( $mep_available_seat == 'on' ) {
-																			$ticket_capacity = is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+																		<?php if ( $mep_available_seat == 'on' && ! $is_unlimited ) {
+																			$ticket_capacity =is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
 																			$remaining_class = function_exists( 'mep_get_availability_class' )
 																				? mep_get_availability_class( $available, $ticket_capacity )
 																				: ( $available <= 10 ? 'remaining-low' : 'remaining-high' );

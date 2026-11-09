@@ -8,6 +8,16 @@
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Functions' ) ) {
 		class MPWEM_Functions {
+			/**
+			 * Seats an unlimited ticket type counts as in seat arithmetic.
+			 *
+			 * Large enough never to be sold through, small enough that sums over every
+			 * ticket type stay plain integers. Standing in as a number keeps every
+			 * "is anything left?" check working unchanged, theme template overrides and
+			 * add-ons included. It must never be printed: displays ask
+			 * is_unlimited_ticket() or has_unlimited_capacity() and say "Unlimited".
+			 */
+			const UNLIMITED_TICKET_QTY = 1000000;
 			public function __construct() { }
 			/**
 			 * The event date the visitor asked for, as a normalised Y-m-d[ H:i] string.
@@ -106,6 +116,94 @@
 				return $event_infos;
 			}
 			//==========================//
+			/**
+			 * Whether the Unlimited Ticket Capacity feature is switched on.
+			 *
+			 * Global Settings > General > Booking Rules, off by default. While it is off
+			 * the per-ticket switch is not shown and any saved choice is ignored, so
+			 * every capacity behaves exactly as it did before the feature existed.
+			 *
+			 * @return bool
+			 */
+			public static function unlimited_tickets_enabled() {
+				return 'yes' === MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_unlimited_ticket', 'no' );
+			}
+			/**
+			 * Whether a ticket type is sold without a seat limit.
+			 *
+			 * Set per ticket type by the "Unlimited" switch beside Capacity, saved as
+			 * option_qty_t_unlimited = 'yes'. Any other value, or no key at all (every
+			 * ticket type saved before the switch existed), means the Capacity applies.
+			 * Only honoured while unlimited_tickets_enabled().
+			 *
+			 * @param array $ticket_type One row of the mep_event_ticket_type meta.
+			 * @return bool
+			 */
+			public static function is_unlimited_ticket( $ticket_type ) {
+				return is_array( $ticket_type )
+					&& array_key_exists( 'option_qty_t_unlimited', $ticket_type )
+					&& 'yes' === $ticket_type['option_qty_t_unlimited']
+					&& self::unlimited_tickets_enabled();
+			}
+			/**
+			 * Seats a ticket type can sell in total, before sales and reservations.
+			 *
+			 * @param array $ticket_type One row of the mep_event_ticket_type meta.
+			 * @return int UNLIMITED_TICKET_QTY for an unlimited ticket type.
+			 */
+			public static function get_ticket_capacity( $ticket_type ) {
+				if ( self::is_unlimited_ticket( $ticket_type ) ) {
+					return self::UNLIMITED_TICKET_QTY;
+				}
+				return is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+			}
+			/**
+			 * Whether Global Quantity caps this event as a whole.
+			 *
+			 * While it does, its shared total replaces every per-ticket capacity, an
+			 * unlimited ticket type included.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return bool
+			 */
+			public static function uses_global_quantity( $event_id ) {
+				return 'on' === MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+			}
+			/**
+			 * Whether one ticket type really is sold without a limit on this event.
+			 *
+			 * @param int   $event_id    Event post ID.
+			 * @param array $ticket_type One row of the mep_event_ticket_type meta.
+			 * @return bool False while Global Quantity caps the event.
+			 */
+			public static function is_unlimited_ticket_on_event( $event_id, $ticket_type ) {
+				return self::is_unlimited_ticket( $ticket_type ) && ! self::uses_global_quantity( $event_id );
+			}
+			/**
+			 * Whether the event's seat totals have no upper limit.
+			 *
+			 * True when at least one ticket type is unlimited and Global Quantity is not
+			 * capping the event. Totals then hold UNLIMITED_TICKET_QTY, so displays show
+			 * "Unlimited" instead of a total or a remaining count. Disabled ticket types
+			 * count, as their capacity always has in get_total_ticket().
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return bool
+			 */
+			public static function has_unlimited_capacity( $event_id ) {
+				if ( self::uses_global_quantity( $event_id ) ) {
+					return false;
+				}
+				$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+				if ( is_array( $ticket_types ) ) {
+					foreach ( $ticket_types as $ticket_type ) {
+						if ( self::is_unlimited_ticket( $ticket_type ) ) {
+							return true;
+						}
+					}
+				}
+				return false;
+			}
 			public static function get_total_available_seat( $event_id, $date = '' ) {
 				$total_sold    = self::get_total_sold( $event_id, $date );
 				$total_ticket  = self::get_total_ticket( $event_id, $date );
@@ -122,7 +220,7 @@
 				$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 				if ( is_array( $ticket_types ) && count( $ticket_types ) > 0 ) {
 					foreach ( $ticket_types as $ticket_type ) {
-						$total_ticket += is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+						$total_ticket += self::get_ticket_capacity( $ticket_type );
 					}
 				}
 				return max( apply_filters( 'mpwem_event_total_seat_counts', $total_ticket, $event_id, $date ), 0 );
@@ -156,7 +254,7 @@
 					$filter_args['post_id']    = $event_id;
 					$filter_args['event_date'] = date('Y-m-d H:i', strtotime($date));
 					$filter_args['ea_ticket_type'] = $ticket_name;
-					$ticket_qty       = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+					$ticket_qty       = self::get_ticket_capacity( $ticket_type );
 					$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 					$total_sold       = MPWEM_Query::attendee_query( $filter_args )->post_count;
 		 			$temp_count 	  = mep_temp_attendee_count( $event_id, $ticket_name, $date );

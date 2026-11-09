@@ -2519,6 +2519,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					$ticket_names  = isset($_POST['option_name_t']) && is_array($_POST['option_name_t']) ? (array) wp_unslash($_POST['option_name_t']) : [];
 					$ticket_prices = isset($_POST['option_price_t']) && is_array($_POST['option_price_t']) ? (array) wp_unslash($_POST['option_price_t']) : [];
 					$ticket_caps   = isset($_POST['option_qty_t']) && is_array($_POST['option_qty_t']) ? (array) wp_unslash($_POST['option_qty_t']) : [];
+					// Only posted while the Unlimited Ticket Capacity feature is enabled.
+					$ticket_unlim  = isset($_POST['option_qty_t_unlimited']) && is_array($_POST['option_qty_t_unlimited']) ? (array) wp_unslash($_POST['option_qty_t_unlimited']) : [];
 					$global_qty_on = isset($_POST['enable_global_qty']) && 'on' === $_POST['enable_global_qty'];
 
 					$has_ticket = false;
@@ -2535,7 +2537,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						}
 
 						$has_ticket = true;
-						if ('' === $name || '' === $price || (! $global_qty_on && '' === $capacity)) {
+						// An unlimited ticket type has no capacity to fill in.
+						$unlimited  = isset($ticket_unlim[$i]) && 'yes' === $ticket_unlim[$i] && MPWEM_Functions::unlimited_tickets_enabled();
+						if ('' === $name || '' === $price || (! $global_qty_on && ! $unlimited && '' === $capacity)) {
 							$validation_error = 'ticket_fields';
 							break;
 						}

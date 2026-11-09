@@ -1399,3 +1399,25 @@ div#mep_event_gq_meta_boxes table td input#enable_global_qty {
 	-webkit-mask-size: contain;
 	mask-size: contain;
 }
+/* Ticket type "Unlimited" capacity switch (Classic + Modern editors). */
+.mpwem-ticket-card__unlimited {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.4;
+	color: #475569;
+	text-transform: none;
+	letter-spacing: normal;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.mpwem-ticket-card__unlimited input[type="checkbox"] {
+	margin: 0;
+}
+.mpwem-ticket-card__capacity--unlimited input[name="option_qty_t[]"] {
+	opacity: .45;
+	cursor: not-allowed;
+}

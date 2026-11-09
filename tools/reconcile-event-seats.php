@@ -192,8 +192,10 @@
 					continue;
 				}
 				$caps[ $t['option_name_t'] ] = array(
-					'capacity' => array_key_exists( 'option_qty_t', $t ) ? (int) $t['option_qty_t'] : 0,
-					'reserved' => array_key_exists( 'option_rsv_t', $t ) ? (int) $t['option_rsv_t'] : 0,
+					'capacity'  => array_key_exists( 'option_qty_t', $t ) ? (int) $t['option_qty_t'] : 0,
+					'reserved'  => array_key_exists( 'option_rsv_t', $t ) ? (int) $t['option_rsv_t'] : 0,
+					// An unlimited ticket type can never be oversold.
+					'unlimited' => MPWEM_Functions::is_unlimited_ticket_on_event( $event_id, $t ),
 				);
 			}
 		}
@@ -202,17 +204,17 @@
 			if ( (int) $ev !== (int) $event_id ) {
 				continue;
 			}
-			$cap = array_key_exists( $type, $caps ) ? $caps[ $type ] : array( 'capacity' => 0, 'reserved' => 0 );
+			$cap = array_key_exists( $type, $caps ) ? $caps[ $type ] : array( 'capacity' => 0, 'reserved' => 0, 'unlimited' => false );
 			$rows[] = array(
 				'event'    => $event_id,
 				'title'    => get_the_title( $event_id ),
 				'type'     => $type,
 				'date'     => $date,
-				'capacity' => $cap['capacity'],
+				'capacity' => $cap['unlimited'] ? 'unlimited' : $cap['capacity'],
 				'reserved' => $cap['reserved'],
 				'stored'   => array_key_exists( $key, $stored_total ) ? $stored_total[ $key ] : 0,
 				'paid'     => $qty,
-				'over'     => $qty - ( $cap['capacity'] - $cap['reserved'] ),
+				'over'     => $cap['unlimited'] ? 0 : $qty - ( $cap['capacity'] - $cap['reserved'] ),
 			);
 		}
 	}
@@ -238,12 +240,12 @@
 	printf( "%-8s %-28s %-26s %-17s %5s %5s %7s %6s %6s\n", 'EVENT', 'EVENT NAME', 'TICKET TYPE', 'DATE', 'CAP', 'RSV', 'STORED', 'PAID', 'OVER' );
 	foreach ( $rows as $r ) {
 		printf(
-			"%-8s %-28s %-26s %-17s %5d %5d %7d %6d %6s\n",
+			"%-8s %-28s %-26s %-17s %5s %5d %7d %6d %6s\n",
 			$r['event'],
 			mb_substr( (string) $r['title'], 0, 28 ),
 			mb_substr( (string) $r['type'], 0, 26 ),
 			$r['date'],
-			$r['capacity'],
+			'unlimited' === $r['capacity'] ? 'unl' : $r['capacity'],
 			$r['reserved'],
 			$r['stored'],
 			$r['paid'],

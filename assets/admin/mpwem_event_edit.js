@@ -1207,9 +1207,50 @@
         return value;
     }
 
+    // The "Unlimited" switch beside Capacity only exists while Global Settings >
+    // General > Unlimited Ticket Capacity is on. Without it the row has no
+    // option_qty_t_unlimited[] field and everything here behaves as before.
+    function ticketRowHasUnlimitedField($row) {
+        return $row.find('[name="option_qty_t_unlimited[]"]').length > 0;
+    }
+
+    function ticketRowIsUnlimited($row) {
+        return ($row.find('[name="option_qty_t_unlimited[]"]').first().val() || '') === 'yes';
+    }
+
+    // Brings the row's own switch and Capacity input in line with its saved
+    // value - the same state mpwem_admin.js sets when the switch is clicked.
+    function syncTicketRowUnlimitedState($row) {
+        if (!ticketRowHasUnlimitedField($row)) {
+            return;
+        }
+        const unlimited = ticketRowIsUnlimited($row);
+        const $cell = $row.find('.mpwem-ticket-card__capacity').first();
+        $cell.find('.mpwem_unlimited_capacity').prop('checked', unlimited);
+        $cell.find('[name="option_qty_t[]"]').prop('readonly', unlimited).attr('aria-disabled', unlimited ? 'true' : 'false');
+        $cell.toggleClass('mpwem-ticket-card__capacity--unlimited', unlimited);
+    }
+
+    function setTicketRowUnlimited($row, unlimited) {
+        const $hidden = $row.find('[name="option_qty_t_unlimited[]"]').first();
+        if (!$hidden.length) {
+            return;
+        }
+        syncRealFieldValue($hidden, unlimited ? 'yes' : 'no');
+        syncTicketRowUnlimitedState($row);
+    }
+
     function ticketRowCapacity($row) {
+        if (ticketRowIsUnlimited($row)) {
+            return 'Unlimited';
+        }
         const value = ($row.find('[name="option_qty_t[]"]').first().val() || '').toString().trim();
-        return value.length ? value : 'Unlimited';
+        if (value.length) {
+            return value;
+        }
+        // A blank capacity sells nothing on the event page. Once "Unlimited" is a
+        // real choice beside it, labelling blank as "Unlimited" would mislead.
+        return ticketRowHasUnlimitedField($row) ? '0' : 'Unlimited';
     }
 
     function isTicketGlobalQtyEnabled($root) {
@@ -1779,9 +1820,17 @@
             const description = ($row.find('[name="option_details_t[]"]').first().val() || '').toString().trim();
 
             const capacityRaw = ($row.find('[name="option_qty_t[]"]').first().val() || '').toString().trim();
-            const capacityNum = isTicketGlobalQtyEnabled($root)
-                ? parseInt((ticketGlobalTotalQty($root) || '').toString().trim(), 10)
-                : (capacityRaw === '' ? NaN : parseInt(capacityRaw, 10));
+            let capacityNum;
+            if (isTicketGlobalQtyEnabled($root)) {
+                capacityNum = parseInt((ticketGlobalTotalQty($root) || '').toString().trim(), 10);
+            } else if (ticketRowIsUnlimited($row)) {
+                capacityNum = NaN; // previewed as unlimited
+            } else if (capacityRaw === '') {
+                // Blank sells nothing; it only previewed as unlimited before the switch existed.
+                capacityNum = ticketRowHasUnlimitedField($row) ? 0 : NaN;
+            } else {
+                capacityNum = parseInt(capacityRaw, 10);
+            }
 
             let stockState = 'unlimited';
             if (!Number.isNaN(capacityNum)) {
@@ -2207,6 +2256,7 @@
         'option_name_t[]',
         'option_price_t[]',
         'option_qty_t[]',
+        'option_qty_t_unlimited[]',
         'option_qty_t_type[]',
         'option_details_t[]',
         'option_default_qty_t[]',
@@ -2259,6 +2309,7 @@
                         syncRealFieldValue($field, original[name]);
                     }
                 });
+                syncTicketRowUnlimitedState($row);
             } else if ($row && $row.length && $row.closest('body').length) {
                 $row.remove();
             }
@@ -2350,13 +2401,26 @@
         );
 
         let $qtyProxy = null;
+        let $unlimitedProxy = null;
         if (!globalQtyOn) {
-            $qtyProxy = $('<input type="number" placeholder="100">').val(($qtyInput.val() || '').toString());
-            $core.append(
-                $('<div class="mpwem-ticket-add__group"></div>')
-                    .append($('<label></label>').text('Capacity'))
-                    .append($qtyProxy)
-            );
+            const isUnlimited = ticketRowIsUnlimited($row);
+            $qtyProxy = $('<input type="number" placeholder="100">').val(($qtyInput.val() || '').toString()).prop('readonly', isUnlimited);
+            const $capacityGroup = $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text('Capacity'))
+                .append($qtyProxy);
+            if (ticketRowHasUnlimitedField($row)) {
+                $unlimitedProxy = $('<input type="checkbox" data-no-mpwem-switch="1">').prop('checked', isUnlimited);
+                $capacityGroup
+                    .addClass('mpwem-ticket-add__group--capacity')
+                    .toggleClass('is-unlimited', isUnlimited)
+                    .append(
+                        $('<label class="mpwem-ticket-add__unlimited"></label>')
+                            .attr('title', 'Sell this ticket type without a seat limit. The Capacity is kept and applies again when this is switched off.')
+                            .append($unlimitedProxy)
+                            .append($('<span></span>').text('Unlimited'))
+                    );
+            }
+            $core.append($capacityGroup);
         }
 
         const qtyTypeVal = ($qtyTypeSelect.val() || 'inputbox').toString();
@@ -2507,6 +2571,14 @@
         $priceProxy.on('input', function() { syncRealFieldValue($priceInput, $(this).val()); setTicketAddError($priceProxy, ''); });
         if ($qtyProxy) {
             $qtyProxy.on('input', function() { syncRealFieldValue($qtyInput, $(this).val()); setTicketAddError($qtyProxy, ''); });
+        }
+        if ($unlimitedProxy) {
+            $unlimitedProxy.on('change', function() {
+                const unlimited = $(this).is(':checked');
+                setTicketRowUnlimited($row, unlimited);
+                $qtyProxy.prop('readonly', unlimited).closest('.mpwem-ticket-add__group').toggleClass('is-unlimited', unlimited);
+                setTicketAddError($qtyProxy, '');
+            });
         }
         $descProxy.on('input', function() { syncRealFieldValue($descInput, $(this).val()); });
         $defaultProxy.on('input', function() { syncRealFieldValue($defaultQtyInput, $(this).val()); });
@@ -2927,6 +2999,13 @@
         });
 
         $root.on('change.mpwemTicketModal', '[name="mep_reg_status"]', function() {
+            renderTicketSummary($root);
+        });
+
+        // The row's own "Unlimited" switch. This runs before mpwem_admin.js's
+        // document-level handler, so it sets the saved value itself first.
+        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount .mpwem_unlimited_capacity', function() {
+            setTicketRowUnlimited($(this).closest('.mpwem-ticket-row'), $(this).is(':checked'));
             renderTicketSummary($root);
         });
 
@@ -9210,10 +9289,12 @@
                 const $nameField = $row.find('[name="option_name_t[]"]').first();
                 const $priceField = $row.find('[name="option_price_t[]"]').first();
                 const $capacityField = $row.find('[name="option_qty_t[]"]').first();
+                // An unlimited ticket type has no capacity to fill in.
+                const needsCapacity = requireCapacity && !ticketRowIsUnlimited($row);
 
                 $nameField.toggleClass('mpwem-field-error', name === '');
                 $priceField.toggleClass('mpwem-field-error', price === '');
-                $capacityField.toggleClass('mpwem-field-error', requireCapacity && capacity === '');
+                $capacityField.toggleClass('mpwem-field-error', needsCapacity && capacity === '');
 
                 if (name === '') {
                     message = 'Each ticket type needs a name.';
@@ -9221,7 +9302,7 @@
                 } else if (price === '') {
                     message = 'Each ticket type needs a price.';
                     $invalidRow = $row; $invalidField = $priceField;
-                } else if (requireCapacity && capacity === '') {
+                } else if (needsCapacity && capacity === '') {
                     message = 'Each ticket type needs a capacity.';
                     $invalidRow = $row; $invalidField = $capacityField;
                 }

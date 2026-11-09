@@ -2879,7 +2879,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			if ( is_array( $mep_event_ticket_type ) && sizeof( $mep_event_ticket_type ) > 0 ) {
 				foreach ( $mep_event_ticket_type as $field ) {
 					if ( $type == 'total' ) {
-						$total_name = is_array($field) && array_key_exists( 'option_qty_t', $field ) ? (int) $field['option_qty_t'] : 0;
+						// An unlimited ticket type counts as MPWEM_Functions::UNLIMITED_TICKET_QTY.
+						$total_name = MPWEM_Functions::get_ticket_capacity( $field );
 					} elseif ( $type == 'resv' ) {
 						$total_name = is_array($field) && array_key_exists( 'option_rsv_t', $field ) ? (int) $field['option_rsv_t'] : 0;
 					}

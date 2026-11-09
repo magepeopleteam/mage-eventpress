@@ -39,6 +39,7 @@
 					'mep_event_expire_on_datetimes',
 					'mep_hide_old_date',
 					'mep_hide_expire_ticket',
+					'mep_enable_unlimited_ticket',
 					'mep_hide_location_from_order_page',
 					'mep_hide_date_from_order_page',
 					'mep_hide_expired_date_in_calendar',
@@ -207,6 +208,7 @@
 				);
 				self::toggle_yesno( 'mep_hide_old_date', __( 'Hide Past Dates', 'mage-eventpress' ), __( 'Hide past dates in the booking date picker.', 'mage-eventpress' ), $g( 'mep_hide_old_date', 'yes' ) );
 				self::toggle_yesno( 'mep_hide_expire_ticket', __( 'Hide Expired Ticket Types', 'mage-eventpress' ), __( 'Hide ticket types that are no longer available.', 'mage-eventpress' ), $g( 'mep_hide_expire_ticket', 'no' ) );
+				self::toggle_yesno( 'mep_enable_unlimited_ticket', __( 'Unlimited Ticket Capacity', 'mage-eventpress' ), __( 'Adds an "Unlimited" switch beside each ticket type\'s Capacity. An unlimited ticket type never sells out, unless Global Quantity caps the event.', 'mage-eventpress' ), $g( 'mep_enable_unlimited_ticket', 'no' ) );
 				self::select(
 					'mep_event_direct_checkout',
 					__( 'Checkout Behavior', 'mage-eventpress' ),

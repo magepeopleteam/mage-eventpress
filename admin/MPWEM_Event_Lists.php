@@ -682,6 +682,11 @@
 									$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 								    $total_sold       = mep_get_ticket_type_seat_count( $event_id, $ticket_name, $date, $ticket_qty, $ticket_r_qty );
 									$available_ticket = (int) $ticket_qty - ( (int) $total_sold + (int) $ticket_r_qty );
+									// No seat limit: show "Unlimited" rather than a capacity that does not apply.
+									if ( MPWEM_Functions::is_unlimited_ticket_on_event( $event_id, $ticket_type ) ) {
+										$ticket_qty       = __( 'Unlimited', 'mage-eventpress' );
+										$available_ticket = __( 'Unlimited', 'mage-eventpress' );
+									}
 									?>
                                     <tr>
                                         <th><?php echo esc_html( $ticket_name ); ?></th>
@@ -1148,7 +1153,7 @@
                         </div>
                     </td>
                     <td class="mpwem_event_list_capacity">
-                        <div class="mpwem_event_list_capacity-number"><?php echo esc_html( $total_sold ); ?>/<?php echo esc_html( $total_ticket ); ?></div>
+                        <div class="mpwem_event_list_capacity-number"><?php echo esc_html( $total_sold ); ?>/<?php if ( MPWEM_Functions::has_unlimited_capacity( $id ) ) { ?><span title="<?php esc_attr_e( 'Unlimited', 'mage-eventpress' ); ?>" aria-label="<?php esc_attr_e( 'Unlimited', 'mage-eventpress' ); ?>">&infin;</span><?php } else { echo esc_html( $total_ticket ); } ?></div>
                         <div class="mpwem_event_list_capacity-bar">
                             <div class="mpwem_event_list_capacity-fill <?php echo esc_attr( $full_class ); ?>" style="width: 100%"></div>
                         </div>

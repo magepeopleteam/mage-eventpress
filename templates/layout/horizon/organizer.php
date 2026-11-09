@@ -21,6 +21,8 @@
 	$total_seats = method_exists( 'MPWEM_Functions', 'get_total_ticket' ) ? (int) MPWEM_Functions::get_total_ticket( $event_id, $date ) : 0;
 	$available   = method_exists( 'MPWEM_Functions', 'get_total_available_seat' ) ? (int) MPWEM_Functions::get_total_available_seat( $event_id, $date ) : max( $total_seats - $total_sold, 0 );
 	$available   = max( $available, 0 );
+	// An unlimited ticket type leaves no total to count down from.
+	$is_unlimited = method_exists( 'MPWEM_Functions', 'has_unlimited_capacity' ) && MPWEM_Functions::has_unlimited_capacity( $event_id );
 	$thumb_url   = get_the_post_thumbnail_url( $event_id, 'thumbnail' );
 ?>
 <section class="horizon_organizer_card">
@@ -46,11 +48,11 @@
 	</div>
 	<div class="horizon_organizer_stats">
 		<div class="horizon_stat horizon_stat_purple">
-			<strong><?php echo esc_html( number_format_i18n( max( $total_seats, 0 ) ) ); ?></strong>
+			<strong><?php echo $is_unlimited ? esc_html__( 'Unlimited', 'mage-eventpress' ) : esc_html( number_format_i18n( max( $total_seats, 0 ) ) ); ?></strong>
 			<span><?php esc_html_e( 'Total Seats', 'mage-eventpress' ); ?></span>
 		</div>
 		<div class="horizon_stat horizon_stat_green">
-			<strong><?php echo esc_html( number_format_i18n( $available ) ); ?></strong>
+			<strong><?php echo $is_unlimited ? esc_html__( 'Unlimited', 'mage-eventpress' ) : esc_html( number_format_i18n( $available ) ); ?></strong>
 			<span><?php esc_html_e( 'Available', 'mage-eventpress' ); ?></span>
 		</div>
 		<div class="horizon_stat horizon_stat_yellow">

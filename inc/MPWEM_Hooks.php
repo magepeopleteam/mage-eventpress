@@ -446,7 +446,8 @@
 					$total_reserve   = MPWEM_Functions::get_reserve_ticket( $post_id, $date );
 					$total_available = $total_ticket - ( $total_sold + $total_reserve );
 					$total_available = max( $total_available, 0 );
-					echo esc_html( $total_ticket . '-' . $total_sold . '-' . $total_reserve . '=' . $total_available );
+					// An unlimited ticket type leaves no total: show the infinity sign instead.
+					echo esc_html( MPWEM_Functions::has_unlimited_capacity( $post_id ) ? "\u{221E}-" . $total_sold . '-' . $total_reserve . "=\u{221E}" : $total_ticket . '-' . $total_sold . '-' . $total_reserve . '=' . $total_available );
 				}
 				die();
 			}

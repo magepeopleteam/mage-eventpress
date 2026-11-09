@@ -56,11 +56,14 @@
 								$available         = apply_filters( 'mpwem_group_ticket_qty', $available, $event_id, $ticket_name );
 								$available         = apply_filters( 'mpwem_group_qty', $available, $event_id, $ticket_name );								
 								$available         = max( 0, floor( $available ) );
+								// No seat limit: never show a remaining count or a low-stock warning.
+								$is_unlimited      = MPWEM_Functions::is_unlimited_ticket_on_event( $event_id, $ticket_type );
 
 								if ( $ticket_name ) {
 									$input_data['name']      = 'option_qty[]';
 									$input_data['price']     = $ticket_price;
 									$input_data['available'] = $available;
+									$input_data['unlimited'] = $is_unlimited;
 									$input_data['d_qty']     = $ticket_d_qty;
 									$input_data['min_qty']   = $ticket_min_qty;
 									$input_data['max_qty']   = $ticket_max_qty;
@@ -100,6 +103,7 @@
                                                     <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 												<?php } ?>
 
+												<?php if ( ! $is_unlimited ) { ?>
 												<?php
 													// Total seats configured for this ticket. Used when the availability
 													// indicator is measured as a percentage of capacity.
@@ -125,6 +129,7 @@
 														mep_display_low_stock_warning( $event_id, $ticket_name, $available, $ticket_capacity );
 													}
 												?>
+												<?php } ?>
                                             </div>
                                             <div class="quantity-control">
                                                 <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>

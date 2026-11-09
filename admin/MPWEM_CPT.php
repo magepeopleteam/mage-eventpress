@@ -134,8 +134,12 @@
 				if ( $speaker_status == 'yes' ) {
 					register_post_type( 'mep_event_speaker', $args );
 				}
+				// Internal cart holds: read by the seat counts, never shown as posts.
 				$argsl = array(
-					'public'              => true,
+					'public'              => false,
+					'publicly_queryable'  => false,
+					'rewrite'             => false,
+					'query_var'           => false,
 					'label'               => __( 'Event Temp Attendee', 'mage-eventpress' ),
 					'menu_icon'           => 'dashicons-id',
 					'supports'            => array( 'title' ),

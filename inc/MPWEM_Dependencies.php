@@ -579,7 +579,9 @@
 					return;
 				}
 				$event_id = $post->ID;
-				if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' ) {
+				// The schema carries the venue and ticket price, which the page itself
+				// keeps behind the password form.
+				if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' || post_password_required( $event_id ) ) {
 					return;
 				}
 				$rt_status = get_post_meta( $event_id, 'mep_rich_text_status', true ) ? get_post_meta( $event_id, 'mep_rich_text_status', true ) : 'enable';

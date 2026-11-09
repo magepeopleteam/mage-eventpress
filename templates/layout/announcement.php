@@ -25,6 +25,8 @@
 
 	$enquiry_status = get_post_meta( $event_id, 'mep_enquiry_status', true );
 	$show_enquiry   = '' === $enquiry_status ? true : ( 'on' === $enquiry_status );
+	// mep_submit_enquiry() refuses visitors outside a member-only event's roles.
+	$show_enquiry   = $show_enquiry && MPWEM_Global_Function::user_can_register_for_event( $event_id );
 	$show_enquiry   = (bool) apply_filters( 'mpwem_show_enquiry_form', $show_enquiry, $event_id );
 
 	if ( '' === $title && '' === trim( wp_strip_all_tags( $text ) ) && ! $show_enquiry ) {

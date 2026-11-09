@@ -78,6 +78,7 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			// MPWEM_Woocommerce is not loaded without WooCommerce, so it is repeated here.
 			$event_dates = MPWEM_Functions::get_dates( $event_id );
 			if ( ( 'publish' !== get_post_status( $event_id ) && ! current_user_can( 'edit_post', $event_id ) )
+				|| post_password_required( $event_id )
 				|| ! MPWEM_Global_Function::is_bookable_event( $event_id )
 				|| ! is_array( $event_dates ) || empty( $event_dates ) ) {
 				wp_send_json_error( array( 'message' => __( 'Sorry, this event is not available for booking.', 'mage-eventpress' ) ) );

@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin, raselsha
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.12
+Stable tag: 5.7.13
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,14 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.13 =
+* New: Add a cancelled status that keeps events listed but closes booking.
+* New: Unlimited capacity per ticket type, behind an opt-in setting.
+* Fix: Stop forcing title case on button labels.
+* Fix: Translate "View More Dates" in German, including old template copies.
+* Fix: Keep private event fields and attendee names out of public responses.
+* Fix: Apply event visibility rules consistently on public requests.
 
 = 5.7.7 =
 * Fix: Updated the bundled Appneck SDK to the latest version.

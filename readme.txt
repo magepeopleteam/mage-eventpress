@@ -287,6 +287,20 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 5.7.13 =
+* Security Fix: Password protected events are now protected on every public path. The ticket panel, date, time and seat lookups, the WooCommerce cart, native checkout and RSVP all refuse a visitor who has not entered the event's password; tickets could previously be viewed and booked without it. Price, seat counts and schema data also stay hidden until the password is entered.
+* Security Fix: Event enquiries are now refused for draft, private, password protected and member-only events unless the visitor is allowed to see or register for that event.
+* Security Fix: With the REST API setting on, visitors now receive only an event's public fields. Join links, passcodes, the organizer's enquiry email and other internal values are no longer returned. An integration that reads other fields can add them with the mep_rest_public_event_meta_keys filter.
+* Security Fix: Site-wide revenue and registration totals on the Event Lists screen now require Shop Manager level, or Administrator when WooCommerce is not active. A Contributor could previously read them.
+* Security Fix: An event's related events list no longer shows draft, private or password protected events to visitors, and temporary cart-hold records are no longer publicly viewable.
+* Security Fix: Hardened the event duplicate action with permission and event-type checks, and removed the test files from the bundled Appneck SDK.
+* Credit: Thanks to Nathan Cross (CyberBadger) for responsibly disclosing these issues.
+* Privacy Fix: The attendee ticket page no longer reveals an attendee's name to visitors who are not allowed to open it.
+* New: Cancel an event without deleting it. A cancelled event stays on its page and in every list with a clear notice, every booking path refuses it, and it never reads as sold out. Emailing everyone who booked and refunding their orders are optional, and restoring the event brings its ticket or RSVP setup back. The Event Lists screen adds a Cancelled filter.
+* New: Unlimited Ticket Capacity setting (Events > Settings > General, off by default). When on, each ticket type can be marked Unlimited. A blank Capacity still means 0, so existing events cannot start overselling.
+* Fix: "View More Dates" is now translated in German, including on sites with an older copy of the template in their theme.
+* Fix: Button labels are no longer forced into title case, so translated labels keep their own capitalization.
+
 = 5.7.7 =
 * Fix: Updated the bundled Appneck SDK to the latest version.
 

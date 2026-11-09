@@ -479,7 +479,8 @@
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mep_nonce' ) ) {
 					wp_send_json_error( array( 'message' => 'Security check failed' ) );
 				}
-				if ( ! current_user_can( 'edit_posts' ) ) {
+				// Site-wide revenue and registration totals: not for every role that can write posts.
+				if ( ! current_user_can( MPWEM_Global_Function::get_shop_manager_capability() ) ) {
 					wp_send_json_error( array( 'message' => 'Permission denied' ) );
 				}
 				// Total registrations = paid attendees/tickets across BOTH WooCommerce and
@@ -522,6 +523,10 @@
 				}
 				$post_id     = (int) sanitize_text_field( wp_unslash( $_GET['post_id'] ) );
 				$post        = get_post( $post_id );
+				// The copy takes every meta row of the source, so the nonce alone is not enough.
+				if ( ! $post || 'mep_events' !== $post->post_type || ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_die( esc_html__( 'You are not allowed to duplicate this event.', 'mage-eventpress' ), '', array( 'response' => 403 ) );
+				}
 				$new_post    = array(
 					'post_title'   => $post->post_title . ' (Copy)',
 					'post_content' => $post->post_content,

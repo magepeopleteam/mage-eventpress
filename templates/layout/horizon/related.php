@@ -5,7 +5,7 @@
 	$event_id      = $event_id ?? 0;
 	$event_infos   = $event_infos ?? [];
 	$event_infos   = ( is_array( $event_infos ) && sizeof( $event_infos ) > 0 ) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-	$related_tours = is_array( $event_infos ) && array_key_exists( 'event_list', $event_infos ) ? array_filter( $event_infos['event_list'] ) : [];
+	$related_tours = is_array( $event_infos ) && array_key_exists( 'event_list', $event_infos ) ? mep_filter_public_related_events( $event_infos['event_list'] ) : [];
 	$display       = is_array( $event_infos ) && array_key_exists( 'mep_related_event_status', $event_infos ) ? $event_infos['mep_related_event_status'] : 'on';
 	if ( ! is_array( $related_tours ) || empty( $related_tours ) || $display !== 'on' ) {
 		return;

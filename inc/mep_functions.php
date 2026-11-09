@@ -3585,29 +3585,48 @@ die();
 	if ( ! function_exists( 'mep_rest_public_event_meta' ) ) {
 		/**
 		 * Event meta for the REST "event_informations" field as seen by visitors who
-		 * cannot edit the event. The field used to return every stored value to
-		 * anyone, including the text of the post-purchase email, virtual-event join
-		 * details meant for buyers, ticket print text and WordPress-internal keys.
+		 * cannot edit the event: only what the public event page itself shows.
+		 *
+		 * An allowlist, because the field used to return every stored value to anyone,
+		 * including virtual-event join details meant for buyers, the organizer's enquiry
+		 * email and the text of customer emails, and any key added later would have
+		 * joined them. A site whose integration reads another key can add it through the
+		 * mep_rest_public_event_meta_keys filter.
 		 *
 		 * @param array $meta     get_post_meta() of the event.
 		 * @param int   $event_id Event id.
 		 * @return array
 		 */
 		function mep_rest_public_event_meta( $meta, $event_id ) {
-			$private = apply_filters( 'mep_rest_private_event_meta_keys', array(
-				'mep_event_cc_email_text',
-				'mp_event_virtual_type_des',
-				'mep_event_virtual_link',
-				'mep_pdf_custom_text',
-				'mep_event_cancel_email_subject',
-				'mep_event_cancel_email_body',
-			), $event_id );
-			foreach ( array_keys( (array) $meta ) as $key ) {
-				if ( is_protected_meta( $key, 'post' ) || in_array( $key, $private, true ) || preg_match( '/(password|secret|token|api_?key)/i', $key ) ) {
-					unset( $meta[ $key ] );
-				}
+			// Core REST blanks a protected post's content; this field follows it.
+			if ( post_password_required( $event_id ) ) {
+				return array();
 			}
-			return $meta;
+			$public = array(
+				'event_start_date', 'event_start_time', 'event_start_datetime',
+				'event_end_date', 'event_end_time', 'event_end_datetime',
+				'event_expire_datetime', 'event_upcoming_datetime',
+				'mep_enable_recurring', 'mep_event_more_date', 'mep_event_no_date',
+				'mep_show_end_datetime', 'mep_time_zone_display',
+				'mep_location_venue', 'location_name', 'mep_org_address', 'mep_street',
+				'mep_city', 'mep_state', 'mep_postcode', 'mep_country',
+				'latitude', 'longitude', 'mep_sgm',
+				'mep_event_type', 'mep_reg_status', 'mep_available_seat',
+				'mep_event_cancelled', 'mep_event_cancel_message',
+				'mep_announcement_title', 'mep_announcement_text',
+				'mep_event_faq', 'mep_faq_description', 'mep_event_day',
+				'mep_event_speakers_list', 'mep_speaker_title',
+				'mep_gallery_images', 'mep_list_thumbnail',
+				'mep_rt_event_status', 'mep_rt_event_attandence_mode',
+			);
+			// The event page keeps the ticket panel from visitors outside a member-only
+			// event's roles, so its prices stay out of this field for them too.
+			if ( MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
+				$public[] = 'mep_event_ticket_type';
+				$public[] = 'mep_events_extra_prices';
+			}
+			$public = (array) apply_filters( 'mep_rest_public_event_meta_keys', $public, $event_id );
+			return array_intersect_key( (array) $meta, array_flip( $public ) );
 		}
 	}
 	if ( ! function_exists( 'mep_user_can_view_attendee_page' ) ) {
@@ -6539,7 +6558,8 @@ die();
 		 *
 		 * The public AJAX endpoints take an event id from the request; without this
 		 * they answered for drafts, private events and posts of any other type.
-		 * Editors previewing an unpublished event still get an answer.
+		 * Editors previewing an unpublished event still get an answer. A password
+		 * protected event answers only once the visitor has entered its password.
 		 *
 		 * @param mixed $event_id Event post id.
 		 * @return bool
@@ -6549,10 +6569,34 @@ die();
 			if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
 				return false;
 			}
+			if ( post_password_required( $event_id ) ) {
+				return false;
+			}
 			if ( 'publish' === get_post_status( $event_id ) ) {
 				return true;
 			}
 			return current_user_can( 'read_post', $event_id );
+		}
+	}
+
+	if ( ! function_exists( 'mep_filter_public_related_events' ) ) {
+		/**
+		 * Related events an event page may show to anyone.
+		 *
+		 * The related list is stored as chosen in the editor, and a chosen event can
+		 * later be drafted, made private, trashed or given a password.
+		 *
+		 * @param mixed $event_ids Related event ids.
+		 * @return array
+		 */
+		function mep_filter_public_related_events( $event_ids ) {
+			return array_filter( (array) $event_ids, static function ( $event_id ) {
+				$event_id = absint( $event_id );
+				return $event_id
+					&& 'mep_events' === get_post_type( $event_id )
+					&& 'publish' === get_post_status( $event_id )
+					&& ! post_password_required( $event_id );
+			} );
 		}
 	}
 

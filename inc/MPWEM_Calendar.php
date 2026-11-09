@@ -1154,8 +1154,9 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 
 			// A cancelled event shows neither seats nor price, so it can never read as
 			// sold out or on sale; the calendar script marks it as cancelled instead.
+			// A password protected event keeps those figures behind its password.
 			$is_cancelled = MPWEM_Global_Function::is_cancelled_event( $event_id );
-			if ( $is_cancelled ) {
+			if ( $is_cancelled || post_password_required( $event_id ) ) {
 				$show_stock = 'no';
 				$show_price = 'no';
 			}

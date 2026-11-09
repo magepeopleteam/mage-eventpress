@@ -720,7 +720,7 @@
 				if ( get_post_status( $event_id ) !== 'publish' && ! current_user_can( 'edit_post', $event_id ) ) {
 					return false;
 				}
-				if ( ! MPWEM_Global_Function::is_bookable_event( $event_id ) ) {
+				if ( post_password_required( $event_id ) || ! MPWEM_Global_Function::is_bookable_event( $event_id ) ) {
 					return false;
 				}
 				$dates = MPWEM_Functions::get_dates( $event_id );

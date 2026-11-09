@@ -125,6 +125,12 @@
 			public function date_select( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/date_select.php' ); }
 			public function time( $event_id, $all_dates = [], $all_times = [], $date = '', $single = true ): void { require MPWEM_Functions::template_path( 'layout/time.php' ); }
 			public function registration( $event_id, $event_infos = [] ): void {
+				// The single event template asks for the password before getting here; the
+				// [event-add-cart-section] shortcode, on any other page, does not.
+				if ( post_password_required( (int) $event_id ) ) {
+					echo get_the_password_form( (int) $event_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Core-built form.
+					return;
+				}
 				// A cancelled event shows its cancellation in place of the booking box,
 				// whatever its Event Mode. Checked here rather than in the template so a
 				// theme override of registration.php cannot bring the ticket form back.
@@ -194,6 +200,10 @@
 					wp_send_json_error( __( 'Invalid or unpublished Event.', 'mage-eventpress' ) );
 					wp_die();
 				}
+				// The event page shows only its password form until the password is entered.
+				if ( post_password_required( $post_id ) ) {
+					wp_send_json_error( __( 'Sorry, this event is not available for booking.', 'mage-eventpress' ), 403 );
+				}
 				// The event page withholds the booking panel from non-members; this endpoint
 				// must not hand it (and its RSVP nonce) out either.
 				// A cancelled event's page shows no booking panel at all.
@@ -246,7 +256,7 @@
 				$date     = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates'] ) : '';
 
 				// Check if post exists and is published
-				if ( ! $event_id || get_post_status( $event_id ) !== 'publish' ) {
+				if ( ! $event_id || get_post_status( $event_id ) !== 'publish' || post_password_required( $event_id ) ) {
 					wp_send_json_error( __( 'Invalid or unpublished Event.', 'mage-eventpress' ) );
 					wp_die();
 				}
@@ -514,8 +524,9 @@
 				$event_id_for_mode = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
 				$list_reg_status   = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				// Announcement events sell nothing - printing "Price: 0.00" would be wrong -
-				// and a cancelled event sells nothing any more.
-				if ( $show_price == 'yes' && 'announcement' !== $list_reg_status && ! MPWEM_Global_Function::is_cancelled_event( $event_id_for_mode ) ) {
+				// and a cancelled event sells nothing any more. A password protected event
+				// stays listed, but its price is behind the password with its tickets.
+				if ( $show_price == 'yes' && 'announcement' !== $list_reg_status && ! MPWEM_Global_Function::is_cancelled_event( $event_id_for_mode ) && ! post_password_required( $event_id_for_mode ) ) {
 					$event_id         = $event_id_for_mode;
 					$ticket_types     = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
 					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
@@ -972,7 +983,7 @@
 				}
 				// Same visibility rule as the WooCommerce path: only a published event, unless
 				// the user can edit it and is test-booking a draft or private one.
-				if ( 'publish' !== get_post_status( $event_id ) && ! current_user_can( 'edit_post', $event_id ) ) {
+				if ( ( 'publish' !== get_post_status( $event_id ) && ! current_user_can( 'edit_post', $event_id ) ) || post_password_required( $event_id ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'This event is not accepting RSVP responses.', 'mage-eventpress' ) ) );
 				}
 				// A cancelled event keeps its RSVP mode so it can be restored as it was, but
@@ -1244,6 +1255,13 @@
 				$honeypot = isset( $_POST['enquiry_website'] ) ? trim( (string) wp_unslash( $_POST['enquiry_website'] ) ) : '';
 
 				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'This event is no longer available.', 'mage-eventpress' ) ) );
+				}
+				// Same visibility rules as RSVP. The nonce is shared by every event, so it
+				// says nothing about whether this one may be enquired about.
+				if ( ( 'publish' !== get_post_status( $event_id ) && ! current_user_can( 'edit_post', $event_id ) )
+					|| post_password_required( $event_id )
+					|| ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'This event is no longer available.', 'mage-eventpress' ) ) );
 				}
 				if ( '' !== $honeypot ) {

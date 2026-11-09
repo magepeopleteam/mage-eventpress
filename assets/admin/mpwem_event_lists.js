@@ -291,6 +291,8 @@
             },
             success: function (response) {
                 if (!response || !response.success) {
+                    // Roles without access to site-wide totals: end the loading state.
+                    $('#mpwem_total_registration, #mpwem_month_revenue').removeClass('mpwem-stat-loading').text('—');
                     return;
                 }
                 const d = response.data;

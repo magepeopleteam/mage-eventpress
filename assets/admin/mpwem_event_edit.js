@@ -2294,6 +2294,172 @@
         return values;
     }
 
+    /* Add-ons print their own ticket columns through the
+       mpwem_add_extra_input_box action (Membership Price plan, PRO
+       min/max quantity, Group Qty, ...). The inline form only mirrors the
+       core fields listed above, so without the helpers below those
+       settings could not be set on a new ticket, or changed on an existing
+       one, in the modern editor. Every core cell carries
+       .mpwem-ticket-card__group (or __actions), so any other cell with a
+       visible control belongs to an add-on. */
+    const TICKET_EXTRA_CONTROL_SELECTOR = 'select[name], textarea[name], input[name]:not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):not([type="radio"])';
+
+    function getTicketRowExtraCells($row) {
+        return $row.children('td').not('.mpwem-ticket-card__group, .mpwem-ticket-card__actions');
+    }
+
+    // Mirrors the table: a column an add-on hides behind its own toggle
+    // (data-collapse without mActive) stays out of the inline form too.
+    function isTicketExtraCellActive($cell) {
+        if ($cell.hasClass('mpwem-ticket-col-hidden')) {
+            return false;
+        }
+        if (!$cell.is('[data-collapse]') || $cell.hasClass('mActive')) {
+            return true;
+        }
+        // The shared collapse helper can reveal a target with slideDown()
+        // and no mActive class, and hides it with an inline display:none.
+        const inlineDisplay = $cell[0].style.display;
+        return inlineDisplay !== '' && inlineDisplay !== 'none';
+    }
+
+    function getTicketExtraCellLabel($row, $cell) {
+        const $cells = $row.children('td');
+        const $headCells = $row.closest('table').children('thead').find('tr').first().children('th');
+        // Only trust the header when every add-on printed a matching <th>,
+        // otherwise a later column would borrow the wrong title.
+        if ($headCells.length === $cells.length) {
+            const headText = $.trim($headCells.eq($cells.index($cell)).text());
+            if (headText) {
+                return headText;
+            }
+        }
+        const ownText = $.trim($cell.find('label').first().clone().children().remove().end().text());
+        if (ownText) {
+            return ownText;
+        }
+        return $.trim($cell.find(TICKET_EXTRA_CONTROL_SELECTOR).first().attr('placeholder') || '');
+    }
+
+    function isTicketCheckControl($control) {
+        return $control.is('input[type="checkbox"]');
+    }
+
+    function setTicketCheckControl($control, checked) {
+        $control.prop('checked', checked);
+        if (checked) {
+            $control.attr('checked', 'checked');
+        } else {
+            $control.removeAttr('checked');
+        }
+    }
+
+    function setTicketMultiSelect($control, values) {
+        values = (values || []).map(String);
+        $control.val(values);
+        $control.find('option').each(function() {
+            if (values.indexOf(this.value) > -1) {
+                this.setAttribute('selected', 'selected');
+            } else {
+                this.removeAttribute('selected');
+            }
+        });
+    }
+
+    function captureTicketRowExtraValues($row) {
+        return getTicketRowExtraCells($row).find(TICKET_EXTRA_CONTROL_SELECTOR).map(function() {
+            const $control = $(this);
+            return {
+                $control: $control,
+                value: $control.val(),
+                checked: this.checked === true
+            };
+        }).get();
+    }
+
+    function restoreTicketRowExtraValues(saved) {
+        (saved || []).forEach(function(item) {
+            if (!item.$control || !item.$control.length) {
+                return;
+            }
+            if (isTicketCheckControl(item.$control)) {
+                setTicketCheckControl(item.$control, item.checked);
+            } else if (item.$control.is('select[multiple]')) {
+                setTicketMultiSelect(item.$control, item.value);
+            } else {
+                syncRealFieldValue(item.$control, (item.value || '').toString());
+            }
+        });
+    }
+
+    // A proxy is built the same way as the core proxies above: a fresh,
+    // unnamed control that writes back into the real row field.
+    function buildTicketExtraProxy($control) {
+        const tag = ($control.prop('tagName') || '').toLowerCase();
+        let $proxy;
+
+        if (tag === 'select') {
+            $proxy = $('<select class="mpwem-ticket-add__select"></select>')
+                .prop('multiple', $control.prop('multiple'))
+                .append($control.children('option, optgroup').clone());
+            $proxy.val($control.val());
+        } else if (tag === 'textarea') {
+            $proxy = $('<textarea rows="2"></textarea>').val(($control.val() || '').toString());
+        } else {
+            $proxy = $('<input>').attr('type', ($control.attr('type') || 'text').toLowerCase());
+            ['placeholder', 'min', 'max', 'step', 'inputmode', 'maxlength', 'pattern'].forEach(function(attr) {
+                const value = $control.attr(attr);
+                if (typeof value !== 'undefined') {
+                    $proxy.attr(attr, value);
+                }
+            });
+            if (isTicketCheckControl($control)) {
+                $proxy.attr('data-no-mpwem-switch', '1').val($control.val()).prop('checked', $control.prop('checked'));
+            } else {
+                $proxy.val(($control.val() || '').toString());
+            }
+        }
+
+        $proxy.on('input change', function(e) {
+            if (isTicketCheckControl($control)) {
+                setTicketCheckControl($control, this.checked);
+            } else if ($control.is('select[multiple]')) {
+                setTicketMultiSelect($control, $proxy.val());
+            } else {
+                syncRealFieldValue($control, ($proxy.val() || '').toString());
+            }
+            if (e.type === 'change') {
+                // Let the add-on's own listeners on the real field run.
+                $control.trigger('change');
+            }
+        });
+
+        return $proxy;
+    }
+
+    function buildTicketExtraFields($row) {
+        const $grid = $('<div class="mpwem-ticket-add__grid mpwem-ticket-add__extras"></div>');
+
+        getTicketRowExtraCells($row).each(function() {
+            const $cell = $(this);
+            if (!isTicketExtraCellActive($cell)) {
+                return;
+            }
+            const $controls = $cell.find(TICKET_EXTRA_CONTROL_SELECTOR);
+            if (!$controls.length) {
+                return;
+            }
+            const $group = $('<div class="mpwem-ticket-add__group"></div>')
+                .append($('<label></label>').text(getTicketExtraCellLabel($row, $cell)));
+            $controls.each(function() {
+                $group.append(buildTicketExtraProxy($(this)));
+            });
+            $grid.append($group);
+        });
+
+        return $grid.children().length ? $grid : $();
+    }
+
     function closeInlineTicketAdd($root, opts) {
         opts = opts || {};
         const $card = getInlineTicketAddCard($root);
@@ -2309,6 +2475,7 @@
                         syncRealFieldValue($field, original[name]);
                     }
                 });
+                restoreTicketRowExtraValues($card.data('mpwemInlineAddOriginalExtras'));
                 syncTicketRowUnlimitedState($row);
             } else if ($row && $row.length && $row.closest('body').length) {
                 $row.remove();
@@ -2322,7 +2489,7 @@
             ? getTicketRows($root).index($row)
             : -1;
 
-        $card.removeData('mpwemInlineAddRow mpwemInlineAddMode mpwemInlineAddOriginal').removeClass('is-open').empty();
+        $card.removeData('mpwemInlineAddRow mpwemInlineAddMode mpwemInlineAddOriginal mpwemInlineAddOriginalExtras').removeClass('is-open').empty();
 
         storeSavedTicketSummarySnapshot($root);
         renderTicketSummary($root);
@@ -2446,6 +2613,10 @@
                 $('<p class="mpwem-ticket-add__hint"></p>').text('Capacity is set by the shared quantity pool above, not per ticket type.')
             );
         }
+
+        // Add-on columns (membership plan, min/max qty, ...) stay in view
+        // rather than behind "More options", so they are easy to find.
+        $body.append(buildTicketExtraFields($row));
 
         $qtyTypeProxy.on('change', function() {
             const val = $(this).val();
@@ -2695,6 +2866,7 @@
         $card.data('mpwemInlineAddRow', $row);
         $card.data('mpwemInlineAddMode', 'edit');
         $card.data('mpwemInlineAddOriginal', captureTicketRowFieldValues($row));
+        $card.data('mpwemInlineAddOriginalExtras', captureTicketRowExtraValues($row));
 
         renderInlineTicketAddForm($root, $row, { mode: 'edit' });
 

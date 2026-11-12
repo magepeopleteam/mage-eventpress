@@ -2169,10 +2169,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<?php $attendee_pro_active = class_exists('MPWEM_Form_Settings'); ?>
 															<div class="mpwem-panel-mount<?php echo $attendee_pro_active ? '' : ' mpwem-pro-inactive'; ?>" id="mpwem_wizard_attendee_form_mount" data-pro-feature="1" data-pro-active="<?php echo $attendee_pro_active ? '1' : '0'; ?>">
 																<?php
-																$reg_form_status = get_post_meta($post_id, 'mep_event_reg_form_status', true);
-																if (empty($reg_form_status)) {
-																	$reg_form_status = 'on';
-																}
+																// Same rule as the frontend: an event that never saved the switch is on only when it already has attendee fields.
+																$reg_form_status = MPWEM_Layout::is_attendee_form_enabled($post_id) ? 'on' : 'off';
 																?>
 														<?php if ($attendee_pro_active) : ?>
 														<input type="checkbox" data-no-mpwem-switch="1" name="mep_event_reg_form_status" value="on" style="display:none;" <?php checked($reg_form_status, 'on'); ?> />

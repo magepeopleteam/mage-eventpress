@@ -227,8 +227,10 @@
 			 * Per-event master switch for the attendee (registration) form.
 			 *
 			 * Saved by the event editor as the `mep_event_reg_form_status` post meta
-			 * ('on'/'off'). Events created before the toggle existed have no meta at
-			 * all, so an empty value keeps the historical default of 'on'.
+			 * ('on'/'off'). An event that never saved it is on only when it already
+			 * has attendee fields configured (events from before the toggle keep
+			 * their form). Treating every unsaved event as on gave events that never
+			 * used an attendee form a required Name/Email/Phone form after updating.
 			 *
 			 * This gates *collection* only — the frontend attendee form. Screens that
 			 * display attendee data already captured (order details, reports, the
@@ -239,12 +241,60 @@
 			 * @return bool
 			 */
 			public static function is_attendee_form_enabled( $event_id ) {
-				$status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_status', 'on' );
-				$status = '' === $status ? 'on' : $status;
+				$status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_status' );
+				if ( '' === $status ) {
+					$enabled = ! empty( self::get_configured_form_array( $event_id ) );
+				} else {
+					$enabled = 'off' !== $status;
+				}
 
-				return apply_filters( 'mpwem_attendee_form_enabled', 'off' !== $status, $event_id );
+				return apply_filters( 'mpwem_attendee_form_enabled', $enabled, $event_id );
 			}
 			public static function get_form_array( $event_id ) {
+				$form_array = self::get_configured_form_array( $event_id );
+
+				// Switched on with no fields stored yet: the PRO builder shows its
+				// default fields for such an event, so seed the same core fields
+				// and quantity still opens the attendee form.
+				if ( empty( $form_array ) && self::is_attendee_form_enabled( $event_id ) ) {
+					$form_id    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
+					$form_id    = $form_id == 'custom_form' ? $event_id : $form_id;
+					$form_array = [
+						'user_name'  => [
+							'type'     => 'text',
+							'name'     => 'user_name',
+							'd_name'   => 'ea_name',
+							'required' => 1,
+							'label'    => esc_html__( 'Name', 'mage-eventpress' ),
+						],
+						'user_email' => [
+							'type'     => 'email',
+							'name'     => 'user_email',
+							'd_name'   => 'ea_email',
+							'required' => 1,
+							'label'    => esc_html__( 'Email', 'mage-eventpress' ),
+						],
+						'user_phone' => [
+							'type'     => 'text',
+							'name'     => 'user_phone',
+							'd_name'   => 'ea_phone',
+							'required' => 1,
+							'label'    => esc_html__( 'Phone', 'mage-eventpress' ),
+						],
+					];
+					$form_array = self::apply_conditional_infos_to_form( $form_array, $form_id );
+				}
+
+				return $form_array;
+			}
+			/**
+			 * The attendee fields actually configured for an event (its own form or
+			 * the selected global form), without the default seed.
+			 *
+			 * @param int|string $event_id
+			 * @return array
+			 */
+			private static function get_configured_form_array( $event_id ) {
 				$form_id = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
 				$form_id = $form_id == 'custom_form' ? $event_id : $form_id;
 
@@ -350,35 +400,6 @@
 				}
 				$custom_forms = self::get_custom_form_array( $event_id, $form_id );
 				$form_array   = array_merge( $form_array, $custom_forms );
-
-				// Attendee form toggle can be ON while builder meta is still empty []
-				// (admin shows virtual defaults; save previously wiped flags). Seed the
-				// same core fields so qty still opens the attendee form.
-				if ( empty( $form_array ) ) {
-					if ( self::is_attendee_form_enabled( $event_id ) ) {
-						$form_array['user_name']  = [
-							'type'     => 'text',
-							'name'     => 'user_name',
-							'd_name'   => 'ea_name',
-							'required' => 1,
-							'label'    => esc_html__( 'Name', 'mage-eventpress' ),
-						];
-						$form_array['user_email'] = [
-							'type'     => 'email',
-							'name'     => 'user_email',
-							'd_name'   => 'ea_email',
-							'required' => 1,
-							'label'    => esc_html__( 'Email', 'mage-eventpress' ),
-						];
-						$form_array['user_phone'] = [
-							'type'     => 'text',
-							'name'     => 'user_phone',
-							'd_name'   => 'ea_phone',
-							'required' => 1,
-							'label'    => esc_html__( 'Phone', 'mage-eventpress' ),
-						];
-					}
-				}
 
 				return self::apply_conditional_infos_to_form( $form_array, $form_id );
 			}

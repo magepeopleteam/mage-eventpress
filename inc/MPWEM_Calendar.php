@@ -1496,6 +1496,11 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				usort( $dates, array( $this, 'sort_event_date_entries' ) );
 			}
 
+			// Same date rows the booking form offers, so a date an add-on closed is not plotted.
+			if ( method_exists( 'MPWEM_Functions', 'filter_date_rows' ) ) {
+				$dates = MPWEM_Functions::filter_date_rows( $dates, $event_id, 'calendar' );
+			}
+
 			return $dates;
 		}
 
@@ -1568,6 +1573,22 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				}
 			}
 
+			// Same days the booking form offers. A day the filter opens is held to the
+			// requested range like every other, since this list only covers that window.
+			if ( method_exists( 'MPWEM_Functions', 'filter_repeated_dates' ) && has_filter( 'mpwem_repeated_event_dates' ) ) {
+				$in_range = array();
+				foreach ( MPWEM_Functions::filter_repeated_dates( $all_dates, $event_id, 'calendar' ) as $filtered_date ) {
+					$filtered_ts = strtotime( $filtered_date );
+					if ( ! $filtered_ts
+						|| ( $range_start && $filtered_ts < strtotime( date( 'Y-m-d', strtotime( $range_start ) ) ) )
+						|| ( $range_end && $filtered_ts > strtotime( $range_end ) ) ) {
+						continue;
+					}
+					$in_range[] = date( 'Y-m-d', $filtered_ts );
+				}
+				$all_dates = $in_range;
+			}
+
 			$all_dates = array_values( array_unique( array_filter( $all_dates ) ) );
 			sort( $all_dates );
 
@@ -1616,6 +1637,10 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				$name  = isset( $ticket['option_name_t'] ) ? $ticket['option_name_t'] : '';
 				$is_unlimited = MPWEM_Functions::is_unlimited_ticket_on_event( $event_id, $ticket );
 				$qty   = $is_unlimited ? MPWEM_Functions::UNLIMITED_TICKET_QTY : ( isset( $ticket['option_qty_t'] ) ? intval( $ticket['option_qty_t'] ) : 0 );
+				if ( ! $is_unlimited ) {
+					// The seat count this date really has (see MPWEM_Functions::get_ticket_capacity()).
+					$qty = (int) apply_filters( 'mpwem_ticket_capacity', $qty, (int) $event_id, $ticket, (string) $event_date );
+				}
 				$rsv   = isset( $ticket['option_rsv_t'] ) ? intval( $ticket['option_rsv_t'] ) : 0;
 				$price = isset( $ticket['option_price_t'] ) ? $ticket['option_price_t'] : 0;
 

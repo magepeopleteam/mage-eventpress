@@ -464,10 +464,41 @@
 				if ( $capacity === '' || is_null( $capacity ) ) {
 					return null;
 				}
+				// Measure against the seat count this date really has, the same number the
+				// event page sold from (see MPWEM_Functions::get_ticket_capacity()).
+				if ( has_filter( 'mpwem_ticket_capacity' ) ) {
+					$capacity = (int) apply_filters( 'mpwem_ticket_capacity', (int) $capacity, (int) $event_id, self::ticket_type_row( $event_id, $lookup_name, $capacity ), (string) $event_date );
+				}
 				$reserved = mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_rsv_t' );
 				$sold     = (int) mep_ticket_type_sold( $event_id, $ticket_name, $event_date );
 
 				return (int) $capacity - ( $sold + (int) $reserved );
+			}
+			/**
+			 * The configured row of a ticket type, matched the way
+			 * mep_get_ticket_type_info_by_name() matches it: apostrophes stripped, and the
+			 * last row wins when two share a name.
+			 *
+			 * @param int    $event_id    Event post ID.
+			 * @param string $lookup_name Ticket type name without apostrophes.
+			 * @param mixed  $capacity    Capacity already resolved, used when no row matches.
+			 * @return array
+			 */
+			private static function ticket_type_row( $event_id, $lookup_name, $capacity ) {
+				$row          = array(
+					'option_name_t' => $lookup_name,
+					'option_qty_t'  => $capacity,
+				);
+				$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+				if ( is_array( $ticket_types ) ) {
+					foreach ( $ticket_types as $ticket_type ) {
+						$name = is_array( $ticket_type ) && isset( $ticket_type['option_name_t'] ) ? str_replace( "'", '', (string) $ticket_type['option_name_t'] ) : '';
+						if ( '' !== $name && $name === $lookup_name ) {
+							$row = $ticket_type;
+						}
+					}
+				}
+				return $row;
 			}
 			/**
 			 * Seats the whole event still has on a given date, for Global Quantity events.

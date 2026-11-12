@@ -18,6 +18,22 @@
 			 * is_unlimited_ticket() or has_unlimited_capacity() and say "Unlimited".
 			 */
 			const UNLIMITED_TICKET_QTY = 1000000;
+			/**
+			 * Version of the date, time and capacity filters below.
+			 *
+			 * An add-on that reshapes an event's schedule or seat counts checks this before
+			 * relying on them, so it can say so instead of saving rules an older free
+			 * plugin would silently ignore:
+			 *
+			 *   mpwem_repeated_event_dates  ( string[] $dates, int $event_id, string $context )
+			 *   mpwem_repeated_event_times  ( array $times, int $event_id, string $date, string $context )
+			 *   mpwem_event_date_rows       ( array $rows, int $event_id, string $context )
+			 *   mpwem_ticket_capacity       ( int $capacity, int $event_id, array $ticket_type, string $date )
+			 *
+			 * $context is 'bookable' (what the booking form may sell), 'all' (admin
+			 * statistics, which must keep listing past and closed dates) or 'calendar'.
+			 */
+			const SCHEDULE_FILTERS_VERSION = 1;
 			public function __construct() { }
 			/**
 			 * The event date the visitor asked for, as a normalised Y-m-d[ H:i] string.
@@ -148,14 +164,26 @@
 			/**
 			 * Seats a ticket type can sell in total, before sales and reservations.
 			 *
-			 * @param array $ticket_type One row of the mep_event_ticket_type meta.
+			 * Given the event and the occurrence, the result passes through the
+			 * mpwem_ticket_capacity filter so an add-on can give one date or time slot a
+			 * different seat count. Without them it is the configured capacity, exactly
+			 * as every existing caller has always received it. An unlimited ticket type
+			 * is never filtered.
+			 *
+			 * @param array  $ticket_type One row of the mep_event_ticket_type meta.
+			 * @param int    $event_id    Optional event post ID.
+			 * @param string $date        Optional occurrence ('Y-m-d' or 'Y-m-d H:i').
 			 * @return int UNLIMITED_TICKET_QTY for an unlimited ticket type.
 			 */
-			public static function get_ticket_capacity( $ticket_type ) {
+			public static function get_ticket_capacity( $ticket_type, $event_id = 0, $date = '' ) {
 				if ( self::is_unlimited_ticket( $ticket_type ) ) {
 					return self::UNLIMITED_TICKET_QTY;
 				}
-				return is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+				$capacity = is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+				if ( $event_id ) {
+					$capacity = (int) apply_filters( 'mpwem_ticket_capacity', $capacity, (int) $event_id, is_array( $ticket_type ) ? $ticket_type : [], (string) $date );
+				}
+				return $capacity;
 			}
 			/**
 			 * Whether Global Quantity caps this event as a whole.
@@ -220,7 +248,7 @@
 				$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 				if ( is_array( $ticket_types ) && count( $ticket_types ) > 0 ) {
 					foreach ( $ticket_types as $ticket_type ) {
-						$total_ticket += self::get_ticket_capacity( $ticket_type );
+						$total_ticket += self::get_ticket_capacity( $ticket_type, $event_id, $date );
 					}
 				}
 				return max( apply_filters( 'mpwem_event_total_seat_counts', $total_ticket, $event_id, $date ), 0 );
@@ -254,7 +282,7 @@
 					$filter_args['post_id']    = $event_id;
 					$filter_args['event_date'] = date('Y-m-d H:i', strtotime($date));
 					$filter_args['ea_ticket_type'] = $ticket_name;
-					$ticket_qty       = self::get_ticket_capacity( $ticket_type );
+					$ticket_qty       = self::get_ticket_capacity( $ticket_type, $event_id, $filter_args['event_date'] );
 					$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 					$total_sold       = MPWEM_Query::attendee_query( $filter_args )->post_count;
 		 			$temp_count 	  = mep_temp_attendee_count( $event_id, $ticket_name, $date );
@@ -484,6 +512,77 @@
 				 }
 				 return $up_coming_date;
 			}
+			/**
+			 * Pass a repeated event's day list through mpwem_repeated_event_dates.
+			 *
+			 * Receives the 'Y-m-d' days left after off days, off dates and special dates
+			 * were applied, before sorting and the expiry check, so a day an add-on opens
+			 * is sorted, de-duplicated and expired exactly like any other.
+			 *
+			 * @param string[] $dates    Candidate days.
+			 * @param int      $event_id Event post ID.
+			 * @param string   $context  'bookable', 'all' or 'calendar'.
+			 * @return string[]
+			 */
+			public static function filter_repeated_dates( $dates, $event_id, $context ) {
+				if ( ! has_filter( 'mpwem_repeated_event_dates' ) ) {
+					return $dates;
+				}
+				$filtered = apply_filters( 'mpwem_repeated_event_dates', $dates, (int) $event_id, (string) $context );
+				return is_array( $filtered ) ? array_values( array_filter( $filtered, 'is_string' ) ) : $dates;
+			}
+			/**
+			 * Pass a single or particular event's date rows through mpwem_event_date_rows.
+			 *
+			 * Each row is [ 'time' => start, 'end' => end ] as get_dates() builds it. The
+			 * result is re-indexed, because callers read the first row with current().
+			 *
+			 * @param array  $rows     Date rows.
+			 * @param int    $event_id Event post ID.
+			 * @param string $context  'bookable', 'all' or 'calendar'.
+			 * @return array
+			 */
+			public static function filter_date_rows( $rows, $event_id, $context ) {
+				if ( ! has_filter( 'mpwem_event_date_rows' ) ) {
+					return $rows;
+				}
+				$filtered = apply_filters( 'mpwem_event_date_rows', $rows, (int) $event_id, (string) $context );
+				return is_array( $filtered ) ? array_values( $filtered ) : $rows;
+			}
+			/**
+			 * Pass a repeated event's time slots for one day through mpwem_repeated_event_times.
+			 *
+			 * For the 'bookable' context the expiry check is repeated on the result, so a
+			 * slot an add-on adds is held to the same booking cut-off (buffer time
+			 * included) as the configured ones. Slots that survived the check before the
+			 * filter survive it again.
+			 *
+			 * @param array  $times    Slots as [ 'start' => [ 'label', 'time' ], 'end' => ... ].
+			 * @param int    $event_id Event post ID.
+			 * @param string $date     Day ('Y-m-d').
+			 * @param string $context  'bookable' or 'all'.
+			 * @return array
+			 */
+			private static function filter_repeated_times( $times, $event_id, $date, $context ) {
+				if ( ! has_filter( 'mpwem_repeated_event_times' ) ) {
+					return $times;
+				}
+				$filtered = apply_filters( 'mpwem_repeated_event_times', $times, (int) $event_id, (string) $date, (string) $context );
+				if ( ! is_array( $filtered ) ) {
+					return $times;
+				}
+				if ( 'bookable' === $context ) {
+					$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 ) * 60;
+					$now         = strtotime( current_time( 'Y-m-d H:i:s' ) );
+					foreach ( $filtered as $key => $time ) {
+						$start = is_array( $time ) && isset( $time['start']['time'] ) ? (string) $time['start']['time'] : '';
+						if ( '' !== $start && strtotime( $date . ' ' . $start ) - $buffer_time <= $now ) {
+							unset( $filtered[ $key ] );
+						}
+					}
+				}
+				return array_values( $filtered );
+			}
 			public static function get_all_dates( $event_id ) {
 				$all_dates = [];
 				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
@@ -521,6 +620,7 @@
 					if ( count( $all_dates ) >1) {
 						usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
 					}
+					$all_dates = self::filter_date_rows( $all_dates, $event_id, 'all' );
 				} else {
 					$start_date = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
 					$end_date   = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_date' );
@@ -553,6 +653,7 @@
 							}
 						}
 					}
+					$all_dates = self::filter_repeated_dates( $all_dates, $event_id, 'all' );
 					usort( $all_dates, "MPWEM_Global_Function::sort_date" );
 					$all_date  = array_unique( $all_dates );
 					$all_dates = [];
@@ -616,6 +717,7 @@
 							$times[0]['end']['time']  = date( 'H:i', strtotime( $end_time ) );
 						}
 					}
+					$times = self::filter_repeated_times( $times, $event_id, date( 'Y-m-d', strtotime( $date ) ), 'all' );
 				}
 				return $times;
 			}
@@ -694,6 +796,7 @@
 							usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
 						}
 					}
+					$all_dates = self::filter_date_rows( $all_dates, $event_id, 'bookable' );
 				} else {
 					$start_date = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
 					$end_date   = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_date' );
@@ -726,6 +829,7 @@
 							}
 						}
 					}
+					$all_dates = self::filter_repeated_dates( $all_dates, $event_id, 'bookable' );
 					usort( $all_dates, "MPWEM_Global_Function::sort_date" );
 					$all_date  = array_unique( $all_dates );
 					$all_dates = [];
@@ -840,6 +944,7 @@
 									}
 								}
 							}
+							$times = self::filter_repeated_times( $times, $event_id, $date, 'bookable' );
 						}
 					}
 				}

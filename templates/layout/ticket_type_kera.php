@@ -112,6 +112,8 @@
 														$ticket_price_wc   = wc_price( MPWEM_Global_Function::normalize_price( $ticket_price_ ) );
 														$ticket_price      = MPWEM_Global_Function::price_convert_raw( $ticket_price_wc );
 														$ticket_qty        = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+														// The seat count this date really has (see MPWEM_Functions::get_ticket_capacity()).
+														$ticket_qty        = (int) apply_filters( 'mpwem_ticket_capacity', (int) $ticket_qty, (int) $event_id, $ticket_type, (string) $date );
 														$ticket_d_qty      = is_array($ticket_type) && array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
 														$ticket_min_qty    = apply_filters( 'filter_mpwem_min_ticket', 0, $event_id, $ticket_type );
 														$ticket_max_qty    = apply_filters( 'filter_mpwem_max_ticket', '', $event_id, $ticket_type );
@@ -154,7 +156,7 @@
                                                                             <p><?php echo esc_html( $ticket_details ); ?></p>
 																		<?php } ?>
 																		<?php if ( $mep_available_seat == 'on' && ! $is_unlimited ) {
-																			$ticket_capacity =is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+																			$ticket_capacity = (int) $ticket_qty;
 																			$remaining_class = function_exists( 'mep_get_availability_class' )
 																				? mep_get_availability_class( $available, $ticket_capacity )
 																				: ( $available <= 10 ? 'remaining-low' : 'remaining-high' );

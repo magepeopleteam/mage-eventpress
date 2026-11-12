@@ -684,6 +684,10 @@
 								foreach ( $ticket_types as $ticket_type ) {
 									$ticket_name      = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 									$ticket_qty       = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+									// The seat count this date really has (see MPWEM_Functions::get_ticket_capacity()).
+									if ( has_filter( 'mpwem_ticket_capacity' ) ) {
+										$ticket_qty = (int) apply_filters( 'mpwem_ticket_capacity', (int) $ticket_qty, (int) $event_id, $ticket_type, (string) $date );
+									}
 									$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 								    $total_sold       = mep_get_ticket_type_seat_count( $event_id, $ticket_name, $date, $ticket_qty, $ticket_r_qty );
 									$available_ticket = (int) $ticket_qty - ( (int) $total_sold + (int) $ticket_r_qty );

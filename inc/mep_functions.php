@@ -86,14 +86,29 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		return mb_ereg_replace( '[^[:alnum:][:space:]]+', '', $value );
 	}
 	if ( ! function_exists( 'mep_temp_attendee_create_for_cart_ticket_array' ) ) {
-		function mep_temp_attendee_create_for_cart_ticket_array( $event_id, $ticket_type ) {
+		/**
+		 * Hold the seats of one cart line: one temporary attendee per ticket row.
+		 *
+		 * @param int    $event_id      Event post ID.
+		 * @param array  $ticket_type   Ticket rows (ticket_name, ticket_qty, event_date).
+		 * @param string $session_key   Optional WooCommerce session the line belongs to.
+		 * @param string $cart_item_key Optional cart item key of the line.
+		 */
+		function mep_temp_attendee_create_for_cart_ticket_array( $event_id, $ticket_type, $session_key = '', $cart_item_key = '' ) {
 			foreach ( $ticket_type as $ticket ) {
-				mep_temp_attendee_create_for_cart( $event_id, $ticket['ticket_name'], $ticket['ticket_qty'], $ticket['event_date'] );
+				mep_temp_attendee_create_for_cart( $event_id, $ticket['ticket_name'], $ticket['ticket_qty'], $ticket['event_date'], $session_key, $cart_item_key );
 			}
 		}
 	}
 	if ( ! function_exists( 'mep_temp_attendee_create_for_cart' ) ) {
-		function mep_temp_attendee_create_for_cart( $event_id, $ticket_type, $ticket_qty, $event_date ) {
+		/**
+		 * Hold seats for one ticket row of a cart line.
+		 *
+		 * The session and cart item key, when given, tie the hold to the cart line
+		 * that owns it, so removing that line releases exactly its own seats and
+		 * never another customer's identical booking.
+		 */
+		function mep_temp_attendee_create_for_cart( $event_id, $ticket_type, $ticket_qty, $event_date, $session_key = '', $cart_item_key = '' ) {
 			$new_post = array(
 				'post_title'    => 'Temp User For' . get_the_title( $event_id ) . '_' . $event_date,
 				'post_content'  => '',
@@ -110,6 +125,82 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $pid, 'ticket_qty', $ticket_qty );
 			update_post_meta( $pid, 'event_date', $event_date );
 			update_post_meta( $pid, 'added_time', $current_time );
+			if ( '' !== (string) $session_key ) {
+				update_post_meta( $pid, 'mep_cart_session', (string) $session_key );
+			}
+			if ( '' !== (string) $cart_item_key ) {
+				update_post_meta( $pid, 'mep_cart_item_key', (string) $cart_item_key );
+			}
+		}
+	}
+	if ( ! function_exists( 'mep_temp_attendee_release_for_cart_item' ) ) {
+		/**
+		 * Release the seats one cart line holds, when that line leaves the cart.
+		 *
+		 * Holds made by this version carry the session and cart item key, so only that
+		 * line's own holds go. A hold made before (no session recorded) is matched by
+		 * event, ticket, quantity and date instead, one per ticket row, oldest first;
+		 * those all expire within the Cart Hold Time anyway.
+		 *
+		 * @param string $cart_item_key Cart item key of the line.
+		 * @param string $session_key   WooCommerce session the line belongs to.
+		 * @param array  $cart_item     The cart line (event_id, event_ticket_info).
+		 * @return int Holds released.
+		 */
+		function mep_temp_attendee_release_for_cart_item( $cart_item_key, $session_key, $cart_item = array() ) {
+			$released = 0;
+			if ( '' !== (string) $cart_item_key && '' !== (string) $session_key ) {
+				$own = get_posts(
+					array(
+						'post_type'      => 'mep_temp_attendee',
+						'post_status'    => 'any',
+						'posts_per_page' => -1,
+						'fields'         => 'ids',
+						'no_found_rows'  => true,
+						'meta_query'     => array(
+							array( 'key' => 'mep_cart_item_key', 'value' => (string) $cart_item_key ),
+							array( 'key' => 'mep_cart_session', 'value' => (string) $session_key ),
+						),
+					)
+				);
+				foreach ( $own as $hold_id ) {
+					if ( wp_delete_post( $hold_id, true ) ) {
+						$released++;
+					}
+				}
+				if ( $released > 0 ) {
+					return $released;
+				}
+			}
+			$event_id = is_array( $cart_item ) && ! empty( $cart_item['event_id'] ) ? (int) $cart_item['event_id'] : 0;
+			$tickets  = is_array( $cart_item ) && ! empty( $cart_item['event_ticket_info'] ) && is_array( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : array();
+			foreach ( $tickets as $ticket ) {
+				if ( ! $event_id || ! is_array( $ticket ) || empty( $ticket['ticket_name'] ) ) {
+					continue;
+				}
+				$legacy = get_posts(
+					array(
+						'post_type'      => 'mep_temp_attendee',
+						'post_status'    => 'any',
+						'posts_per_page' => 1,
+						'orderby'        => 'date',
+						'order'          => 'ASC',
+						'fields'         => 'ids',
+						'no_found_rows'  => true,
+						'meta_query'     => array(
+							array( 'key' => 'event_id', 'value' => $event_id ),
+							array( 'key' => 'ticket_type', 'value' => $ticket['ticket_name'] ),
+							array( 'key' => 'ticket_qty', 'value' => isset( $ticket['ticket_qty'] ) ? $ticket['ticket_qty'] : '' ),
+							array( 'key' => 'event_date', 'value' => isset( $ticket['event_date'] ) ? $ticket['event_date'] : '' ),
+							array( 'key' => 'mep_cart_session', 'compare' => 'NOT EXISTS' ),
+						),
+					)
+				);
+				if ( $legacy && wp_delete_post( $legacy[0], true ) ) {
+					$released++;
+				}
+			}
+			return $released;
 		}
 	}
 	if ( ! function_exists( 'mep_temp_attendee_delete_for_cart' ) ) {
@@ -148,27 +239,40 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 	}
 	if ( ! function_exists( 'mep_temp_attendee_auto_delete_for_cart' ) ) {
+		/**
+		 * Release seat holds older than the Cart Hold Time.
+		 *
+		 * Only the expired holds are removed. This used to also call empty_cart() on
+		 * whoever happened to load the page when any hold expired - usually a
+		 * different visitor from the one who held the seats - wiping that visitor's
+		 * whole cart and their saved cart. The cart line itself stays: the seat check
+		 * at checkout (MPWEM_Woocommerce::check_cart_items()) still refuses it if the
+		 * seats have been sold in the meantime.
+		 *
+		 * Only expired holds are fetched, so the check stays cheap on every page view.
+		 */
 		function mep_temp_attendee_auto_delete_for_cart() {
-			global $woocommerce;
 			$cart_clear_time     = mep_get_option( 'mep_ticket_expire_time_on_cart', 'general_setting_sec', 10 );
 			$cart_clear_time_sec = ! empty( $cart_clear_time ) || $cart_clear_time > 0 ? $cart_clear_time * 60 : 600;
-			$args                = array(
-				'post_type'      => array( 'mep_temp_attendee' ),
-				'posts_per_page' => - 1,
+			$cutoff              = date( 'Y-m-d H:i:s', strtotime( current_time( 'Y-m-d H:i:s' ) ) - (int) $cart_clear_time_sec );
+			$expired             = get_posts(
+				array(
+					'post_type'      => 'mep_temp_attendee',
+					'post_status'    => 'any',
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+					'date_query'     => array(
+						array(
+							'column'    => 'post_date',
+							'before'    => $cutoff,
+							'inclusive' => false,
+						),
+					),
+				)
 			);
-			$loop                = new WP_Query( $args );
-			if ( $loop->post_count > 0 ) {
-				foreach ( $loop->posts as $ticket ) {
-					$post_id   = $ticket->ID;
-					$post_date = get_the_date( 'Y-m-d H:i:s', $post_id );
-					$time_diff = mep_diff_two_datetime( $post_date, current_time( 'Y-m-d H:i:s' ) );
-					if ( $time_diff > $cart_clear_time_sec ) {
-						wp_delete_post( $post_id, true );
-							if ( ! empty( $woocommerce ) && ! empty( $woocommerce->cart ) ) {
-							$woocommerce->cart->empty_cart();
-						}
-					}
-				}
+			foreach ( $expired as $post_id ) {
+				wp_delete_post( $post_id, true );
 			}
 		}
 	}

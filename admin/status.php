@@ -27,6 +27,14 @@
 	add_action('admin_menu', 'mep_event_status_admin_menu', 100);
 	function mep_event_status_admin_menu() {
 		add_submenu_page('edit.php?post_type=mep_events', __('Status', 'mage-eventpress'), __('Status', 'mage-eventpress'), 'manage_options', 'mep_event_status_page', 'mep_event_status_page');
+	}
+	// Hide the menu link only after WordPress has checked access to the page. Removing it on
+	// admin_menu took it out of $submenu before user_can_access_admin_page() ran, so the page
+	// answered "Sorry, you are not allowed to access this page" (403) - and with it the PRO
+	// PDF-support "Install Now / Active Now" buttons, which act on this page. admin_head runs
+	// after that check and before the menu is drawn.
+	add_action('admin_head', 'mep_event_status_hide_menu_link');
+	function mep_event_status_hide_menu_link() {
 		remove_submenu_page('edit.php?post_type=mep_events', 'mep_event_status_page');
 	}
 	function mep_event_status_page() {

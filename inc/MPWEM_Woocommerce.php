@@ -29,6 +29,12 @@
 				self::$instance = $this;
 				add_filter( 'woocommerce_is_purchasable', array( $this, 'make_event_product_purchasable' ), 10, 2 );
 				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 90, 3 );
+				// Seat holds follow the cart line: held once it is added, released when it
+				// is removed or the cart is emptied, held again when an undo restores it.
+				add_action( 'woocommerce_add_to_cart', array( $this, 'hold_cart_seats' ), 10, 6 );
+				add_action( 'woocommerce_remove_cart_item', array( $this, 'release_cart_seats' ), 10, 2 );
+				add_action( 'woocommerce_cart_item_restored', array( $this, 'restore_cart_seats' ), 10, 2 );
+				add_action( 'woocommerce_before_cart_emptied', array( $this, 'release_all_cart_seats' ) );
 				add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ) );
 				add_filter( 'woocommerce_get_item_data', array( $this, 'get_item_data' ), 20, 2 );
 				add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 10, 90 );
@@ -127,12 +133,102 @@
 					$cart_item_data['event_cart_display_date']  = $start_date;
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
-					mep_temp_attendee_create_for_cart_ticket_array( $product_id, $ticket_info );
+					// Seats are held in hold_cart_seats(), once WooCommerce has really added
+					// the line; WooCommerce can still refuse it after this filter.
 					//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
 					$cart_item_data = apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user_info, $ticket_info, $ex_infos );
 				}
 				//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
 				return $cart_item_data;
+			}
+			/**
+			 * The WooCommerce session the current cart belongs to, '' without one.
+			 *
+			 * @return string
+			 */
+			private static function cart_session_key() {
+				return ( function_exists( 'WC' ) && WC()->session ) ? (string) WC()->session->get_customer_id() : '';
+			}
+			/**
+			 * Whether a cart line is an event booking with ticket rows to hold.
+			 *
+			 * @param mixed $cart_item Cart line.
+			 * @return bool
+			 */
+			private static function is_event_cart_item( $cart_item ) {
+				return is_array( $cart_item )
+					&& ! empty( $cart_item['event_id'] )
+					&& 'mep_events' === get_post_type( (int) $cart_item['event_id'] )
+					&& ! empty( $cart_item['event_ticket_info'] )
+					&& is_array( $cart_item['event_ticket_info'] );
+			}
+			/**
+			 * Hold the seats of a line WooCommerce has just added to the cart.
+			 *
+			 * Holding them here, rather than in add_cart_item_data(), means a line that
+			 * WooCommerce refuses after that filter (not purchasable, out of stock, sold
+			 * individually and already in the cart) never leaves seats held. Each hold
+			 * records its session and cart item key, so removing the line releases
+			 * exactly its own seats.
+			 *
+			 * @param string $cart_item_key  Cart item key.
+			 * @param int    $product_id     Product added.
+			 * @param int    $quantity       Quantity.
+			 * @param int    $variation_id   Variation.
+			 * @param array  $variation      Variation attributes.
+			 * @param array  $cart_item_data The line's data, event fields included.
+			 */
+			public function hold_cart_seats( $cart_item_key, $product_id = 0, $quantity = 1, $variation_id = 0, $variation = array(), $cart_item_data = array() ) {
+				if ( ! self::is_event_cart_item( $cart_item_data ) ) {
+					return;
+				}
+				$session_key = self::cart_session_key();
+				// Adding the same line again must not double its holds.
+				mep_temp_attendee_release_for_cart_item( (string) $cart_item_key, $session_key );
+				mep_temp_attendee_create_for_cart_ticket_array( (int) $cart_item_data['event_id'], $cart_item_data['event_ticket_info'], $session_key, (string) $cart_item_key );
+			}
+			/**
+			 * Release a line's seats when the customer removes it from the cart.
+			 *
+			 * Runs before WooCommerce takes the line out, so it is still readable.
+			 *
+			 * @param string  $cart_item_key Cart item key.
+			 * @param WC_Cart $cart          The cart.
+			 */
+			public function release_cart_seats( $cart_item_key, $cart ) {
+				$cart_item = ( is_object( $cart ) && isset( $cart->cart_contents[ $cart_item_key ] ) ) ? $cart->cart_contents[ $cart_item_key ] : array();
+				if ( self::is_event_cart_item( $cart_item ) ) {
+					mep_temp_attendee_release_for_cart_item( (string) $cart_item_key, self::cart_session_key(), $cart_item );
+				}
+			}
+			/**
+			 * Hold the seats again when an undo puts a removed line back.
+			 *
+			 * @param string  $cart_item_key Cart item key.
+			 * @param WC_Cart $cart          The cart.
+			 */
+			public function restore_cart_seats( $cart_item_key, $cart ) {
+				$cart_item = ( is_object( $cart ) && isset( $cart->cart_contents[ $cart_item_key ] ) ) ? $cart->cart_contents[ $cart_item_key ] : array();
+				if ( self::is_event_cart_item( $cart_item ) ) {
+					$this->hold_cart_seats( $cart_item_key, 0, 1, 0, array(), $cart_item );
+				}
+			}
+			/**
+			 * Release the seats of every event line when the cart is emptied.
+			 *
+			 * Only this cart's own holds are touched. After checkout the order has
+			 * already released them, so this finds nothing left to do.
+			 */
+			public function release_all_cart_seats() {
+				if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+					return;
+				}
+				$session_key = self::cart_session_key();
+				foreach ( WC()->cart->get_cart_contents() as $cart_item_key => $cart_item ) {
+					if ( self::is_event_cart_item( $cart_item ) ) {
+						mep_temp_attendee_release_for_cart_item( (string) $cart_item_key, $session_key );
+					}
+				}
 			}
 			public function before_calculate_totals( $cart_object ) {
 				foreach ( $cart_object->cart_contents as $key => $value ) {

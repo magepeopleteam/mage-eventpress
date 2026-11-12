@@ -108,6 +108,8 @@
 													// Total seats configured for this ticket. Used when the availability
 													// indicator is measured as a percentage of capacity.
 													$ticket_capacity = is_array( $ticket_type ) && array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
+													// The seat count this date really has (see MPWEM_Functions::get_ticket_capacity()).
+													$ticket_capacity = (int) apply_filters( 'mpwem_ticket_capacity', $ticket_capacity, (int) $event_id, $ticket_type, (string) $date );
 													$remaining_class = function_exists( 'mep_get_availability_class' )
 														? mep_get_availability_class( $available, $ticket_capacity )
 														: ( $available <= 10 ? 'remaining-low' : 'remaining-high' );

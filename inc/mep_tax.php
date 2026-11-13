@@ -4,8 +4,8 @@
 	} // Cannot access pages directly.
 	function mep_cpt_tax() {
 		$event_label      = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
-		$event_cat_label  = mep_get_option( 'mep_event_cat_label', 'general_setting_sec', 'Category' );
-		$event_org__label = mep_get_option( 'mep_event_org_label', 'general_setting_sec', 'Organizer' );
+		$event_cat_label  = mep_get_option( 'mep_event_cat_label', 'general_setting_sec', __( 'Category', 'mage-eventpress' ) );
+		$event_org__label = mep_get_option( 'mep_event_org_label', 'general_setting_sec', __( 'Organizer', 'mage-eventpress' ) );
 		$event_cat_slug   = mep_get_option( 'mep_event_cat_slug', 'general_setting_sec', 'mep_cat' );
 		$event_org_slug   = mep_get_option( 'mep_event_org_slug', 'general_setting_sec', 'mep_org' );
 		$labels = array(

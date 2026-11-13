@@ -326,13 +326,13 @@
 				echo '<div class="mep-gn__availability-percent"' . ( 'percentage' === $indicator_mode ? '' : ' hidden' ) . '>';
 				self::text( 'mep_low_stock_percent', __( 'Low Stock Percentage (%)', 'mage-eventpress' ), '', $g( 'mep_low_stock_percent', '10' ), 'number' );
 				echo '</div>';
-				self::text( 'mep_low_stock_text', __( 'Low Stock Text', 'mage-eventpress' ), __( 'Use %s for seats left.', 'mage-eventpress' ), $g( 'mep_low_stock_text', 'Hurry! Only %s seats left' ) );
+				self::text( 'mep_low_stock_text', __( 'Low Stock Text', 'mage-eventpress' ), __( 'Use %s for seats left.', 'mage-eventpress' ), $g( 'mep_low_stock_text', __( 'Hurry! Only %s seats left', 'mage-eventpress' ) ) );
 				echo '</div>';
 				self::toggle_yesno( 'mep_enable_low_stock_email', __( 'Low Stock Email Alerts', 'mage-eventpress' ), __( 'Email the admin when seats are running low.', 'mage-eventpress' ), $g( 'mep_enable_low_stock_email', 'yes' ) );
 				self::toggle_yesno( 'mep_show_limited_availability_ribbon', __( 'Limited Availability Ribbon', 'mage-eventpress' ), __( 'Show a badge when only a few seats are left.', 'mage-eventpress' ), $g( 'mep_show_limited_availability_ribbon', 'no' ) );
 				echo '<div class="mep-gn__row-2">';
 				self::text( 'mep_limited_availability_threshold', __( 'Limited Threshold', 'mage-eventpress' ), '', $g( 'mep_limited_availability_threshold', '0' ) );
-				self::text( 'mep_limited_availability_text', __( 'Limited Ribbon Text', 'mage-eventpress' ), '', $g( 'mep_limited_availability_text', 'Limited Availability' ) );
+				self::text( 'mep_limited_availability_text', __( 'Limited Ribbon Text', 'mage-eventpress' ), '', $g( 'mep_limited_availability_text', __( 'Limited Availability', 'mage-eventpress' ) ) );
 				echo '</div>';
 				self::close_card();
 			}
@@ -340,11 +340,11 @@
 			private static function card_category_organizer( $g ) {
 				self::open_card( 'fas fa-sitemap', __( 'Category & Organizer', 'mage-eventpress' ) );
 				echo '<div class="mep-gn__row-2">';
-				self::text( 'mep_event_cat_label', __( 'Category Label', 'mage-eventpress' ), '', $g( 'mep_event_cat_label', 'Category' ) );
+				self::text( 'mep_event_cat_label', __( 'Category Label', 'mage-eventpress' ), '', $g( 'mep_event_cat_label', __( 'Category', 'mage-eventpress' ) ) );
 				self::text( 'mep_event_cat_slug', __( 'Category Slug', 'mage-eventpress' ), '', $g( 'mep_event_cat_slug', 'mep_cat' ) );
 				echo '</div>';
 				echo '<div class="mep-gn__row-2">';
-				self::text( 'mep_event_org_label', __( 'Organizer Label', 'mage-eventpress' ), '', $g( 'mep_event_org_label', 'Organizer' ) );
+				self::text( 'mep_event_org_label', __( 'Organizer Label', 'mage-eventpress' ), '', $g( 'mep_event_org_label', __( 'Organizer', 'mage-eventpress' ) ) );
 				self::text( 'mep_event_org_slug', __( 'Organizer Slug', 'mage-eventpress' ), '', $g( 'mep_event_org_slug', 'mep_org' ) );
 				echo '</div>';
 				self::close_card();

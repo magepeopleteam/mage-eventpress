@@ -1396,10 +1396,10 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'multicheck',
 								'default' => array( 'processing' => 'processing', 'completed' => 'completed' ),
 								'options' => array(
-									'on-hold'    => 'On Hold',
-									'pending'    => 'Pending',
-									'processing' => 'Processing',
-									'completed'  => 'Completed'
+									'on-hold'    => __( 'On Hold', 'mage-eventpress' ),
+									'pending'    => __( 'Pending', 'mage-eventpress' ),
+									'processing' => __( 'Processing', 'mage-eventpress' ),
+									'completed'  => __( 'Completed', 'mage-eventpress' )
 									// 'cancelled'     => 'Cancelled'
 								)
 							),
@@ -1410,8 +1410,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Disable',
-									'no'  => 'Enable'
+									'yes' => __( 'Disable', 'mage-eventpress' ),
+									'no'  => __( 'Enable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1421,8 +1421,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'new',
 								'options' => array(
-									'new' => 'New Modern Style',
-									'wp'  => 'WordPress Default Post List Style'
+									'new' => __( 'New Modern Style', 'mage-eventpress' ),
+									'wp'  => __( 'WordPress Default Post List Style', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1443,8 +1443,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
-									'enable'  => 'Enable',
-									'disable' => 'Disable'
+									'enable'  => __( 'Enable', 'mage-eventpress' ),
+									'disable' => __( 'Disable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1454,7 +1454,7 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'none',
 								'options' => array(
-									'none'     => 'None',
+									'none'     => __( 'None', 'mage-eventpress' ),
 									'polylang' => 'Polylang',
 									'wpml'     => 'WPML'
 								)
@@ -1466,8 +1466,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'meta_value',
 								'options' => array(
-									'meta_value' => 'Event Upcoming Date',
-									'title'      => 'Event Title'
+									'meta_value' => __( 'Event Upcoming Date', 'mage-eventpress' ),
+									'title'      => __( 'Event Title', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1496,7 +1496,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Category Label', 'mage-eventpress' ),
 								'desc'    => __( 'Name shown for event categories.', 'mage-eventpress' ),
 								'type'    => 'text',
-								'default' => 'Category'
+								'default' => __( 'Category', 'mage-eventpress' )
 							),
 							array(
 								'name'    => 'mep_event_cat_slug',
@@ -1510,7 +1510,7 @@ tr.payment_tabs_html { display: none !important; }
 								'label'   => __( 'Organizer Label', 'mage-eventpress' ),
 								'desc'    => __( 'Name shown for event organizers.', 'mage-eventpress' ),
 								'type'    => 'text',
-								'default' => 'Organizer'
+								'default' => __( 'Organizer', 'mage-eventpress' )
 							),
 							array(
 								'name'    => 'mep_event_org_slug',
@@ -1528,7 +1528,7 @@ tr.payment_tabs_html { display: none !important; }
 								'options' => array(
 									''       => 'Please Select a Map Type',
 									'api'    => 'API',
-									'iframe' => 'Iframe'
+									'iframe' => __( 'Iframe', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1545,8 +1545,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'event_start_datetime',
 								'options' => array(
-									'event_start_datetime'  => 'Event Start Time',
-									'event_expire_datetime' => 'Event End Time'
+									'event_start_datetime'  => __( 'Event Start Time', 'mage-eventpress' ),
+									'event_expire_datetime' => __( 'Event End Time', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1556,8 +1556,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1567,8 +1567,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1578,8 +1578,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1589,8 +1589,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1600,8 +1600,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1611,8 +1611,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1622,8 +1622,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Enable',
-									'no'  => 'Disable'
+									'yes' => __( 'Enable', 'mage-eventpress' ),
+									'no'  => __( 'Disable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1633,8 +1633,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1653,8 +1653,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1680,8 +1680,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1691,8 +1691,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1702,8 +1702,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1713,8 +1713,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1724,8 +1724,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1735,8 +1735,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1746,8 +1746,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1763,8 +1763,8 @@ tr.payment_tabs_html { display: none !important; }
 								'label'       => __( 'Limited Availability Ribbon Text', 'mage-eventpress' ),
 								'desc'        => __( 'Text shown on the limited availability badge.', 'mage-eventpress' ),
 								'type'        => 'text',
-								'default'     => 'Limited Availability',
-								'placeholder' => 'Limited Availability'
+								'default'     => __( 'Limited Availability', 'mage-eventpress' ),
+								'placeholder' => __( 'Limited Availability', 'mage-eventpress' )
 							),
 							array(
 								'name'    => 'mep_show_low_stock_warning',
@@ -1773,8 +1773,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1790,8 +1790,8 @@ tr.payment_tabs_html { display: none !important; }
 								'label'       => __( 'Low Stock Warning Text', 'mage-eventpress' ),
 								'desc'        => __( 'Warning text. Use %s for the number of seats left.', 'mage-eventpress' ),
 								'type'        => 'text',
-								'default'     => 'Hurry! Only %s seats left',
-								'placeholder' => 'Hurry! Only %s seats left'
+								'default'     => __( 'Hurry! Only %s seats left', 'mage-eventpress' ),
+								'placeholder' => __( 'Hurry! Only %s seats left', 'mage-eventpress' )
 							),
 							array(
 								'name'    => 'mep_enable_low_stock_email',
@@ -1800,8 +1800,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1870,8 +1870,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1911,8 +1911,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
-									'enable'  => 'Enable',
-									'disable' => 'Disable'
+									'enable'  => __( 'Enable', 'mage-eventpress' ),
+									'disable' => __( 'Disable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1922,8 +1922,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'enable',
 								'options' => array(
-									'enable'  => 'Enable',
-									'disable' => 'Disable'
+									'enable'  => __( 'Enable', 'mage-eventpress' ),
+									'disable' => __( 'Disable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1933,8 +1933,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
-									'enable'  => 'Enable',
-									'disable' => 'Disable'
+									'enable'  => __( 'Enable', 'mage-eventpress' ),
+									'disable' => __( 'Disable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1944,8 +1944,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
-									'enable'  => 'Enable',
-									'disable' => 'Disable'
+									'enable'  => __( 'Enable', 'mage-eventpress' ),
+									'disable' => __( 'Disable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1981,8 +1981,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_price_show', 'general_setting_sec', 'event_list_setting_sec', 'yes' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -1992,8 +1992,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_date_list_in_event_listing', 'general_setting_sec', 'event_list_setting_sec', 'yes' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2003,8 +2003,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_organizer_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2014,8 +2014,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_location_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2025,8 +2025,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_time_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2036,8 +2036,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_end_time_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2047,8 +2047,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_hide_event_hover_btn', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2058,8 +2058,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2069,8 +2069,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
                             array(
@@ -2080,8 +2080,8 @@ tr.payment_tabs_html { display: none !important; }
                                 'type'    => 'select',
                                 'default' => mep_change_global_option_section( 'mep_hide_event_list_msg', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
                                 'options' => array(
-                                    'yes' => 'Yes',
-                                    'no'  => 'No'
+                                    'yes' => __( 'Yes', 'mage-eventpress' ),
+                                    'no'  => __( 'No', 'mage-eventpress' )
                                 )
                             ),
 						)
@@ -2094,8 +2094,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_enable_speaker_list', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2105,8 +2105,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_show_product_cat_in_event', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2124,8 +2124,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_product_type', 'general_setting_sec', 'single_event_setting_sec', 'yes' ),
 								'options' => array(
-									'yes' => 'No',
-									'no'  => 'Yes'
+									'yes' => __( 'No', 'mage-eventpress' ),
+									'no'  => __( 'Yes', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2135,8 +2135,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_date_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2146,8 +2146,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_time_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2157,8 +2157,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_location_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2168,8 +2168,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_total_seat_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2179,8 +2179,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_org_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2190,8 +2190,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_address_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2201,8 +2201,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_event_schedule_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2212,8 +2212,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_share_this_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2223,8 +2223,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_calendar_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2234,8 +2234,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2255,8 +2255,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_description_title', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2266,8 +2266,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_left_sidebar_title', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2277,8 +2277,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_time', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
+									'yes' => __( 'Yes', 'mage-eventpress' ),
+									'no'  => __( 'No', 'mage-eventpress' )
 								)
 							),
 						)
@@ -2291,8 +2291,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'multicheck',
 								'default' => array( 'completed' => 'completed' ),
 								'options' => array(
-									'processing' => 'Processing',
-									'completed'  => 'Completed'
+									'processing' => __( 'Processing', 'mage-eventpress' ),
+									'completed'  => __( 'Completed', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2330,8 +2330,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'enable',
 								'options' => array(
-									'enable'  => 'Enable',
-									'disable' => 'Disable'
+									'enable'  => __( 'Enable', 'mage-eventpress' ),
+									'disable' => __( 'Disable', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2454,8 +2454,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'true',
 								'options' => array(
-									'true'  => 'Yes',
-									'false' => 'No'
+									'true'  => __( 'Yes', 'mage-eventpress' ),
+									'false' => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(
@@ -2465,8 +2465,8 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'select',
 								'default' => 'true',
 								'options' => array(
-									'true'  => 'Yes',
-									'false' => 'No'
+									'true'  => __( 'Yes', 'mage-eventpress' ),
+									'false' => __( 'No', 'mage-eventpress' )
 								)
 							),
 							array(

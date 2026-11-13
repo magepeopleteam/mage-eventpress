@@ -201,62 +201,62 @@
 			public static function get_preset_template( $type ) {
 				switch ( $type ) {
 					case 'confirmation':
-						return '<p>Hi {name},</p>
-<p>Thanks for joining the event.</p>
-<p>Here are your event details:</p>
-<p><strong>Event Name:</strong> {event}<br>
-<strong>Ticket Type:</strong> {ticket_type}<br>
-<strong>Event Date:</strong> {event_date}<br>
-<strong>Start Time:</strong> {event_time}<br>
-<strong>Full DateTime:</strong> {event_datetime}<br>
-<strong>Payment Method:</strong> {payment_method}<br>
-<strong>Amount Paid:</strong> {amount_paid}<br>
-<strong>Order ID:</strong> {order_id}</p>
-<p>We look forward to seeing you there.</p>
-<p>Thanks</p>';
+						return '<p>' . esc_html__( 'Hi {name},', 'mage-eventpress' ) . '</p>
+<p>' . esc_html__( 'Thanks for joining the event.', 'mage-eventpress' ) . '</p>
+<p>' . esc_html__( 'Here are your event details:', 'mage-eventpress' ) . '</p>
+<p><strong>' . esc_html__( 'Event Name:', 'mage-eventpress' ) . '</strong> {event}<br>
+<strong>' . esc_html__( 'Ticket Type:', 'mage-eventpress' ) . '</strong> {ticket_type}<br>
+<strong>' . esc_html__( 'Event Date:', 'mage-eventpress' ) . '</strong> {event_date}<br>
+<strong>' . esc_html__( 'Start Time:', 'mage-eventpress' ) . '</strong> {event_time}<br>
+<strong>' . esc_html__( 'Full DateTime:', 'mage-eventpress' ) . '</strong> {event_datetime}<br>
+<strong>' . esc_html__( 'Payment Method:', 'mage-eventpress' ) . '</strong> {payment_method}<br>
+<strong>' . esc_html__( 'Amount Paid:', 'mage-eventpress' ) . '</strong> {amount_paid}<br>
+<strong>' . esc_html__( 'Order ID:', 'mage-eventpress' ) . '</strong> {order_id}</p>
+<p>' . esc_html__( 'We look forward to seeing you there.', 'mage-eventpress' ) . '</p>
+<p>' . esc_html__( 'Thanks', 'mage-eventpress' ) . '</p>';
 
 					case 'pdf':
-						return '<p>Hello {customer_name},</p>
-<p>Thank you for registering.</p>
-<p>Please download your PDF ticket from the attachment and bring a printed or digital copy to the event.</p>
-<p><strong>Event Name:</strong> {event_name}<br>
-<strong>Event Date:</strong> {event_date}<br>
-<strong>Event Venue:</strong> {event_venue}<br>
-<strong>Payment Method:</strong> {payment_method}<br>
-<strong>Amount Paid:</strong> {amount_paid}<br>
-<strong>Order ID:</strong> {order_id}</p>
-<p>See you at the event.</p>';
+						return '<p>' . esc_html__( 'Hello {customer_name},', 'mage-eventpress' ) . '</p>
+<p>' . esc_html__( 'Thank you for registering.', 'mage-eventpress' ) . '</p>
+<p>' . esc_html__( 'Please download your PDF ticket from the attachment and bring a printed or digital copy to the event.', 'mage-eventpress' ) . '</p>
+<p><strong>' . esc_html__( 'Event Name:', 'mage-eventpress' ) . '</strong> {event_name}<br>
+<strong>' . esc_html__( 'Event Date:', 'mage-eventpress' ) . '</strong> {event_date}<br>
+<strong>' . esc_html__( 'Event Venue:', 'mage-eventpress' ) . '</strong> {event_venue}<br>
+<strong>' . esc_html__( 'Payment Method:', 'mage-eventpress' ) . '</strong> {payment_method}<br>
+<strong>' . esc_html__( 'Amount Paid:', 'mage-eventpress' ) . '</strong> {amount_paid}<br>
+<strong>' . esc_html__( 'Order ID:', 'mage-eventpress' ) . '</strong> {order_id}</p>
+<p>' . esc_html__( 'See you at the event.', 'mage-eventpress' ) . '</p>';
 
 					case 'waitlist_admin':
 						// Body-only preset (full HTML documents break TinyMCE Visual mode).
-						return '<p>Hello Admin,</p>
-<p>A new guest has joined the waitlist.</p>
-<p><strong>Name:</strong> {name}<br>
-<strong>Email:</strong> {email}<br>
-<strong>Phone:</strong> {phone}<br>
-<strong>Event:</strong> {event_name}<br>
-<strong>Date:</strong> {event_date}<br>
-<strong>Tickets:</strong> {ticket_qty}</p>
-<p><a href="{admin_url}">View waitlist in admin</a></p>
-<p>Submitted at {current_time}</p>';
+						return '<p>' . esc_html__( 'Hello Admin,', 'mage-eventpress' ) . '</p>
+<p>' . esc_html__( 'A new guest has joined the waitlist.', 'mage-eventpress' ) . '</p>
+<p><strong>' . esc_html__( 'Name:', 'mage-eventpress' ) . '</strong> {name}<br>
+<strong>' . esc_html__( 'Email:', 'mage-eventpress' ) . '</strong> {email}<br>
+<strong>' . esc_html__( 'Phone:', 'mage-eventpress' ) . '</strong> {phone}<br>
+<strong>' . esc_html__( 'Event:', 'mage-eventpress' ) . '</strong> {event_name}<br>
+<strong>' . esc_html__( 'Date:', 'mage-eventpress' ) . '</strong> {event_date}<br>
+<strong>' . esc_html__( 'Tickets:', 'mage-eventpress' ) . '</strong> {ticket_qty}</p>
+<p><a href="{admin_url}">' . esc_html__( 'View waitlist in admin', 'mage-eventpress' ) . '</a></p>
+<p>' . sprintf( /* translators: %s: date and time */ esc_html__( 'Submitted at %s', 'mage-eventpress' ), '{current_time}' ) . '</p>';
 
 					case 'waitlist_spot':
-						return '<p>Hi {name},</p>
-<p>Great news! A spot is now available for <strong>{event_name}</strong> on {event_date}.</p>
-<p>You requested <strong>{ticket_qty}</strong> ticket(s).</p>
-<p><a href="{event_url}">Book your tickets now</a></p>
-<p>Spots are limited and available on a first-come, first-served basis.</p>
-<p>Best regards,<br>Event Team</p>';
+						return '<p>' . esc_html__( 'Hi {name},', 'mage-eventpress' ) . '</p>
+<p>' . sprintf( /* translators: 1: event name, 2: event date */ esc_html__( 'Great news! A spot is now available for %1$s on %2$s.', 'mage-eventpress' ), '<strong>{event_name}</strong>', '{event_date}' ) . '</p>
+<p>' . sprintf( /* translators: %s: number of tickets */ esc_html__( 'You requested %s ticket(s).', 'mage-eventpress' ), '<strong>{ticket_qty}</strong>' ) . '</p>
+<p><a href="{event_url}">' . esc_html__( 'Book your tickets now', 'mage-eventpress' ) . '</a></p>
+<p>' . esc_html__( 'Spots are limited and available on a first-come, first-served basis.', 'mage-eventpress' ) . '</p>
+<p>' . esc_html__( 'Best regards,', 'mage-eventpress' ) . '<br>' . esc_html__( 'Event Team', 'mage-eventpress' ) . '</p>';
 
 					case 'waitlist_customer':
-						return '<p>Dear {name},</p>
-<p>Thank you for joining the waitlist for <strong>{event_name}</strong>.</p>
-<p><strong>Event:</strong> {event_name}<br>
-<strong>Date:</strong> {event_date}<br>
-<strong>Tickets requested:</strong> {ticket_qty}</p>
-<p>We will email you as soon as tickets become available.</p>
-<p><a href="{event_url}">View event details</a></p>
-<p>Best regards,<br>{site_name}</p>';
+						return '<p>' . esc_html__( 'Dear {name},', 'mage-eventpress' ) . '</p>
+<p>' . sprintf( /* translators: %s: event name */ esc_html__( 'Thank you for joining the waitlist for %s.', 'mage-eventpress' ), '<strong>{event_name}</strong>' ) . '</p>
+<p><strong>' . esc_html__( 'Event:', 'mage-eventpress' ) . '</strong> {event_name}<br>
+<strong>' . esc_html__( 'Date:', 'mage-eventpress' ) . '</strong> {event_date}<br>
+<strong>' . esc_html__( 'Tickets requested:', 'mage-eventpress' ) . '</strong> {ticket_qty}</p>
+<p>' . esc_html__( 'We will email you as soon as tickets become available.', 'mage-eventpress' ) . '</p>
+<p><a href="{event_url}">' . esc_html__( 'View event details', 'mage-eventpress' ) . '</a></p>
+<p>' . esc_html__( 'Best regards,', 'mage-eventpress' ) . '<br>{site_name}</p>';
 				}
 
 				return '';

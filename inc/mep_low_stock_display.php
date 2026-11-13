@@ -231,7 +231,7 @@
 				return;
 			}
 			$low_stock_threshold = self::describe_low_stock_threshold( $total_capacity );
-			$low_stock_text = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left' );
+			$low_stock_text = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', __( 'Hurry! Only %s seats left', 'mage-eventpress' ) );
 			if ( self::is_low_stock_threshold_met( $available_seats, $total_capacity ) ) {
 				$warning_text = $this->format_low_stock_message( $low_stock_text, $available_seats );
 				echo '<div class="mep-low-stock-warning">' . esc_html( $warning_text ) . '</div>';
@@ -305,7 +305,7 @@
 		 * Get low stock email content
 		 */
 		private function get_low_stock_email_content( $post_id, $ticket_type_name, $available_seats, $threshold, $event_title, $event_url ) {
-			$low_stock_text  = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left' );
+			$low_stock_text  = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', __( 'Hurry! Only %s seats left', 'mage-eventpress' ) );
 			$warning_message = $this->format_low_stock_message( $low_stock_text, $available_seats );
 			$message = '
         <!DOCTYPE html>

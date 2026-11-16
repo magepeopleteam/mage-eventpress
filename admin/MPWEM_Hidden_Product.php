@@ -12,6 +12,7 @@
 				add_action( 'save_post', array( $this, 'run_link_product_on_save' ), 99, 1 );
 				add_action( 'mpwem_after_event_edit_save', array( $this, 'run_link_product_on_save' ), 99, 1 );
 				add_action( 'parse_query', array( $this, 'hide_wc_hidden_product_from_product_list' ) );
+				add_filter( 'posts_where', array( $this, 'exclude_hidden_event_products_where' ), 10, 2 );
 				add_action( 'pre_get_posts', array( $this, 'hide_wc_hidden_product') );
 				add_action( 'wp', array( $this, 'hide_hidden_wc_product_from_frontend' ) );
 				//******************//
@@ -169,34 +170,56 @@
 
 			public function hide_wc_hidden_product( $query ) {
 				if ( $query->is_search && ! is_admin() ) {
-					$query->set( 'tax_query', array(
-						array(
-							'taxonomy' => 'product_visibility',
-							'field'    => 'name',
-							'terms'    => 'exclude-from-search',
-							'operator' => 'NOT IN',
-						)
-					) );
+					$exclude_hidden = array(
+						'taxonomy' => 'product_visibility',
+						'field'    => 'name',
+						'terms'    => 'exclude-from-search',
+						'operator' => 'NOT IN',
+					);
+					// Add to the search's own tax_query instead of replacing it, so a search
+					// narrowed by category (or by another plugin) keeps that condition.
+					$tax_query = $query->get( 'tax_query' );
+					$query->set( 'tax_query', is_array( $tax_query ) && ! empty( $tax_query ) ? array( 'relation' => 'AND', $tax_query, $exclude_hidden ) : array( $exclude_hidden ) );
 				}
 				return $query;
 			}
+		/**
+		 * Keep the products created for events out of the admin Products list.
+		 *
+		 * Only the main query of the Products screen, and only products that are both hidden
+		 * from the catalog and linked to an event. Excluding every "exclude-from-catalog"
+		 * product also hid the shop owner's own products with catalog visibility "Hidden",
+		 * and any other product query that ran on that screen.
+		 */
 		public function hide_wc_hidden_product_from_product_list( $query ) {
 			global $pagenow;
-			$q_vars = &$query->query_vars;
-			if ( $pagenow == 'edit.php' && isset( $q_vars['post_type'] ) && $q_vars['post_type'] == 'product' ) {
-				$show_hidden = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_show_hidden_wc_product', 'no' );
-				if ( $show_hidden !== 'yes' ) {
-					$tax_query = array(
-						[
-							'taxonomy' => 'product_visibility',
-							'field'    => 'slug',
-							'terms'    => 'exclude-from-catalog',
-							'operator' => 'NOT IN',
-						]
-					);
-					$query->set( 'tax_query', $tax_query );
-				}
+			if ( ! is_admin() || 'edit.php' !== $pagenow || ! $query->is_main_query() || 'product' !== $query->get( 'post_type' ) ) {
+				return;
 			}
+			$show_hidden = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_show_hidden_wc_product', 'no' );
+			if ( $show_hidden !== 'yes' ) {
+				$query->set( 'mpwem_hide_event_products', 1 );
+			}
+		}
+		/**
+		 * SQL for hide_wc_hidden_product_from_product_list(). A tax_query and a meta_query are
+		 * always ANDed, so "not (hidden AND linked to an event)" has to be written as a subquery.
+		 */
+		public function exclude_hidden_event_products_where( $where, $query ) {
+			if ( ! $query instanceof WP_Query || ! $query->get( 'mpwem_hide_event_products' ) ) {
+				return $where;
+			}
+			$hidden = get_term_by( 'slug', 'exclude-from-catalog', 'product_visibility' );
+			if ( ! $hidden || is_wp_error( $hidden ) ) {
+				return $where;
+			}
+			global $wpdb;
+			$where .= $wpdb->prepare(
+				" AND {$wpdb->posts}.ID NOT IN ( SELECT mpwem_tr.object_id FROM {$wpdb->term_relationships} AS mpwem_tr INNER JOIN {$wpdb->postmeta} AS mpwem_pm ON mpwem_pm.post_id = mpwem_tr.object_id WHERE mpwem_tr.term_taxonomy_id = %d AND mpwem_pm.meta_key = %s AND mpwem_pm.meta_value NOT IN ( '', '0' ) )",
+				(int) $hidden->term_taxonomy_id,
+				'link_mep_event'
+			);
+			return $where;
 		}
 
 			public function hide_hidden_wc_product_from_frontend() {

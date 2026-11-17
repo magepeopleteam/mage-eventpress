@@ -9923,9 +9923,13 @@
                 }
                 window.setTimeout(function() {
                     if ($field && $field.length) {
-                        try { $field[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+                        // A custom dropdown hides the real <select>, which has no box to
+                        // scroll to or flash - point at its visible trigger instead.
+                        const $trigger = $field.is('select.mpwem-enhanced') ? $field.siblings('.mpwem-select-trigger').first() : $();
+                        const $visible = $trigger.length ? $trigger : $field;
+                        try { $visible[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
                         if ($field.is(':visible')) $field.trigger('focus');
-                        flashAttention($field);
+                        flashAttention($visible);
                     }
                 }, 220);
             }, 120);

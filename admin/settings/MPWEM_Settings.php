@@ -447,16 +447,18 @@
 					$buffer_time = isset( $_POST['mep_buffer_time'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_buffer_time'] ) ) : 0;
 					update_post_meta( $post_id, 'mep_buffer_time', $buffer_time );
 					/********************/
+					// Date/time formats keep backslash escapes (e.g. H\H i\m\i\n). update_post_meta()
+					// unslashes its value, so re-slash what wp_unslash() already returned.
 					$mep_enable_custom_dt_format = isset( $_POST['mep_enable_custom_dt_format'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_custom_dt_format'] ) ) ? 'on' : 'off';
 					update_post_meta( $post_id, 'mep_enable_custom_dt_format', $mep_enable_custom_dt_format );
 					$mep_event_date_format = isset( $_POST['mep_event_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_date_format'] ) ) : '';
-					update_post_meta( $post_id, 'mep_event_date_format', $mep_event_date_format );
+					update_post_meta( $post_id, 'mep_event_date_format', wp_slash( $mep_event_date_format ) );
 					$mep_event_custom_date_format = isset( $_POST['mep_event_custom_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_custom_date_format'] ) ) : '';
-					update_post_meta( $post_id, 'mep_event_custom_date_format', $mep_event_custom_date_format );
+					update_post_meta( $post_id, 'mep_event_custom_date_format', wp_slash( $mep_event_custom_date_format ) );
 					$mep_event_time_format = isset( $_POST['mep_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_time_format'] ) ) : '';
-					update_post_meta( $post_id, 'mep_event_time_format', $mep_event_time_format );
+					update_post_meta( $post_id, 'mep_event_time_format', wp_slash( $mep_event_time_format ) );
 					$mep_custom_event_time_format = isset( $_POST['mep_custom_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_custom_event_time_format'] ) ) : '';
-					update_post_meta( $post_id, 'mep_custom_event_time_format', $mep_custom_event_time_format );
+					update_post_meta( $post_id, 'mep_custom_event_time_format', wp_slash( $mep_custom_event_time_format ) );
 					$mep_time_zone_display = isset( $_POST['mep_time_zone_display'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_time_zone_display'] ) ) : 'no';
 					update_post_meta( $post_id, 'mep_time_zone_display', $mep_time_zone_display );
 					// These legacy registration fields are rendered by PRO. Preserve their

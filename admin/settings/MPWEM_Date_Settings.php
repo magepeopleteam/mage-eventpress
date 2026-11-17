@@ -1177,11 +1177,14 @@
 				$display             = is_array($event_infos) && array_key_exists( 'mep_enable_custom_dt_format', $event_infos ) ? $event_infos['mep_enable_custom_dt_format'] : 'off';
 				$checked             = $display == 'off' ? '' : 'checked';
 				$active              = $display == 'off' ? '' : 'mActive';
-				$date_formats        = is_array($event_infos) && array_key_exists( 'mep_event_date_format', $event_infos ) ? $event_infos['mep_event_date_format'] : '';
-				$custom_date_formats = is_array($event_infos) && array_key_exists( 'mep_event_custom_date_format', $event_infos ) ? $event_infos['mep_event_custom_date_format'] : '';
+				// Formats come straight from post meta: $event_infos is stripslashed, which
+				// turned H\H i\m\i\n into "HH imin" so no option matched and the next save
+				// wiped the format.
+				$date_formats        = $event_id ? sanitize_text_field( (string) get_post_meta( $event_id, 'mep_event_date_format', true ) ) : '';
+				$custom_date_formats = $event_id ? sanitize_text_field( (string) get_post_meta( $event_id, 'mep_event_custom_date_format', true ) ) : '';
 				$date_format_lists   = MPWEM_Global_Function::date_format_list();
-				$time_formats        = is_array($event_infos) && array_key_exists( 'mep_event_time_format', $event_infos ) ? $event_infos['mep_event_time_format'] : '';
-				$custom_time_formats = is_array($event_infos) && array_key_exists( 'mep_custom_event_time_format', $event_infos ) ? $event_infos['mep_custom_event_time_format'] : '';
+				$time_formats        = $event_id ? sanitize_text_field( (string) get_post_meta( $event_id, 'mep_event_time_format', true ) ) : '';
+				$custom_time_formats = $event_id ? sanitize_text_field( (string) get_post_meta( $event_id, 'mep_custom_event_time_format', true ) ) : '';
 				$time_format_lists   = MPWEM_Global_Function::time_format_list();
 				$buffer_time         = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 );
 				?>

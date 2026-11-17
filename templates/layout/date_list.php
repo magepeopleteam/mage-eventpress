@@ -27,7 +27,7 @@
 							// A cancelled event has no "next" session to point visitors at.
 							$is_upcoming = $upcoming_date && strtotime( $start_time ) === strtotime( $upcoming_date ) && ! MPWEM_Global_Function::is_cancelled_event( $event_id );
 							$link_class  = 'mpwem-date-list__link' . ( $is_upcoming ? ' is-upcoming' : '' );
-							$start_label = MPWEM_Global_Function::date_format( $start_time, $date_format );
+							$start_label = MPWEM_Global_Function::date_format( $start_time, $date_format, $event_id );
 							?>
                             <div class="_layout_info_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                                 <div class="date_item">
@@ -95,7 +95,7 @@
 				                            $time  = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 				                            if ( $time ) {
 					                            $full_date = $date . ' ' . $time;
-					                            $time      = MPWEM_Global_Function::date_format( $full_date, 'time' );
+					                            $time      = MPWEM_Global_Function::date_format( $full_date, 'time', $event_id );
 					                            $event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $full_date ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
 					                            ?>
                                                 <a class="_ml " href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( $label ? $label . '(' . $time . ')' : $time ) ?></a>

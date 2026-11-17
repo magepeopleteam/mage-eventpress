@@ -214,17 +214,19 @@
 					if ( $post_id ) {
 						$display_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_custom_dt_format' );
 						if ( $display_format == 'on' ) {
-							$custom_date_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_date_format' );
+							// Read formats with get_post_meta(): get_post_info() strips slashes,
+							// which breaks escaped characters such as H\H i\m\i\n.
+							$custom_date_format = sanitize_text_field( (string) get_post_meta( $post_id, 'mep_event_date_format', true ) );
 							if ( $custom_date_format ) {
 								if ( $custom_date_format == 'custom' ) {
-									$custom_date_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_custom_date_format' );
+									$custom_date_format = sanitize_text_field( (string) get_post_meta( $post_id, 'mep_event_custom_date_format', true ) );
 								}
 								$date_format = $custom_date_format ?: $date_format;
 							}
-							$custom_time_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_time_format' );
+							$custom_time_format = sanitize_text_field( (string) get_post_meta( $post_id, 'mep_event_time_format', true ) );
 							if ( $custom_time_format ) {
 								if ( $custom_time_format == 'custom' ) {
-									$custom_time_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_custom_event_time_format' );
+									$custom_time_format = sanitize_text_field( (string) get_post_meta( $post_id, 'mep_custom_event_time_format', true ) );
 								}
 								$time_format = $custom_time_format ?: $time_format;
 							}

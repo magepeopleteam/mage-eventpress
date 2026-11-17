@@ -976,6 +976,66 @@
 				return $times;
 			}
 			/**
+			 * End date-time of the occurrence that starts at $start.
+			 *
+			 * Single and particular-date events read the get_dates() row that starts at $start
+			 * (its own 'occurrence_end' first, so a multi-date course summary does not leak in).
+			 * Repeated events read the get_times() slot that starts at $start; a slot that ends
+			 * before it starts runs past midnight and ends the next day.
+			 *
+			 * @param int    $event_id  Event ID.
+			 * @param string $start     Occurrence start ('Y-m-d H:i').
+			 * @param array  $all_dates Optional get_dates() result, to save a lookup.
+			 * @return string End as 'Y-m-d H:i', or '' when the occurrence has no end time.
+			 */
+			public static function get_occurrence_end( $event_id, $start, $all_dates = [] ): string {
+				$start_ts = $start ? strtotime( $start ) : false;
+				if ( ! $start_ts ) {
+					return '';
+				}
+				$all_dates = ( is_array( $all_dates ) && count( $all_dates ) > 0 ) ? $all_dates : self::get_dates( $event_id );
+				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+				$repeated  = ! ( $date_type == 'no' || $date_type == 'yes' );
+				$end       = '';
+				if ( ! $repeated ) {
+					foreach ( (array) $all_dates as $row ) {
+						if ( is_array( $row ) && ! empty( $row['time'] ) && strtotime( $row['time'] ) === $start_ts ) {
+							$end = ! empty( $row['occurrence_end'] ) ? $row['occurrence_end'] : ( $row['end'] ?? '' );
+							break;
+						}
+					}
+					if ( ! $end ) {
+						// Past or expired occurrence: get_dates() no longer lists it.
+						$event_start = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_datetime' );
+						if ( $event_start && strtotime( $event_start ) === $start_ts ) {
+							$end = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_datetime' );
+						}
+					}
+				} else {
+					$start_hm = gmdate( 'H:i', $start_ts );
+					foreach ( self::get_times( $event_id, $all_dates, $start ) as $time ) {
+						$slot_start = is_array( $time ) && ! empty( $time['start']['time'] ) ? $time['start']['time'] : '';
+						$slot_end   = is_array( $time ) && ! empty( $time['end']['time'] ) ? $time['end']['time'] : '';
+						if ( $slot_start && $slot_end && gmdate( 'H:i', strtotime( $slot_start ) ) === $start_hm ) {
+							$end = gmdate( 'Y-m-d', $start_ts ) . ' ' . $slot_end;
+							break;
+						}
+					}
+				}
+				// A date-only end means no end time was saved.
+				$end_ts = is_string( $end ) && false !== strpos( $end, ':' ) ? strtotime( $end ) : false;
+				if ( ! $end_ts || $end_ts === $start_ts ) {
+					return '';
+				}
+				if ( $end_ts < $start_ts ) {
+					if ( ! $repeated ) {
+						return '';
+					}
+					$end_ts = strtotime( '+1 day', $end_ts );
+				}
+				return gmdate( 'Y-m-d H:i', $end_ts );
+			}
+			/**
 			 * Turn a midnight occurrence into the show it really names.
 			 *
 			 * A date-only value ('Y-m-d') or a 'Y-m-d 00:00' value names the day but not the

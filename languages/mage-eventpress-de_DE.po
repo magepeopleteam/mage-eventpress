@@ -2686,7 +2686,7 @@ msgstr "Ereignisse sortieren"
 #: templates/themes/smart.php:12
 #: templates/themes/virtual.php:12
 msgid "Speaker"
-msgstr "Lautsprecher"
+msgstr "Sprecher"
 
 #: admin/MPWEM_CPT.php:109
 msgid "Speaker Image"
@@ -2725,7 +2725,7 @@ msgstr "Lautsprechereinstellungen"
 #: admin/MPWEM_Welcome.php:609
 #: inc/MPWEM_Calendar.php:138
 msgid "Speakers"
-msgstr "Lautsprecher"
+msgstr "Sprecher"
 
 #: admin/MPWEM_CPT.php:97
 msgid "Speakers Item:"
@@ -7261,7 +7261,7 @@ msgstr "you@example.com"
 
 #: templates/layout/native_checkout_modal.php:70
 msgid "+1 555 000 0000"
-msgstr ""
+msgstr "+49 170 1234567"
 
 #: templates/layout/native_checkout_modal.php:77
 msgid "You need to be logged in to complete your registration for this event."
@@ -11905,12 +11905,12 @@ msgstr ""
 #: inc/MPWEM_Custom_Slider.php:158
 #: templates/layout/horizon/gallery.php:73
 msgid "Previous image"
-msgstr ""
+msgstr "Vorheriges Bild"
 
 #: inc/MPWEM_Custom_Slider.php:161
 #: templates/layout/horizon/gallery.php:79
 msgid "Next image"
-msgstr ""
+msgstr "Nächstes Bild"
 
 #: inc/MPWEM_Custom_Slider.php:170
 #: inc/MPWEM_Custom_Slider.php:189
@@ -11942,7 +11942,7 @@ msgstr ""
 #: inc/MPWEM_Dependencies.php:447
 #: templates/layout/horizon/hero.php:99
 msgid "Load more"
-msgstr ""
+msgstr "Mehr laden"
 
 #: inc/MPWEM_Dependencies.php:448
 msgid "Show less"
@@ -12040,118 +12040,118 @@ msgstr ""
 
 #: templates/layout/default/speakers.php:55
 msgid "Read more"
-msgstr ""
+msgstr "Weiterlesen"
 
 #: templates/layout/default/speakers.php:56
 msgid "Read less"
-msgstr ""
+msgstr "Weniger anzeigen"
 
 #: templates/layout/horizon/about.php:17
 msgid "About This Event"
-msgstr ""
+msgstr "Über diese Veranstaltung"
 
 #: templates/layout/horizon/dates.php:15
 msgid "Event Dates"
-msgstr ""
+msgstr "Veranstaltungstermine"
 
 #: templates/layout/horizon/gallery.php:25
 msgid "Event Gallery"
-msgstr ""
+msgstr "Veranstaltungsgalerie"
 
 #. translators: %s: image alt text
 #: templates/layout/horizon/gallery.php:52
 #, php-format
 msgid "Zoom image: %s"
-msgstr ""
+msgstr "Bild vergrößern: %s"
 
 #: templates/layout/horizon/gallery.php:68
 msgid "Close gallery"
-msgstr ""
+msgstr "Galerie schließen"
 
 #: templates/layout/horizon/gallery.php:69
 msgid "Gallery zoom"
-msgstr ""
+msgstr "Galerie-Zoom"
 
 #: templates/layout/horizon/hero.php:19
 msgid "EVENT"
-msgstr ""
+msgstr "VERANSTALTUNG"
 
 #: templates/layout/horizon/hero.php:21
 msgid "LIVE"
-msgstr ""
+msgstr "LIVE"
 
 #: templates/layout/horizon/hero.php:139
 msgid "View more"
-msgstr ""
+msgstr "Mehr anzeigen"
 
 #: templates/layout/horizon/hero.php:162
 msgid "Open in Google Maps"
-msgstr ""
+msgstr "In Google Maps öffnen"
 
 #: templates/layout/horizon/organizer.php:37
 msgid "Organized by"
-msgstr ""
+msgstr "Veranstaltet von"
 
 #: templates/layout/horizon/organizer.php:44
 msgid "Follow"
-msgstr ""
+msgstr "Folgen"
 
 #: templates/layout/horizon/related.php:16
 #: templates/themes/horizon.php:104
 msgid "You Might Also Like"
-msgstr ""
+msgstr "Das könnte Ihnen auch gefallen"
 
 #: templates/layout/horizon/related.php:73
 msgid "See tickets"
-msgstr ""
+msgstr "Tickets ansehen"
 
 #: templates/layout/horizon/speakers.php:21
 msgid "Performer"
-msgstr ""
+msgstr "Künstler"
 
 #: templates/layout/horizon/timeline.php:12
 msgid "Event Timeline"
-msgstr ""
+msgstr "Programmablauf"
 
 #: templates/layout/registration_content.php:167
 msgid "Date unavailable"
-msgstr ""
+msgstr "Datum nicht verfügbar"
 
 #: templates/layout/related_event.php:21
 msgid "More events you might enjoy"
-msgstr ""
+msgstr "Weitere Veranstaltungen, die Ihnen gefallen könnten"
 
 #: templates/layout/related_event.php:24
 msgid "Previous related events"
-msgstr ""
+msgstr "Vorherige ähnliche Veranstaltungen"
 
 #: templates/layout/related_event.php:25
 msgid "Next related events"
-msgstr ""
+msgstr "Nächste ähnliche Veranstaltungen"
 
 #: templates/layout/social.php:36
 msgid "Share on Facebook"
-msgstr ""
+msgstr "Auf Facebook teilen"
 
 #: templates/layout/social.php:37
 msgid "Share on X"
-msgstr ""
+msgstr "Auf X teilen"
 
 #: templates/layout/social.php:38
 msgid "Share on LinkedIn"
-msgstr ""
+msgstr "Auf LinkedIn teilen"
 
 #: templates/layout/social.php:39
 msgid "Share on WhatsApp"
-msgstr ""
+msgstr "Auf WhatsApp teilen"
 
 #: templates/layout/social.php:40
 msgid "Share by Email"
-msgstr ""
+msgstr "Per E-Mail teilen"
 
 #: templates/layout/time_only.php:54
 msgid "Event Time"
-msgstr ""
+msgstr "Uhrzeit"
 
 #: templates/list/default.php:79
 #: templates/list/minimal.php:76
@@ -12165,19 +12165,19 @@ msgstr "Buchen"
 #: templates/themes/horizon.php:12
 #: templates/themes/horizon.php:49
 msgid "Artists & Performers"
-msgstr ""
+msgstr "Künstler & Mitwirkende"
 
 #: templates/themes/horizon.php:94
 msgid "Event reviews"
-msgstr ""
+msgstr "Bewertungen der Veranstaltung"
 
 #: templates/themes/horizon.php:115
 msgid "Reserve Your Spot"
-msgstr ""
+msgstr "Sichern Sie sich Ihren Platz"
 
 #: templates/themes/horizon.php:145
 msgid "Share"
-msgstr ""
+msgstr "Teilen"
 
 # Cancelled events (Event Status)
 
@@ -12362,3 +12362,29 @@ msgstr "unbezahlt mit weiteren Artikeln, offen gelassen"
 
 msgid "unpaid, cancelled"
 msgstr "unbezahlt, storniert"
+
+#: admin/mep_analytics.php:339
+#: admin/mep_analytics.php:491
+#: admin/MPWEM_Event_Lists.php:696
+#: admin/MPWEM_Event_Lists.php:697
+#: admin/MPWEM_Event_Lists.php:1165
+#: admin/settings/MPWEM_Ticket_Price_Settings.php:1133
+#: inc/MPWEM_Calendar.php:169
+#: templates/layout/horizon/organizer.php:51
+#: templates/layout/horizon/organizer.php:55
+#: templates/layout/seat_status.php:22
+#: templates/layout/seat_status.php:27
+msgid "Unlimited"
+msgstr "Unbegrenzt"
+
+#: templates/layout/announcement.php:62
+msgid "Leave this field empty"
+msgstr "Dieses Feld leer lassen"
+
+#: templates/layout/description.php:39
+msgid "Read More"
+msgstr "Weiterlesen"
+
+#: templates/layout/description.php:40
+msgid "Read Less"
+msgstr "Weniger anzeigen"

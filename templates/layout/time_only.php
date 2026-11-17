@@ -42,12 +42,22 @@
             $upcoming_date = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $date_type == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');
             $date                    = $url_date ?: $upcoming_date;
             if (MPWEM_Global_Function::check_time_exit_date($date)) {
+                // get_mep_datetime() returns escaped text.
+                $time_text = get_mep_datetime( $date, 'time', $event_id );
+                $show_end_datetime = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_end_datetime', 'yes' );
+                $end_datetime = $show_end_datetime == 'no' ? '' : MPWEM_Functions::get_occurrence_end( $event_id, $date, $all_dates );
+                if ( $end_datetime ) {
+                    // "18:00 - 20:00"; an end on a later day carries its date. Timezone (when shown) only after the end.
+                    $start_text = esc_html( wp_date( mep_get_datetime_format( $event_id, 'time' ), ( new DateTime( $date, wp_timezone() ) )->getTimestamp() ) );
+                    $end_type = gmdate( 'Y-m-d', strtotime( $end_datetime ) ) === gmdate( 'Y-m-d', strtotime( $date ) ) ? 'time' : 'date-time';
+                    $time_text = $start_text . ' - ' . get_mep_datetime( $end_datetime, $end_type, $event_id );
+                }
                 ?>
                 <div class="short_item">
                     <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr($mep_event_time_icon); ?>"></span></h4>
                     <div class="_fdColumn">
                         <h6><?php esc_html_e('Event Time', 'mage-eventpress'); ?></h6>
-                        <p class="mep_time_status"><?php echo get_mep_datetime( $date, 'time' ); ?></p>
+                        <p class="mep_time_status"><?php echo $time_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above. ?></p>
 
                     </div>
                 </div>

@@ -11988,9 +11988,16 @@ body.mpwem-drag-scroll-active {
     margin-top: 4px !important;
 }
 
+/* The Date/Time Format/Timezone pickers are custom dropdowns whose option
+   list is absolutely positioned below the trigger. overflow:hidden clipped
+   it at the card's bottom edge, so options could not be seen or clicked.
+   Clip sideways only (keeps narrow-width rows trimmed as before) and let
+   the list drop below the card. Browsers without overflow:clip fall back
+   to visible, which keeps the dropdown usable. */
 .mpwem-date-step .mpwem_date_format_settings {
     border: 1px solid #d9e2ef;
-    overflow: hidden;
+    overflow: visible;
+    overflow-x: clip;
     background: #fff;
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
     margin-bottom: 0 !important;
@@ -12734,6 +12741,22 @@ input.mpwem-custom-calendar__year {
     .mpwem-date-buffer-field ._mr {
         justify-self: start;
         text-align: left;
+    }
+}
+
+/* 961-1080px with the admin menu expanded leaves the Date Time format card
+   under ~470px wide: the two-column rows (label + 240px min dropdown) no
+   longer fit and the dropdowns were cut off on the right. Stack them, as
+   at 900px and below. */
+@media screen and (min-width: 961px) and (max-width: 1080px) {
+    .mpwem-date-step .mpwem_date_format_settings label._justify_between_align_center_wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .mpwem-date-step .mpwem_date_format_settings select.formControl,
+    .mpwem-date-step .mpwem_date_format_settings input[type="text"].formControl {
+        justify-self: start;
+        width: 100% !important;
     }
 }
 
@@ -15633,6 +15656,14 @@ select.mpwem-field-error,
 .mpwem-card-input.mpwem-field-error,
 .mp_formControl.mpwem-field-error,
 .formControl.mpwem-field-error {
+    border-color: #e11d48 !important;
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.16) !important;
+    background: #fff7f8 !important;
+}
+
+/* Custom dropdowns hide the real <select>: show its error on the visible
+   trigger. Kept as its own rule so a browser without :has() drops only this. */
+.mpwem-select-wrapper:has(> select.mpwem-field-error) > .mpwem-select-trigger {
     border-color: #e11d48 !important;
     box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.16) !important;
     background: #fff7f8 !important;

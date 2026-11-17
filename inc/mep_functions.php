@@ -942,25 +942,45 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 
 	
-	if ( ! function_exists( 'mep_resolve_confirmation_email_body' ) ) {
+	if ( ! function_exists( 'mep_get_event_confirmation_email_body' ) ) {
 		/**
-		 * Resolve the confirmation body without changing delivery eligibility.
+		 * The event's own "Use Event-Specific Email Message" body, or '' when it has none.
 		 *
 		 * Existing events created before the status meta was introduced keep using
-		 * their non-empty event body. An explicit off always falls back to global.
+		 * their non-empty event body. An explicit off means no event body.
 		 *
-		 * @param int    $event_id         Event post ID.
-		 * @param string $global_email_text Global confirmation body.
+		 * Callers that need to know whether the event overrides the global body must
+		 * use this, not mep_resolve_confirmation_email_body( $event_id, '' ): that one
+		 * falls back to the preset template and so is never empty.
+		 *
+		 * @param int $event_id Event post ID.
 		 * @return string
 		 */
-		function mep_resolve_confirmation_email_body( $event_id, $global_email_text = '' ) {
+		function mep_get_event_confirmation_email_body( $event_id ) {
 			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
 			$event_email_text = is_string( $event_email_text ) ? $event_email_text : '';
 			$has_status       = metadata_exists( 'post', $event_id, 'mep_event_cc_email_status' );
 			$status           = $has_status ? get_post_meta( $event_id, 'mep_event_cc_email_status', true ) : '';
 			$use_event_body   = $has_status ? 'on' === $status : '' !== trim( $event_email_text );
 
-			if ( $use_event_body && '' !== trim( $event_email_text ) ) {
+			return ( $use_event_body && '' !== trim( $event_email_text ) ) ? $event_email_text : '';
+		}
+	}
+
+	if ( ! function_exists( 'mep_resolve_confirmation_email_body' ) ) {
+		/**
+		 * Resolve the confirmation body without changing delivery eligibility.
+		 *
+		 * The event's own body wins (see mep_get_event_confirmation_email_body()),
+		 * then the global body, then the preset template.
+		 *
+		 * @param int    $event_id         Event post ID.
+		 * @param string $global_email_text Global confirmation body.
+		 * @return string
+		 */
+		function mep_resolve_confirmation_email_body( $event_id, $global_email_text = '' ) {
+			$event_email_text = mep_get_event_confirmation_email_body( $event_id );
+			if ( '' !== $event_email_text ) {
 				return $event_email_text;
 			}
 

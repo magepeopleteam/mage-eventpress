@@ -61,8 +61,10 @@
 								// Get event title
 								$event_title = get_the_title( $post_id );
 								// Get event start date
+								// Label only: calculate, never save. get_all_dates() starts at the
+								// first date ever; saving that hid the event from the event lists.
 								$all_dates  = MPWEM_Functions::get_all_dates( $post_id );
-								$event_date = MPWEM_Functions::get_upcoming_date_time( $post_id, $all_dates );
+								$event_date = MPWEM_Functions::calculate_upcoming_date_time( $post_id, $all_dates );
 								// Format the date if available
 								$date_display = '';
 								if ( $event_date ) {

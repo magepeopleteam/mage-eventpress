@@ -4,6 +4,8 @@
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Query' ) ) {
 		class MPWEM_Query {
+			/** Seconds one request may spend refreshing lapsed upcoming dates. */
+			const UPCOMING_REFRESH_BUDGET = 1.0;
 			public function __construct() { }
 			public static function query_post_type( $post_type, $show = - 1, $page = 1 ): WP_Query {
 				$args = array(
@@ -86,6 +88,59 @@
 				     . " OR ( ( mp_nds.meta_value IS NULL OR mp_nds.meta_value = '' )"
 				     . " AND ( mp_ndu.meta_value IS NULL OR mp_ndu.meta_value = '' ) ) )";
 			}
+			/**
+			 * Re-save event_upcoming_datetime for recurring events whose saved value has
+			 * passed although the event still has dates to come.
+			 *
+			 * That meta is only recalculated when something renders the event, but the lists
+			 * below select on it. Once the saved value is in the past (its occurrence
+			 * happened, or a screen saved an older date), the lists stop rendering the event,
+			 * so nothing recalculated it: the event stayed hidden until someone opened its
+			 * own page. Recalculating here, before the lists query, closes that loop.
+			 *
+			 * Only for the "Event Start Time" expiry mode, the one that selects on this meta.
+			 * Runs once per request. A refreshed event matches again only after its next
+			 * occurrence passes; one with nothing left to book is saved as '' (the same
+			 * value its own page saves) and no longer matches at all.
+			 *
+			 * A particular-dates event takes about 1 ms, a repeated event over a long range
+			 * about 140 ms (the same work its list card does). The first request after an
+			 * update can find many at once, so one request spends at most
+			 * UPCOMING_REFRESH_BUDGET seconds and the next list request carries on.
+			 */
+			private static function refresh_lapsed_upcoming_dates() {
+				static $done = false;
+				if ( $done ) {
+					return;
+				}
+				$done = true;
+				global $wpdb;
+				$now = current_time( 'mysql' );
+				// A missing expiry is not proof the event is over, so those are rechecked too.
+				$ids = $wpdb->get_col( $wpdb->prepare(
+					"SELECT DISTINCT p.ID FROM {$wpdb->posts} p
+						INNER JOIN {$wpdb->postmeta} pm_rec ON p.ID = pm_rec.post_id AND pm_rec.meta_key = 'mep_enable_recurring'
+						INNER JOIN {$wpdb->postmeta} pm_upc ON p.ID = pm_upc.post_id AND pm_upc.meta_key = 'event_upcoming_datetime'
+						LEFT JOIN {$wpdb->postmeta} pm_exp ON p.ID = pm_exp.post_id AND pm_exp.meta_key = 'event_expire_datetime'
+					 WHERE p.post_type = 'mep_events' AND p.post_status = 'publish'
+						AND pm_rec.meta_value IN ( 'yes', 'everyday' )
+						AND pm_upc.meta_value <> '' AND pm_upc.meta_value < %s
+						AND ( pm_exp.meta_value IS NULL OR pm_exp.meta_value = '' OR pm_exp.meta_value > %s )
+					 ORDER BY p.ID",
+					$now, $now
+				) );
+				$started = microtime( true );
+				foreach ( $ids as $event_id ) {
+					if ( microtime( true ) - $started > self::UPCOMING_REFRESH_BUDGET ) {
+						break;
+					}
+					$event_id = (int) $event_id;
+					$upcoming = (string) MPWEM_Functions::calculate_upcoming_date_time( $event_id );
+					if ( $upcoming !== (string) get_post_meta( $event_id, 'event_upcoming_datetime', true ) ) {
+						update_post_meta( $event_id, 'event_upcoming_datetime', $upcoming );
+					}
+				}
+			}
 			private static function get_ids_by_upcoming_expiry( $etype, $compare_value, $include_undated = true ) {
 				global $wpdb;
 				$undated_join  = $include_undated ? self::undated_join() : '';
@@ -131,6 +186,7 @@
 				$now                 = current_time( 'mysql' );
 
 				if ( $event_expire_on === 'event_upcoming_datetime' ) {
+					self::refresh_lapsed_upcoming_dates();
 					$event_ids = self::get_ids_by_upcoming_expiry( '>', $now );
 				} else {
 					$event_ids = self::get_ids_by_single_expiry_key( $event_expire_on, '>', $now );
@@ -175,6 +231,7 @@
 				if ( $event_expire_on === 'event_upcoming_datetime' ) {
 					// Some selected-date recurring events never get event_upcoming_datetime populated.
 					// In that case fall back to the saved start datetime so expired events still appear.
+					self::refresh_lapsed_upcoming_dates();
 					$all_ids = self::get_ids_by_upcoming_expiry( $etype, $compare_value, $include_undated );
 				} else {
 					$all_ids = self::get_ids_by_single_expiry_key( $event_expire_on, $etype, $compare_value, $include_undated );
@@ -264,6 +321,7 @@
 				$where_args = [];
 
 				if ( $event_expire_on === 'event_upcoming_datetime' ) {
+					self::refresh_lapsed_upcoming_dates();
 					$sql_joins .= "
 						LEFT JOIN {$wpdb->postmeta} pm_upc ON p.ID = pm_upc.post_id AND pm_upc.meta_key = 'event_upcoming_datetime'
 						LEFT JOIN {$wpdb->postmeta} pm_start ON p.ID = pm_start.post_id AND pm_start.meta_key = 'event_start_datetime'

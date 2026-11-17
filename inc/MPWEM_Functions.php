@@ -473,7 +473,40 @@
 				);
 			}
 			//==========================//
+			/**
+			 * The event's upcoming datetime, saved to event_upcoming_datetime.
+			 *
+			 * The event lists select and sort on that meta, so whatever this returns decides
+			 * whether the event is listed. Only call it with the bookable date list
+			 * (get_dates(), the default). To show a date taken from any other list, such as
+			 * get_all_dates() in an admin picker, use calculate_upcoming_date_time(), which
+			 * does not save.
+			 */
 			public static function get_upcoming_date_time( $event_id, $all_dates = [], $all_times = [] ) {
+				$up_coming_date = self::calculate_upcoming_date_time( $event_id, $all_dates, $all_times );
+				// Deduplicate: only write postmeta once per event per request to prevent
+				// N write queries when this function is called inside a list-rendering loop.
+				static $mep_updated_upcoming = array();
+				if ( ! isset( $mep_updated_upcoming[ $event_id ] ) ) {
+					update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
+					$mep_updated_upcoming[ $event_id ] = true;
+				}
+				return $up_coming_date;
+			}
+			/**
+			 * Same value as get_upcoming_date_time(), without saving it.
+			 *
+			 * Given get_all_dates(), the first date is the event's first date ever, which is
+			 * usually past. Saving that made a recurring event with dates still to come drop
+			 * out of every event list. That happened whenever an admin opened a screen that
+			 * labels events this way, such as the PRO Attendee List picker.
+			 *
+			 * @param int   $event_id  Event post ID.
+			 * @param array $all_dates Date list to take the first date from; get_dates() when empty.
+			 * @param array $all_times Time slots for that list; get_times() when empty.
+			 * @return string 'Y-m-d H:i', 'Y-m-d' or '' when the list is empty.
+			 */
+			public static function calculate_upcoming_date_time( $event_id, $all_dates = [], $all_times = [] ) {
 				$up_coming_date='';
 				$date_type   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$event_expire_on_old   = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
@@ -502,14 +535,6 @@
 				 // "Event End Time" mode show the wrong (too-early) expiry for such events.
 				 $event_expire_on_date = $event_expire_on;
 				 $up_coming_date = $date_type == 'no' ? get_post_meta( $event_id, $event_expire_on_date, true ) : $up_coming_date;
-
-				 // Deduplicate: only write postmeta once per event per request to prevent
-				 // N write queries when this function is called inside a list-rendering loop.
-				 static $mep_updated_upcoming = array();
-				 if ( ! isset( $mep_updated_upcoming[ $event_id ] ) ) {
-				 	update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
-				 	$mep_updated_upcoming[ $event_id ] = true;
-				 }
 				 return $up_coming_date;
 			}
 			/**

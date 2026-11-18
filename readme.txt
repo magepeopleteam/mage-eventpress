@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin, raselsha
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.14
+Stable tag: 5.7.15
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,15 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.15 =
+* New: One-click "Add all N dates at once" on top.
+* Fix: Classic editor FAQ Description box stayed tiny at the far right.
+* Fix: Add Calendar saved the wrong session; session list lost its end times.
+* Fix: Speaker, event category and archive pages lost the block theme's header and footer.
+* Fix: Style and wire the tabs that render modern components.
+* Fix: Related event pills sat one per line with a white box for remove.
+* Fix: Save every session of a multi-date Single Event.
 
 = 5.7.14 =
 * New: Date, time and capacity filters for schedule add-ons.

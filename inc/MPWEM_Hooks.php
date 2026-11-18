@@ -759,21 +759,15 @@
 										$event_id  = $event_id ?? 0;
 										$all_dates = $all_dates ?? [];
 										$all_dates = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : MPWEM_Functions::get_dates( $event_id );
-										if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
-											$upcoming_date = $upcoming_date ?? '';
-											$date_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-											$end_time      = '';
-											if ( $date_type == 'no' || $date_type == 'yes' ) {
-												$dates    = current( $all_dates );
-												$end_time = is_array( $all_dates ) && array_key_exists( 'end', $dates ) ? $dates['end'] : '';
-											} else {
-												$end_time = $upcoming_date;
-											}
+										// $date is the upcoming date; one occurrence with its own end, see MPWEM_Functions::get_calendar_occurrence().
+										$occurrence = ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) ? MPWEM_Functions::get_calendar_occurrence( $event_id, $all_dates, $date ) : [ 'start' => '' ];
+										if ( $occurrence['start'] ) {
 											$event_date_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_date_icon', 'far fa-calendar' );
 											do_action( 'mep_before_add_calendar_button' );
 											$event_title = get_the_title( $event_id );
-											$date        = MPWEM_Global_Function::calender_date_format( $upcoming_date );
-											$end_time    = $end_time ? MPWEM_Global_Function::calender_date_format( $end_time ) : '';
+											// From here $date is the calendar-format start used by the links below.
+											$date        = MPWEM_Global_Function::calender_date_format( $occurrence['start'] );
+											$end_time    = $occurrence['end'] ? MPWEM_Global_Function::calender_date_format( $occurrence['end'] ) : '';
 											$content     = substr( get_the_content( $event_id ), 0, 1000 );
 											$location    = MPWEM_Functions::get_location( $event_id );
 											$location    = implode( '  ', $location );
@@ -789,7 +783,7 @@
 														<a class="list_calender" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_url( $event_title ); ?>&dates=<?php echo esc_attr( $date ); ?>/<?php echo esc_attr( $end_time ); ?>&details=<?php echo esc_attr( $content ); ?>&location=<?php echo esc_attr( $location ); ?>&sf=true" rel="noopener noreferrer" target='_blank' rel="nofollow"> <i class="fab fa-google"></i> <?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
 														<a class="list_calender" href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_url( $event_title ); ?>&st=<?php echo esc_attr( $date ); ?>&et=<?php echo esc_attr( $end_time ); ?>&desc=<?php echo esc_attr( $content ); ?>&in_loc=<?php echo esc_attr( $location ); ?>&uid=" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="fab fa-yahoo"></i> <?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
 														<a class="list_calender" href="https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=<?php echo esc_attr( $date ); ?>&enddt=<?php echo esc_attr( $end_time ); ?>&subject=<?php echo esc_attr( $event_title ); ?>&body=<?php echo esc_url( $event_title ); ?>" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="far fa-envelope"></i> <?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
-														<a class="list_calender" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $upcoming_date ) ); ?>" rel="noopener noreferrer" target='_blank'><i class="fab fa-apple"></i> <?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $occurrence['start'] ) ); ?>" rel="noopener noreferrer" target='_blank'><i class="fab fa-apple"></i> <?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
 													</div>
 												</div>
 											</div>

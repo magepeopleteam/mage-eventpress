@@ -1036,6 +1036,52 @@
 				return gmdate( 'Y-m-d H:i', $end_ts );
 			}
 			/**
+			 * The occurrence an "Add to Calendar" button saves, with its own end.
+			 *
+			 * For a Single Event the upcoming date is the expiry, which is the last session's
+			 * end when Event Expiry Time is the end time. Calendars then got an entry at the
+			 * end of the course. For single and particular events the upcoming date is
+			 * therefore only used when it is one of the date rows (a date picked with ?date=);
+			 * otherwise the next date row is used. The end is that row's own end, not the
+			 * whole-course span get_dates() keeps in a Single Event's first row.
+			 *
+			 * @param int    $event_id      Event ID.
+			 * @param array  $all_dates     Optional get_dates() result, to save a lookup.
+			 * @param string $upcoming_date The upcoming or requested date the page shows.
+			 * @return array{start: string, end: string} 'Y-m-d H:i' in site time; '' when unknown.
+			 */
+			public static function get_calendar_occurrence( $event_id, $all_dates = [], $upcoming_date = '' ): array {
+				$all_dates = ( is_array( $all_dates ) && count( $all_dates ) > 0 ) ? $all_dates : self::get_dates( $event_id );
+				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+				$start     = (string) $upcoming_date;
+				if ( $date_type == 'no' || $date_type == 'yes' ) {
+					$start    = '';
+					$wanted   = $upcoming_date ? strtotime( $upcoming_date ) : false;
+					foreach ( (array) $all_dates as $row ) {
+						$row_start = is_array( $row ) && ! empty( $row['time'] ) ? (string) $row['time'] : '';
+						if ( '' === $row_start ) {
+							continue;
+						}
+						if ( '' === $start ) {
+							$start = $row_start;
+						}
+						if ( $wanted && strtotime( $row_start ) === $wanted ) {
+							$start = $row_start;
+							break;
+						}
+					}
+				} elseif ( '' === $start ) {
+					// Callers such as the Elementor widget pass no date: take the next one.
+					$start = (string) self::calculate_upcoming_date_time( $event_id, $all_dates );
+				}
+				$start = mep_calendar_occurrence_start( $event_id, $start );
+				if ( '' === $start ) {
+					return [ 'start' => '', 'end' => '' ];
+				}
+				$end = self::get_occurrence_end( $event_id, $start, $all_dates );
+				return [ 'start' => $start, 'end' => $end ?: mep_get_event_occurrence_end( $event_id, $start ) ];
+			}
+			/**
 			 * Turn a midnight occurrence into the show it really names.
 			 *
 			 * A date-only value ('Y-m-d') or a 'Y-m-d 00:00' value names the day but not the

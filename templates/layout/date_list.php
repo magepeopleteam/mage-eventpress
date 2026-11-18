@@ -28,6 +28,17 @@
 							$is_upcoming = $upcoming_date && strtotime( $start_time ) === strtotime( $upcoming_date ) && ! MPWEM_Global_Function::is_cancelled_event( $event_id );
 							$link_class  = 'mpwem-date-list__link' . ( $is_upcoming ? ' is-upcoming' : '' );
 							$start_label = MPWEM_Global_Function::date_format( $start_time, $date_format, $event_id );
+							// This session's own end: a Single Event's first row carries the whole-course end in 'end'.
+							$end_time = is_array( $dates ) && ! empty( $dates['occurrence_end'] ) ? $dates['occurrence_end'] : ( is_array( $dates ) && array_key_exists( 'end', $dates ) ? $dates['end'] : '' );
+							$end_has_time = false !== strpos( (string) $end_time, ':' ); // A date-only end means no end time was saved.
+							if ( $mep_show_end_datetime != 'no' && $end_time && strtotime( $end_time ) > strtotime( $start_time ) ) {
+								if ( gmdate( 'Y-m-d', strtotime( $end_time ) ) === gmdate( 'Y-m-d', strtotime( $start_time ) ) ) {
+									// Same day: "January 16, 2027 9:00 am - 5:00 pm".
+									$start_label .= $end_has_time && $date_format === 'full' ? ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time', $event_id ) : '';
+								} else {
+									$start_label .= ' - ' . MPWEM_Global_Function::date_format( $end_time, $end_has_time ? 'full' : 'date', $event_id );
+								}
+							}
 							?>
                             <div class="_layout_info_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                                 <div class="date_item">

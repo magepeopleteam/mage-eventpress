@@ -1,5 +1,5 @@
 <?php
-get_header();
+MPWEM_Functions::template_header();
 the_post();
 do_action('mep_before_events_speaker_wrapper');
 ?>
@@ -51,4 +51,4 @@ do_action('mep_before_events_speaker_wrapper');
 </div>
 <?php
 do_action('mep_after_events_speaker_wrapper');
-get_footer();
+MPWEM_Functions::template_footer();

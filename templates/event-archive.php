@@ -1,5 +1,5 @@
 <?php
-get_header();
+MPWEM_Functions::template_header();
 the_post();
 ?>
 <div class="mep-events-wrapper">
@@ -19,4 +19,4 @@ the_post();
 </div>
 <?php
     do_action('mep_event_single_page_before_footer');
-get_footer();
+MPWEM_Functions::template_footer();

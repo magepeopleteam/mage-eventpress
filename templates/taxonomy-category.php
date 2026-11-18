@@ -1,5 +1,5 @@
 <?php
-get_header();
+MPWEM_Functions::template_header();
 the_post();
 $term_id = get_queried_object()->term_id;
 ?>
@@ -25,4 +25,4 @@ $term_id = get_queried_object()->term_id;
 	</div>
 </div>
 <?php
-get_footer();
+MPWEM_Functions::template_footer();

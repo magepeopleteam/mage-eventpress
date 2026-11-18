@@ -89,6 +89,75 @@
 				}
 				return $default_dir . $file_name;
 			}
+			/**
+			 * Block theme footer rendered by template_header() for template_footer(); null while
+			 * the theme's own header.php/footer.php are in use.
+			 *
+			 * @var string|null
+			 */
+			private static $block_footer_html = null;
+			/**
+			 * Opens a plugin page template (speaker, event category/tag, events archive) with the
+			 * theme's header. Pair every call with template_footer().
+			 *
+			 * On a block theme get_header() and get_footer() load WordPress's bare fallback
+			 * (theme-compat: the site title, tagline and a rule) instead of the theme's header and
+			 * footer. Block themes therefore get their header and footer template parts inside the
+			 * document shell core uses for block templates, as single-events.php does. The footer is
+			 * rendered here, before wp_head(), so the layout CSS its blocks generate is printed in
+			 * <head> like on any other page.
+			 */
+			public static function template_header(): void {
+				self::$block_footer_html = null;
+				if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() && function_exists( 'block_header_area' ) ) {
+					ob_start();
+					block_header_area();
+					$header_html = trim( (string) ob_get_clean() );
+					if ( '' !== $header_html ) {
+						$footer_html = '';
+						if ( function_exists( 'block_footer_area' ) ) {
+							ob_start();
+							block_footer_area();
+							$footer_html = trim( (string) ob_get_clean() );
+						}
+						self::$block_footer_html = $footer_html;
+						?><!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+<div class="wp-site-blocks">
+<header class="wp-block-template-part site-header"><?php echo $header_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rendered block markup. ?></header>
+						<?php
+						return;
+					}
+				}
+				get_header();
+			}
+			/**
+			 * Closes a template opened with template_header(): the block theme's footer and the
+			 * document shell, or the theme's footer.php.
+			 */
+			public static function template_footer(): void {
+				if ( null === self::$block_footer_html ) {
+					get_footer();
+					return;
+				}
+				$footer_html             = self::$block_footer_html;
+				self::$block_footer_html = null;
+				if ( '' !== $footer_html ) {
+					echo '<footer class="wp-block-template-part mep-site-footer">' . $footer_html . '</footer>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rendered block markup.
+				}
+				?>
+</div>
+<?php wp_footer(); ?>
+</body>
+</html>
+				<?php
+			}
 			public static function get_details_template_name($post_id) {
 				$global_template   = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_global_single_template', 'default-theme.php' );
 				$current_template  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_template' );

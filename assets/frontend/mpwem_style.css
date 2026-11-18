@@ -2594,6 +2594,64 @@ div.mpwem_calender_area {
 	}
 }
 
+/* ========== Add Calendar — every session of a multi-date Single Event ==========
+   "Add all N dates at once" (Google subscription + Apple / Outlook / iCal .ics)
+   on top, then one row of Google / Yahoo / Outlook links per session (those
+   services add one event per link). Selectors out-rank the per-theme
+   two-column grids above and in horizon-theme.css. */
+div.mpwem_calender_area > div[data-collapse] > div.mpwem_calender_sessions {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 12px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.mpwem_calender_area .mpwem_calender_session__date {
+	margin: 0 0 6px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+div.mpwem_calender_area > div[data-collapse] > div.mpwem_calender_sessions .mpwem_calender_session ._mt_xs_fdColumn {
+	display: grid !important;
+	grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+	gap: 6px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+div.mpwem_calender_area > div[data-collapse] > div.mpwem_calender_sessions .mpwem_calender_session a._button_general_mt_xs {
+	min-height: 36px !important;
+	padding: 8px 4px !important;
+	font-size: 12px !important;
+	white-space: nowrap;
+}
+
+div.mpwem_calender_area > div[data-collapse] > div.mpwem_calender_sessions ._mt_xs_fdColumn.mpwem_calender_all {
+	display: grid !important;
+	grid-template-columns: 1fr !important;
+	gap: 8px !important;
+	margin: 0 !important;
+}
+
+.mpwem_calender_area .mpwem_calender_sessions__label {
+	margin: 0 0 -4px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	line-height: 1.4;
+	text-transform: uppercase;
+	opacity: 0.65;
+}
+
+.mpwem_calender_area .mpwem_calender_all + .mpwem_calender_sessions__label {
+	margin-top: 4px;
+	padding-top: 12px;
+	border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
 div.event_date_list_area {
 	padding: var(--dmp_xs) var(--dmp);
 }

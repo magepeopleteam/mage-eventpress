@@ -4231,8 +4231,14 @@ die();
 		 * Signed download URL of an .ics file for one occurrence, served by this site
 		 * (Apple Calendar, Outlook and any other calendar app). Works with plain and
 		 * pretty permalinks.
+		 *
+		 * @param int    $event_id     Event post ID.
+		 * @param string $start        Occurrence start.
+		 * @param bool   $with_virtual Include the join link; only for bookings allowed to see it.
+		 * @param bool   $all_sessions One file with every session of a multi-date Single Event
+		 *                             (see MPWEM_Functions::get_calendar_occurrences()).
 		 */
-		function mep_get_event_ics_url( $event_id, $start, $with_virtual = false ) {
+		function mep_get_event_ics_url( $event_id, $start, $with_virtual = false, $all_sessions = false ) {
 			$start = mep_calendar_occurrence_start( $event_id, $start );
 			if ( (int) $event_id <= 0 || '' === $start ) {
 				return '';
@@ -4244,28 +4250,99 @@ die();
 			if ( $with_virtual ) {
 				$args['v'] = 1;
 			}
-			$args['key'] = mep_event_ics_signature( $args['mep_ics'], $args['start'], $with_virtual );
+			if ( $all_sessions ) {
+				$args['all'] = 1;
+			}
+			// The all-sessions flag is signed too; links signed before it existed stay valid.
+			$args['key'] = mep_event_ics_signature( $args['mep_ics'], $args['start'] . ( $all_sessions ? '|all' : '' ), $with_virtual );
 
 			return add_query_arg( $args, home_url( '/' ) );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_event_calendar_links' ) ) {
+		/**
+		 * Google, Yahoo and Outlook.com "add event" URLs for one occurrence, with the
+		 * times in UTC so the entry lands at the right hour in any calendar time zone.
+		 * Each of these services adds a single event per link.
+		 *
+		 * @param int    $event_id     Event post ID.
+		 * @param string $start        Occurrence start.
+		 * @param bool   $with_virtual Include the join link; only for bookings allowed to see it.
+		 * @return array{google?: string, yahoo?: string, outlook?: string} Empty when the event or start is unusable.
+		 */
+		function mep_get_event_calendar_links( $event_id, $start, $with_virtual = false ) {
+			$data = mep_get_calendar_event_data( $event_id, $start, $with_virtual );
+			if ( empty( $data ) ) {
+				return array();
+			}
+			// esc_url() strips encoded line breaks, so the lines are joined by spaces.
+			$details = implode( ' ', $data['description'] );
+			$iso     = static function ( $date_time ) {
+				return get_gmt_from_date( $date_time . ':00', 'Y-m-d\TH:i:s\Z' );
+			};
+
+			return array(
+				'google'  => 'https://calendar.google.com/calendar/render?' . http_build_query( array(
+					'action'   => 'TEMPLATE',
+					'text'     => $data['title'],
+					'dates'    => $data['start_utc'] . '/' . $data['end_utc'],
+					'details'  => $details,
+					'location' => $data['location'],
+				), '', '&', PHP_QUERY_RFC3986 ),
+				'yahoo'   => 'https://calendar.yahoo.com/?' . http_build_query( array(
+					'v'      => '60',
+					'view'   => 'd',
+					'type'   => '20',
+					'title'  => $data['title'],
+					'st'     => $data['start_utc'],
+					'et'     => $data['end_utc'],
+					'desc'   => $details,
+					'in_loc' => $data['location'],
+				), '', '&', PHP_QUERY_RFC3986 ),
+				'outlook' => 'https://outlook.live.com/owa/?' . http_build_query( array(
+					'path'     => '/calendar/action/compose',
+					'rru'      => 'addevent',
+					'startdt'  => $iso( $data['start'] ),
+					'enddt'    => $iso( $data['end'] ),
+					'subject'  => $data['title'],
+					'body'     => $details,
+					'location' => $data['location'],
+				), '', '&', PHP_QUERY_RFC3986 ),
+			);
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_event_google_subscribe_url' ) ) {
+		/**
+		 * One-click Google Calendar link for every session of a multi-date Single Event.
+		 *
+		 * Google's "add event" link holds one event, and its repeat option gives every date
+		 * the first session's length. Subscribing to the all-sessions .ics instead adds a
+		 * small calendar, named after the event, with each session at its own time.
+		 * Google refreshes subscribed calendars on its own schedule.
+		 *
+		 * @param int    $event_id Event post ID.
+		 * @param string $start    First session start (signs the feed link).
+		 * @return string '' when the event or start is unusable.
+		 */
+		function mep_get_event_google_subscribe_url( $event_id, $start ) {
+			$feed = mep_get_event_ics_url( $event_id, $start, false, true );
+			if ( '' === $feed ) {
+				return '';
+			}
+			$feed = preg_replace( '#^https?://#i', 'webcal://', add_query_arg( 'feed', 1, $feed ) );
+
+			return 'https://calendar.google.com/calendar/r?cid=' . rawurlencode( $feed );
 		}
 	}
 
 	if ( ! function_exists( 'mep_get_event_google_calendar_url' ) ) {
 		/** Google Calendar "add event" URL for one occurrence, with the times in UTC. */
 		function mep_get_event_google_calendar_url( $event_id, $start, $with_virtual = false ) {
-			$data = mep_get_calendar_event_data( $event_id, $start, $with_virtual );
-			if ( empty( $data ) ) {
-				return '';
-			}
+			$links = mep_get_event_calendar_links( $event_id, $start, $with_virtual );
 
-			return 'https://calendar.google.com/calendar/render?' . http_build_query( array(
-				'action'   => 'TEMPLATE',
-				'text'     => $data['title'],
-				'dates'    => $data['start_utc'] . '/' . $data['end_utc'],
-				// esc_url() strips encoded line breaks, so the lines are joined by spaces.
-				'details'  => implode( ' ', $data['description'] ),
-				'location' => $data['location'],
-			), '', '&', PHP_QUERY_RFC3986 );
+			return isset( $links['google'] ) ? $links['google'] : '';
 		}
 	}
 
@@ -4321,6 +4398,59 @@ die();
 		}
 	}
 
+	if ( ! function_exists( 'mep_get_event_ics_content' ) ) {
+		/**
+		 * iCalendar file with one VEVENT per occurrence start.
+		 *
+		 * @param int      $event_id      Event post ID.
+		 * @param string[] $starts        Occurrence starts.
+		 * @param bool     $with_virtual  Include the join link; only for bookings allowed to see it.
+		 * @param string   $calendar_name Name for a subscribed calendar (Google "all dates" link);
+		 *                                '' for a plain download.
+		 * @return string '' when none of the starts is usable.
+		 */
+		function mep_get_event_ics_content( $event_id, $starts, $with_virtual = false, $calendar_name = '' ) {
+			$entries = array();
+			foreach ( (array) $starts as $session_start ) {
+				$data = mep_get_calendar_event_data( $event_id, $session_start, $with_virtual );
+				if ( ! empty( $data ) ) {
+					$entries[] = $data;
+				}
+			}
+			if ( empty( $entries ) ) {
+				return '';
+			}
+			$host  = wp_parse_url( home_url(), PHP_URL_HOST );
+			$stamp = gmdate( 'Ymd\THis\Z' );
+			$ics   = mep_ics_line( 'BEGIN:VCALENDAR' )
+				. mep_ics_line( 'VERSION:2.0' )
+				. mep_ics_line( 'PRODID:-//' . mep_ics_text( get_bloginfo( 'name' ) ) . '//Event Booking Manager//EN' )
+				. mep_ics_line( 'CALSCALE:GREGORIAN' )
+				. mep_ics_line( 'METHOD:PUBLISH' );
+			if ( '' !== $calendar_name ) {
+				// Subscribed calendars show this name instead of the feed URL.
+				$ics .= mep_ics_line( 'X-WR-CALNAME:' . mep_ics_text( $calendar_name ) )
+					. mep_ics_line( 'REFRESH-INTERVAL;VALUE=DURATION:PT12H' )
+					. mep_ics_line( 'X-PUBLISHED-TTL:PT12H' );
+			}
+			foreach ( $entries as $data ) {
+				// Same UID as the one-session link for that start, so importing both updates rather than duplicates.
+				$ics .= mep_ics_line( 'BEGIN:VEVENT' )
+					. mep_ics_line( 'UID:mep-' . (int) $event_id . '-' . date( 'YmdHi', strtotime( $data['start'] ) ) . '@' . $host )
+					. mep_ics_line( 'DTSTAMP:' . $stamp )
+					. mep_ics_line( 'DTSTART:' . $data['start_utc'] )
+					. mep_ics_line( 'DTEND:' . $data['end_utc'] )
+					. mep_ics_line( 'SUMMARY:' . mep_ics_text( $data['title'] ) )
+					. mep_ics_line( 'DESCRIPTION:' . mep_ics_text( implode( "\n\n", $data['description'] ) ) )
+					. ( '' !== $data['location'] ? mep_ics_line( 'LOCATION:' . mep_ics_text( $data['location'] ) ) : '' )
+					. mep_ics_line( 'URL:' . esc_url_raw( $data['url'] ) )
+					. mep_ics_line( 'END:VEVENT' );
+			}
+
+			return $ics . mep_ics_line( 'END:VCALENDAR' );
+		}
+	}
+
 	add_action( 'template_redirect', 'mep_maybe_serve_event_ics', 1 );
 	if ( ! function_exists( 'mep_maybe_serve_event_ics' ) ) {
 		/** Serves the .ics file behind mep_get_event_ics_url(). */
@@ -4331,35 +4461,30 @@ die();
 			$event_id     = absint( $_GET['mep_ics'] );
 			$start        = preg_replace( '/[^0-9]/', '', (string) wp_unslash( $_GET['start'] ) );
 			$with_virtual = ! empty( $_GET['v'] );
+			$all_sessions = ! empty( $_GET['all'] );
 			$key          = (string) wp_unslash( $_GET['key'] );
 			$start_dt     = 12 === strlen( $start ) ? DateTime::createFromFormat( 'YmdHi', $start ) : false;
-			if ( ! $start_dt || ! hash_equals( mep_event_ics_signature( $event_id, $start, $with_virtual ), $key ) ) {
+			if ( ! $start_dt || ! hash_equals( mep_event_ics_signature( $event_id, $start . ( $all_sessions ? '|all' : '' ), $with_virtual ), $key ) ) {
 				wp_die( esc_html__( 'This calendar link is not valid.', 'mage-eventpress' ), '', array( 'response' => 403 ) );
 			}
 			// The signature proves the link came from one of this site's emails, so a
 			// private event still works; a deleted one does not.
-			$event = get_post( $event_id );
-			$data  = $event && ! in_array( $event->post_status, array( 'trash', 'auto-draft' ), true ) ? mep_get_calendar_event_data( $event_id, $start_dt->format( 'Y-m-d H:i' ), $with_virtual ) : array();
-			if ( empty( $data ) ) {
+			$event  = get_post( $event_id );
+			$usable = $event && ! in_array( $event->post_status, array( 'trash', 'auto-draft' ), true );
+			$starts = array( $start_dt->format( 'Y-m-d H:i' ) );
+			if ( $usable && $all_sessions && class_exists( 'MPWEM_Functions' ) ) {
+				// Every session of a multi-date Single Event, read now so later edits are honoured.
+				$sessions = wp_list_pluck( MPWEM_Functions::get_calendar_occurrences( $event_id ), 'start' );
+				if ( count( $sessions ) > 1 ) {
+					$starts = $sessions;
+				}
+			}
+			// feed=1 (Google "all dates" subscription) only names the calendar, so it is not signed.
+			$calendar_name = $usable && $all_sessions && ! empty( $_GET['feed'] ) ? html_entity_decode( get_the_title( $event ), ENT_QUOTES, 'UTF-8' ) : '';
+			$ics           = $usable ? mep_get_event_ics_content( $event_id, $starts, $with_virtual, $calendar_name ) : '';
+			if ( '' === $ics ) {
 				wp_die( esc_html__( 'This event is no longer available.', 'mage-eventpress' ), '', array( 'response' => 404 ) );
 			}
-			$host = wp_parse_url( home_url(), PHP_URL_HOST );
-			$ics  = mep_ics_line( 'BEGIN:VCALENDAR' )
-				. mep_ics_line( 'VERSION:2.0' )
-				. mep_ics_line( 'PRODID:-//' . mep_ics_text( get_bloginfo( 'name' ) ) . '//Event Booking Manager//EN' )
-				. mep_ics_line( 'CALSCALE:GREGORIAN' )
-				. mep_ics_line( 'METHOD:PUBLISH' )
-				. mep_ics_line( 'BEGIN:VEVENT' )
-				. mep_ics_line( 'UID:mep-' . $event_id . '-' . $start . '@' . $host )
-				. mep_ics_line( 'DTSTAMP:' . gmdate( 'Ymd\THis\Z' ) )
-				. mep_ics_line( 'DTSTART:' . $data['start_utc'] )
-				. mep_ics_line( 'DTEND:' . $data['end_utc'] )
-				. mep_ics_line( 'SUMMARY:' . mep_ics_text( $data['title'] ) )
-				. mep_ics_line( 'DESCRIPTION:' . mep_ics_text( implode( "\n\n", $data['description'] ) ) )
-				. ( '' !== $data['location'] ? mep_ics_line( 'LOCATION:' . mep_ics_text( $data['location'] ) ) : '' )
-				. mep_ics_line( 'URL:' . esc_url_raw( $data['url'] ) )
-				. mep_ics_line( 'END:VEVENT' )
-				. mep_ics_line( 'END:VCALENDAR' );
 			$filename = sanitize_file_name( ( $event->post_name ? $event->post_name : 'event' ) . '-' . $start_dt->format( 'Y-m-d' ) . '.ics' );
 			nocache_headers();
 			header( 'Content-Type: text/calendar; charset=utf-8' );

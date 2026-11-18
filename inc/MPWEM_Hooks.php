@@ -764,13 +764,7 @@
 										if ( $occurrence['start'] ) {
 											$event_date_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_date_icon', 'far fa-calendar' );
 											do_action( 'mep_before_add_calendar_button' );
-											$event_title = get_the_title( $event_id );
-											// From here $date is the calendar-format start used by the links below.
-											$date        = MPWEM_Global_Function::calender_date_format( $occurrence['start'] );
-											$end_time    = $occurrence['end'] ? MPWEM_Global_Function::calender_date_format( $occurrence['end'] ) : '';
-											$content     = substr( get_the_content( $event_id ), 0, 1000 );
-											$location    = MPWEM_Functions::get_location( $event_id );
-											$location    = implode( '  ', $location );
+											$links = mep_get_event_calendar_links( $event_id, $occurrence['start'] );
 											?>
 											<div class="mpwem_get_status_calender mpwem_list_date_list">
 												<button type="button" class="mpwem_get_date_list" data-collapse-target="#mpwem_calender_area_<?php echo $event_id; ?>" data-open-text="<?php esc_attr_e( 'Hide Calender', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'Add To Calendar', 'mage-eventpress' ); ?>">
@@ -780,9 +774,9 @@
 												</button>
 												<div class="calendar-list-area " data-collapse="#mpwem_calender_area_<?php echo $event_id; ?>">
 													<div class="_mt_xs_fdColumn">
-														<a class="list_calender" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_url( $event_title ); ?>&dates=<?php echo esc_attr( $date ); ?>/<?php echo esc_attr( $end_time ); ?>&details=<?php echo esc_attr( $content ); ?>&location=<?php echo esc_attr( $location ); ?>&sf=true" rel="noopener noreferrer" target='_blank' rel="nofollow"> <i class="fab fa-google"></i> <?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
-														<a class="list_calender" href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_url( $event_title ); ?>&st=<?php echo esc_attr( $date ); ?>&et=<?php echo esc_attr( $end_time ); ?>&desc=<?php echo esc_attr( $content ); ?>&in_loc=<?php echo esc_attr( $location ); ?>&uid=" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="fab fa-yahoo"></i> <?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
-														<a class="list_calender" href="https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=<?php echo esc_attr( $date ); ?>&enddt=<?php echo esc_attr( $end_time ); ?>&subject=<?php echo esc_attr( $event_title ); ?>&body=<?php echo esc_url( $event_title ); ?>" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="far fa-envelope"></i> <?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="<?php echo esc_url( $links['google'] ?? '' ); ?>" rel="noopener noreferrer nofollow" target='_blank'> <i class="fab fa-google"></i> <?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="<?php echo esc_url( $links['yahoo'] ?? '' ); ?>" rel="noopener noreferrer nofollow" target='_blank'><i class="fab fa-yahoo"></i> <?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="<?php echo esc_url( $links['outlook'] ?? '' ); ?>" rel="noopener noreferrer nofollow" target='_blank'><i class="far fa-envelope"></i> <?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
 														<a class="list_calender" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $occurrence['start'] ) ); ?>" rel="noopener noreferrer" target='_blank'><i class="fab fa-apple"></i> <?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
 													</div>
 												</div>

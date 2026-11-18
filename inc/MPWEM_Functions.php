@@ -1151,6 +1151,38 @@
 				return [ 'start' => $start, 'end' => $end ?: mep_get_event_occurrence_end( $event_id, $start ) ];
 			}
 			/**
+			 * Every occurrence an "Add to Calendar" button should save.
+			 *
+			 * A Single Event with "Add More Date" rows is one booking for all of its sessions
+			 * (a weekend course, a 5-week class), so every listed session is returned, each
+			 * with its own end. Particular-date and repeated events sell each date on its own,
+			 * so they keep the one occurrence get_calendar_occurrence() picks.
+			 *
+			 * @param int    $event_id      Event ID.
+			 * @param array  $all_dates     Optional get_dates() result, to save a lookup.
+			 * @param string $upcoming_date The upcoming or requested date the page shows.
+			 * @return array<int, array{start: string, end: string}> In date order; empty when there is no usable date.
+			 */
+			public static function get_calendar_occurrences( $event_id, $all_dates = [], $upcoming_date = '' ): array {
+				$all_dates = ( is_array( $all_dates ) && count( $all_dates ) > 0 ) ? $all_dates : self::get_dates( $event_id );
+				$sessions  = [];
+				if ( 'no' === MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' ) ) {
+					foreach ( (array) $all_dates as $row ) {
+						$start = is_array( $row ) && ! empty( $row['time'] ) ? mep_calendar_occurrence_start( $event_id, $row['time'] ) : '';
+						if ( '' !== $start && ! isset( $sessions[ $start ] ) ) {
+							$end                = self::get_occurrence_end( $event_id, $start, $all_dates );
+							$sessions[ $start ] = [ 'start' => $start, 'end' => $end ?: mep_get_event_occurrence_end( $event_id, $start ) ];
+						}
+					}
+				}
+				if ( count( $sessions ) > 1 ) {
+					ksort( $sessions );
+					return array_values( $sessions );
+				}
+				$occurrence = self::get_calendar_occurrence( $event_id, $all_dates, $upcoming_date );
+				return $occurrence['start'] ? [ $occurrence ] : [];
+			}
+			/**
 			 * Turn a midnight occurrence into the show it really names.
 			 *
 			 * A date-only value ('Y-m-d') or a 'Y-m-d 00:00' value names the day but not the

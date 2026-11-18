@@ -12,7 +12,12 @@
 	 *    event got a zero-length entry, and the event list's "Add To Calendar" started at the
 	 *    current day's midnight because its upcoming date was never set;
 	 *  - the "Event Schedule Details" list printed only each session's start time and ignored
-	 *    the per-event "Display End Datetime" switch.
+	 *    the per-event "Display End Datetime" switch;
+	 *  - "Add Calendar" saved only one session of such a course: every link (and the .ics)
+	 *    held the first date. Now "Add all N dates at once" (a Google subscription to the
+	 *    all-sessions .ics, and the .ics itself for Apple / Outlook / iCal) comes first, then
+	 *    each session gets its own Google/Yahoo/Outlook links. The links also sent the title as
+	 *    "http://<title>" and the raw post HTML (block comments included) as the description.
 	 *
 	 * Not loaded by the plugin. Run it explicitly, on a development or staging site, once per
 	 * Event Expiry Time mode (the setting is cached for the request, so one mode per process):
@@ -56,7 +61,7 @@
 			 * the first is the main date, the rest are "Add More Date" rows.
 			 */
 			public static function event( $title, $type, array $sessions, array $extra = array() ) {
-				$id    = wp_insert_post( array( 'post_type' => 'mep_events', 'post_status' => 'publish', 'post_title' => $title, 'post_content' => 'Test event.' ) );
+				$id    = wp_insert_post( array( 'post_type' => 'mep_events', 'post_status' => 'publish', 'post_title' => $title, 'post_content' => '<!-- wp:paragraph --><p>Test event.</p><!-- /wp:paragraph -->' ) );
 				$split = static function ( $value ) {
 					$parts = explode( ' ', $value );
 					return array( $parts[0], isset( $parts[1] ) ? $parts[1] : '' );
@@ -102,12 +107,32 @@
 				$infos = MPWEM_Functions::get_all_info( $event_id );
 				return is_array( $infos ) && isset( $infos['upcoming_date'] ) ? (string) $infos['upcoming_date'] : '';
 			}
-			/** 'dates' of the Google link in $html as "start/end", or '' when there is none. */
-			public static function google_dates( $html ) {
-				return preg_match( '#calendar\.google\.com/calendar/r/eventedit\?[^"\']*?dates=([0-9T]*)/([0-9T]*)#', $html, $m ) ? $m[1] . '/' . $m[2] : '';
+			/** Decoded href of every link in $html whose class or URL matches $needle. */
+			public static function hrefs( $html, $needle ) {
+				preg_match_all( '#<a [^>]*href="([^"]*)"#', $html, $m );
+				$urls = array_map( function ( $url ) {
+					return html_entity_decode( $url, ENT_QUOTES );
+				}, $m[1] );
+				return array_values( array_filter( $urls, function ( $url ) use ( $needle ) {
+					return false !== strpos( $url, $needle );
+				} ) );
 			}
+			public static function query( $url ) {
+				parse_str( (string) wp_parse_url( $url, PHP_URL_QUERY ), $query );
+				return $query;
+			}
+			/** 'dates' of the first Google link in $html ("start/end" in UTC), or '' when there is none. */
+			public static function google_dates( $html ) {
+				$links = self::hrefs( $html, 'calendar.google.com/calendar/render' );
+				return $links ? (string) ( self::query( $links[0] )['dates'] ?? '' ) : '';
+			}
+			/** Calendar-link time: UTC, basic format (Google, Yahoo, .ics). */
 			public static function cal( $date_time ) {
-				return MPWEM_Global_Function::calender_date_format( $date_time );
+				return get_gmt_from_date( $date_time . ':00', 'Ymd\THis\Z' );
+			}
+			/** Outlook.com time: UTC, ISO 8601. */
+			public static function iso( $date_time ) {
+				return get_gmt_from_date( $date_time . ':00', 'Y-m-d\TH:i:s\Z' );
 			}
 			/** Text of every row of the "Event Schedule Details" list. */
 			public static function date_list( $event_id ) {
@@ -184,19 +209,85 @@
 		MEP_CC_Run::check( 'Repeated: not zero length', "$mep_cc_from 09:00" === $mep_cc_occ['start'] && "$mep_cc_from 11:00" === $mep_cc_occ['end'], wp_json_encode( $mep_cc_occ ) );
 		$mep_cc_occ = MPWEM_Functions::get_calendar_occurrence( $mep_cc_repeated );
 		MEP_CC_Run::check( 'Repeated without a date: next date', "$mep_cc_from 09:00" === $mep_cc_occ['start'], wp_json_encode( $mep_cc_occ ) );
+		$mep_cc_all = MPWEM_Functions::get_calendar_occurrences( $mep_cc_weekend, array(), MEP_CC_Run::upcoming( $mep_cc_weekend ) );
+		MEP_CC_Run::check( 'Course: every session, each with its own end', array(
+			array( 'start' => '2030-01-18 17:00', 'end' => '2030-01-18 20:00' ),
+			array( 'start' => '2030-01-19 09:00', 'end' => '2030-01-19 17:00' ),
+			array( 'start' => '2030-01-20 09:00', 'end' => '2030-01-20 12:00' ),
+		) === $mep_cc_all, wp_json_encode( $mep_cc_all ) );
+		$mep_cc_all = MPWEM_Functions::get_calendar_occurrences( $mep_cc_particular, array(), '2030-02-08 14:00' );
+		MEP_CC_Run::check( 'Particular: only the picked date (each date is its own booking)', array( array( 'start' => '2030-02-08 14:00', 'end' => '2030-02-08 17:30' ) ) === $mep_cc_all, wp_json_encode( $mep_cc_all ) );
+		$mep_cc_all = MPWEM_Functions::get_calendar_occurrences( $mep_cc_repeated, array(), MEP_CC_Run::upcoming( $mep_cc_repeated ) );
+		MEP_CC_Run::check( 'Repeated: one occurrence', 1 === count( $mep_cc_all ) && "$mep_cc_from 09:00" === $mep_cc_all[0]['start'], wp_json_encode( $mep_cc_all ) );
+		$mep_cc_all = MPWEM_Functions::get_calendar_occurrences( $mep_cc_multiday );
+		MEP_CC_Run::check( 'Single Event with one date: one occurrence', array( array( 'start' => '2030-01-27 18:00', 'end' => '2030-01-29 20:00' ) ) === $mep_cc_all, wp_json_encode( $mep_cc_all ) );
 
 		WP_CLI::log( 'Add Calendar: the links' );
 		$mep_cc_html = MEP_CC_Run::render( function () use ( $mep_cc_weekend ) {
 			do_action( 'mpwem_add_calender', $mep_cc_weekend, MPWEM_Functions::get_dates( $mep_cc_weekend ), MEP_CC_Run::upcoming( $mep_cc_weekend ) );
 		} );
-		$mep_cc_want = MEP_CC_Run::cal( '2030-01-18 17:00' ) . '/' . MEP_CC_Run::cal( '2030-01-18 20:00' );
-		MEP_CC_Run::check( 'Event page Google link = first session', MEP_CC_Run::google_dates( $mep_cc_html ) === $mep_cc_want, MEP_CC_Run::google_dates( $mep_cc_html ) );
-		MEP_CC_Run::check( 'Event page Yahoo and Outlook use the same times', false !== strpos( $mep_cc_html, 'st=' . MEP_CC_Run::cal( '2030-01-18 17:00' ) . '&et=' . MEP_CC_Run::cal( '2030-01-18 20:00' ) ) && false !== strpos( $mep_cc_html, 'startdt=' . MEP_CC_Run::cal( '2030-01-18 17:00' ) . '&enddt=' . MEP_CC_Run::cal( '2030-01-18 20:00' ) ) );
-		MEP_CC_Run::check( 'Event page Apple .ics = first session', false !== strpos( $mep_cc_html, esc_url( mep_get_event_ics_url( $mep_cc_weekend, '2030-01-18 17:00' ) ) ) );
+		$mep_cc_sessions = array(
+			array( '2030-01-18 17:00', '2030-01-18 20:00' ),
+			array( '2030-01-19 09:00', '2030-01-19 17:00' ),
+			array( '2030-01-20 09:00', '2030-01-20 12:00' ),
+		);
+		$mep_cc_google  = MEP_CC_Run::hrefs( $mep_cc_html, 'calendar.google.com/calendar/render' );
+		$mep_cc_yahoo   = MEP_CC_Run::hrefs( $mep_cc_html, 'calendar.yahoo.com' );
+		$mep_cc_outlook = MEP_CC_Run::hrefs( $mep_cc_html, 'outlook.live.com' );
+		$mep_cc_got     = array();
+		$mep_cc_want    = array();
+		foreach ( $mep_cc_sessions as $mep_cc_i => $mep_cc_session ) {
+			$mep_cc_want[] = array( MEP_CC_Run::cal( $mep_cc_session[0] ) . '/' . MEP_CC_Run::cal( $mep_cc_session[1] ), MEP_CC_Run::cal( $mep_cc_session[0] ), MEP_CC_Run::cal( $mep_cc_session[1] ), MEP_CC_Run::iso( $mep_cc_session[0] ), MEP_CC_Run::iso( $mep_cc_session[1] ) );
+			$mep_cc_g      = isset( $mep_cc_google[ $mep_cc_i ] ) ? MEP_CC_Run::query( $mep_cc_google[ $mep_cc_i ] ) : array();
+			$mep_cc_y      = isset( $mep_cc_yahoo[ $mep_cc_i ] ) ? MEP_CC_Run::query( $mep_cc_yahoo[ $mep_cc_i ] ) : array();
+			$mep_cc_o      = isset( $mep_cc_outlook[ $mep_cc_i ] ) ? MEP_CC_Run::query( $mep_cc_outlook[ $mep_cc_i ] ) : array();
+			$mep_cc_got[]  = array( $mep_cc_g['dates'] ?? '', $mep_cc_y['st'] ?? '', $mep_cc_y['et'] ?? '', $mep_cc_o['startdt'] ?? '', $mep_cc_o['enddt'] ?? '' );
+		}
+		MEP_CC_Run::check( 'Course: one Google/Yahoo/Outlook link per session', 3 === count( $mep_cc_google ) && 3 === count( $mep_cc_yahoo ) && 3 === count( $mep_cc_outlook ), count( $mep_cc_google ) . '/' . count( $mep_cc_yahoo ) . '/' . count( $mep_cc_outlook ) );
+		MEP_CC_Run::check( 'Course: each session link carries that session\'s own start and end (UTC)', $mep_cc_got === $mep_cc_want, wp_json_encode( $mep_cc_got ) );
+		preg_match_all( '#<div class="mpwem_calender_session__date">(.*?)</div>#s', $mep_cc_html, $mep_cc_m );
+		$mep_cc_labels = array_map( function ( $text ) {
+			return trim( html_entity_decode( $text, ENT_QUOTES ) );
+		}, $mep_cc_m[1] );
+		MEP_CC_Run::check( 'Course: each row is labelled like Event Schedule Details', $mep_cc_labels === MEP_CC_Run::date_list( $mep_cc_weekend ), wp_json_encode( $mep_cc_labels ) );
+		$mep_cc_all_url = mep_get_event_ics_url( $mep_cc_weekend, '2030-01-18 17:00', false, true );
+		MEP_CC_Run::check( 'Course: Apple / Outlook / iCal button = all-sessions .ics', array( $mep_cc_all_url ) === MEP_CC_Run::hrefs( $mep_cc_html, 'mep_ics=' ), wp_json_encode( MEP_CC_Run::hrefs( $mep_cc_html, 'mep_ics=' ) ) );
+		$mep_cc_sub = MEP_CC_Run::hrefs( $mep_cc_html, 'calendar.google.com/calendar/r?cid=' );
+		$mep_cc_cid = $mep_cc_sub ? (string) ( MEP_CC_Run::query( $mep_cc_sub[0] )['cid'] ?? '' ) : '';
+		MEP_CC_Run::check( 'Course: Google "all dates" subscribes to the all-sessions feed (webcal, feed=1)', 1 === count( $mep_cc_sub ) && preg_replace( '#^https?://#', 'webcal://', add_query_arg( 'feed', 1, $mep_cc_all_url ) ) === $mep_cc_cid, $mep_cc_cid );
+		$mep_cc_first_all = strpos( $mep_cc_html, 'mpwem_cal_google_all' );
+		$mep_cc_first_row = strpos( $mep_cc_html, 'mpwem_calender_session__date' );
+		MEP_CC_Run::check( 'Course: "Add all 3 dates at once" comes before the per-date rows', false !== strpos( $mep_cc_html, 'Add all 3 dates at once' ) && false !== $mep_cc_first_all && false !== $mep_cc_first_row && $mep_cc_first_all < $mep_cc_first_row );
+		$mep_cc_q = MEP_CC_Run::query( $mep_cc_all_url );
+		MEP_CC_Run::check( 'All-sessions link is signed with its flag', isset( $mep_cc_q['all'], $mep_cc_q['key'] ) && hash_equals( mep_event_ics_signature( $mep_cc_weekend, '203001181700|all', false ), $mep_cc_q['key'] ) );
+		$mep_cc_q1 = MEP_CC_Run::query( mep_get_event_ics_url( $mep_cc_weekend, '2030-01-18 17:00' ) );
+		MEP_CC_Run::check( 'One-session links keep their old signature (links already emailed still work)', ! isset( $mep_cc_q1['all'] ) && hash_equals( mep_event_ics_signature( $mep_cc_weekend, '203001181700', false ), $mep_cc_q1['key'] ) && $mep_cc_q1['key'] !== $mep_cc_q['key'] );
+		$mep_cc_ics = mep_get_event_ics_content( $mep_cc_weekend, wp_list_pluck( MPWEM_Functions::get_calendar_occurrences( $mep_cc_weekend ), 'start' ) );
+		preg_match_all( '#^DTSTART:(\S+)\r$#m', $mep_cc_ics, $mep_cc_ds );
+		preg_match_all( '#^DTEND:(\S+)\r$#m', $mep_cc_ics, $mep_cc_de );
+		preg_match_all( '#^UID:(\S+)\r$#m', $mep_cc_ics, $mep_cc_uid );
+		$mep_cc_want = array( array(), array() );
+		foreach ( $mep_cc_sessions as $mep_cc_session ) {
+			$mep_cc_want[0][] = MEP_CC_Run::cal( $mep_cc_session[0] );
+			$mep_cc_want[1][] = MEP_CC_Run::cal( $mep_cc_session[1] );
+		}
+		MEP_CC_Run::check( 'Course .ics: one VEVENT per session with its own start and end', 3 === substr_count( $mep_cc_ics, "BEGIN:VEVENT\r\n" ) && array( $mep_cc_ds[1], $mep_cc_de[1] ) === $mep_cc_want, wp_json_encode( array( $mep_cc_ds[1], $mep_cc_de[1] ) ) );
+		$mep_cc_feed = mep_get_event_ics_content( $mep_cc_weekend, wp_list_pluck( MPWEM_Functions::get_calendar_occurrences( $mep_cc_weekend ), 'start' ), false, 'CC weekend course' );
+		MEP_CC_Run::check( 'Feed names the subscribed calendar; the plain download does not', false !== strpos( $mep_cc_feed, "X-WR-CALNAME:CC weekend course\r\n" ) && 3 === substr_count( $mep_cc_feed, "BEGIN:VEVENT\r\n" ) && false === strpos( $mep_cc_ics, 'X-WR-CALNAME' ) );
+		MEP_CC_Run::check( 'Course .ics: distinct UIDs, the first equal to the one-session file\'s', 3 === count( array_unique( $mep_cc_uid[1] ) ) && 0 === strpos( $mep_cc_uid[1][0] ?? '', 'mep-' . $mep_cc_weekend . '-203001181700@' ) );
+		$mep_cc_g = $mep_cc_google ? MEP_CC_Run::query( $mep_cc_google[0] ) : array();
+		MEP_CC_Run::check( 'Links send the plain title (no "http://") and plain-text details', 'CC weekend course' === ( $mep_cc_g['text'] ?? '' ) && false === strpos( $mep_cc_g['details'] ?? '<', '<' ) && false !== strpos( $mep_cc_g['details'] ?? '', 'Test event.' ), wp_json_encode( array( $mep_cc_g['text'] ?? '', $mep_cc_g['details'] ?? '' ) ) );
+		$mep_cc_o = $mep_cc_outlook ? MEP_CC_Run::query( $mep_cc_outlook[0] ) : array();
+		MEP_CC_Run::check( 'Outlook subject is the plain title', 'CC weekend course' === ( $mep_cc_o['subject'] ?? '' ) && false === strpos( $mep_cc_o['body'] ?? '', 'http://CC' ), wp_json_encode( array( $mep_cc_o['subject'] ?? '', $mep_cc_o['body'] ?? '' ) ) );
 		$mep_cc_html = MEP_CC_Run::render( function () use ( $mep_cc_particular ) {
 			do_action( 'mpwem_add_calender', $mep_cc_particular, MPWEM_Functions::get_dates( $mep_cc_particular ), '2030-02-08 14:00' );
 		} );
 		MEP_CC_Run::check( 'Event page, particular 2nd date: Google ends after it starts', MEP_CC_Run::google_dates( $mep_cc_html ) === MEP_CC_Run::cal( '2030-02-08 14:00' ) . '/' . MEP_CC_Run::cal( '2030-02-08 17:30' ), MEP_CC_Run::google_dates( $mep_cc_html ) );
+		MEP_CC_Run::check( 'Particular event: one set of four buttons, Apple = that date only', false === strpos( $mep_cc_html, 'mpwem_calender_sessions' ) && 1 === count( MEP_CC_Run::hrefs( $mep_cc_html, 'calendar.google.com' ) ) && array( mep_get_event_ics_url( $mep_cc_particular, '2030-02-08 14:00' ) ) === MEP_CC_Run::hrefs( $mep_cc_html, 'mep_ics=' ) );
+		$mep_cc_html = MEP_CC_Run::render( function () use ( $mep_cc_multiday ) {
+			do_action( 'mpwem_add_calender', $mep_cc_multiday, MPWEM_Functions::get_dates( $mep_cc_multiday ), MEP_CC_Run::upcoming( $mep_cc_multiday ) );
+		} );
+		MEP_CC_Run::check( 'Single Event with one date: unchanged four buttons', false === strpos( $mep_cc_html, 'mpwem_calender_sessions' ) && MEP_CC_Run::google_dates( $mep_cc_html ) === MEP_CC_Run::cal( '2030-01-27 18:00' ) . '/' . MEP_CC_Run::cal( '2030-01-29 20:00' ), MEP_CC_Run::google_dates( $mep_cc_html ) );
 		$mep_cc_html = MEP_CC_Run::render( function () use ( $mep_cc_multiday ) {
 			do_action( 'mpwem_list_more_date_button', MPWEM_Functions::get_all_info( $mep_cc_multiday ) );
 		} );

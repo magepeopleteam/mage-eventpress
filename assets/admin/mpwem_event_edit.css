@@ -8832,26 +8832,33 @@ body.mpwem-ticket-modal-open {
     white-space: nowrap;
 }
 
+/* !important: the wizard's generic button rules (.mpwem-event-wizard button:not(...))
+   gave the remove button the secondary-button padding, border and white background, so
+   it became a 50px box and each pill grew so wide that only one fitted per line. */
 .mpwem-related-pill__remove {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: none;
-    border-radius: 999px;
-    background: #94a3b8;
-    color: #fff;
-    font-size: 18px;
-    line-height: 1;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 24px !important;
+    min-width: 24px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 999px !important;
+    background: #94a3b8 !important;
+    box-shadow: none !important;
+    color: #fff !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
     cursor: pointer;
     transition: background 0.15s;
     flex-shrink: 0;
 }
 
 .mpwem-related-pill__remove:hover {
-    background: var(--mpwem-danger);
+    background: var(--mpwem-danger) !important;
 }
 
 /* --- Results List --- */
@@ -14547,9 +14554,11 @@ code {
     }
 
     .mpwem-related-pill__remove {
-        width: 20px;
-        height: 20px;
-        font-size: 15px;
+        width: 20px !important;
+        min-width: 20px !important;
+        height: 20px !important;
+        min-height: 20px !important;
+        font-size: 15px !important;
     }
 
     .mpwem-related-search-input {

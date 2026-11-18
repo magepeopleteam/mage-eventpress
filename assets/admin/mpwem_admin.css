@@ -536,6 +536,18 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	max-width: 100%;
 	min-height: 92px;
 }
+/* Classic editor FAQ Description: the global textarea.formControl width is auto, which left the box ~190px wide at the far right of its row. */
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_faq_settings label.justify_between {
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 8px 24px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_faq_settings textarea[name="mep_faq_description"] {
+	flex: 1 1 280px;
+	width: auto;
+	max-width: 100%;
+	min-height: 120px;
+}
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar {
 	display: flex;
 	flex-wrap: wrap;

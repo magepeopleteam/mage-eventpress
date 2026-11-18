@@ -8,17 +8,13 @@
 		$all_dates = $all_dates ?? [];
 		$all_dates = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : MPWEM_Functions::get_dates( $event_id );
 		$upcoming_date = $upcoming_date ?? '';
-		// One occurrence with its own end; see MPWEM_Functions::get_calendar_occurrence().
-		$occurrence = ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) ? MPWEM_Functions::get_calendar_occurrence( $event_id, $all_dates, $upcoming_date ) : [ 'start' => '' ];
-		if ( $occurrence['start'] ) {
+		// Every session of a multi-date Single Event, otherwise the one occurrence; see MPWEM_Functions::get_calendar_occurrences().
+		$occurrences      = ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) ? MPWEM_Functions::get_calendar_occurrences( $event_id, $all_dates, $upcoming_date ) : [];
+		$is_multi_session = count( $occurrences ) > 1;
+		$first_links      = ( ! empty( $occurrences ) && ! $is_multi_session ) ? mep_get_event_calendar_links( $event_id, $occurrences[0]['start'] ) : [];
+		if ( $is_multi_session || ! empty( $first_links ) ) {
 			$event_date_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_date_icon', 'far fa-calendar' );
 			do_action( 'mep_before_add_calendar_button' );
-			$event_title = get_the_title( $event_id );
-			$date        = MPWEM_Global_Function::calender_date_format( $occurrence['start'] );
-			$end_time    = $occurrence['end'] ? MPWEM_Global_Function::calender_date_format( $occurrence['end'] ) : '';
-			$content     = substr( get_the_content( $event_id ), 0, 1000 );
-			$location    = MPWEM_Functions::get_location( $event_id );
-			$location    = implode( '  ', $location );
 			$event_template   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_template', 'default-theme.php' );
 			$is_default_theme = ( $event_template === 'default-theme.php' );
 			?>
@@ -30,12 +26,45 @@
                     <span data-text><?php esc_html_e( 'Add Calendar', 'mage-eventpress' ); ?></span>
                 </button>
                 <div data-collapse="#mpwem_calender_area">
-                    <div class="_mt_xs_fdColumn">
-                        <a class="_button_general_mt_xs mpwem_cal_google" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_url( $event_title ); ?>&dates=<?php echo esc_attr( $date ); ?>/<?php echo esc_attr( $end_time ); ?>&details=<?php echo esc_attr( $content ); ?>&location=<?php echo esc_attr( $location ); ?>&sf=true" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
-                        <a class="_button_general_mt_xs mpwem_cal_yahoo" href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_url( $event_title ); ?>&st=<?php echo esc_attr( $date ); ?>&et=<?php echo esc_attr( $end_time ); ?>&desc=<?php echo esc_attr( $content ); ?>&in_loc=<?php echo esc_attr( $location ); ?>&uid=" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
-                        <a class="_button_general_mt_xs mpwem_cal_outlook" href="https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=<?php echo esc_attr( $date ); ?>&enddt=<?php echo esc_attr( $end_time ); ?>&subject=<?php echo esc_attr( $event_title ); ?>&body=<?php echo esc_url( $event_title ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
-                        <a class="_button_general_mt_xs mpwem_cal_apple" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $occurrence['start'] ) ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
-                    </div>
+					<?php if ( $is_multi_session ) { ?>
+                        <div class="mpwem_calender_sessions">
+							<?php
+								// Google, Yahoo and Outlook.com add one event per link: one row per session.
+								foreach ( $occurrences as $occurrence ) {
+									$links = mep_get_event_calendar_links( $event_id, $occurrence['start'] );
+									if ( empty( $links ) ) {
+										continue;
+									}
+									$has_time = MPWEM_Global_Function::check_time_exit_date( $occurrence['start'] );
+									$label    = MPWEM_Global_Function::date_format( $occurrence['start'], $has_time ? 'full' : 'date', $event_id );
+									if ( $has_time && $occurrence['end'] && strtotime( $occurrence['end'] ) > strtotime( $occurrence['start'] ) ) {
+										$same_day = gmdate( 'Y-m-d', strtotime( $occurrence['end'] ) ) === gmdate( 'Y-m-d', strtotime( $occurrence['start'] ) );
+										$label   .= ' - ' . MPWEM_Global_Function::date_format( $occurrence['end'], $same_day ? 'time' : 'full', $event_id );
+									}
+									?>
+                                    <div class="mpwem_calender_session">
+                                        <div class="mpwem_calender_session__date"><?php echo esc_html( $label ); ?></div>
+                                        <div class="_mt_xs_fdColumn">
+                                            <a class="_button_general_mt_xs mpwem_cal_google" href="<?php echo esc_url( $links['google'] ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
+                                            <a class="_button_general_mt_xs mpwem_cal_yahoo" href="<?php echo esc_url( $links['yahoo'] ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
+                                            <a class="_button_general_mt_xs mpwem_cal_outlook" href="<?php echo esc_url( $links['outlook'] ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
+                                        </div>
+                                    </div>
+									<?php
+								}
+							?>
+                            <div class="_mt_xs_fdColumn mpwem_calender_all">
+                                <a class="_button_general_mt_xs mpwem_cal_apple" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $occurrences[0]['start'], false, true ) ); ?>" rel="noopener noreferrer" target='_blank'><?php echo esc_html( sprintf( /* translators: %d: number of event dates */ _n( 'Apple / iCal (%d date)', 'Apple / iCal (all %d dates)', count( $occurrences ), 'mage-eventpress' ), count( $occurrences ) ) ); ?></a>
+                            </div>
+                        </div>
+					<?php } else { ?>
+                        <div class="_mt_xs_fdColumn">
+                            <a class="_button_general_mt_xs mpwem_cal_google" href="<?php echo esc_url( $first_links['google'] ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
+                            <a class="_button_general_mt_xs mpwem_cal_yahoo" href="<?php echo esc_url( $first_links['yahoo'] ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
+                            <a class="_button_general_mt_xs mpwem_cal_outlook" href="<?php echo esc_url( $first_links['outlook'] ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
+                            <a class="_button_general_mt_xs mpwem_cal_apple" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $occurrences[0]['start'] ) ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
+                        </div>
+					<?php } ?>
                 </div>
             </div>
 			<?php

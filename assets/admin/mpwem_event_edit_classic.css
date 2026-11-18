@@ -1,10 +1,11 @@
 /*
- * Styles for the modern Venue/Location enhancements (Manual Entry toggle +
- * Event Type selector) on the classic event editor. This is a focused
- * subset of mpwem_event_edit.css's rules for these same components — the
- * full wizard stylesheet is not used here because several of its selectors
- * (e.g. .mpev-label) are unscoped and collide with unrelated markup on the
- * classic screen.
+ * Classic event editor only. Styles for the modern Venue/Location enhancements
+ * (Manual Entry toggle + Event Type selector), a focused subset of
+ * mpwem_event_edit.css's rules for these same components, plus layout fixes for
+ * the other tabs. The full wizard stylesheet is not used here because several of
+ * its selectors (e.g. .mpev-label) are unscoped and collide with unrelated markup
+ * on the classic screen; components both editors render are styled by
+ * mpwem_event_edit_shared.css.
  */
 
 :root {
@@ -13,6 +14,11 @@
     --mpwem-border: #e2e8f0;
     --mpwem-text: #1e293b;
     --mpwem-muted: #506b90;
+    /* Same values as mpwem_event_edit.css; used by mpwem_speaker_picker.css. */
+    --mpwem-surface: #ffffff;
+    --mpwem-radius: 12px;
+    --mpwem-btn-radius: 8px;
+    --mpwem-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Event Type card */
@@ -36,7 +42,8 @@
 
 .mpwem-event-type-toggle {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* Wrap by the tab's width: three fixed columns overflowed a narrow tab. */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
 }
 
@@ -296,4 +303,70 @@
     .mpwem-event-type-card {
         margin-bottom: 12px;
     }
+}
+
+/* ------------------------------------------------------------------
+ * Tab layout fixes (this file only loads on the classic screen)
+ * ------------------------------------------------------------------ */
+
+/* Switches: a long label next to the 48px switch squeezed it, so the knob ran
+   past its track. */
+#mp_event_all_info_in_tab label.mpev-switch {
+    flex-shrink: 0;
+}
+
+/* Speaker Information: the classic tab shows the panel as display:block and the
+   fields wrapper carries an inline display:block, so the shared picker's flex gap
+   does not apply; space the cards with margins instead. */
+#mp_event_all_info_in_tab .mpwem_speaker_settings > * + *,
+#mp_event_all_info_in_tab .mpwem_speaker_settings .mpwem-speaker-panel > * + * {
+    margin-top: 16px;
+}
+
+#mp_event_all_info_in_tab .mpwem-speaker-panel__enable .mpev-label {
+    gap: 16px;
+}
+
+#mp_event_all_info_in_tab .mpwem-speaker-panel__enable h2 {
+    margin: 0 0 4px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 650;
+    color: var(--mpwem-text);
+}
+
+/* Email Text: the status row wrapped, so the switch dropped below its text. */
+#mp_event_all_info_in_tab .mpwem-email-status-row {
+    flex-wrap: nowrap;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+#mp_event_all_info_in_tab .mpwem-email-status-row > div {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Date & Time: the date inputs kept their default ~190px width, so the dates table
+   was wider than the tab and End Time and the remove button sat behind a scrollbar. */
+#mp_event_all_info_in_tab .mpwem_date_settings ._ov_auto > table {
+    width: 100%;
+}
+
+#mp_event_all_info_in_tab .mpwem_date_settings ._ov_auto > table td .formControl {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+/* Gallery: space the thumbnails. */
+#mp_event_all_info_in_tab .mp_multi_image {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#mp_event_all_info_in_tab .mp_multi_image:not(:empty) {
+    margin-bottom: 12px;
 }

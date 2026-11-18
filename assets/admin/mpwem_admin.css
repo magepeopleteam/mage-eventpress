@@ -787,7 +787,7 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	background: #fff;
 }
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service {
-	grid-template-columns: minmax(220px, 2.2fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(140px, 1fr) 64px;
+	grid-template-columns: minmax(220px, 2.2fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(140px, 1fr) auto;
 	align-items: end;
 }
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service > .mpwem-ticket-card__group:empty {
@@ -822,31 +822,6 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar__divider {
 		display: none;
 	}
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table {
-		min-width: 0;
-	}
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table thead {
-		display: none;
-	}
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table,
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody,
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tr,
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table td {
-		display: block;
-		width: 100%;
-	}
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tr {
-		margin-bottom: 12px;
-		border: 1px solid #d9e2ec;
-		border-radius: 8px;
-		overflow: hidden;
-	}
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody td {
-		border-bottom: 1px solid #e5edf5;
-	}
-	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody td:last-child {
-		border-bottom: 0;
-	}
 	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main {
 		grid-template-columns: 1fr;
 	}
@@ -858,6 +833,76 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-message {
 		padding: 12px;
 	}
+}
+/* Ticket table and extra services follow the width of the tab, not the window. The
+   classic tab sits between the admin menu and the sidebar, so it is usually 600-850px
+   wide even on a large screen: the 980px ticket table hid its Actions column behind a
+   scrollbar and the extra-service row ran past the card. */
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-table-wrap,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-extra-service-section .mpwem-ticket-cards-container {
+	container-type: inline-size;
+}
+/* Table layout: the header row already names each column. */
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody .mpwem-card-label {
+	display: none;
+}
+@container (max-width: 979px) {
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table {
+		min-width: 0;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table thead {
+		display: none;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tr,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table td:not([data-collapse]),
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table td[data-collapse].mActive {
+		/* Collapsed columns (Show Advanced Column off) keep the plugin's display:none. */
+		display: block;
+		width: 100%;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table {
+		border: 0;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tr {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		margin-bottom: 12px;
+		border: 1px solid #d9e2ec;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table td.mpwem-ticket-card__identity,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table td.mpwem-ticket-card__actions {
+		grid-column: 1 / -1;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody td {
+		border: 0;
+		border-bottom: 1px solid #e5edf5;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody td:last-child {
+		border-bottom: 0;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody .mpwem-card-label {
+		display: block;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table td.mpwem-ticket-card__actions {
+		text-align: left;
+	}
+}
+@container (max-width: 759px) {
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service > .mpwem-ticket-card__actions {
+		grid-column: 1 / -1;
+		justify-content: flex-start;
+	}
+}
+/* Ticket Mode column: mpwem_event_edit.js marks it hidden unless the event is Hybrid. */
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table [data-hybrid-col].mpwem-ticket-col-hidden {
+	display: none;
 }
 /*************/
 #mp_event_all_info_in_tab button { -webkit-transition: all 0.25s ease-in-out; transition: all 0.25s ease-in-out;}

@@ -341,7 +341,8 @@
                                                 ?>
                                             <label>
                                                 <input type="hidden" name="event_more_end_date_normal[]" value=""/>
-                                                <input type="text" value="" class="formControl " placeholder="<?php echo esc_attr( $now ); ?>" />
+                                                <?php // Same date picker as the start date; picking a start date re-renders this cell. ?>
+                                                <input type="text" value="" class="formControl <?php echo esc_attr( $mep_hide_old_date == 'yes' ? 'new-date_type' : 'new-date_type-new' ); ?>" placeholder="<?php echo esc_attr( $now ); ?>" />
                                                 <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                                             </label>
                                         </td>
@@ -618,7 +619,8 @@
                                             <?php //self::date_item( 'event_more_end_date[]', '' ); ?>
                                             <label>
                                                 <input type="hidden" name="event_more_end_date[]" value=""/>
-                                                <input type="text" value="" class="formControl " placeholder="<?php echo esc_attr( $now ); ?>" />
+                                                <?php // Same date picker as the start date; picking a start date re-renders this cell. ?>
+                                                <input type="text" value="" class="formControl <?php echo esc_attr( $mep_hide_old_date == 'yes' ? 'new-particular-date_type' : 'new-date_type-new' ); ?>" placeholder="<?php echo esc_attr( $now ); ?>" />
                                                 <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                                             </label>
                                         </td>

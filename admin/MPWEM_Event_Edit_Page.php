@@ -1427,6 +1427,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					$this->get_asset_version('assets/admin/mpwem_event_edit.css')
 				);
 				wp_enqueue_style(
+					'mpwem_event_edit_shared',
+					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit_shared.css',
+					['mpwem_event_edit'],
+					$this->get_asset_version('assets/admin/mpwem_event_edit_shared.css')
+				);
+				wp_enqueue_style(
 					'mpwem-post-list-modern',
 					MPWEM_PLUGIN_URL . '/assets/admin/css/mpwem-post-list-modern.css',
 					[],
@@ -1443,6 +1449,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit_classic.css',
 					['mpwem_admin'],
 					$this->get_asset_version('assets/admin/mpwem_event_edit_classic.css')
+				);
+				// Components both editors render (speaker picker, payment banner, shortcode box, schema fields).
+				wp_enqueue_style(
+					'mpwem_event_edit_shared',
+					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit_shared.css',
+					['mpwem_event_edit_classic'],
+					$this->get_asset_version('assets/admin/mpwem_event_edit_shared.css')
 				);
 				wp_enqueue_style(
 					'mpwem-post-list-modern',

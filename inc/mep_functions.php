@@ -4313,6 +4313,30 @@ die();
 		}
 	}
 
+	if ( ! function_exists( 'mep_get_event_google_subscribe_url' ) ) {
+		/**
+		 * One-click Google Calendar link for every session of a multi-date Single Event.
+		 *
+		 * Google's "add event" link holds one event, and its repeat option gives every date
+		 * the first session's length. Subscribing to the all-sessions .ics instead adds a
+		 * small calendar, named after the event, with each session at its own time.
+		 * Google refreshes subscribed calendars on its own schedule.
+		 *
+		 * @param int    $event_id Event post ID.
+		 * @param string $start    First session start (signs the feed link).
+		 * @return string '' when the event or start is unusable.
+		 */
+		function mep_get_event_google_subscribe_url( $event_id, $start ) {
+			$feed = mep_get_event_ics_url( $event_id, $start, false, true );
+			if ( '' === $feed ) {
+				return '';
+			}
+			$feed = preg_replace( '#^https?://#i', 'webcal://', add_query_arg( 'feed', 1, $feed ) );
+
+			return 'https://calendar.google.com/calendar/r?cid=' . rawurlencode( $feed );
+		}
+	}
+
 	if ( ! function_exists( 'mep_get_event_google_calendar_url' ) ) {
 		/** Google Calendar "add event" URL for one occurrence, with the times in UTC. */
 		function mep_get_event_google_calendar_url( $event_id, $start, $with_virtual = false ) {
@@ -4378,12 +4402,14 @@ die();
 		/**
 		 * iCalendar file with one VEVENT per occurrence start.
 		 *
-		 * @param int      $event_id     Event post ID.
-		 * @param string[] $starts       Occurrence starts.
-		 * @param bool     $with_virtual Include the join link; only for bookings allowed to see it.
+		 * @param int      $event_id      Event post ID.
+		 * @param string[] $starts        Occurrence starts.
+		 * @param bool     $with_virtual  Include the join link; only for bookings allowed to see it.
+		 * @param string   $calendar_name Name for a subscribed calendar (Google "all dates" link);
+		 *                                '' for a plain download.
 		 * @return string '' when none of the starts is usable.
 		 */
-		function mep_get_event_ics_content( $event_id, $starts, $with_virtual = false ) {
+		function mep_get_event_ics_content( $event_id, $starts, $with_virtual = false, $calendar_name = '' ) {
 			$entries = array();
 			foreach ( (array) $starts as $session_start ) {
 				$data = mep_get_calendar_event_data( $event_id, $session_start, $with_virtual );
@@ -4401,6 +4427,12 @@ die();
 				. mep_ics_line( 'PRODID:-//' . mep_ics_text( get_bloginfo( 'name' ) ) . '//Event Booking Manager//EN' )
 				. mep_ics_line( 'CALSCALE:GREGORIAN' )
 				. mep_ics_line( 'METHOD:PUBLISH' );
+			if ( '' !== $calendar_name ) {
+				// Subscribed calendars show this name instead of the feed URL.
+				$ics .= mep_ics_line( 'X-WR-CALNAME:' . mep_ics_text( $calendar_name ) )
+					. mep_ics_line( 'REFRESH-INTERVAL;VALUE=DURATION:PT12H' )
+					. mep_ics_line( 'X-PUBLISHED-TTL:PT12H' );
+			}
 			foreach ( $entries as $data ) {
 				// Same UID as the one-session link for that start, so importing both updates rather than duplicates.
 				$ics .= mep_ics_line( 'BEGIN:VEVENT' )
@@ -4447,7 +4479,9 @@ die();
 					$starts = $sessions;
 				}
 			}
-			$ics = $usable ? mep_get_event_ics_content( $event_id, $starts, $with_virtual ) : '';
+			// feed=1 (Google "all dates" subscription) only names the calendar, so it is not signed.
+			$calendar_name = $usable && $all_sessions && ! empty( $_GET['feed'] ) ? html_entity_decode( get_the_title( $event ), ENT_QUOTES, 'UTF-8' ) : '';
+			$ics           = $usable ? mep_get_event_ics_content( $event_id, $starts, $with_virtual, $calendar_name ) : '';
 			if ( '' === $ics ) {
 				wp_die( esc_html__( 'This event is no longer available.', 'mage-eventpress' ), '', array( 'response' => 404 ) );
 			}

@@ -28,6 +28,12 @@
                 <div data-collapse="#mpwem_calender_area">
 					<?php if ( $is_multi_session ) { ?>
                         <div class="mpwem_calender_sessions">
+                            <div class="mpwem_calender_sessions__label"><?php echo esc_html( sprintf( /* translators: %d: number of event dates */ _n( 'Add all %d date at once', 'Add all %d dates at once', count( $occurrences ), 'mage-eventpress' ), count( $occurrences ) ) ); ?></div>
+                            <div class="_mt_xs_fdColumn mpwem_calender_all">
+                                <a class="_button_general_mt_xs mpwem_cal_google mpwem_cal_google_all" href="<?php echo esc_url( mep_get_event_google_subscribe_url( $event_id, $occurrences[0]['start'] ) ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Google Calendar', 'mage-eventpress' ); ?></a>
+                                <a class="_button_general_mt_xs mpwem_cal_apple" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $occurrences[0]['start'], false, true ) ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Apple / Outlook / iCal', 'mage-eventpress' ); ?></a>
+                            </div>
+                            <div class="mpwem_calender_sessions__label"><?php esc_html_e( 'Or add one date', 'mage-eventpress' ); ?></div>
 							<?php
 								// Google, Yahoo and Outlook.com add one event per link: one row per session.
 								foreach ( $occurrences as $occurrence ) {
@@ -53,9 +59,6 @@
 									<?php
 								}
 							?>
-                            <div class="_mt_xs_fdColumn mpwem_calender_all">
-                                <a class="_button_general_mt_xs mpwem_cal_apple" href="<?php echo esc_url( mep_get_event_ics_url( $event_id, $occurrences[0]['start'], false, true ) ); ?>" rel="noopener noreferrer" target='_blank'><?php echo esc_html( sprintf( /* translators: %d: number of event dates */ _n( 'Apple / iCal (%d date)', 'Apple / iCal (all %d dates)', count( $occurrences ), 'mage-eventpress' ), count( $occurrences ) ) ); ?></a>
-                            </div>
                         </div>
 					<?php } else { ?>
                         <div class="_mt_xs_fdColumn">

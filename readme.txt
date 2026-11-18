@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin, raselsha
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.13
+Stable tag: 5.7.14
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,18 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.14 =
+* New: Date, time and capacity filters for schedule add-ons.
+* Fix: The Date Time format dropdowns are usable and the chosen format is applied.
+* Fix: The Event Time card shows the end time; complete German labels.
+* Fix: Recurring events stay listed when their saved upcoming date has passed.
+* Fix: Stop hiding the shop owner's "Hidden" products in wp-admin.
+* Fix: Translate the email presets and settings defaults.
+* Fix: Don't force a required attendee form on events that never set one up.
+* Fix: Seat holds follow their cart line; a visitor's cart is never emptied.
+* Fix: Show add-on ticket columns in the inline ticket form.
+* Fix: Booking email templates (PRO) can tell an event's own email message apart from the global one.
 
 = 5.7.13 =
 * New: Add a cancelled status that keeps events listed but closes booking.

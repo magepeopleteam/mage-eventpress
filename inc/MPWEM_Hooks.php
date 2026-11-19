@@ -982,6 +982,13 @@
 				if ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ) ), 403 );
 				}
+				// One spelling of the date, on a day the event offers: the duplicate and seat
+				// checks below match stored dates with LIKE, and attendees are stored with "T"
+				// turned into a space, so another spelling skipped both checks.
+				$event_date = MPWEM_Functions::canonical_booking_date( $event_id, $event_date );
+				if ( null === $event_date ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please choose a date offered on the event page.', 'mage-eventpress' ) ) );
+				}
 				$use_attendee_form = $event_id
 					&& 'on' === get_post_meta( $event_id, 'mep_rsvp_use_attendee_form', true )
 					&& class_exists( 'MPWEM_Form_Builder' )

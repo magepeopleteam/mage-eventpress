@@ -5770,11 +5770,13 @@ die();
 				$global_template   = mep_get_option( 'mep_global_single_template', 'single_event_setting_sec', 'default-theme.php' );
 				$_current_template = $current_template ?: $global_template;
 				foreach ( $names as $key => $name ) {
-					$current_qty = $qty[ $key ];
-					$current_qty = apply_filters( 'mpwem_group_actual_qty', $current_qty, $product_id, $name );
+					// Whole numbers only, as in MPWEM_Woocommerce::get_attendee_info().
+					$posted_qty  = MPWEM_Functions::parse_quantity( isset( $qty[ $key ] ) && is_scalar( $qty[ $key ] ) ? (string) $qty[ $key ] : '' );
+					$posted_qty  = is_null( $posted_qty ) ? 0 : $posted_qty;
+					$current_qty = apply_filters( 'mpwem_group_actual_qty', $posted_qty, $product_id, $name );
 					$current_qty = apply_filters( 'mpwem_group_qty_actual', $current_qty, $product_id, $name );
 					if ( $current_qty > 0 && $name ) {
-						for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
+						for ( $j = 0; $j < $posted_qty; $j ++ ) {
 							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && $iu > 0 && $_current_template == 'smart.php' ) {
 								$user[ $iu ]                     = current( $user );
 								$user[ $iu ]['user_ticket_type'] = strip_tags( $name );

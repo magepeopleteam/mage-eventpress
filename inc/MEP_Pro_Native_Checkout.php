@@ -86,6 +86,16 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			if ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 				wp_send_json_error( array( 'message' => __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ) ) );
 			}
+			// RSVP events book through the RSVP form, with its own limits.
+			if ( 'rsvp' === MPWEM_Global_Function::get_event_mode( $event_id ) ) {
+				wp_send_json_error( array( 'message' => __( 'Sorry, this event is not available for booking.', 'mage-eventpress' ) ) );
+			}
+			// One spelling of the date, on a day the event offers, so the seat check below
+			// counts the same attendees the booking will be stored with.
+			$event_date = MPWEM_Functions::canonical_booking_date( $event_id, $event_date );
+			if ( null === $event_date ) {
+				wp_send_json_error( array( 'message' => __( 'Please choose a date offered on the event page.', 'mage-eventpress' ) ) );
+			}
 
 			// Everyday events that hide the ticket-time selector post a date with no real
 			// time. Default it to the event's "Start Date Time" time field so the booking —
@@ -127,18 +137,21 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			// WooCommerce cart path, which already looks the price up by name). The client price
 			// is discarded.
 			$configured_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', array() );
-			$valid_names      = array();
-			if ( is_array( $configured_types ) ) {
-				foreach ( $configured_types as $configured_type ) {
-					$configured_name = is_array( $configured_type ) && isset( $configured_type['option_name_t'] ) ? $configured_type['option_name_t'] : '';
-					$valid_names[]   = html_entity_decode( urldecode( $configured_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-				}
-			}
+			// Only the ticket types the event page offers: not switched off, not withheld
+			// by mpwem_ticket_permission (same list as the WooCommerce cart).
+			$valid_names      = MPWEM_Functions::get_bookable_ticket_names( $event_id );
 			$total = 0.0;
 			$items = array();
 			foreach ( $tickets as $ticket ) {
-				$qty   = isset( $ticket['ticket_qty'] )   ? absint( $ticket['ticket_qty'] )           : 0;
-				$name  = isset( $ticket['ticket_name'] )  ? sanitize_text_field( $ticket['ticket_name'] ) : '';
+				if ( ! is_array( $ticket ) ) {
+					wp_send_json_error( array( 'message' => __( 'Invalid ticket selected.', 'mage-eventpress' ) ) );
+				}
+				// Whole numbers only. absint() turned -3 into 3 and 1.9 into 1.
+				$qty   = isset( $ticket['ticket_qty'] ) ? MPWEM_Functions::parse_quantity( is_string( $ticket['ticket_qty'] ) ? sanitize_text_field( $ticket['ticket_qty'] ) : $ticket['ticket_qty'] ) : 0;
+				$name  = isset( $ticket['ticket_name'] ) && is_scalar( $ticket['ticket_name'] ) ? sanitize_text_field( (string) $ticket['ticket_name'] ) : '';
+				if ( null === $qty ) {
+					wp_send_json_error( array( 'message' => __( 'Ticket and extra service quantities must be whole numbers. Please choose your tickets again on the event page.', 'mage-eventpress' ) ) );
+				}
 				if ( $qty > 0 ) {
 					$name_decoded = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 					if ( '' === $name || ! in_array( $name_decoded, $valid_names, true ) ) {
@@ -158,6 +171,21 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 
 			if ( empty( $items ) ) {
 				wp_send_json_error( array( 'message' => __( 'Please select at least one ticket.', 'mage-eventpress' ) ) );
+			}
+			// Seats left per ticket type (rows of one type summed) and the per-booking
+			// ceiling, measured the same way as the WooCommerce checkout. The form caps the
+			// quantity in the browser only, and one attendee record is created per ticket.
+			$quantity_rows = array();
+			foreach ( $items as $item ) {
+				$quantity_rows[] = array(
+					'ticket_name' => $item['name'],
+					'ticket_qty'  => $item['qty'],
+					'event_date'  => $event_date,
+				);
+			}
+			$quantity_rejection = MPWEM_Functions::get_booking_quantity_rejection( $event_id, $quantity_rows, $event_date );
+			if ( '' !== $quantity_rejection ) {
+				wp_send_json_error( array( 'message' => $quantity_rejection ) );
 			}
 
 			// 5. Create the mep_custom_order record (tracks payments independently of WooCommerce)
@@ -324,7 +352,20 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 				return;
 			}
 
-			// No gateway configured — offline / pay at door
+			// Offline / pay at door - only when the site offers it, or offers no payment method
+			// at all (the modal then registers for review). An unknown or disabled method
+			// must not turn into an unpaid booking.
+			$payment_opts   = get_option( 'payment_setting_sec', array() );
+			$payment_opts   = is_array( $payment_opts ) ? $payment_opts : array();
+			$offline_on     = isset( $payment_opts['mep_offline_enable'] ) && 'on' === $payment_opts['mep_offline_enable'];
+			$any_gateway_on = $offline_on
+				|| ( isset( $payment_opts['mep_paypal_enable'] ) && 'on' === $payment_opts['mep_paypal_enable'] )
+				|| ( isset( $payment_opts['mep_stripe_enable'] ) && 'on' === $payment_opts['mep_stripe_enable'] );
+			if ( ! $offline_on && $any_gateway_on ) {
+				wp_delete_post( $order_id, true );
+				wp_send_json_error( array( 'message' => __( 'Please choose one of the payment methods offered.', 'mage-eventpress' ) ) );
+				return;
+			}
 			$this->complete_order( $order_id, $event_id, $items, $billing_name, $billing_email, $billing_phone, $event_date, 'offline', 'pending', $seat_metas );
 		}
 

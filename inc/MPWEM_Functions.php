@@ -34,6 +34,15 @@
 			 * statistics, which must keep listing past and closed dates) or 'calendar'.
 			 */
 			const SCHEDULE_FILTERS_VERSION = 1;
+			/**
+			 * Most tickets one booking may hold, across all its ticket types.
+			 *
+			 * A server-side ceiling for ticket types with no seat limit (unlimited, or a
+			 * capacity set very high): one attendee entry is built per ticket, so an
+			 * unbounded posted quantity could exhaust memory. Filter:
+			 * mpwem_max_tickets_per_booking ( int $max, int $event_id ); 0 removes it.
+			 */
+			const MAX_TICKETS_PER_BOOKING = 1000;
 			public function __construct() { }
 			/**
 			 * The event date the visitor asked for, as a normalised Y-m-d[ H:i] string.
@@ -307,6 +316,348 @@
 					}
 				}
 				return false;
+			}
+			/**
+			 * A posted ticket or extra service quantity as a whole number.
+			 *
+			 * The booking form only offers whole numbers, but the server used to trust the
+			 * value: the price path cast it with (int) while the attendee path compared the
+			 * raw string, so '0.9' was priced as 0 and still booked one attendee. Only a
+			 * non-negative whole number is accepted - digits only, no sign, decimal point or
+			 * exponent. An empty value is 0 (an untouched quantity field).
+			 *
+			 * @param mixed $value Posted value.
+			 * @return int|null The quantity, or null when the value is not a whole number.
+			 */
+			public static function parse_quantity( $value ) {
+				if ( is_int( $value ) ) {
+					return $value >= 0 ? $value : null;
+				}
+				if ( is_float( $value ) ) {
+					// JSON payloads (native checkout) decode 2 as int but 2.0 as float.
+					return ( $value >= 0 && $value < 1000000000 && floor( $value ) === $value ) ? (int) $value : null;
+				}
+				if ( ! is_string( $value ) ) {
+					return null;
+				}
+				$value = trim( $value );
+				if ( '' === $value ) {
+					return 0;
+				}
+				// Nine digits stay far below PHP_INT_MAX on every platform.
+				if ( strlen( $value ) > 9 || ! ctype_digit( $value ) ) {
+					return null;
+				}
+				return (int) $value;
+			}
+			/**
+			 * The days an event can be booked on, as Y-m-d, from the list the booking form uses.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return string[]
+			 */
+			public static function get_bookable_days( $event_id ) {
+				static $cache = [];
+				$event_id = (int) $event_id;
+				if ( ! isset( $cache[ $event_id ] ) ) {
+					$days = [];
+					foreach ( (array) self::get_dates( $event_id ) as $entry ) {
+						$value = is_array( $entry ) ? ( isset( $entry['time'] ) ? $entry['time'] : ( isset( $entry['date'] ) ? $entry['date'] : '' ) ) : $entry;
+						$time  = is_scalar( $value ) && '' !== (string) $value ? strtotime( (string) $value ) : false;
+						if ( $time ) {
+							$days[] = date( 'Y-m-d', $time );
+						}
+					}
+					$cache[ $event_id ] = array_values( array_unique( $days ) );
+				}
+				return $cache[ $event_id ];
+			}
+			/**
+			 * A posted booking date in the one spelling seat counts match, or null when the
+			 * event does not offer that day.
+			 *
+			 * Sold seats are counted with a LIKE on the stored date, and attendees are stored
+			 * with "T" turned into a space. A date posted as "2026-12-05T10:00" or with other
+			 * spelling therefore counted no sold seats while its attendees still counted
+			 * against the real date - and a day the event never runs was accepted as well.
+			 * The result is "Y-m-d H:i" (or "Y-m-d" without a time), which is what the booking
+			 * form posts. An empty value stays empty, as before.
+			 *
+			 * @param int    $event_id Event post ID.
+			 * @param string $date     Posted date.
+			 * @return string|null
+			 */
+			public static function canonical_booking_date( $event_id, $date ) {
+				$date = trim( str_replace( 'T', ' ', is_scalar( $date ) ? (string) $date : '' ) );
+				if ( '' === $date ) {
+					return '';
+				}
+				$time = strtotime( $date );
+				if ( ! $time ) {
+					return null;
+				}
+				$day = date( 'Y-m-d', $time );
+				if ( ! in_array( $day, self::get_bookable_days( $event_id ), true ) ) {
+					return null;
+				}
+				if ( ! preg_match( '/\d{1,2}:\d{2}/', $date ) ) {
+					return $day;
+				}
+				// A start time the day does not have would count its seats on its own. Midnight
+				// stays allowed: a date-only link resolves to the day's first start later.
+				$hm     = date( 'H:i', $time );
+				$starts = self::get_start_times_of_day( $event_id, $day );
+				if ( '00:00' !== $hm && $starts && ! in_array( $hm, $starts, true ) ) {
+					return null;
+				}
+				return $day . ' ' . $hm;
+			}
+			/**
+			 * Start times ("H:i") an event offers on one day: its time slots and occurrences.
+			 *
+			 * @param int    $event_id Event post ID.
+			 * @param string $day      Y-m-d.
+			 * @return string[] Empty when the event lists no time for that day.
+			 */
+			public static function get_start_times_of_day( $event_id, $day ) {
+				static $cache = [];
+				$key = (int) $event_id . '|' . $day;
+				if ( isset( $cache[ $key ] ) ) {
+					return $cache[ $key ];
+				}
+				$starts = [];
+				$dates  = self::get_dates( $event_id );
+				foreach ( (array) $dates as $entry ) {
+					$value = is_array( $entry ) && isset( $entry['time'] ) ? $entry['time'] : '';
+					$stamp = is_scalar( $value ) && '' !== (string) $value ? strtotime( (string) $value ) : false;
+					if ( $stamp && date( 'Y-m-d', $stamp ) === $day ) {
+						$starts[] = date( 'H:i', $stamp );
+					}
+				}
+				foreach ( (array) self::get_times( $event_id, $dates, $day ) as $slot ) {
+					$value = is_array( $slot ) && isset( $slot['start']['time'] ) ? $slot['start']['time'] : '';
+					$value = is_scalar( $value ) ? (string) $value : '';
+					$stamp = '' !== $value ? strtotime( preg_match( '/\d{4}-\d{2}-\d{2}/', $value ) ? $value : $day . ' ' . $value ) : false;
+					if ( $stamp ) {
+						$starts[] = date( 'H:i', $stamp );
+					}
+				}
+				$cache[ $key ] = array_values( array_unique( $starts ) );
+				return $cache[ $key ];
+			}
+			/**
+			 * Ticket type names a visitor may book, decoded the same way posted names are.
+			 *
+			 * The event page leaves out ticket types the organiser switched off and any that
+			 * mpwem_ticket_permission withholds (templates/layout/ticket_type.php). Checking
+			 * only that a posted name existed let a switched-off type - typically a 0.00 staff
+			 * or complimentary ticket - be booked by posting its name. Every booking path
+			 * (WooCommerce cart, native checkout) checks posted names against this one list.
+			 *
+			 * @param int $post_id Event post ID.
+			 * @return string[]
+			 */
+			public static function get_bookable_ticket_names( $post_id ) {
+				$names        = [];
+				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
+				if ( ! is_array( $ticket_types ) ) {
+					return $names;
+				}
+				foreach ( $ticket_types as $ticket_type ) {
+					if ( ! is_array( $ticket_type ) ) {
+						continue;
+					}
+					$enabled = array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
+					if ( 'yes' !== $enabled || ! apply_filters( 'mpwem_ticket_permission', true, $ticket_type ) ) {
+						continue;
+					}
+					$name = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+					$name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+					if ( $name ) {
+						$names[] = $name;
+					}
+				}
+				return $names;
+			}
+			/**
+			 * Seats a single ticket type still has on a given date.
+			 *
+			 * @param int    $event_id    Event post ID.
+			 * @param string $ticket_name Ticket type name as stored on the booking.
+			 * @param string $event_date  Event date of the booking.
+			 * @return int|null Seats left, negative when already oversold, or null when the
+			 *                  ticket type cannot be resolved or is unlimited - in which
+			 *                  case nothing is blocked.
+			 */
+			public static function ticket_type_seats_left( $event_id, $ticket_name, $event_date ) {
+				// mep_get_ticket_type_info_by_name() strips apostrophes from the stored name
+				// before comparing, so the name being looked up has to be stripped as well.
+				$lookup_name = str_replace( "'", '', (string) $ticket_name );
+				if ( self::unlimited_tickets_enabled() && 'yes' === mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_qty_t_unlimited' ) ) {
+					return null;
+				}
+				$capacity = mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_qty_t' );
+				if ( $capacity === '' || is_null( $capacity ) ) {
+					return null;
+				}
+				// Measure against the seat count this date really has, the same number the
+				// event page sold from (see get_ticket_capacity()).
+				if ( has_filter( 'mpwem_ticket_capacity' ) ) {
+					$capacity = (int) apply_filters( 'mpwem_ticket_capacity', (int) $capacity, (int) $event_id, self::ticket_type_row( $event_id, $lookup_name, $capacity ), (string) $event_date );
+				}
+				$reserved = mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_rsv_t' );
+				$sold     = (int) mep_ticket_type_sold( $event_id, $ticket_name, $event_date );
+
+				return (int) $capacity - ( $sold + (int) $reserved );
+			}
+			/**
+			 * The configured row of a ticket type, matched the way
+			 * mep_get_ticket_type_info_by_name() matches it: apostrophes stripped, and the
+			 * last row wins when two share a name.
+			 *
+			 * @param int    $event_id    Event post ID.
+			 * @param string $lookup_name Ticket type name without apostrophes.
+			 * @param mixed  $capacity    Capacity already resolved, used when no row matches.
+			 * @return array
+			 */
+			private static function ticket_type_row( $event_id, $lookup_name, $capacity ) {
+				$row          = array(
+					'option_name_t' => $lookup_name,
+					'option_qty_t'  => $capacity,
+				);
+				$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+				if ( is_array( $ticket_types ) ) {
+					foreach ( $ticket_types as $ticket_type ) {
+						$name = is_array( $ticket_type ) && isset( $ticket_type['option_name_t'] ) ? str_replace( "'", '', (string) $ticket_type['option_name_t'] ) : '';
+						if ( '' !== $name && $name === $lookup_name ) {
+							$row = $ticket_type;
+						}
+					}
+				}
+				return $row;
+			}
+			/**
+			 * Seats the whole event still has on a given date, for Global Quantity events.
+			 *
+			 * Keeps the existing seat-count filters so the Global Quantity and seat plan
+			 * addons continue to decide the number they always have.
+			 *
+			 * @param int    $event_id   Event post ID.
+			 * @param string $event_date Event date of the booking.
+			 * @return int|null
+			 */
+			public static function event_seats_left( $event_id, $event_date ) {
+				$total_seat = apply_filters( 'mep_event_total_seat_counts', mep_event_total_seat( $event_id, 'total' ), $event_id );
+				$total_resv = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id );
+				$total_seat = apply_filters( 'mep_event_total_seat_count_checkout', $total_seat, $event_id, $event_date );
+				if ( $total_seat === '' || is_null( $total_seat ) ) {
+					return null;
+				}
+				// An empty ticket type counts every attendee on the event for that date.
+				$sold = (int) mep_ticket_type_sold( $event_id, '', $event_date );
+
+				return (int) $total_seat - ( $sold + (int) $total_resv );
+			}
+			/**
+			 * The "not enough tickets" message for a ticket type, or for the whole event.
+			 *
+			 * @param string $ticket_name Ticket type, or '' when the event is capped as a whole.
+			 * @param int    $event_id    Event post ID.
+			 * @param string $event_date  Event date of the booking.
+			 * @param int    $seats_left  Seats still available.
+			 * @param int    $requested   Seats asked for.
+			 * @return string
+			 */
+			public static function get_seat_shortage_message( $ticket_name, $event_id, $event_date, $seats_left, $requested ) {
+				$event_name = get_the_title( $event_id );
+				$event_when = get_mep_datetime( $event_date, 'date-time-text' );
+				$seats_left = max( 0, (int) $seats_left );
+				$requested  = (int) $requested;
+				if ( $ticket_name === '' ) {
+					return sprintf(
+					/* translators: 1: event name, 2: event date, 3: tickets left, 4: tickets requested. */
+						__( 'Sorry, %1$s on %2$s does not have enough tickets left. Only %3$d remaining, but you selected %4$d. Please change the quantity and try again.', 'mage-eventpress' ),
+						$event_name,
+						$event_when,
+						$seats_left,
+						$requested
+					);
+				}
+				return sprintf(
+				/* translators: 1: ticket type, 2: event name, 3: event date, 4: tickets left, 5: tickets requested. */
+					__( 'Sorry, "%1$s" for %2$s on %3$s does not have enough tickets left. Only %4$d remaining, but you selected %5$d. Please change the quantity and try again.', 'mage-eventpress' ),
+					$ticket_name,
+					$event_name,
+					$event_when,
+					$seats_left,
+					$requested
+				);
+			}
+			/**
+			 * Why one booking's ticket quantities cannot be sold, or '' when they can.
+			 *
+			 * The booking form caps each quantity at the seats left, but only in the
+			 * browser. Rows are summed per ticket type and date first, so posting the same
+			 * ticket type in several rows cannot get past the limit. Measured the same way as
+			 * the checkout seat check (sold attendees plus reserved seats; cart holds are not
+			 * counted), so a booking accepted here is never refused later only for that.
+			 * Events with the legacy seat plan keep their own inventory.
+			 *
+			 * @param int    $event_id    Event post ID.
+			 * @param array  $ticket_rows Rows with ticket_name, ticket_qty and optional event_date.
+			 * @param string $event_date  Date used for rows that carry none.
+			 * @return string Reason for the customer, or ''.
+			 */
+			public static function get_booking_quantity_rejection( $event_id, $ticket_rows, $event_date = '' ) {
+				$requested = [];
+				$total     = 0;
+				foreach ( (array) $ticket_rows as $row ) {
+					if ( ! is_array( $row ) ) {
+						continue;
+					}
+					$name = isset( $row['ticket_name'] ) ? (string) $row['ticket_name'] : '';
+					$qty  = isset( $row['ticket_qty'] ) ? (int) $row['ticket_qty'] : 0;
+					if ( '' === $name || $qty < 1 ) {
+						continue;
+					}
+					$date = isset( $row['event_date'] ) && '' !== (string) $row['event_date'] ? (string) $row['event_date'] : (string) $event_date;
+					$key  = $name . '|' . $date;
+					if ( ! isset( $requested[ $key ] ) ) {
+						$requested[ $key ] = [ 'name' => $name, 'date' => $date, 'qty' => 0 ];
+					}
+					$requested[ $key ]['qty'] += $qty;
+					$total                    += $qty;
+				}
+				$max = (int) apply_filters( 'mpwem_max_tickets_per_booking', self::MAX_TICKETS_PER_BOOKING, (int) $event_id );
+				if ( $max > 0 && $total > $max ) {
+					/* translators: %d: most tickets one booking may hold. */
+					return sprintf( __( 'You can book at most %d tickets at a time.', 'mage-eventpress' ), $max );
+				}
+				$seat_plan = get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true );
+				if ( is_array( $seat_plan ) && sizeof( $seat_plan ) > 0 ) {
+					return '';
+				}
+				if ( 'on' === get_post_meta( $event_id, 'enable_global_qty', true ) ) {
+					// Global Quantity caps the event as a whole, not each ticket type.
+					$per_date = [];
+					foreach ( $requested as $line ) {
+						$per_date[ $line['date'] ] = ( isset( $per_date[ $line['date'] ] ) ? $per_date[ $line['date'] ] : 0 ) + $line['qty'];
+					}
+					foreach ( $per_date as $date => $qty ) {
+						$seats_left = self::event_seats_left( $event_id, $date );
+						if ( ! is_null( $seats_left ) && $qty > $seats_left ) {
+							return self::get_seat_shortage_message( '', $event_id, $date, $seats_left, $qty );
+						}
+					}
+					return '';
+				}
+				foreach ( $requested as $line ) {
+					$seats_left = self::ticket_type_seats_left( $event_id, $line['name'], $line['date'] );
+					if ( ! is_null( $seats_left ) && $line['qty'] > $seats_left ) {
+						return self::get_seat_shortage_message( $line['name'], $event_id, $line['date'], $seats_left, $line['qty'] );
+					}
+				}
+				return '';
 			}
 			public static function get_total_available_seat( $event_id, $date = '' ) {
 				$total_sold    = self::get_total_sold( $event_id, $date );

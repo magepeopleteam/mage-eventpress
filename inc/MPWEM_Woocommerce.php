@@ -88,6 +88,12 @@
 			public static function get_posted_event_date( $event_id ) {
 				$start_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['mep_event_start_date'] ) ) : [];
 				$start_date = (string) current( $start_date );
+				// One spelling for every date, so seat counts and stored attendees agree. A day
+				// the event does not offer is refused in get_booking_rejection().
+				$canonical = MPWEM_Functions::canonical_booking_date( $event_id, $start_date );
+				if ( is_string( $canonical ) && '' !== $canonical ) {
+					$start_date = $canonical;
+				}
 				return MPWEM_Functions::resolve_occurrence_datetime( $event_id, $start_date );
 			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
@@ -116,6 +122,11 @@
 					$ex_infos       = self::get_cart_ex_info( $product_id );
 					$ex_price       = self::get_cart_ex_price( $ex_infos );
 					$user_info      = self::get_attendee_info( $product_id );
+					// event_tp below is priced from $ticket_info only, so every attendee must
+					// be paid for by a ticket of its own type there.
+					if ( is_array( $user_info ) && count( self::limit_attendees_to_tickets( $user_info, $ticket_info ) ) !== count( $user_info ) ) {
+						throw self::booking_exception( __( 'The selected tickets do not match the attendee details. Please choose your tickets again on the event page.', 'mage-eventpress' ) );
+					}
 					$total_price    = $ticket_price + $ex_price;
 					if ( ! empty( $time_slot_text ) ) {
 						$cart_item_data['event_everyday_time_slot'] = $time_slot_text;
@@ -542,81 +553,26 @@
 			/**
 			 * Seats a single ticket type still has on a given date.
 			 *
+			 * The logic lives in MPWEM_Functions so the native checkout, which runs without
+			 * WooCommerce, measures seats exactly the same way.
+			 *
 			 * @param int    $event_id    Event post ID.
 			 * @param string $ticket_name Ticket type name as stored on the cart line.
 			 * @param string $event_date  Event date on the cart line.
-			 * @return int|null Seats left, negative when already oversold, or null when the
-			 *                  ticket type cannot be resolved or is unlimited - in which
-			 *                  case nothing is blocked.
+			 * @return int|null See MPWEM_Functions::ticket_type_seats_left().
 			 */
 			private static function ticket_type_seats_left( $event_id, $ticket_name, $event_date ) {
-				// mep_get_ticket_type_info_by_name() strips apostrophes from the stored name
-				// before comparing, so the name being looked up has to be stripped as well.
-				$lookup_name = str_replace( "'", '', (string) $ticket_name );
-				if ( MPWEM_Functions::unlimited_tickets_enabled() && 'yes' === mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_qty_t_unlimited' ) ) {
-					return null;
-				}
-				$capacity    = mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_qty_t' );
-				if ( $capacity === '' || is_null( $capacity ) ) {
-					return null;
-				}
-				// Measure against the seat count this date really has, the same number the
-				// event page sold from (see MPWEM_Functions::get_ticket_capacity()).
-				if ( has_filter( 'mpwem_ticket_capacity' ) ) {
-					$capacity = (int) apply_filters( 'mpwem_ticket_capacity', (int) $capacity, (int) $event_id, self::ticket_type_row( $event_id, $lookup_name, $capacity ), (string) $event_date );
-				}
-				$reserved = mep_get_ticket_type_info_by_name( $lookup_name, $event_id, 'option_rsv_t' );
-				$sold     = (int) mep_ticket_type_sold( $event_id, $ticket_name, $event_date );
-
-				return (int) $capacity - ( $sold + (int) $reserved );
-			}
-			/**
-			 * The configured row of a ticket type, matched the way
-			 * mep_get_ticket_type_info_by_name() matches it: apostrophes stripped, and the
-			 * last row wins when two share a name.
-			 *
-			 * @param int    $event_id    Event post ID.
-			 * @param string $lookup_name Ticket type name without apostrophes.
-			 * @param mixed  $capacity    Capacity already resolved, used when no row matches.
-			 * @return array
-			 */
-			private static function ticket_type_row( $event_id, $lookup_name, $capacity ) {
-				$row          = array(
-					'option_name_t' => $lookup_name,
-					'option_qty_t'  => $capacity,
-				);
-				$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
-				if ( is_array( $ticket_types ) ) {
-					foreach ( $ticket_types as $ticket_type ) {
-						$name = is_array( $ticket_type ) && isset( $ticket_type['option_name_t'] ) ? str_replace( "'", '', (string) $ticket_type['option_name_t'] ) : '';
-						if ( '' !== $name && $name === $lookup_name ) {
-							$row = $ticket_type;
-						}
-					}
-				}
-				return $row;
+				return MPWEM_Functions::ticket_type_seats_left( $event_id, $ticket_name, $event_date );
 			}
 			/**
 			 * Seats the whole event still has on a given date, for Global Quantity events.
 			 *
-			 * Keeps the existing seat-count filters so the Global Quantity and seat plan
-			 * addons continue to decide the number they always have.
-			 *
 			 * @param int    $event_id   Event post ID.
 			 * @param string $event_date Event date on the cart line.
-			 * @return int|null
+			 * @return int|null See MPWEM_Functions::event_seats_left().
 			 */
 			private static function event_seats_left( $event_id, $event_date ) {
-				$total_seat = apply_filters( 'mep_event_total_seat_counts', mep_event_total_seat( $event_id, 'total' ), $event_id );
-				$total_resv = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id );
-				$total_seat = apply_filters( 'mep_event_total_seat_count_checkout', $total_seat, $event_id, $event_date );
-				if ( $total_seat === '' || is_null( $total_seat ) ) {
-					return null;
-				}
-				// An empty ticket type counts every attendee on the event for that date.
-				$sold = (int) mep_ticket_type_sold( $event_id, '', $event_date );
-
-				return (int) $total_seat - ( $sold + (int) $total_resv );
+				return MPWEM_Functions::event_seats_left( $event_id, $event_date );
 			}
 			/**
 			 * Adds the "not enough tickets" error once per cart line.
@@ -631,30 +587,7 @@
 			 * @param int    $requested   Seats asked for.
 			 */
 			private static function add_seat_notice( $ticket_name, $event_id, $event_date, $seats_left, $requested ) {
-				$event_name = get_the_title( $event_id );
-				$event_when = get_mep_datetime( $event_date, 'date-time-text' );
-				$seats_left = max( 0, (int) $seats_left );
-				$requested  = (int) $requested;
-				if ( $ticket_name === '' ) {
-					$notice = sprintf(
-					/* translators: 1: event name, 2: event date, 3: tickets left, 4: tickets requested. */
-						__( 'Sorry, %1$s on %2$s does not have enough tickets left. Only %3$d remaining, but you selected %4$d. Please change the quantity and try again.', 'mage-eventpress' ),
-						$event_name,
-						$event_when,
-						$seats_left,
-						$requested
-					);
-				} else {
-					$notice = sprintf(
-					/* translators: 1: ticket type, 2: event name, 3: event date, 4: tickets left, 5: tickets requested. */
-						__( 'Sorry, "%1$s" for %2$s on %3$s does not have enough tickets left. Only %4$d remaining, but you selected %5$d. Please change the quantity and try again.', 'mage-eventpress' ),
-						$ticket_name,
-						$event_name,
-						$event_when,
-						$seats_left,
-						$requested
-					);
-				}
+				$notice = MPWEM_Functions::get_seat_shortage_message( $ticket_name, $event_id, $event_date, $seats_left, $requested );
 				if ( function_exists( 'wc_has_notice' ) && wc_has_notice( $notice, 'error' ) ) {
 					return;
 				}
@@ -823,10 +756,102 @@
 					$rejection = __( 'Sorry, this event is not available for booking.', 'mage-eventpress' );
 				} elseif ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 					$rejection = __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' );
+				} elseif ( ! self::posted_event_date_is_offered( $event_id ) ) {
+					$rejection = __( 'Please choose a date offered on the event page.', 'mage-eventpress' );
+				} elseif ( self::has_invalid_posted_quantity() ) {
+					$rejection = __( 'Ticket and extra service quantities must be whole numbers. Please choose your tickets again on the event page.', 'mage-eventpress' );
 				} elseif ( ! self::has_ticket_selection( $ticket_info ) ) {
 					$rejection = __( 'Please select at least one ticket on the event page before booking.', 'mage-eventpress' );
+				} else {
+					$rejection = MPWEM_Functions::get_booking_quantity_rejection( $event_id, $ticket_info, self::get_posted_event_date( $event_id ) );
+					if ( '' === $rejection ) {
+						$rejection = self::get_extra_service_stock_rejection( $event_id );
+					}
 				}
 				return (string) apply_filters( 'mep_event_booking_rejection', $rejection, $event_id, $ticket_info );
+			}
+			/**
+			 * Whether the posted occurrence is a day the event offers (or no date was posted).
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return bool
+			 */
+			private static function posted_event_date_is_offered( $event_id ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read during WooCommerce's add to cart.
+				$posted = isset( $_POST['mep_event_start_date'] ) ? (array) wp_unslash( $_POST['mep_event_start_date'] ) : array();
+				$posted = current( $posted );
+				return null !== MPWEM_Functions::canonical_booking_date( $event_id, is_scalar( $posted ) ? sanitize_text_field( (string) $posted ) : '' );
+			}
+			/**
+			 * Whether any posted ticket or extra service quantity is not a whole number.
+			 *
+			 * A request carrying one is refused as a whole instead of being repaired: the
+			 * booking form never sends one, so it is not a booking anyone made on the page.
+			 *
+			 * @return bool
+			 */
+			private static function has_invalid_posted_quantity() {
+				// phpcs:disable WordPress.Security.NonceVerification.Missing -- read during WooCommerce's add to cart, like every booking field.
+				foreach ( array( 'option_qty', 'event_extra_service_qty' ) as $field ) {
+					if ( ! isset( $_POST[ $field ] ) ) {
+						continue;
+					}
+					foreach ( (array) wp_unslash( $_POST[ $field ] ) as $value ) {
+						if ( null === MPWEM_Functions::parse_quantity( is_scalar( $value ) ? sanitize_text_field( (string) $value ) : $value ) ) {
+							return true;
+						}
+					}
+				}
+				// phpcs:enable WordPress.Security.NonceVerification.Missing
+				return false;
+			}
+			/**
+			 * Why the posted extra services cannot be sold, or '' when they can.
+			 *
+			 * The booking form caps each extra service at its stock in the browser only.
+			 * Quantities of the same service are summed before comparing. Services saved
+			 * without a quantity are left as they always were.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return string
+			 */
+			private static function get_extra_service_stock_rejection( $event_id ) {
+				$ex_infos = self::get_cart_ex_info( $event_id );
+				if ( ! is_array( $ex_infos ) || empty( $ex_infos ) ) {
+					return '';
+				}
+				$requested = array();
+				foreach ( $ex_infos as $ex_info ) {
+					$name = isset( $ex_info['service_name'] ) ? (string) $ex_info['service_name'] : '';
+					if ( '' !== $name ) {
+						$requested[ $name ] = ( isset( $requested[ $name ] ) ? $requested[ $name ] : 0 ) + (int) $ex_info['service_qty'];
+					}
+				}
+				$services   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_events_extra_prices', [] );
+				$event_date = self::get_posted_event_date( $event_id );
+				foreach ( $requested as $name => $qty ) {
+					$service = array();
+					foreach ( (array) $services as $row ) {
+						if ( is_array( $row ) && isset( $row['option_name'] ) && $row['option_name'] === $name ) {
+							$service = $row;
+							break;
+						}
+					}
+					if ( empty( $service ) || (int) ( isset( $service['option_qty'] ) ? $service['option_qty'] : 0 ) <= 0 ) {
+						continue;
+					}
+					$available = (int) MPWEM_Functions::get_available_ex_service( $event_id, $name, $event_date, $service );
+					if ( $qty > $available ) {
+						return sprintf(
+						/* translators: 1: extra service name, 2: quantity left, 3: quantity requested. */
+							__( 'Sorry, "%1$s" does not have enough left. Only %2$d remaining, but you selected %3$d. Please change the quantity and try again.', 'mage-eventpress' ),
+							$name,
+							max( 0, $available ),
+							$qty
+						);
+					}
+				}
+				return '';
 			}
 			/**
 			 * Whether the event can be booked right now.
@@ -1345,8 +1370,13 @@
 					if ( get_post_type( $event_id ) != 'mep_events' ) {
 						continue;
 					}
-					$user_info_arr = wc_get_order_item_meta( $item_id, '_event_user_info', true );
-					if ( is_array( $user_info_arr ) && sizeof( $user_info_arr ) > 0 ) {
+					// Only attendees the priced _event_ticket_info pays for are expected:
+					// counting _event_user_info as stored let unpaid entries raise the cap.
+					$user_info_arr = self::limit_attendees_to_tickets(
+						wc_get_order_item_meta( $item_id, '_event_user_info', true ),
+						wc_get_order_item_meta( $item_id, '_event_ticket_info', true )
+					);
+					if ( sizeof( $user_info_arr ) > 0 ) {
 						foreach ( $user_info_arr as $_user_info ) {
 							$date = is_array( $_user_info ) && array_key_exists( 'user_event_date', $_user_info ) ? $_user_info['user_event_date'] : '';
 							$key  = $event_id . '|' . $date;
@@ -1383,6 +1413,64 @@
 			private static function expected_attendee_count( $expected, $event_id, $event_date ) {
 				$key = $event_id . '|' . $event_date;
 				return is_array( $expected ) && array_key_exists( $key, $expected ) ? (int) $expected[ $key ] : 1;
+			}
+			/**
+			 * The attendee entries a booking's priced tickets pay for, in their order.
+			 *
+			 * The line price comes from the ticket rows alone, so an attendee is kept only
+			 * while its ticket type still has a priced ticket left; anything beyond that is
+			 * dropped. An entry without a ticket type only uses up the line's total. Fewer
+			 * attendees than tickets stays allowed: the coupon add-on's free tickets raise a
+			 * row's quantity without adding attendees.
+			 *
+			 * @param mixed $user_info   Attendee entries (event_user_info / _event_user_info).
+			 * @param mixed $ticket_info Ticket rows (event_ticket_info / _event_ticket_info).
+			 * @return array Kept entries, keys preserved.
+			 */
+			private static function limit_attendees_to_tickets( $user_info, $ticket_info ) {
+				if ( ! is_array( $user_info ) ) {
+					return array();
+				}
+				$per_type = array();
+				$total    = 0;
+				foreach ( (array) $ticket_info as $ticket ) {
+					$qty = is_array( $ticket ) && isset( $ticket['ticket_qty'] ) ? (int) $ticket['ticket_qty'] : 0;
+					if ( $qty < 1 ) {
+						continue;
+					}
+					$type              = self::ticket_type_key( isset( $ticket['ticket_name'] ) ? $ticket['ticket_name'] : '' );
+					$per_type[ $type ] = ( isset( $per_type[ $type ] ) ? $per_type[ $type ] : 0 ) + $qty;
+					$total            += $qty;
+				}
+				$kept = array();
+				foreach ( $user_info as $key => $attendee ) {
+					if ( $total < 1 ) {
+						break;
+					}
+					$type = is_array( $attendee ) && isset( $attendee['user_ticket_type'] ) ? self::ticket_type_key( $attendee['user_ticket_type'] ) : '';
+					if ( '' !== $type ) {
+						if ( empty( $per_type[ $type ] ) ) {
+							continue;
+						}
+						$per_type[ $type ] --;
+					}
+					$total --;
+					$kept[ $key ] = $attendee;
+				}
+				return $kept;
+			}
+			/**
+			 * One comparable spelling of a ticket type name on a ticket row or an attendee.
+			 *
+			 * Ticket rows saved before this version kept the whole posted name, attendees
+			 * only the part before "_", and either may be URL- or HTML-encoded.
+			 *
+			 * @param mixed $name Ticket type name.
+			 * @return string
+			 */
+			private static function ticket_type_key( $name ) {
+				$name = explode( '_', is_scalar( $name ) ? (string) $name : '' );
+				return html_entity_decode( urldecode( $name[0] ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 			}
 			/**
 			 * Normalise whatever a caller passed into a plain numeric order id.
@@ -1459,6 +1547,11 @@
 							$user_info_arr         = wc_get_order_item_meta( $item_id, '_event_user_info', true );
 							$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
 							$_event_extra_service  = wc_get_order_item_meta( $item_id, '_event_extra_service', true );
+							// Register only the attendees the order's priced tickets pay for. A cart
+							// saved before add_cart_item_data() checked this could still carry more.
+							if ( is_array( $user_info_arr ) && sizeof( $user_info_arr ) > 0 ) {
+								$user_info_arr = self::limit_attendees_to_tickets( $user_info_arr, $event_ticket_info_arr );
+							}
 							$item_quantity         = 0;
 							mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service, $item_id );
 							mep_delete_attandee_of_an_order( $order_id, $event_id );
@@ -1545,62 +1638,71 @@
 			/**
 			 * Ticket type names a visitor may book, decoded the same way posted names are.
 			 *
-			 * The event page leaves out ticket types the organiser switched off and any that
-			 * mpwem_ticket_permission withholds (templates/layout/ticket_type.php). Checking
-			 * only that a posted name existed let a switched-off type - typically a 0.00 staff
-			 * or complimentary ticket - be booked by posting its name. The ticket rows and the
-			 * attendee rows are both checked against this one list, so they cannot disagree.
-			 *
 			 * @param int $post_id Event post ID.
-			 * @return string[]
+			 * @return string[] See MPWEM_Functions::get_bookable_ticket_names().
 			 */
 			private static function get_bookable_ticket_names( $post_id ) {
-				$names        = [];
-				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
-				if ( ! is_array( $ticket_types ) ) {
-					return $names;
+				return MPWEM_Functions::get_bookable_ticket_names( $post_id );
+			}
+			/**
+			 * The ticket rows the booking form posted, read once for the price AND the attendees.
+			 *
+			 * get_cart_ticket_info() used to cast each quantity with (int) while
+			 * get_attendee_info() compared the raw string, so a posted 0.9 was left out of the
+			 * price but still produced an attendee: an order paid for one cheap ticket could
+			 * register expensive ones too. Both now build from these rows, so a row is either
+			 * priced and attended, or neither.
+			 *
+			 * The quantity must be a whole number (MPWEM_Functions::parse_quantity()); a request
+			 * carrying anything else is refused by get_booking_rejection(), and the row is
+			 * dropped here for callers that skip that check. The ticket name is the part before
+			 * any "_", as before, and it is what gets stored, so price, seat count and attendee
+			 * all name the same configured ticket type.
+			 *
+			 * @param int $post_id Event post ID.
+			 * @return array Posted index => array( 'name' => ticket type, 'qty' => int > 0 ).
+			 */
+			private static function get_posted_ticket_rows( $post_id ) {
+				$rows = [];
+				// phpcs:disable WordPress.Security.NonceVerification.Missing -- read during WooCommerce's add to cart, like every booking field.
+				$names = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['option_name'] ) ) : [];
+				$qty   = isset( $_POST['option_qty'] ) ? (array) wp_unslash( $_POST['option_qty'] ) : [];
+				// phpcs:enable WordPress.Security.NonceVerification.Missing
+				if ( empty( $names ) ) {
+					return $rows;
 				}
-				foreach ( $ticket_types as $ticket_type ) {
-					if ( ! is_array( $ticket_type ) ) {
-						continue;
-					}
-					$enabled = array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
-					if ( 'yes' !== $enabled || ! apply_filters( 'mpwem_ticket_permission', true, $ticket_type ) ) {
-						continue;
-					}
-					$name = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-					$name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-					if ( $name ) {
-						$names[] = $name;
+				$valid_ticket_names = self::get_bookable_ticket_names( $post_id );
+				foreach ( $names as $key => $name ) {
+					$raw_qty      = array_key_exists( $key, $qty ) ? $qty[ $key ] : '';
+					$current_qty  = MPWEM_Functions::parse_quantity( is_scalar( $raw_qty ) ? sanitize_text_field( (string) $raw_qty ) : $raw_qty );
+					$current_qty  = is_null( $current_qty ) ? 0 : $current_qty;
+					$ticket_name  = explode( '_', $name );
+					$_name        = $ticket_name[0];
+					$decoded_name = html_entity_decode( urldecode( $_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+					$current_qty  = apply_filters( 'mpwem_group_actual_qty', $current_qty, $post_id, $_name );
+					$current_qty  = apply_filters( 'mpwem_group_qty_actual', $current_qty, $post_id, $_name );
+					$current_qty  = max( 0, (int) $current_qty );
+					if ( $_name && $current_qty > 0 && in_array( $decoded_name, $valid_ticket_names, true ) ) {
+						$rows[ $key ] = array(
+							'name' => $_name,
+							'qty'  => $current_qty,
+						);
 					}
 				}
-				return $names;
+				return $rows;
 			}
 			public static function get_cart_ticket_info( $post_id ) {
 				$ticket_info = [];
 				$start_date  = self::get_posted_event_date( $post_id );
-				$names       = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
-				$qty         = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
-				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
+				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['max_qty'] ) ) : [];
 				$total_price = 0;
-				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
-					$valid_ticket_names = self::get_bookable_ticket_names( $post_id );
-					foreach ( $names as $key => $name ) {
-						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
-						$ticket_name               = explode( '_', $name );
-                        $_name=$ticket_name[0];
-						$decoded_name = html_entity_decode( urldecode( $_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
-						$current_qty = apply_filters('mpwem_group_qty_actual', $current_qty, $post_id, $_name);
-						if ( $_name && $current_qty > 0 && in_array( $decoded_name, $valid_ticket_names ) ) {
-							$ticket_info[ $key ]['ticket_name']  = $name;
-							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
-							$ticket_info[ $key ]['ticket_qty']   = $current_qty;
-							$ticket_info[ $key ]['max_qty']      = is_array($max_qty) && array_key_exists( $key, $max_qty ) ? $max_qty[ $key ] : 0;
-							$ticket_info[ $key ]['event_date']   = $start_date;
-							$ticket_info[ $key ]['event_id']     = $post_id;
-						}
-					}
+				foreach ( self::get_posted_ticket_rows( $post_id ) as $key => $row ) {
+					$ticket_info[ $key ]['ticket_name']  = $row['name'];
+					$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $row['name'], $post_id );
+					$ticket_info[ $key ]['ticket_qty']   = $row['qty'];
+					$ticket_info[ $key ]['max_qty']      = array_key_exists( $key, $max_qty ) ? absint( $max_qty[ $key ] ) : 0;
+					$ticket_info[ $key ]['event_date']   = $start_date;
+					$ticket_info[ $key ]['event_id']     = $post_id;
 				}
 				return apply_filters( 'mep_cart_ticket_type_data_prepare', $ticket_info, 'ticket_type', $total_price, $post_id );
 			}
@@ -1619,8 +1721,8 @@
 				$ticket_info  = [];
 				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
 				$start_date   = self::get_posted_event_date( $post_id );
-				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
-				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
+				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
+				$qty          = isset( $_POST['event_extra_service_qty'] ) ? (array) wp_unslash( $_POST['event_extra_service_qty'] ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
 					// Normalized name => name exactly as stored on the event.
 					$valid_ex_names = [];
@@ -1634,7 +1736,10 @@
 						}
 					}
 					foreach ( $names as $key => $name ) {
-						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
+						// Whole numbers only: the quantity multiplies the price below.
+						$raw_qty     = array_key_exists( $key, $qty ) ? $qty[ $key ] : '';
+						$current_qty = MPWEM_Functions::parse_quantity( is_scalar( $raw_qty ) ? sanitize_text_field( (string) $raw_qty ) : $raw_qty );
+						$current_qty = is_null( $current_qty ) ? 0 : $current_qty;
 						$ex_name = explode( '_', $name )[0];
 						$ex_name = MPWEM_Functions::normalize_ex_service_name( $ex_name );
 						if ( $name && $current_qty > 0 && isset( $valid_ex_names[ $ex_name ] ) ) {
@@ -1663,10 +1768,11 @@
 			}
 			public static function get_attendee_info( $post_id ) {
 				$attendee_info = [];
-				$names         = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
-				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
+				// The same rows get_cart_ticket_info() prices, so every attendee below has a
+				// priced ticket and the two lists always hold the same count per ticket type.
+				$ticket_rows   = self::get_posted_ticket_rows( $post_id );
+				if ( sizeof( $ticket_rows ) > 0 ) {
 					$start_date   = self::get_posted_event_date( $post_id );
-					$qty          = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 					$submit_infos = [];
 					$form_array   = MPWEM_Layout::get_form_array( $post_id );
 					if ( is_array( $form_array ) && sizeof( $form_array ) > 0 ) {
@@ -1682,50 +1788,41 @@
 					}
 					$same_attendee = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' );
 					$count         = 0;
-
-					$valid_ticket_names = self::get_bookable_ticket_names( $post_id );
-
-					foreach ( $names as $key => $name ) {
-						$current_qty=$qty[ $key ];
-						$ticket_name               = explode( '_', $name );
-						$_name=$ticket_name[0];
-						$decoded_name = html_entity_decode( urldecode( $_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
-						$current_qty = apply_filters('mpwem_group_qty_actual', $current_qty, $post_id, $_name);
-						if ( $current_qty > 0 && $name && in_array( $decoded_name, $valid_ticket_names ) ) {
-							for ( $j = 0; $j < $current_qty; $j ++ ) {
-								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $attendee_info ) && sizeof( $attendee_info ) > 0 ) {
-									$attendee_info[ $count ] = current( $attendee_info );
-								} else {
-									if ( is_array( $form_array ) && sizeof( $form_array ) > 0 && is_array( $submit_infos ) && sizeof( $submit_infos ) > 0 ) {
-										foreach ( $form_array as $form ) {
-											if ( is_array( $form ) && sizeof( $form ) > 0 ) {
-												$type       = is_array($form) && array_key_exists( 'type', $form ) ? $form['type'] : '';
-												$input_name = is_array($form) && array_key_exists( 'name', $form ) ? $form['name'] : '';
-												if ( $type && $input_name && $type != 'title' ) {
-													if ( $type == 'file' ) {
-														$attendee_info[ $count ] = apply_filters( 'mpwem_upload_attendee_file', $attendee_info[ $count ], $input_name, $count );
-													} else {
-														$data                                    = is_array($submit_infos) && array_key_exists( $input_name, $submit_infos ) ? $submit_infos[ $input_name ] : [];
-														// A field the browser never submitted (unchecked checkbox, a field
-														// hidden by conditional logic, or one the admin left out on the
-														// backend-order screen) has no row for this attendee index.
-														$attendee_info[ $count ] [ $input_name ] = is_array( $data ) && array_key_exists( $count, $data ) ? $data[ $count ] : '';
-													}
+					foreach ( $ticket_rows as $ticket_row ) {
+						$current_qty = $ticket_row['qty'];
+						$_name       = $ticket_row['name'];
+						for ( $j = 0; $j < $current_qty; $j ++ ) {
+							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $attendee_info ) && sizeof( $attendee_info ) > 0 ) {
+								$attendee_info[ $count ] = current( $attendee_info );
+							} else {
+								if ( is_array( $form_array ) && sizeof( $form_array ) > 0 && is_array( $submit_infos ) && sizeof( $submit_infos ) > 0 ) {
+									foreach ( $form_array as $form ) {
+										if ( is_array( $form ) && sizeof( $form ) > 0 ) {
+											$type       = is_array($form) && array_key_exists( 'type', $form ) ? $form['type'] : '';
+											$input_name = is_array($form) && array_key_exists( 'name', $form ) ? $form['name'] : '';
+											if ( $type && $input_name && $type != 'title' ) {
+												if ( $type == 'file' ) {
+													$attendee_info[ $count ] = apply_filters( 'mpwem_upload_attendee_file', $attendee_info[ $count ], $input_name, $count );
+												} else {
+													$data                                    = is_array($submit_infos) && array_key_exists( $input_name, $submit_infos ) ? $submit_infos[ $input_name ] : [];
+													// A field the browser never submitted (unchecked checkbox, a field
+													// hidden by conditional logic, or one the admin left out on the
+													// backend-order screen) has no row for this attendee index.
+													$attendee_info[ $count ] [ $input_name ] = is_array( $data ) && array_key_exists( $count, $data ) ? $data[ $count ] : '';
 												}
 											}
 										}
 									}
 								}
-								$attendee_info[ $count ]['user_ticket_type'] = $_name;
-								$attendee_info[ $count ]['ticket_name']      = $_name;
-								$attendee_info[ $count ]['user_ticket_qty']  = 1;
-								$attendee_info[ $count ]['ticket_qty']       = 1;
-								$attendee_info[ $count ]['ticket_price']     = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
-								$attendee_info[ $count ]['user_event_date']  = $start_date;
-								$attendee_info[ $count ]['user_event_id']    = $post_id;
-								$count ++;
 							}
+							$attendee_info[ $count ]['user_ticket_type'] = $_name;
+							$attendee_info[ $count ]['ticket_name']      = $_name;
+							$attendee_info[ $count ]['user_ticket_qty']  = 1;
+							$attendee_info[ $count ]['ticket_qty']       = 1;
+							$attendee_info[ $count ]['ticket_price']     = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
+							$attendee_info[ $count ]['user_event_date']  = $start_date;
+							$attendee_info[ $count ]['user_event_id']    = $post_id;
+							$count ++;
 						}
 					}
 				}

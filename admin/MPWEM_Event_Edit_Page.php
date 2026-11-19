@@ -1506,8 +1506,46 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						'createError'     => __('Could not create speaker. Please try again.', 'mage-eventpress'),
 						'createSuccess'   => __('Speaker created successfully.', 'mage-eventpress'),
 					],
+					'advanced'      => $this->get_advanced_step_strings(),
 				]
 			);
+		}
+
+		/**
+		 * Translatable text for the section headers and the guide card of the Advanced
+		 * step, which mpwem_event_edit.js builds. Keys match the `key` of each section
+		 * and guide entry there; the script keeps its English text as the fallback.
+		 *
+		 * @return array<string, mixed>
+		 */
+		private function get_advanced_step_strings(): array
+		{
+			return [
+				'toggleSection' => __('Toggle section', 'mage-eventpress'),
+				'sections'      => [
+					'template'        => ['title' => __('Page Template', 'mage-eventpress'), 'desc' => __('Choose the public event detail layout.', 'mage-eventpress')],
+					'attendee_form'   => ['title' => __('Attendee Form', 'mage-eventpress'), 'desc' => __('Choose registration fields and attendee form behavior for this event.', 'mage-eventpress')],
+					'terms'           => ['title' => __('Terms & Conditions', 'mage-eventpress'), 'desc' => __('Show the attendee-facing terms content for this event.', 'mage-eventpress')],
+					'faq'             => ['title' => __('FAQs', 'mage-eventpress'), 'desc' => __('Answer common attendee questions before checkout.', 'mage-eventpress')],
+					'timeline'        => ['title' => __('Timeline', 'mage-eventpress'), 'desc' => __('Show the event flow in an organized attendee-friendly format.', 'mage-eventpress')],
+					'related'         => ['title' => __('Related Events', 'mage-eventpress'), 'desc' => __('Promote similar or upcoming events alongside this one.', 'mage-eventpress')],
+					'email'           => ['title' => __('Email Message', 'mage-eventpress'), 'desc' => __('Customize attendee confirmation email content.', 'mage-eventpress')],
+					'email_reminder'  => ['title' => __('Email Reminder', 'mage-eventpress'), 'desc' => __('Schedule attendee reminder emails without changing the addon settings flow.', 'mage-eventpress')],
+					'pdf_custom_text' => ['title' => __('PDF Custom Text', 'mage-eventpress'), 'desc' => __('Manage the custom text used in PDF ticket output.', 'mage-eventpress')],
+					'seo'             => ['title' => __('SEO & Schema', 'mage-eventpress'), 'desc' => __('Control rich result details used by search engines.', 'mage-eventpress')],
+					'deposit'         => ['title' => __('Deposit / Partial Payment', 'mage-eventpress'), 'desc' => __('Override the global deposit setting for this specific event.', 'mage-eventpress')],
+					'settings'        => ['title' => __('Access & Settings', 'mage-eventpress'), 'desc' => __('Control event SKU, visibility, and member-only access.', 'mage-eventpress')],
+				],
+				'guide'         => [
+					'template'        => ['title' => __('Template', 'mage-eventpress'), 'desc' => __('Choose the event page design first. This controls the visitor-facing layout.', 'mage-eventpress')],
+					'faq'             => ['title' => __('FAQs', 'mage-eventpress'), 'desc' => __('Enable this when buyers may ask common questions before booking.', 'mage-eventpress')],
+					'timeline'        => ['title' => __('Timeline', 'mage-eventpress'), 'desc' => __('Use this for agenda items, session flow, or key moments during the event.', 'mage-eventpress')],
+					'related'         => ['title' => __('Related Events', 'mage-eventpress'), 'desc' => __('Show similar or upcoming events when you want to cross-promote more listings.', 'mage-eventpress')],
+					'email'           => ['title' => __('Email Message', 'mage-eventpress'), 'desc' => __('Edit the attendee confirmation message and insert dynamic tags where needed.', 'mage-eventpress')],
+					'pdf_custom_text' => ['title' => __('PDF Custom Text', 'mage-eventpress'), 'desc' => __('Use this when Event Pro is active and you want custom copy printed on PDF tickets.', 'mage-eventpress')],
+					'seo'             => ['title' => __('SEO & Schema', 'mage-eventpress'), 'desc' => __('Complete this only when search result presentation and structured data matter.', 'mage-eventpress')],
+				],
+			];
 		}
 
 		private function current_user_can_manage_taxonomy(string $taxonomy): bool

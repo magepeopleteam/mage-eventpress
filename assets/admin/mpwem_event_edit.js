@@ -5455,8 +5455,14 @@
             $displaySidebar.append($displaySidebarStack);
         }
 
+        // Translated text from PHP (mpwemEventEdit.advanced); the English below is the fallback.
+        const advancedStrings = getConfig().advanced || {};
+        const sectionStrings = advancedStrings.sections || {};
+        const guideStrings = advancedStrings.guide || {};
+
         const sections = [
             {
+                key: 'template',
                 mount: '#mpwem_wizard_template_mount',
                 className: 'mpwem-display-section--template',
                 title: 'Page Template',
@@ -5464,6 +5470,7 @@
                 icon: 'dashicons-layout'
             },
             {
+                key: 'attendee_form',
                 mount: '#mpwem_wizard_attendee_form_mount',
                 className: 'mpwem-display-section--attendee-form',
                 title: 'Attendee Form',
@@ -5471,6 +5478,7 @@
                 icon: 'dashicons-id'
             },
             {
+                key: 'terms',
                 mount: '#mpwem_wizard_terms_mount',
                 className: 'mpwem-display-section--terms',
                 title: 'Terms & Conditions',
@@ -5478,6 +5486,7 @@
                 icon: 'dashicons-media-text'
             },
             {
+                key: 'faq',
                 mount: '#mpwem_wizard_faq_mount',
                 className: 'mpwem-display-section--faq',
                 title: 'FAQs',
@@ -5485,6 +5494,7 @@
                 icon: 'dashicons-editor-help'
             },
             {
+                key: 'timeline',
                 mount: '#mpwem_wizard_timeline_mount',
                 className: 'mpwem-display-section--timeline',
                 title: 'Timeline',
@@ -5492,6 +5502,7 @@
                 icon: 'dashicons-clock'
             },
             {
+                key: 'related',
                 mount: '#mpwem_wizard_related_mount',
                 className: 'mpwem-display-section--related',
                 title: 'Related Events',
@@ -5499,6 +5510,7 @@
                 icon: 'dashicons-networking'
             },
             {
+                key: 'email',
                 mount: '#mpwem_wizard_email_mount',
                 className: 'mpwem-display-section--email',
                 title: 'Email Message',
@@ -5506,6 +5518,7 @@
                 icon: 'dashicons-email-alt'
             },
             {
+                key: 'email_reminder',
                 mount: '#mpwem_wizard_email_reminder_mount',
                 className: 'mpwem-display-section--email-reminder',
                 title: 'Email Reminder',
@@ -5513,6 +5526,7 @@
                 icon: 'dashicons-clock'
             },
             {
+                key: 'pdf_custom_text',
                 mount: '#mpwem_wizard_pdf_custom_text_mount',
                 className: 'mpwem-display-section--pdf-custom-text',
                 title: 'PDF Custom Text',
@@ -5520,6 +5534,7 @@
                 icon: 'dashicons-media-document'
             },
             {
+                key: 'seo',
                 mount: '#mpwem_wizard_seo_mount',
                 className: 'mpwem-display-section--seo',
                 title: 'SEO & Schema',
@@ -5527,6 +5542,7 @@
                 icon: 'dashicons-chart-bar'
             },
             {
+                key: 'deposit',
                 mount: '#mpwem_wizard_deposit_mount',
                 className: 'mpwem-display-section--deposit',
                 title: 'Deposit / Partial Payment',
@@ -5534,6 +5550,7 @@
                 icon: 'dashicons-money-alt'
             },
             {
+                key: 'settings',
                 mount: '#mpwem_wizard_settings_mount',
                 className: 'mpwem-display-section--settings',
                 title: 'Access & Settings',
@@ -5553,8 +5570,8 @@
                     .append($('<span class="dashicons"></span>').addClass(section.icon || 'dashicons-admin-generic'));
                 const $headMain = $('<div class="mpwem-display-section__head-main"></div>')
                     .append($badge)
-                    .append($('<h3></h3>').text(section.title))
-                    .append($('<p></p>').text(section.desc));
+                    .append($('<h3></h3>').text((sectionStrings[section.key] || {}).title || section.title))
+                    .append($('<p></p>').text((sectionStrings[section.key] || {}).desc || section.desc));
                 $mount.prepend(
                     $('<div class="mpwem-display-section__head"></div>').append($headMain)
                 );
@@ -5591,7 +5608,7 @@
 
                 if ($head.length && !$head.find('.mpwem-display-toggle-wrap').length) {
                     $head.append(
-                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap" aria-label="Toggle section"></label>')
+                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap"></label>').attr('aria-label', advancedStrings.toggleSection || 'Toggle section')
                             .append('<input type="checkbox" class="mpwem-switch-input mpwem-display-toggle" />')
                             .append('<span class="mpwem-switch-slider"></span>')
                     );
@@ -6040,16 +6057,25 @@
             const $body = $(this);
             if ($body.find('.mpwem-display-guide').length) return;
 
-            $body.append(
-                $('<div class="mpwem-display-guide"></div>')
-                    .append($('<span></span>').append($('<strong></strong>').text('Template')).append($('<small></small>').text('Choose the event page design first. This controls the visitor-facing layout.')))
-                    .append($('<span></span>').append($('<strong></strong>').text('FAQs')).append($('<small></small>').text('Enable this when buyers may ask common questions before booking.')))
-                    .append($('<span></span>').append($('<strong></strong>').text('Timeline')).append($('<small></small>').text('Use this for agenda items, session flow, or key moments during the event.')))
-                    .append($('<span></span>').append($('<strong></strong>').text('Related Events')).append($('<small></small>').text('Show similar or upcoming events when you want to cross-promote more listings.')))
-                    .append($('<span></span>').append($('<strong></strong>').text('Email Message')).append($('<small></small>').text('Edit the attendee confirmation message and insert dynamic tags where needed.')))
-                    .append($('<span></span>').append($('<strong></strong>').text('PDF Custom Text')).append($('<small></small>').text('Use this when Event Pro is active and you want custom copy printed on PDF tickets.')))
-                    .append($('<span></span>').append($('<strong></strong>').text('SEO & Schema')).append($('<small></small>').text('Complete this only when search result presentation and structured data matter.')))
-            );
+            const guide = [
+                { key: 'template', title: 'Template', desc: 'Choose the event page design first. This controls the visitor-facing layout.' },
+                { key: 'faq', title: 'FAQs', desc: 'Enable this when buyers may ask common questions before booking.' },
+                { key: 'timeline', title: 'Timeline', desc: 'Use this for agenda items, session flow, or key moments during the event.' },
+                { key: 'related', title: 'Related Events', desc: 'Show similar or upcoming events when you want to cross-promote more listings.' },
+                { key: 'email', title: 'Email Message', desc: 'Edit the attendee confirmation message and insert dynamic tags where needed.' },
+                { key: 'pdf_custom_text', title: 'PDF Custom Text', desc: 'Use this when Event Pro is active and you want custom copy printed on PDF tickets.' },
+                { key: 'seo', title: 'SEO & Schema', desc: 'Complete this only when search result presentation and structured data matter.' }
+            ];
+            const $guide = $('<div class="mpwem-display-guide"></div>');
+            guide.forEach(function(item) {
+                const text = guideStrings[item.key] || {};
+                $guide.append(
+                    $('<span></span>')
+                        .append($('<strong></strong>').text(text.title || item.title))
+                        .append($('<small></small>').text(text.desc || item.desc))
+                );
+            });
+            $body.append($guide);
         });
     }
 

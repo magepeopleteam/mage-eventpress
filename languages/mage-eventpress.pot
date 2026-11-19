@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Event Booking Manager for WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Event Booking Manager for WooCommerce 5.7.13\n"
+"Project-Id-Version: Event Booking Manager for WooCommerce 5.7.16\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mage-eventpress\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-13T05:19:07+00:00\n"
+"POT-Creation-Date: 2026-11-19T11:45:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mage-eventpress\n"
@@ -91,7 +91,7 @@ msgid "Event:"
 msgstr ""
 
 #: admin/mep_analytics.php:61
-#: admin/MEP_Custom_Orders_Page.php:1051
+#: admin/MEP_Custom_Orders_Page.php:1056
 #: admin/MPWEM_Event_Lists.php:123
 #: admin/MPWEM_RSVP_Responses.php:189
 msgid "All Events"
@@ -104,7 +104,7 @@ msgid "Category Filter"
 msgstr ""
 
 #: admin/mep_analytics.php:74
-#: inc/MPWEM_Layout.php:94
+#: inc/MPWEM_Layout.php:96
 msgid "Select Category"
 msgstr ""
 
@@ -160,11 +160,11 @@ msgstr ""
 #: admin/mep_analytics.php:140
 #: admin/mep_analytics.php:618
 #: admin/MEP_Custom_Orders_Page.php:451
-#: admin/MEP_Custom_Orders_Page.php:1026
-#: admin/MEP_Custom_Orders_Page.php:1049
-#: admin/MEP_Custom_Orders_Page.php:1150
-#: admin/MEP_Custom_Orders_Page.php:1387
-#: admin/MEP_Custom_Orders_Page.php:1711
+#: admin/MEP_Custom_Orders_Page.php:1031
+#: admin/MEP_Custom_Orders_Page.php:1054
+#: admin/MEP_Custom_Orders_Page.php:1155
+#: admin/MEP_Custom_Orders_Page.php:1392
+#: admin/MEP_Custom_Orders_Page.php:1716
 #: admin/MPWEM_Attendee_List.php:136
 #: admin/MPWEM_Enquiries.php:150
 #: admin/MPWEM_Enquiries.php:272
@@ -172,7 +172,7 @@ msgstr ""
 #: admin/MPWEM_Post_List_Modern.php:339
 #: admin/MPWEM_Post_List_Modern.php:351
 #: admin/MPWEM_Post_List_Modern.php:693
-#: admin/MPWEM_Post_List_Modern.php:1257
+#: admin/MPWEM_Post_List_Modern.php:1268
 #: admin/MPWEM_RSVP_Responses.php:187
 #: admin/MPWEM_RSVP_Responses.php:242
 #: admin/MPWEM_Taxonomy_Modern.php:112
@@ -180,7 +180,7 @@ msgstr ""
 #: admin/MPWEM_Taxonomy_Modern.php:732
 #: admin/settings/MPWEM_Seo_content_Settings.php:45
 #: inc/MEP_Pro_Booking_Confirmation.php:101
-#: inc/MPWEM_Woocommerce.php:1790
+#: inc/MPWEM_Woocommerce.php:1887
 #: templates/layout/horizon/related.php:31
 msgid "Event"
 msgstr ""
@@ -188,16 +188,16 @@ msgstr ""
 #: admin/mep_analytics.php:141
 #: admin/mep_analytics.php:619
 #: admin/MEP_Custom_Orders_Page.php:454
-#: admin/MEP_Custom_Orders_Page.php:1154
+#: admin/MEP_Custom_Orders_Page.php:1159
 #: admin/MPWEM_Enquiries.php:149
 #: admin/MPWEM_Enquiries.php:316
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:289
-#: inc/mep_functions.php:3451
+#: inc/mep_functions.php:3532
 #: inc/MPWEM_Calendar.php:2327
 #: inc/MPWEM_Dependencies.php:506
-#: inc/MPWEM_Event_List.php:293
-#: inc/MPWEM_Woocommerce.php:280
-#: inc/MPWEM_Woocommerce.php:1137
+#: inc/MPWEM_Event_List.php:297
+#: inc/MPWEM_Woocommerce.php:291
+#: inc/MPWEM_Woocommerce.php:1162
 #: support/elementor/widget/event-date.php:89
 #: support/elementor/widget/event-list.php:313
 #: templates/layout/horizon/hero.php:116
@@ -282,14 +282,14 @@ msgstr ""
 #: admin/MEP_Custom_Orders_Page.php:143
 #: admin/MEP_Custom_Orders_Page.php:331
 #: admin/MEP_Orders_Query.php:816
-#: admin/MPWEM_Event_Edit_Page.php:1702
+#: admin/MPWEM_Event_Edit_Page.php:1753
 #: admin/MPWEM_Event_Lists.php:148
 #: admin/MPWEM_Event_Lists.php:1046
 #: admin/MPWEM_Event_Lists.php:1099
 #: admin/settings/MPWEM_Event_Status_Settings.php:95
 #: admin/settings/MPWEM_Event_Status_Settings.php:342
 #: inc/MPWEM_Calendar.php:135
-#: inc/MPWEM_Hooks.php:879
+#: inc/MPWEM_Hooks.php:867
 #: templates/layout/cancelled_notice.php:47
 msgid "Cancelled"
 msgstr ""
@@ -318,7 +318,7 @@ msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:198
 #: admin/MEP_Custom_Orders_Page.php:207
-#: admin/MEP_Custom_Orders_Page.php:957
+#: admin/MEP_Custom_Orders_Page.php:962
 #: inc/MEP_Order_CPT.php:47
 msgid "Event Orders"
 msgstr ""
@@ -328,7 +328,7 @@ msgid "Loading orders…"
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:267
-#: admin/MEP_Custom_Orders_Page.php:1163
+#: admin/MEP_Custom_Orders_Page.php:1168
 msgid "No orders found."
 msgstr ""
 
@@ -348,8 +348,8 @@ msgid "No orders found matching your criteria."
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:445
-#: admin/MEP_Custom_Orders_Page.php:1384
-#: admin/MEP_Custom_Orders_Page.php:1708
+#: admin/MEP_Custom_Orders_Page.php:1389
+#: admin/MEP_Custom_Orders_Page.php:1713
 msgid "Order ID"
 msgstr ""
 
@@ -358,18 +358,18 @@ msgid "Source"
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:447
-#: admin/MEP_Custom_Orders_Page.php:1027
-#: admin/MEP_Custom_Orders_Page.php:1061
-#: admin/MEP_Custom_Orders_Page.php:1155
+#: admin/MEP_Custom_Orders_Page.php:1032
+#: admin/MEP_Custom_Orders_Page.php:1066
+#: admin/MEP_Custom_Orders_Page.php:1160
 #: admin/MPWEM_Attendee_List.php:138
 #: admin/MPWEM_Enquiries.php:156
 #: admin/MPWEM_Enquiries.php:281
 #: admin/MPWEM_Enquiries.php:320
-#: admin/MPWEM_Event_Edit_Page.php:1486
-#: admin/MPWEM_Event_Edit_Page.php:1928
+#: admin/MPWEM_Event_Edit_Page.php:1499
+#: admin/MPWEM_Event_Edit_Page.php:1979
 #: admin/MPWEM_Event_Lists.php:1223
-#: admin/MPWEM_Post_List_Modern.php:1206
-#: admin/MPWEM_Post_List_Modern.php:1240
+#: admin/MPWEM_Post_List_Modern.php:1217
+#: admin/MPWEM_Post_List_Modern.php:1251
 #: admin/MPWEM_RSVP_Responses.php:196
 #: admin/MPWEM_RSVP_Responses.php:246
 #: admin/settings/global/admin_setting_panel.php:3057
@@ -399,7 +399,7 @@ msgid "Customer Phone"
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:452
-#: admin/MEP_Custom_Orders_Page.php:1153
+#: admin/MEP_Custom_Orders_Page.php:1158
 #: inc/MEP_Pro_Booking_Confirmation.php:148
 #: inc/MPWEM_Calendar.php:137
 #: inc/MPWEM_Dependencies.php:508
@@ -409,7 +409,7 @@ msgid "Total"
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:453
-#: admin/MEP_Custom_Orders_Page.php:1071
+#: admin/MEP_Custom_Orders_Page.php:1076
 msgid "Payment Gateway"
 msgstr ""
 
@@ -438,15 +438,15 @@ msgstr ""
 msgid "PDF ticket re-sent to %s"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:816
-#: admin/MEP_Custom_Orders_Page.php:1941
+#: admin/MEP_Custom_Orders_Page.php:821
+#: admin/MEP_Custom_Orders_Page.php:1946
 msgid "Note to customer"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:823
-#: admin/MEP_Custom_Orders_Page.php:1948
+#: admin/MEP_Custom_Orders_Page.php:828
+#: admin/MEP_Custom_Orders_Page.php:1953
 #: admin/MPWEM_Enquiries.php:383
-#: admin/MPWEM_Post_List_Modern.php:1228
+#: admin/MPWEM_Post_List_Modern.php:1239
 #: admin/MPWEM_RSVP_Responses.php:225
 #: admin/MPWEM_Taxonomy_Modern.php:725
 #: admin/MPWEM_Taxonomy_Modern.php:877
@@ -455,54 +455,54 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:875
+#: admin/MEP_Custom_Orders_Page.php:880
 msgid "Select order"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:882
+#: admin/MEP_Custom_Orders_Page.php:887
 msgid "View order"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:955
+#: admin/MEP_Custom_Orders_Page.php:960
 msgid "Orders"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:958
+#: admin/MEP_Custom_Orders_Page.php:963
 msgid "Manage and track all event bookings in one place."
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:963
+#: admin/MEP_Custom_Orders_Page.php:968
 #, php-format
 msgid "%s order"
 msgid_plural "%s orders"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/MEP_Custom_Orders_Page.php:968
+#: admin/MEP_Custom_Orders_Page.php:973
 #: admin/MPWEM_Attendee_List.php:107
 #: admin/MPWEM_Enquiries.php:233
 #: admin/MPWEM_RSVP_Responses.php:136
 msgid "Export CSV"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:980
+#: admin/MEP_Custom_Orders_Page.php:985
 msgid "Total Orders"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:987
+#: admin/MEP_Custom_Orders_Page.php:992
 msgid "Total Revenue"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:994
+#: admin/MEP_Custom_Orders_Page.php:999
 #: admin/MPWEM_Event_Lists.php:86
 msgid "Active Events"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1003
+#: admin/MEP_Custom_Orders_Page.php:1008
 msgid "Filter Orders"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1005
+#: admin/MEP_Custom_Orders_Page.php:1010
 #: admin/MPWEM_Attendee_List.php:105
 #: admin/MPWEM_Attendee_List.php:118
 #: admin/MPWEM_Attendee_List.php:213
@@ -510,7 +510,7 @@ msgstr ""
 msgid "Available in PRO version"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1007
+#: admin/MEP_Custom_Orders_Page.php:1012
 #: admin/MPWEM_Attendee_List.php:108
 #: admin/MPWEM_Attendee_List.php:120
 #: admin/MPWEM_Attendee_List.php:214
@@ -520,75 +520,75 @@ msgstr ""
 msgid "PRO"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1021
+#: admin/MEP_Custom_Orders_Page.php:1026
 #: admin/MPWEM_Attendee_List.php:132
 #: templates/layout/native_checkout_pro_notice.php:29
 msgid "PRO Feature"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1022
+#: admin/MEP_Custom_Orders_Page.php:1027
 msgid "Order filters are available in PRO"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1023
+#: admin/MEP_Custom_Orders_Page.php:1028
 msgid "Search and filter bookings by event, status, payment gateway, source, and date range."
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1025
-#: admin/MEP_Custom_Orders_Page.php:1041
+#: admin/MEP_Custom_Orders_Page.php:1030
+#: admin/MEP_Custom_Orders_Page.php:1046
 #: admin/MPWEM_Attendee_List.php:140
 #: admin/MPWEM_Enquiries.php:289
 #: admin/MPWEM_RSVP_Responses.php:180
 #: admin/MPWEM_RSVP_Responses.php:206
-#: inc/MPWEM_Event_List.php:185
+#: inc/MPWEM_Event_List.php:189
 #: inc/MPWEM_My_Account_Dashboard.php:111
 #: inc/MPWEM_Shortcodes.php:181
 msgid "Search"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1028
-#: admin/MEP_Custom_Orders_Page.php:1152
+#: admin/MEP_Custom_Orders_Page.php:1033
+#: admin/MEP_Custom_Orders_Page.php:1157
 msgid "Gateway"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1029
+#: admin/MEP_Custom_Orders_Page.php:1034
 msgid "Date range"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1033
+#: admin/MEP_Custom_Orders_Page.php:1038
 #: admin/MPWEM_Attendee_List.php:144
 #: admin/MPWEM_Welcome.php:791
 #: templates/layout/native_checkout_pro_notice.php:45
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1044
+#: admin/MEP_Custom_Orders_Page.php:1049
 msgid "Name, email or order #…"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1063
+#: admin/MEP_Custom_Orders_Page.php:1068
 #: admin/MPWEM_RSVP_Responses.php:198
 msgid "All Statuses"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1073
+#: admin/MEP_Custom_Orders_Page.php:1078
 msgid "All Gateways"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1083
+#: admin/MEP_Custom_Orders_Page.php:1088
 msgid "Order Source"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1085
+#: admin/MEP_Custom_Orders_Page.php:1090
 msgid "All Sources"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1086
+#: admin/MEP_Custom_Orders_Page.php:1091
 msgid "Native Checkout"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1088
-#: admin/MPWEM_Quick_Setup.php:232
+#: admin/MEP_Custom_Orders_Page.php:1093
+#: admin/MPWEM_Quick_Setup.php:236
 #: admin/settings/global/admin_setting_panel.php:2596
 #: admin/settings/global/MPWEM_Payment_Settings_UI.php:47
 #: admin/settings/global/MPWEM_Payment_Settings_UI.php:49
@@ -596,15 +596,15 @@ msgstr ""
 msgid "WooCommerce"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1094
+#: admin/MEP_Custom_Orders_Page.php:1099
 msgid "Date From"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1099
+#: admin/MEP_Custom_Orders_Page.php:1104
 msgid "Date To"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1106
+#: admin/MEP_Custom_Orders_Page.php:1111
 #: admin/MPWEM_Enquiries.php:295
 #: admin/MPWEM_RSVP_Responses.php:210
 #: inc/MPWEM_My_Account_Dashboard.php:115
@@ -612,131 +612,131 @@ msgid "Reset"
 msgstr ""
 
 #. translators: %d: number of orders
-#: admin/MEP_Custom_Orders_Page.php:1122
+#: admin/MEP_Custom_Orders_Page.php:1127
 #, php-format
 msgid "%d order found"
 msgid_plural "%d orders found"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/MEP_Custom_Orders_Page.php:1129
+#: admin/MEP_Custom_Orders_Page.php:1134
 msgid "Bulk: set status to…"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1134
+#: admin/MEP_Custom_Orders_Page.php:1139
 #: admin/MPWEM_RSVP_Responses.php:96
 #: admin/MPWEM_RSVP_Responses.php:228
 msgid "Apply"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1139
-#: admin/MPWEM_Post_List_Modern.php:1213
+#: admin/MEP_Custom_Orders_Page.php:1144
+#: admin/MPWEM_Post_List_Modern.php:1224
 #: admin/MPWEM_RSVP_Responses.php:84
 msgid "Updating…"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1147
+#: admin/MEP_Custom_Orders_Page.php:1152
 msgid "Select all orders"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1148
+#: admin/MEP_Custom_Orders_Page.php:1153
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:289
 #: inc/MPWEM_My_Account_Dashboard.php:128
 #: inc/MPWEM_My_Account_Dashboard.php:312
 msgid "Order"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1149
-#: admin/MEP_Custom_Orders_Page.php:1531
-#: admin/MEP_Custom_Orders_Page.php:1844
+#: admin/MEP_Custom_Orders_Page.php:1154
+#: admin/MEP_Custom_Orders_Page.php:1536
+#: admin/MEP_Custom_Orders_Page.php:1849
 msgid "Customer"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1151
+#: admin/MEP_Custom_Orders_Page.php:1156
 msgid "Attendee Info"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1191
+#: admin/MEP_Custom_Orders_Page.php:1196
 #, php-format
 msgid "Showing %1$d–%2$d of %3$d orders"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1198
+#: admin/MEP_Custom_Orders_Page.php:1203
 #: admin/MPWEM_Attendee_List.php:266
 #: admin/MPWEM_Post_List_Modern.php:731
 #: admin/MPWEM_Taxonomy_Modern.php:775
 msgid "First page"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1243
+#: admin/MEP_Custom_Orders_Page.php:1248
 #: admin/MPWEM_Attendee_List.php:311
 #: admin/MPWEM_Post_List_Modern.php:750
 #: admin/MPWEM_Taxonomy_Modern.php:794
 msgid "Last page"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1249
+#: admin/MEP_Custom_Orders_Page.php:1254
 #: admin/MPWEM_Attendee_List.php:317
 msgid "Go to"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1254
+#: admin/MEP_Custom_Orders_Page.php:1259
 #: admin/MPWEM_Attendee_List.php:322
 msgid "Go"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1279
+#: admin/MEP_Custom_Orders_Page.php:1284
 msgid "Order not found"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1281
-#: admin/MEP_Custom_Orders_Page.php:1362
-#: admin/MEP_Custom_Orders_Page.php:1686
+#: admin/MEP_Custom_Orders_Page.php:1286
+#: admin/MEP_Custom_Orders_Page.php:1367
+#: admin/MEP_Custom_Orders_Page.php:1691
 msgid "Back to Orders"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1335
-#: admin/MEP_Custom_Orders_Page.php:1671
+#: admin/MEP_Custom_Orders_Page.php:1340
+#: admin/MEP_Custom_Orders_Page.php:1676
 #, php-format
 msgid "Order #%d"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1340
-#: admin/MEP_Custom_Orders_Page.php:1677
+#: admin/MEP_Custom_Orders_Page.php:1345
+#: admin/MEP_Custom_Orders_Page.php:1682
 msgid "Placed on"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1347
+#: admin/MEP_Custom_Orders_Page.php:1352
 msgid "Download the PDF ticket for this order"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1349
+#: admin/MEP_Custom_Orders_Page.php:1354
 msgid "Download PDF"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1351
+#: admin/MEP_Custom_Orders_Page.php:1356
 msgid "Re-send the PDF ticket email to the customer"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1353
+#: admin/MEP_Custom_Orders_Page.php:1358
 msgid "Resend PDF"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1356
-#: admin/MEP_Custom_Orders_Page.php:1683
+#: admin/MEP_Custom_Orders_Page.php:1361
+#: admin/MEP_Custom_Orders_Page.php:1688
 msgid "Print"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1359
+#: admin/MEP_Custom_Orders_Page.php:1364
 msgid "Download / Save as PDF"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1380
-#: admin/MEP_Custom_Orders_Page.php:1704
+#: admin/MEP_Custom_Orders_Page.php:1385
+#: admin/MEP_Custom_Orders_Page.php:1709
 msgid "Order Details"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1391
+#: admin/MEP_Custom_Orders_Page.php:1396
 #: admin/MPWEM_Event_Lists.php:207
 #: admin/MPWEM_RSVP_Responses.php:243
 #: admin/settings/MPWEM_Email_Text.php:48
@@ -744,72 +744,72 @@ msgstr ""
 msgid "Event Date"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1395
-#: admin/MEP_Custom_Orders_Page.php:1714
+#: admin/MEP_Custom_Orders_Page.php:1400
+#: admin/MEP_Custom_Orders_Page.php:1719
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:31
 #: admin/settings/MPWEM_Email_Text.php:51
 #: templates/layout/native_checkout_modal.php:84
 msgid "Payment Method"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1398
-#: admin/MEP_Custom_Orders_Page.php:1717
+#: admin/MEP_Custom_Orders_Page.php:1403
+#: admin/MEP_Custom_Orders_Page.php:1722
 msgid "Order Total"
-msgstr ""
-
-#: admin/MEP_Custom_Orders_Page.php:1408
-#: admin/MEP_Custom_Orders_Page.php:1727
-msgid "Purchased Tickets"
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:1413
 #: admin/MEP_Custom_Orders_Page.php:1732
+msgid "Purchased Tickets"
+msgstr ""
+
+#: admin/MEP_Custom_Orders_Page.php:1418
+#: admin/MEP_Custom_Orders_Page.php:1737
 #: admin/settings/MPWEM_Email_Text.php:47
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1040
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1104
-#: inc/mep_functions.php:5716
+#: inc/mep_functions.php:5924
 #: inc/MPWEM_Calendar.php:149
 #: inc/MPWEM_Dependencies.php:505
 #: inc/MPWEM_My_Account_Dashboard.php:492
 msgid "Ticket Type"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1414
-#: admin/MEP_Custom_Orders_Page.php:1733
+#: admin/MEP_Custom_Orders_Page.php:1419
+#: admin/MEP_Custom_Orders_Page.php:1738
 #: admin/MPWEM_RSVP_Responses.php:244
 #: inc/MEP_Pro_Booking_Confirmation.php:126
 #: templates/layout/booking_confirmation.php:97
 msgid "Qty"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1415
+#: admin/MEP_Custom_Orders_Page.php:1420
 msgid "Unit Price"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1416
-#: admin/MEP_Custom_Orders_Page.php:1734
+#: admin/MEP_Custom_Orders_Page.php:1421
+#: admin/MEP_Custom_Orders_Page.php:1739
 #: inc/MEP_Pro_Booking_Confirmation.php:128
 #: templates/layout/booking_confirmation.php:99
 msgid "Subtotal"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1421
-#: admin/MEP_Custom_Orders_Page.php:1740
+#: admin/MEP_Custom_Orders_Page.php:1426
+#: admin/MEP_Custom_Orders_Page.php:1745
 msgid "No tickets recorded for this order."
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1432
-#: admin/MEP_Custom_Orders_Page.php:1750
+#: admin/MEP_Custom_Orders_Page.php:1437
+#: admin/MEP_Custom_Orders_Page.php:1755
 msgid "Grand Total"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1446
-#: admin/MEP_Custom_Orders_Page.php:1764
+#: admin/MEP_Custom_Orders_Page.php:1451
+#: admin/MEP_Custom_Orders_Page.php:1769
 msgid "Attendees List"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1456
-#: admin/MEP_Custom_Orders_Page.php:1769
+#: admin/MEP_Custom_Orders_Page.php:1461
+#: admin/MEP_Custom_Orders_Page.php:1774
 #: admin/MPWEM_Enquiries.php:151
 #: admin/MPWEM_Taxonomy_Modern.php:110
 #: admin/MPWEM_Taxonomy_Modern.php:118
@@ -820,50 +820,50 @@ msgstr ""
 #: admin/MPWEM_Taxonomy_Modern.php:849
 #: admin/MPWEM_Welcome.php:512
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:22
-#: inc/mep_functions.php:3556
+#: inc/mep_functions.php:3637
 #: inc/MEP_Pro_Booking_Confirmation.php:162
 #: inc/mep_tax.php:178
 #: inc/mep_tax.php:203
 #: inc/mep_tax.php:228
-#: inc/MPWEM_Hooks.php:1369
-#: inc/MPWEM_Layout.php:268
-#: inc/MPWEM_Layout.php:316
-#: inc/MPWEM_Layout.php:457
+#: inc/MPWEM_Hooks.php:1364
+#: inc/MPWEM_Layout.php:270
+#: inc/MPWEM_Layout.php:318
+#: inc/MPWEM_Layout.php:459
 #: inc/MPWEM_My_Account_Dashboard.php:489
-#: inc/MPWEM_Woocommerce.php:1788
+#: inc/MPWEM_Woocommerce.php:1885
 #: templates/layout/booking_confirmation.php:138
 msgid "Name"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1457
-#: admin/MEP_Custom_Orders_Page.php:1770
+#: admin/MEP_Custom_Orders_Page.php:1462
+#: admin/MEP_Custom_Orders_Page.php:1775
 msgid "Ticket Details"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1458
-#: admin/MEP_Custom_Orders_Page.php:1771
+#: admin/MEP_Custom_Orders_Page.php:1463
+#: admin/MEP_Custom_Orders_Page.php:1776
 msgid "Reference"
-msgstr ""
-
-#: admin/MEP_Custom_Orders_Page.php:1459
-#: admin/MEP_Custom_Orders_Page.php:1772
-#: admin/MPWEM_Attendee_List.php:139
-msgid "Check-in"
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:1464
 #: admin/MEP_Custom_Orders_Page.php:1777
-msgid "No attendees recorded for this order yet."
+#: admin/MPWEM_Attendee_List.php:139
+msgid "Check-in"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1481
-#: admin/MEP_Custom_Orders_Page.php:1794
-#, php-format
-msgid "Qty: %s"
+#: admin/MEP_Custom_Orders_Page.php:1469
+#: admin/MEP_Custom_Orders_Page.php:1782
+msgid "No attendees recorded for this order yet."
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:1486
 #: admin/MEP_Custom_Orders_Page.php:1799
+#, php-format
+msgid "Qty: %s"
+msgstr ""
+
+#: admin/MEP_Custom_Orders_Page.php:1491
+#: admin/MEP_Custom_Orders_Page.php:1804
 #: admin/settings/global/admin_setting_panel.php:1559
 #: admin/settings/global/admin_setting_panel.php:1570
 #: admin/settings/global/admin_setting_panel.php:1581
@@ -916,8 +916,8 @@ msgstr ""
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:571
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:586
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:593
-#: admin/settings/MPWEM_Date_Settings.php:1249
-#: inc/mep_functions.php:5699
+#: admin/settings/MPWEM_Date_Settings.php:1254
+#: inc/mep_functions.php:5907
 #: inc/MPWEM_Calendar.php:1934
 #: inc/MPWEM_Calendar.php:1944
 #: inc/MPWEM_Calendar.php:2000
@@ -958,8 +958,8 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1488
-#: admin/MEP_Custom_Orders_Page.php:1801
+#: admin/MEP_Custom_Orders_Page.php:1493
+#: admin/MEP_Custom_Orders_Page.php:1806
 #: admin/settings/global/admin_setting_panel.php:1560
 #: admin/settings/global/admin_setting_panel.php:1571
 #: admin/settings/global/admin_setting_panel.php:1582
@@ -1012,8 +1012,8 @@ msgstr ""
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:572
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:587
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:594
-#: admin/settings/MPWEM_Date_Settings.php:1250
-#: inc/mep_functions.php:5699
+#: admin/settings/MPWEM_Date_Settings.php:1255
+#: inc/mep_functions.php:5907
 #: inc/MPWEM_Calendar.php:1935
 #: inc/MPWEM_Calendar.php:2001
 #: inc/MPWEM_Calendar.php:2011
@@ -1053,61 +1053,61 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1507
-#: admin/MEP_Custom_Orders_Page.php:1820
+#: admin/MEP_Custom_Orders_Page.php:1512
+#: admin/MEP_Custom_Orders_Page.php:1825
 msgid "Order Actions"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1511
-#: admin/MEP_Custom_Orders_Page.php:1824
+#: admin/MEP_Custom_Orders_Page.php:1516
+#: admin/MEP_Custom_Orders_Page.php:1829
 msgid "Change Status"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1521
-#: admin/MEP_Custom_Orders_Page.php:1834
+#: admin/MEP_Custom_Orders_Page.php:1526
+#: admin/MEP_Custom_Orders_Page.php:1839
 #: inc/MEP_Order_CPT.php:57
 msgid "Update Order"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1554
-#: admin/MEP_Custom_Orders_Page.php:1867
+#: admin/MEP_Custom_Orders_Page.php:1559
+#: admin/MEP_Custom_Orders_Page.php:1872
 msgid "Not provided"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1559
-#: admin/MEP_Custom_Orders_Page.php:1872
+#: admin/MEP_Custom_Orders_Page.php:1564
+#: admin/MEP_Custom_Orders_Page.php:1877
 msgid "View Profile & History"
-msgstr ""
-
-#: admin/MEP_Custom_Orders_Page.php:1569
-#: admin/MEP_Custom_Orders_Page.php:1882
-msgid "Order Notes"
 msgstr ""
 
 #: admin/MEP_Custom_Orders_Page.php:1574
 #: admin/MEP_Custom_Orders_Page.php:1887
+msgid "Order Notes"
+msgstr ""
+
+#: admin/MEP_Custom_Orders_Page.php:1579
+#: admin/MEP_Custom_Orders_Page.php:1892
 msgid "Add a private note..."
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1577
-#: admin/MEP_Custom_Orders_Page.php:1890
+#: admin/MEP_Custom_Orders_Page.php:1582
+#: admin/MEP_Custom_Orders_Page.php:1895
 msgid "Private Note"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1578
-#: admin/MEP_Custom_Orders_Page.php:1891
+#: admin/MEP_Custom_Orders_Page.php:1583
+#: admin/MEP_Custom_Orders_Page.php:1896
 msgid "Note to Customer"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1581
-#: admin/MEP_Custom_Orders_Page.php:1894
+#: admin/MEP_Custom_Orders_Page.php:1586
+#: admin/MEP_Custom_Orders_Page.php:1899
 #: lib/classes/class-form-fields-generator.php:3043
 #: lib/classes/class-form-fields-generator.php:5067
 msgid "Add"
 msgstr ""
 
-#: admin/MEP_Custom_Orders_Page.php:1594
-#: admin/MEP_Custom_Orders_Page.php:1907
+#: admin/MEP_Custom_Orders_Page.php:1599
+#: admin/MEP_Custom_Orders_Page.php:1912
 msgid "No notes yet."
 msgstr ""
 
@@ -1139,8 +1139,8 @@ msgstr ""
 #: admin/MPWEM_Deactivation.php:114
 #: admin/MPWEM_Event_Edit_Page.php:785
 #: admin/MPWEM_Event_Edit_Page.php:828
-#: admin/MPWEM_Post_List_Modern.php:1235
-#: admin/MPWEM_Post_List_Modern.php:1245
+#: admin/MPWEM_Post_List_Modern.php:1246
+#: admin/MPWEM_Post_List_Modern.php:1256
 #: admin/MPWEM_Taxonomy_Modern.php:880
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:758
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:170
@@ -1281,7 +1281,7 @@ msgstr ""
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:288
 #: inc/MEP_Pro_Booking_Confirmation.php:125
 #: inc/MPWEM_My_Account_Dashboard.php:337
-#: inc/MPWEM_Woocommerce.php:1789
+#: inc/MPWEM_Woocommerce.php:1886
 #: templates/layout/booking_confirmation.php:96
 msgid "Ticket"
 msgid_plural "Tickets"
@@ -1307,10 +1307,10 @@ msgid "Order No"
 msgstr ""
 
 #: admin/MPWEM_Attendee_List.php:205
-#: admin/MPWEM_Post_List_Modern.php:1260
+#: admin/MPWEM_Post_List_Modern.php:1271
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1637
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1730
-#: inc/MPWEM_Global_Function.php:440
+#: inc/MPWEM_Global_Function.php:442
 #: templates/layout/native_checkout_modal.php:61
 #: templates/layout/registration_content.php:42
 msgid "Full Name"
@@ -1318,15 +1318,15 @@ msgstr ""
 
 #: admin/MPWEM_Attendee_List.php:206
 #: admin/MPWEM_Enquiries.php:152
-#: admin/MPWEM_Post_List_Modern.php:1262
+#: admin/MPWEM_Post_List_Modern.php:1273
 #: admin/MPWEM_Taxonomy_Modern.php:897
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:23
-#: inc/mep_functions.php:3558
+#: inc/mep_functions.php:3639
 #: inc/MEP_Pro_Booking_Confirmation.php:168
-#: inc/MPWEM_Hooks.php:1370
-#: inc/MPWEM_Layout.php:275
-#: inc/MPWEM_Layout.php:325
-#: inc/MPWEM_Layout.php:458
+#: inc/MPWEM_Hooks.php:1365
+#: inc/MPWEM_Layout.php:277
+#: inc/MPWEM_Layout.php:327
+#: inc/MPWEM_Layout.php:460
 #: inc/MPWEM_My_Account_Dashboard.php:490
 #: templates/layout/booking_confirmation.php:144
 msgid "Email"
@@ -1335,12 +1335,12 @@ msgstr ""
 #: admin/MPWEM_Attendee_List.php:207
 #: admin/MPWEM_Enquiries.php:153
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:24
-#: inc/mep_functions.php:3560
+#: inc/mep_functions.php:3641
 #: inc/MEP_Pro_Booking_Confirmation.php:174
-#: inc/MPWEM_Hooks.php:1371
-#: inc/MPWEM_Layout.php:282
-#: inc/MPWEM_Layout.php:334
-#: inc/MPWEM_Layout.php:459
+#: inc/MPWEM_Hooks.php:1366
+#: inc/MPWEM_Layout.php:284
+#: inc/MPWEM_Layout.php:336
+#: inc/MPWEM_Layout.php:461
 #: inc/MPWEM_My_Account_Dashboard.php:491
 #: templates/layout/booking_confirmation.php:150
 #: templates/layout/native_checkout_modal.php:69
@@ -1359,9 +1359,9 @@ msgstr ""
 #: admin/settings/global/admin_setting_panel.php:3393
 #: admin/settings/global/MPWEM_License_Status_Settings_UI.php:63
 #: admin/settings/MPWEM_Date_Settings.php:116
-#: admin/settings/MPWEM_Date_Settings.php:384
-#: admin/settings/MPWEM_Date_Settings.php:1039
-#: admin/settings/MPWEM_Date_Settings.php:1123
+#: admin/settings/MPWEM_Date_Settings.php:385
+#: admin/settings/MPWEM_Date_Settings.php:1041
+#: admin/settings/MPWEM_Date_Settings.php:1125
 msgid "Action"
 msgstr ""
 
@@ -1558,8 +1558,8 @@ msgid "Speakers"
 msgstr ""
 
 #: admin/MPWEM_CPT.php:92
-#: admin/MPWEM_Event_Edit_Page.php:1834
-#: admin/settings/MPWEM_Settings.php:525
+#: admin/MPWEM_Event_Edit_Page.php:1885
+#: admin/settings/MPWEM_Settings.php:527
 #: admin/settings/MPWEM_Speaker_Settings.php:19
 #: admin/settings/MPWEM_Speaker_Settings.php:67
 #: templates/themes/default-theme.php:17
@@ -1579,8 +1579,8 @@ msgstr ""
 
 #: admin/MPWEM_CPT.php:99
 #: admin/MPWEM_CPT.php:100
-#: admin/MPWEM_Event_Edit_Page.php:1474
-#: admin/MPWEM_Post_List_Modern.php:1192
+#: admin/MPWEM_Event_Edit_Page.php:1487
+#: admin/MPWEM_Post_List_Modern.php:1203
 msgid "Add New Speaker"
 msgstr ""
 
@@ -1589,13 +1589,13 @@ msgid "New Speaker"
 msgstr ""
 
 #: admin/MPWEM_CPT.php:102
-#: admin/MPWEM_Post_List_Modern.php:1194
-#: admin/MPWEM_Post_List_Modern.php:1244
+#: admin/MPWEM_Post_List_Modern.php:1205
+#: admin/MPWEM_Post_List_Modern.php:1255
 msgid "Edit Speaker"
 msgstr ""
 
 #: admin/MPWEM_CPT.php:103
-#: admin/MPWEM_Post_List_Modern.php:1211
+#: admin/MPWEM_Post_List_Modern.php:1222
 msgid "Update Speaker"
 msgstr ""
 
@@ -1730,7 +1730,7 @@ msgid "Deactivating…"
 msgstr ""
 
 #: admin/MPWEM_Deactivation.php:95
-#: admin/MPWEM_Post_List_Modern.php:1190
+#: admin/MPWEM_Post_List_Modern.php:1201
 #: admin/MPWEM_RSVP_Responses.php:219
 #: admin/MPWEM_Taxonomy_Modern.php:867
 #: admin/MPWEM_Taxonomy_Modern.php:868
@@ -1791,14 +1791,14 @@ msgid "Deleting plugin data… please keep this tab open."
 msgstr ""
 
 #: admin/MPWEM_Deactivation.php:167
-#: admin/MPWEM_Event_Edit_Page.php:1489
-#: admin/MPWEM_Event_Edit_Page.php:2044
-#: admin/MPWEM_Event_Edit_Page.php:2070
-#: admin/MPWEM_Event_Edit_Page.php:2136
-#: admin/MPWEM_Event_Edit_Page.php:2273
-#: admin/MPWEM_Event_Edit_Page.php:2289
+#: admin/MPWEM_Event_Edit_Page.php:1502
+#: admin/MPWEM_Event_Edit_Page.php:2095
+#: admin/MPWEM_Event_Edit_Page.php:2121
+#: admin/MPWEM_Event_Edit_Page.php:2187
+#: admin/MPWEM_Event_Edit_Page.php:2324
+#: admin/MPWEM_Event_Edit_Page.php:2340
 #: admin/MPWEM_Event_Lists.php:1257
-#: admin/MPWEM_Post_List_Modern.php:1209
+#: admin/MPWEM_Post_List_Modern.php:1220
 #: admin/MPWEM_Taxonomy_Modern.php:859
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:782
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:490
@@ -1816,19 +1816,19 @@ msgid "You are not allowed to perform this action."
 msgstr ""
 
 #: admin/MPWEM_Enquiries.php:77
-#: admin/MPWEM_Event_Edit_Page.php:2443
+#: admin/MPWEM_Event_Edit_Page.php:2494
 msgid "Sorry, you are not allowed to do that."
 msgstr ""
 
 #: admin/MPWEM_Enquiries.php:154
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1742
-#: inc/MPWEM_Global_Function.php:443
-#: inc/MPWEM_Hooks.php:1372
+#: inc/MPWEM_Global_Function.php:445
+#: inc/MPWEM_Hooks.php:1367
 msgid "Subject"
 msgstr ""
 
 #: admin/MPWEM_Enquiries.php:155
-#: inc/MPWEM_Hooks.php:1395
+#: inc/MPWEM_Hooks.php:1390
 msgid "Message"
 msgstr ""
 
@@ -1904,7 +1904,7 @@ msgstr ""
 
 #: admin/MPWEM_Enquiries.php:321
 #: admin/MPWEM_Event_Lists.php:211
-#: admin/MPWEM_Post_List_Modern.php:1185
+#: admin/MPWEM_Post_List_Modern.php:1196
 #: admin/MPWEM_RSVP_Responses.php:248
 #: admin/MPWEM_Taxonomy_Modern.php:858
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1049
@@ -1939,12 +1939,12 @@ msgid "Event Edit Page"
 msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:124
-#: admin/MPWEM_Event_Edit_Page.php:1550
+#: admin/MPWEM_Event_Edit_Page.php:1601
 msgid "Create Event"
 msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:126
-#: admin/MPWEM_Event_Edit_Page.php:1552
+#: admin/MPWEM_Event_Edit_Page.php:1603
 #, php-format
 msgid "Edit Event #%d"
 msgstr ""
@@ -2013,14 +2013,14 @@ msgid "Horizon"
 msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:537
-#: admin/settings/MPWEM_Date_Settings.php:905
+#: admin/settings/MPWEM_Date_Settings.php:907
 #: admin/settings/MPWEM_Template_Override_Settings.php:131
 #: inc/MPWEM_Calendar.php:2195
 msgid "Default"
 msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:547
-#: admin/MPWEM_Post_List_Modern.php:1230
+#: admin/MPWEM_Post_List_Modern.php:1241
 msgid "Preview"
 msgstr ""
 
@@ -2190,7 +2190,7 @@ msgstr ""
 #: admin/settings/global/admin_setting_panel.php:1499
 #: admin/settings/global/MPWEM_General_Settings_UI.php:343
 #: inc/mep_tax.php:7
-#: inc/MPWEM_Event_List.php:196
+#: inc/MPWEM_Event_List.php:200
 #: inc/MPWEM_Shortcodes.php:194
 #: support/elementor/widget/event-list.php:50
 msgid "Category"
@@ -2223,7 +2223,7 @@ msgstr ""
 #: admin/settings/MPWEM_Venue_Settings.php:105
 #: inc/mep_tax.php:8
 #: inc/MPWEM_Calendar.php:142
-#: inc/MPWEM_Event_List.php:211
+#: inc/MPWEM_Event_List.php:215
 #: inc/MPWEM_Shortcodes.php:205
 #: support/elementor/widget/event-list.php:61
 msgid "Organizer"
@@ -2280,7 +2280,7 @@ msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:1131
 #: admin/MPWEM_Post_List_Modern.php:682
-#: admin/MPWEM_Post_List_Modern.php:1227
+#: admin/MPWEM_Post_List_Modern.php:1238
 #: admin/MPWEM_Taxonomy_Modern.php:721
 #: admin/MPWEM_Taxonomy_Modern.php:876
 #: inc/MPWEM_Dependencies.php:515
@@ -2313,71 +2313,71 @@ msgid "Invalid editor mode."
 msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:1380
-#: admin/MPWEM_Event_Edit_Page.php:1533
-#: admin/MPWEM_Event_Edit_Page.php:2453
-#: admin/MPWEM_Event_Edit_Page.php:2866
+#: admin/MPWEM_Event_Edit_Page.php:1584
+#: admin/MPWEM_Event_Edit_Page.php:2504
+#: admin/MPWEM_Event_Edit_Page.php:2917
 msgid "Sorry, you are not allowed to edit this event."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1475
+#: admin/MPWEM_Event_Edit_Page.php:1488
 msgid "Create a speaker profile and assign it to this event."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1476
-#: admin/MPWEM_Post_List_Modern.php:1196
+#: admin/MPWEM_Event_Edit_Page.php:1489
+#: admin/MPWEM_Post_List_Modern.php:1207
 msgid "Speaker Name"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1477
-#: admin/MPWEM_Post_List_Modern.php:1197
+#: admin/MPWEM_Event_Edit_Page.php:1490
+#: admin/MPWEM_Post_List_Modern.php:1208
 msgid "e.g. Alex Rivera"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1478
-#: admin/MPWEM_Post_List_Modern.php:1198
-#: admin/MPWEM_Post_List_Modern.php:1237
+#: admin/MPWEM_Event_Edit_Page.php:1491
+#: admin/MPWEM_Post_List_Modern.php:1209
+#: admin/MPWEM_Post_List_Modern.php:1248
 msgid "Role / Title"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1479
-#: admin/MPWEM_Post_List_Modern.php:1199
+#: admin/MPWEM_Event_Edit_Page.php:1492
+#: admin/MPWEM_Post_List_Modern.php:1210
 msgid "e.g. Keynote Speaker · CEO, TechVision"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1480
-#: admin/MPWEM_Event_Edit_Page.php:1796
-#: admin/MPWEM_Post_List_Modern.php:1200
-#: admin/MPWEM_Post_List_Modern.php:1238
+#: admin/MPWEM_Event_Edit_Page.php:1493
+#: admin/MPWEM_Event_Edit_Page.php:1847
+#: admin/MPWEM_Post_List_Modern.php:1211
+#: admin/MPWEM_Post_List_Modern.php:1249
 #: admin/MPWEM_Taxonomy_Modern.php:855
 #: admin/MPWEM_Taxonomy_Modern.php:881
 #: inc/MPWEM_Calendar.php:2196
 msgid "Description"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1481
-#: admin/MPWEM_Post_List_Modern.php:1201
+#: admin/MPWEM_Event_Edit_Page.php:1494
+#: admin/MPWEM_Post_List_Modern.php:1212
 msgid "Short biography shown on event pages…"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1482
-#: admin/MPWEM_Event_Edit_Page.php:1855
-#: admin/MPWEM_Post_List_Modern.php:1202
+#: admin/MPWEM_Event_Edit_Page.php:1495
+#: admin/MPWEM_Event_Edit_Page.php:1906
+#: admin/MPWEM_Post_List_Modern.php:1213
 #: inc/MEP_Order_CPT.php:63
 msgid "Featured Image"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1483
-#: admin/MPWEM_Post_List_Modern.php:1203
+#: admin/MPWEM_Event_Edit_Page.php:1496
+#: admin/MPWEM_Post_List_Modern.php:1214
 msgid "Select Image"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1484
-#: admin/MPWEM_Post_List_Modern.php:1204
+#: admin/MPWEM_Event_Edit_Page.php:1497
+#: admin/MPWEM_Post_List_Modern.php:1215
 msgid "Change Image"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1485
-#: admin/MPWEM_Post_List_Modern.php:1205
+#: admin/MPWEM_Event_Edit_Page.php:1498
+#: admin/MPWEM_Post_List_Modern.php:1216
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:520
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:522
 #: admin/settings/global/MPWEM_Social_Card_Settings_UI.php:390
@@ -2385,237 +2385,388 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1487
-#: admin/MPWEM_Event_Edit_Page.php:1708
-#: admin/MPWEM_Post_List_Modern.php:1207
+#: admin/MPWEM_Event_Edit_Page.php:1500
+#: admin/MPWEM_Event_Edit_Page.php:1759
+#: admin/MPWEM_Post_List_Modern.php:1218
 msgid "Publish"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1488
+#: admin/MPWEM_Event_Edit_Page.php:1501
 #: admin/MPWEM_Event_Lists.php:131
 #: admin/MPWEM_Event_Lists.php:1085
 #: admin/MPWEM_Event_Lists.php:1227
 #: admin/MPWEM_Post_List_Modern.php:669
-#: admin/MPWEM_Post_List_Modern.php:838
-#: admin/MPWEM_Post_List_Modern.php:1208
+#: admin/MPWEM_Post_List_Modern.php:842
+#: admin/MPWEM_Post_List_Modern.php:1219
 msgid "Draft"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1490
-#: admin/MPWEM_Post_List_Modern.php:1210
+#: admin/MPWEM_Event_Edit_Page.php:1503
+#: admin/MPWEM_Post_List_Modern.php:1221
 msgid "Create Speaker"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1491
-#: admin/MPWEM_Post_List_Modern.php:1212
-#: admin/MPWEM_Post_List_Modern.php:1268
+#: admin/MPWEM_Event_Edit_Page.php:1504
+#: admin/MPWEM_Post_List_Modern.php:1223
+#: admin/MPWEM_Post_List_Modern.php:1279
 msgid "Creating…"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1492
-#: admin/MPWEM_Post_List_Modern.php:1214
+#: admin/MPWEM_Event_Edit_Page.php:1505
+#: admin/MPWEM_Post_List_Modern.php:1225
 msgid "Please enter a speaker name."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1493
-#: admin/MPWEM_Post_List_Modern.php:1215
+#: admin/MPWEM_Event_Edit_Page.php:1506
+#: admin/MPWEM_Post_List_Modern.php:1226
 msgid "Could not create speaker. Please try again."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1494
-#: admin/MPWEM_Post_List_Modern.php:810
-#: admin/MPWEM_Post_List_Modern.php:1218
+#: admin/MPWEM_Event_Edit_Page.php:1507
+#: admin/MPWEM_Post_List_Modern.php:814
+#: admin/MPWEM_Post_List_Modern.php:1229
 msgid "Speaker created successfully."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1513
-msgid "Sorry, you are not allowed to access this page."
+#: admin/MPWEM_Event_Edit_Page.php:1524
+msgid "Toggle section"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1526
+msgid "Page Template"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1526
+msgid "Choose the public event detail layout."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1527
+#: admin/MPWEM_Welcome.php:613
+msgid "Attendee Form"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1527
+msgid "Choose registration fields and attendee form behavior for this event."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1528
+msgid "Terms & Conditions"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1528
+msgid "Show the attendee-facing terms content for this event."
 msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:1529
-msgid "Invalid event ID."
+#: admin/MPWEM_Event_Edit_Page.php:1541
+msgid "FAQs"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1529
+msgid "Answer common attendee questions before checkout."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1530
+#: admin/MPWEM_Event_Edit_Page.php:1542
+#: admin/MPWEM_Welcome.php:610
+#: support/elementor/widget/event-list-recurring.php:105
+#: support/elementor/widget/event-list.php:80
+#: support/elementor/widget/expired-event-list.php:104
+#: assets/blocks/event-list-block.js:122
+msgid "Timeline"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1530
+msgid "Show the event flow in an organized attendee-friendly format."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1531
+#: admin/MPWEM_Event_Edit_Page.php:1543
+#: admin/settings/MPWEM_Settings.php:43
+#: templates/layout/related_event.php:15
+msgid "Related Events"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1531
+msgid "Promote similar or upcoming events alongside this one."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1532
+#: admin/MPWEM_Event_Edit_Page.php:1544
+msgid "Email Message"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1532
+msgid "Customize attendee confirmation email content."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1533
+msgid "Email Reminder"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1533
+msgid "Schedule attendee reminder emails without changing the addon settings flow."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1534
+#: admin/MPWEM_Event_Edit_Page.php:1545
+msgid "PDF Custom Text"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1534
+msgid "Manage the custom text used in PDF ticket output."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1535
+#: admin/MPWEM_Event_Edit_Page.php:1546
+msgid "SEO & Schema"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1535
+msgid "Control rich result details used by search engines."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1536
+#: admin/settings/global/admin_setting_panel.php:2910
+#: admin/settings/global/MPWEM_Modern_Section_Settings_UI.php:47
+msgid "Deposit / Partial Payment"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1536
+msgid "Override the global deposit setting for this specific event."
 msgstr ""
 
 #: admin/MPWEM_Event_Edit_Page.php:1537
-#: admin/MPWEM_Event_Edit_Page.php:1785
+msgid "Access & Settings"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1537
+msgid "Control event SKU, visibility, and member-only access."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1540
+#: admin/MPWEM_Welcome.php:608
+#: admin/MPWEM_Welcome.php:681
+#: admin/settings/MPWEM_Settings.php:42
+msgid "Template"
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1540
+msgid "Choose the event page design first. This controls the visitor-facing layout."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1541
+msgid "Enable this when buyers may ask common questions before booking."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1542
+msgid "Use this for agenda items, session flow, or key moments during the event."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1543
+msgid "Show similar or upcoming events when you want to cross-promote more listings."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1544
+msgid "Edit the attendee confirmation message and insert dynamic tags where needed."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1545
+msgid "Use this when Event Pro is active and you want custom copy printed on PDF tickets."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1546
+msgid "Complete this only when search result presentation and structured data matter."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1564
+msgid "Sorry, you are not allowed to access this page."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1580
+msgid "Invalid event ID."
+msgstr ""
+
+#: admin/MPWEM_Event_Edit_Page.php:1588
+#: admin/MPWEM_Event_Edit_Page.php:1836
 msgid "Basic Info"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1538
+#: admin/MPWEM_Event_Edit_Page.php:1589
 #: admin/MPWEM_Welcome.php:601
 #: admin/MPWEM_Welcome.php:630
 #: admin/settings/MPWEM_Settings.php:33
 msgid "Ticket & Pricing"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1539
-#: admin/MPWEM_Event_Edit_Page.php:2108
-#: admin/MPWEM_Event_Edit_Page.php:2109
+#: admin/MPWEM_Event_Edit_Page.php:1590
+#: admin/MPWEM_Event_Edit_Page.php:2159
+#: admin/MPWEM_Event_Edit_Page.php:2160
 #: admin/MPWEM_Welcome.php:602
 #: admin/MPWEM_Welcome.php:641
 #: admin/settings/MPWEM_Settings.php:34
 msgid "Date & Time"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1540
-#: admin/MPWEM_Event_Edit_Page.php:2163
-#: admin/MPWEM_Event_Edit_Page.php:2164
+#: admin/MPWEM_Event_Edit_Page.php:1591
+#: admin/MPWEM_Event_Edit_Page.php:2214
+#: admin/MPWEM_Event_Edit_Page.php:2215
 msgid "Advanced"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1663
+#: admin/MPWEM_Event_Edit_Page.php:1714
 msgid "Back to Events"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1669
+#: admin/MPWEM_Event_Edit_Page.php:1720
 msgid "Event steps"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1684
+#: admin/MPWEM_Event_Edit_Page.php:1735
 msgid "Save as Draft"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1706
+#: admin/MPWEM_Event_Edit_Page.php:1757
 #: admin/MPWEM_Event_Lists.php:1258
 msgid "Update"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1717
+#: admin/MPWEM_Event_Edit_Page.php:1768
 msgid "More status actions"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1724
+#: admin/MPWEM_Event_Edit_Page.php:1775
 msgid "Classic editor"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1730
+#: admin/MPWEM_Event_Edit_Page.php:1781
 #: inc/mep_low_stock_display.php:332
 msgid "View Event"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1734
+#: admin/MPWEM_Event_Edit_Page.php:1785
 msgid "Switch to Draft"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1740
+#: admin/MPWEM_Event_Edit_Page.php:1791
 #: admin/MPWEM_Event_Lists.php:1175
 msgid "Restore Event"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1740
+#: admin/MPWEM_Event_Edit_Page.php:1791
 msgid "Cancel Event"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1744
-#: admin/MPWEM_Post_List_Modern.php:1223
+#: admin/MPWEM_Event_Edit_Page.php:1795
+#: admin/MPWEM_Post_List_Modern.php:1234
 msgid "Move to Trash"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1760
+#: admin/MPWEM_Event_Edit_Page.php:1811
 msgid "Create a new event to start editing."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1762
+#: admin/MPWEM_Event_Edit_Page.php:1813
 msgid "Create New Event"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1786
+#: admin/MPWEM_Event_Edit_Page.php:1837
 msgid "Basic Information"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1787
+#: admin/MPWEM_Event_Edit_Page.php:1838
 msgid "The core details of your event."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1791
+#: admin/MPWEM_Event_Edit_Page.php:1842
 #: admin/settings/global/admin_setting_panel.php:1470
 #: admin/settings/global/MPWEM_General_Settings_UI.php:254
 #: support/elementor/widget/event-title.php:21
 msgid "Event Title"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1816
+#: admin/MPWEM_Event_Edit_Page.php:1867
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:289
 #: inc/MPWEM_Calendar.php:153
 msgid "Venue"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1817
+#: admin/MPWEM_Event_Edit_Page.php:1868
 #: admin/settings/MPWEM_Settings.php:32
 msgid "Venue/Location"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1818
+#: admin/MPWEM_Event_Edit_Page.php:1869
 msgid "Where will this event take place?"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1835
+#: admin/MPWEM_Event_Edit_Page.php:1886
 #: admin/MPWEM_Welcome.php:686
 #: admin/settings/MPWEM_Settings.php:45
 msgid "Speaker Information"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1836
+#: admin/MPWEM_Event_Edit_Page.php:1887
 #: admin/settings/MPWEM_Speaker_Settings.php:45
 msgid "Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1854
-#: admin/MPWEM_Event_Edit_Page.php:1890
-#: admin/MPWEM_Event_Edit_Page.php:1902
+#: admin/MPWEM_Event_Edit_Page.php:1905
+#: admin/MPWEM_Event_Edit_Page.php:1941
+#: admin/MPWEM_Event_Edit_Page.php:1953
 msgid "Media"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1856
+#: admin/MPWEM_Event_Edit_Page.php:1907
 msgid "Main event thumbnail."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1869
+#: admin/MPWEM_Event_Edit_Page.php:1920
 #: admin/settings/global/MPWEM_Style_Icon_Settings_UI.php:360
 msgid "Change"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1871
+#: admin/MPWEM_Event_Edit_Page.php:1922
 msgid "Remove image"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1881
+#: admin/MPWEM_Event_Edit_Page.php:1932
 msgid "Click to upload a featured image"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1882
+#: admin/MPWEM_Event_Edit_Page.php:1933
 msgid "JPG or PNG, up to 10MB"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1891
+#: admin/MPWEM_Event_Edit_Page.php:1942
 msgid "Gallery Images"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1892
+#: admin/MPWEM_Event_Edit_Page.php:1943
 msgid "Additional photos."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1903
+#: admin/MPWEM_Event_Edit_Page.php:1954
 #: admin/settings/MPWEM_Settings_Gallery.php:52
 msgid "Event List Thumbnail"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1904
+#: admin/MPWEM_Event_Edit_Page.php:1955
 msgid "Thumbnail used in event listing layouts."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1929
+#: admin/MPWEM_Event_Edit_Page.php:1980
 #: admin/settings/MPWEM_Event_Status_Settings.php:36
 #: admin/settings/MPWEM_Seo_content_Settings.php:65
 #: assets/blocks/event-list-block.js:251
 msgid "Event Status"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1930
+#: admin/MPWEM_Event_Edit_Page.php:1981
 msgid "Cancel the event without deleting it. Visitors still see it, clearly marked as cancelled, and cannot book."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1939
+#: admin/MPWEM_Event_Edit_Page.php:1990
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:987
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1026
 #: inc/MEP_Pro_Booking_Confirmation.php:121
@@ -2624,104 +2775,104 @@ msgstr ""
 msgid "Tickets"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1940
+#: admin/MPWEM_Event_Edit_Page.php:1991
 msgid "Registration & Tickets Settings"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1941
+#: admin/MPWEM_Event_Edit_Page.php:1992
 msgid "Configure how users register or purchase tickets for this event."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1945
+#: admin/MPWEM_Event_Edit_Page.php:1996
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1349
 msgid "Event Mode"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1959
+#: admin/MPWEM_Event_Edit_Page.php:2010
 msgid "Ticket-Selling"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1963
+#: admin/MPWEM_Event_Edit_Page.php:2014
 msgid "Explore Only (No WooCommerce)"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1965
+#: admin/MPWEM_Event_Edit_Page.php:2016
 msgid "Paid Registration"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1974
+#: admin/MPWEM_Event_Edit_Page.php:2025
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1609
 msgid "RSVP"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1975
+#: admin/MPWEM_Event_Edit_Page.php:2026
 msgid "Free Registration"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1981
+#: admin/MPWEM_Event_Edit_Page.php:2032
 msgid "Listing-Only"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1982
+#: admin/MPWEM_Event_Edit_Page.php:2033
 msgid "No Registration"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1988
+#: admin/MPWEM_Event_Edit_Page.php:2039
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1701
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1704
 msgid "Announcement"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:1989
+#: admin/MPWEM_Event_Edit_Page.php:2040
 msgid "Notice + Enquiry Form"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2001
+#: admin/MPWEM_Event_Edit_Page.php:2052
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1210
 msgid "Add-ons"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2002
+#: admin/MPWEM_Event_Edit_Page.php:2053
 #: admin/MPWEM_Welcome.php:634
 #: inc/MPWEM_Calendar.php:155
 msgid "Extra Services"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2003
+#: admin/MPWEM_Event_Edit_Page.php:2054
 msgid "Optional add-ons that attendees can purchase with tickets."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2015
+#: admin/MPWEM_Event_Edit_Page.php:2066
 #: admin/MPWEM_Welcome.php:605
 #: admin/settings/MPWEM_Settings.php:38
 msgid "Tax"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2016
+#: admin/MPWEM_Event_Edit_Page.php:2067
 #: admin/settings/MPWEM_Tax_Settings.php:20
 #: admin/settings/MPWEM_Tax_Settings.php:42
 msgid "Tax Settings"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2017
+#: admin/MPWEM_Event_Edit_Page.php:2068
 msgid "Configure how tax applies to this event's tickets."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2028
+#: admin/MPWEM_Event_Edit_Page.php:2079
 msgid "Manage ticket types"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2029
+#: admin/MPWEM_Event_Edit_Page.php:2080
 msgid "Edit pricing, capacities, advanced columns, and ticket settings without leaving this step."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2033
+#: admin/MPWEM_Event_Edit_Page.php:2084
 msgid "Close ticket editor"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2045
-#: admin/MPWEM_Event_Edit_Page.php:2071
-#: admin/MPWEM_Event_Edit_Page.php:2137
+#: admin/MPWEM_Event_Edit_Page.php:2096
+#: admin/MPWEM_Event_Edit_Page.php:2122
+#: admin/MPWEM_Event_Edit_Page.php:2188
 #: admin/MPWEM_Taxonomy_Modern.php:865
 #: admin/settings/global/admin_setting_panel.php:3281
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:491
@@ -2729,207 +2880,207 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2055
+#: admin/MPWEM_Event_Edit_Page.php:2106
 msgid "Manage extra services"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2056
+#: admin/MPWEM_Event_Edit_Page.php:2107
 msgid "Edit optional add-ons, pricing, stock, and quantity settings without leaving this step."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2059
+#: admin/MPWEM_Event_Edit_Page.php:2110
 msgid "Close extra service editor"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2085
+#: admin/MPWEM_Event_Edit_Page.php:2136
 msgid "Pricing"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2086
+#: admin/MPWEM_Event_Edit_Page.php:2137
 msgid "Pricing Help"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2087
+#: admin/MPWEM_Event_Edit_Page.php:2138
 msgid "Quick tips for tickets."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2090
+#: admin/MPWEM_Event_Edit_Page.php:2141
 msgid "Ensure you have at least one ticket type defined to allow registrations."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2110
+#: admin/MPWEM_Event_Edit_Page.php:2161
 msgid "Schedule your event start and end times."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2121
+#: admin/MPWEM_Event_Edit_Page.php:2172
 msgid "Manage particular dates"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2122
+#: admin/MPWEM_Event_Edit_Page.php:2173
 msgid "Edit specific event dates, times, and quantities without leaving this step."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2125
+#: admin/MPWEM_Event_Edit_Page.php:2176
 msgid "Close date editor"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2147
+#: admin/MPWEM_Event_Edit_Page.php:2198
 msgid "Schedule"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2148
+#: admin/MPWEM_Event_Edit_Page.php:2199
 msgid "Schedule Summary"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2149
+#: admin/MPWEM_Event_Edit_Page.php:2200
 msgid "Review your event dates."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2165
+#: admin/MPWEM_Event_Edit_Page.php:2216
 msgid "Templates, messaging, timeline, related events, and search visibility."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2181
+#: admin/MPWEM_Event_Edit_Page.php:2232
 msgid "Attendee Form is a PRO feature"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2182
+#: admin/MPWEM_Event_Edit_Page.php:2233
 msgid "Collect custom attendee details during checkout by activating Event Booking Manager PRO."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2205
+#: admin/MPWEM_Event_Edit_Page.php:2256
 msgid "Guide"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2206
+#: admin/MPWEM_Event_Edit_Page.php:2257
 msgid "Quick Guide"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2207
+#: admin/MPWEM_Event_Edit_Page.php:2258
 msgid "A simple guide for the Advanced step sections."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2210
+#: admin/MPWEM_Event_Edit_Page.php:2261
 msgid "Review each section below and enable only the parts this event actually needs."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2217
+#: admin/MPWEM_Event_Edit_Page.php:2268
 msgid "Danger"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2218
+#: admin/MPWEM_Event_Edit_Page.php:2269
 msgid "Danger Zone"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2219
+#: admin/MPWEM_Event_Edit_Page.php:2270
 msgid "Use with care."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2238
+#: admin/MPWEM_Event_Edit_Page.php:2289
 msgid "Legacy"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2239
+#: admin/MPWEM_Event_Edit_Page.php:2290
 msgid "Additional Sections"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2240
+#: admin/MPWEM_Event_Edit_Page.php:2291
 msgid "Left in the current design for now until we place them into the new step flow."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2251
+#: admin/MPWEM_Event_Edit_Page.php:2302
 #: admin/settings/MPWEM_Settings.php:60
 msgid "Back"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2259
-#: admin/MPWEM_Quick_Setup.php:205
+#: admin/MPWEM_Event_Edit_Page.php:2310
+#: admin/MPWEM_Quick_Setup.php:209
 #: admin/settings/MPWEM_Settings.php:61
-#: templates/layout/date_list.php:37
+#: templates/layout/date_list.php:48
 msgid "Next"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2266
+#: admin/MPWEM_Event_Edit_Page.php:2317
 msgid "Reset Booking Count?"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2267
-#: admin/MPWEM_Event_Edit_Page.php:2283
+#: admin/MPWEM_Event_Edit_Page.php:2318
+#: admin/MPWEM_Event_Edit_Page.php:2334
 msgid "Close confirmation dialog"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2270
+#: admin/MPWEM_Event_Edit_Page.php:2321
 msgid "This will remove all booking information for this event, including the attendee list. This action cannot be undone."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2274
+#: admin/MPWEM_Event_Edit_Page.php:2325
 msgid "Yes, Reset Booking"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2282
+#: admin/MPWEM_Event_Edit_Page.php:2333
 msgid "Move Event to Trash?"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2286
+#: admin/MPWEM_Event_Edit_Page.php:2337
 msgid "This event will be moved to the trash. You can restore it later from the Events trash list if needed."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2290
+#: admin/MPWEM_Event_Edit_Page.php:2341
 msgid "Confirm"
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2450
-#: admin/MPWEM_Event_Edit_Page.php:2862
+#: admin/MPWEM_Event_Edit_Page.php:2501
+#: admin/MPWEM_Event_Edit_Page.php:2913
 #: inc/MEP_Pro_Native_Checkout.php:71
 msgid "Invalid event."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2469
+#: admin/MPWEM_Event_Edit_Page.php:2520
 msgid "Sorry, you are not allowed to move this event to the trash."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2474
+#: admin/MPWEM_Event_Edit_Page.php:2525
 msgid "The event could not be moved to the trash."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2741
+#: admin/MPWEM_Event_Edit_Page.php:2792
 msgid "Sorry, you are not allowed to change this event status."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2799
-#: admin/MPWEM_Event_Edit_Page.php:2815
+#: admin/MPWEM_Event_Edit_Page.php:2850
+#: admin/MPWEM_Event_Edit_Page.php:2866
 msgid "Not allowed."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2825
+#: admin/MPWEM_Event_Edit_Page.php:2876
 msgid "Invalid taxonomy."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2829
+#: admin/MPWEM_Event_Edit_Page.php:2880
 msgid "This taxonomy is not available."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2833
+#: admin/MPWEM_Event_Edit_Page.php:2884
 msgid "Sorry, you are not allowed to create terms here."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2838
+#: admin/MPWEM_Event_Edit_Page.php:2889
 msgid "Please enter an organizer name."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2839
+#: admin/MPWEM_Event_Edit_Page.php:2890
 msgid "Please enter a category name."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2856
+#: admin/MPWEM_Event_Edit_Page.php:2907
 msgid "The category could not be created."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2879
+#: admin/MPWEM_Event_Edit_Page.php:2930
 msgid "Organizer ready. It has been selected for this event."
 msgstr ""
 
-#: admin/MPWEM_Event_Edit_Page.php:2880
+#: admin/MPWEM_Event_Edit_Page.php:2931
 msgid "Category ready. It has been selected for this event."
 msgstr ""
 
@@ -2970,14 +3121,14 @@ msgstr ""
 #: admin/MPWEM_Event_Lists.php:127
 #: admin/MPWEM_Event_Lists.php:1081
 #: admin/MPWEM_Event_Lists.php:1226
-#: admin/MPWEM_Post_List_Modern.php:837
+#: admin/MPWEM_Post_List_Modern.php:841
 msgid "Published"
 msgstr ""
 
 #: admin/MPWEM_Event_Lists.php:135
 #: admin/MPWEM_Event_Lists.php:1090
 #: admin/MPWEM_Event_Lists.php:1228
-#: admin/MPWEM_Post_List_Modern.php:840
+#: admin/MPWEM_Post_List_Modern.php:844
 msgid "Private"
 msgstr ""
 
@@ -2987,11 +3138,11 @@ msgid "Active"
 msgstr ""
 
 #: admin/MPWEM_Event_Lists.php:143
-#: inc/mep_functions.php:4544
-#: inc/mep_functions.php:6450
+#: inc/mep_functions.php:4750
+#: inc/mep_functions.php:6658
 #: inc/MPWEM_Calendar.php:152
-#: inc/MPWEM_Global_Function.php:1081
-#: inc/MPWEM_Layout.php:74
+#: inc/MPWEM_Global_Function.php:1083
+#: inc/MPWEM_Layout.php:76
 #: support/elementor/widget/event-list.php:234
 #: assets/blocks/event-list-block.js:257
 msgid "Expired"
@@ -3001,7 +3152,7 @@ msgstr ""
 #: admin/MPWEM_Event_Lists.php:1094
 #: admin/MPWEM_Post_List_Modern.php:671
 #: admin/MPWEM_Post_List_Modern.php:685
-#: admin/MPWEM_Post_List_Modern.php:841
+#: admin/MPWEM_Post_List_Modern.php:845
 msgid "Trash"
 msgstr ""
 
@@ -3020,7 +3171,7 @@ msgstr ""
 #: admin/MPWEM_Event_Lists.php:170
 #: inc/MPWEM_Calendar.php:146
 #: inc/MPWEM_Calendar.php:356
-#: inc/MPWEM_Event_List.php:199
+#: inc/MPWEM_Event_List.php:203
 #: inc/MPWEM_Shortcodes.php:196
 msgid "All Categories"
 msgstr ""
@@ -3038,7 +3189,7 @@ msgid "Clear"
 msgstr ""
 
 #: admin/MPWEM_Event_Lists.php:198
-#: inc/MPWEM_Shortcodes.php:1007
+#: inc/MPWEM_Shortcodes.php:1010
 msgid "Loading events…"
 msgstr ""
 
@@ -3059,10 +3210,10 @@ msgstr ""
 
 #: admin/MPWEM_Event_Lists.php:206
 #: admin/MPWEM_Event_Lists.php:1213
-#: inc/mep_functions.php:3450
+#: inc/mep_functions.php:3531
 #: inc/MPWEM_Calendar.php:141
-#: inc/MPWEM_Woocommerce.php:283
-#: inc/MPWEM_Woocommerce.php:1136
+#: inc/MPWEM_Woocommerce.php:294
+#: inc/MPWEM_Woocommerce.php:1161
 #: templates/layout/horizon/hero.php:136
 msgid "Location"
 msgstr ""
@@ -3083,7 +3234,7 @@ msgid "Capacity"
 msgstr ""
 
 #: admin/MPWEM_Event_Lists.php:234
-#: inc/MPWEM_Event_List.php:305
+#: inc/MPWEM_Event_List.php:309
 #: inc/MPWEM_Shortcodes.php:243
 msgid "Showing"
 msgstr ""
@@ -3110,8 +3261,8 @@ msgstr ""
 #: inc/MPWEM_Custom_Layout.php:39
 #: inc/MPWEM_Custom_Layout.php:218
 #: inc/MPWEM_Custom_Layout.php:219
-#: inc/MPWEM_Event_List.php:329
-#: inc/MPWEM_Event_List.php:332
+#: inc/MPWEM_Event_List.php:333
+#: inc/MPWEM_Event_List.php:336
 msgid "Load More"
 msgstr ""
 
@@ -3157,14 +3308,14 @@ msgid "Booking is closed. Restore it from the event's Event Status card."
 msgstr ""
 
 #: admin/MPWEM_Event_Lists.php:1120
-#: admin/MPWEM_Post_List_Modern.php:1242
+#: admin/MPWEM_Post_List_Modern.php:1253
 #: admin/MPWEM_Taxonomy_Modern.php:885
 msgid "—"
 msgstr ""
 
 #: admin/MPWEM_Event_Lists.php:1176
 #: admin/MPWEM_Post_List_Modern.php:679
-#: admin/MPWEM_Post_List_Modern.php:1224
+#: admin/MPWEM_Post_List_Modern.php:1235
 #: admin/MPWEM_Taxonomy_Modern.php:872
 msgid "Delete Permanently"
 msgstr ""
@@ -3321,7 +3472,7 @@ msgid "No description yet."
 msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:476
-#: admin/MPWEM_Post_List_Modern.php:1069
+#: admin/MPWEM_Post_List_Modern.php:1080
 #: admin/MPWEM_Taxonomy_Modern.php:203
 #, php-format
 msgid "Event #%d"
@@ -3374,22 +3525,22 @@ msgid "You do not have permission to create speakers."
 msgstr ""
 
 #: admin/MPWEM_Post_List_Modern.php:778
-#: admin/MPWEM_Post_List_Modern.php:898
+#: admin/MPWEM_Post_List_Modern.php:902
 msgid "Speaker name is required."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:825
-#: admin/MPWEM_Post_List_Modern.php:885
-#: admin/MPWEM_Post_List_Modern.php:943
+#: admin/MPWEM_Post_List_Modern.php:829
+#: admin/MPWEM_Post_List_Modern.php:889
+#: admin/MPWEM_Post_List_Modern.php:951
 msgid "Speaker not found."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:828
+#: admin/MPWEM_Post_List_Modern.php:832
 msgid "You do not have permission to view this speaker."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:839
-#: admin/MPWEM_Post_List_Modern.php:1266
+#: admin/MPWEM_Post_List_Modern.php:843
+#: admin/MPWEM_Post_List_Modern.php:1277
 #: admin/MPWEM_RSVP_Responses.php:160
 #: admin/settings/global/admin_setting_panel.php:1400
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:540
@@ -3398,312 +3549,312 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:842
+#: admin/MPWEM_Post_List_Modern.php:846
 #: admin/settings/MPWEM_Event_Status_Settings.php:92
 msgid "Scheduled"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:888
+#: admin/MPWEM_Post_List_Modern.php:892
 msgid "You do not have permission to edit this speaker."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:928
-#: admin/MPWEM_Post_List_Modern.php:1219
+#: admin/MPWEM_Post_List_Modern.php:936
+#: admin/MPWEM_Post_List_Modern.php:1230
 msgid "Speaker updated successfully."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:946
+#: admin/MPWEM_Post_List_Modern.php:954
 msgid "You do not have permission to delete this speaker."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:952
+#: admin/MPWEM_Post_List_Modern.php:960
 msgid "Could not delete speaker."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:957
+#: admin/MPWEM_Post_List_Modern.php:965
 msgid "Speaker permanently deleted."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:964
+#: admin/MPWEM_Post_List_Modern.php:972
 msgid "Could not move speaker to trash."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:970
+#: admin/MPWEM_Post_List_Modern.php:978
 msgid "Speaker moved to trash."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:983
+#: admin/MPWEM_Post_List_Modern.php:991
 msgid "You do not have permission to create reviews."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:995
+#: admin/MPWEM_Post_List_Modern.php:1003
 msgid "Review title is required."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:998
+#: admin/MPWEM_Post_List_Modern.php:1006
 msgid "Please select a valid event."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1001
+#: admin/MPWEM_Post_List_Modern.php:1009
 msgid "Please choose a rating from 1 to 5."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1004
+#: admin/MPWEM_Post_List_Modern.php:1012
 msgid "Reviewer name is required."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1007
+#: admin/MPWEM_Post_List_Modern.php:1015
 #: admin/settings/global/MPWEM_Email_Settings_UI.php:811
 #: inc/MPWEM_Dependencies.php:523
-#: inc/MPWEM_Hooks.php:1071
-#: inc/MPWEM_Hooks.php:1102
-#: inc/MPWEM_Hooks.php:1282
+#: inc/MPWEM_Hooks.php:1066
+#: inc/MPWEM_Hooks.php:1097
+#: inc/MPWEM_Hooks.php:1277
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1036
-#: admin/MPWEM_Post_List_Modern.php:1274
+#: admin/MPWEM_Post_List_Modern.php:1047
+#: admin/MPWEM_Post_List_Modern.php:1285
 msgid "Review created successfully."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1086
+#: admin/MPWEM_Post_List_Modern.php:1097
 #: admin/MPWEM_Taxonomy_Modern.php:312
 #, php-format
 msgid "%s Management"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1088
+#: admin/MPWEM_Post_List_Modern.php:1099
 #: admin/MPWEM_Taxonomy_Modern.php:314
 #, php-format
 msgid "+ Add New %s"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1103
+#: admin/MPWEM_Post_List_Modern.php:1114
 msgid "Email template not found."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1107
+#: admin/MPWEM_Post_List_Modern.php:1118
 msgid "You do not have permission to preview this template."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1186
+#: admin/MPWEM_Post_List_Modern.php:1197
 #: admin/MPWEM_Taxonomy_Modern.php:888
 msgid "EVENT PRO"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1187
+#: admin/MPWEM_Post_List_Modern.php:1198
 #: admin/MPWEM_Taxonomy_Modern.php:889
 msgid "Get more out of your events"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1188
+#: admin/MPWEM_Post_List_Modern.php:1199
 #: admin/MPWEM_Taxonomy_Modern.php:890
 msgid "Unlock advanced attendee tools, PDF tickets, and reporting with Event Manager Pro and addons."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1189
+#: admin/MPWEM_Post_List_Modern.php:1200
 #: admin/MPWEM_Taxonomy_Modern.php:891
 msgid "Explore Pro & Addons"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1191
+#: admin/MPWEM_Post_List_Modern.php:1202
 msgid "Could not load speakers. Please try again."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1193
+#: admin/MPWEM_Post_List_Modern.php:1204
 msgid "Create a speaker profile to assign on event pages."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1195
+#: admin/MPWEM_Post_List_Modern.php:1206
 msgid "Update this speaker profile."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1216
+#: admin/MPWEM_Post_List_Modern.php:1227
 msgid "Could not update speaker. Please try again."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1217
+#: admin/MPWEM_Post_List_Modern.php:1228
 msgid "Could not load speaker details."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1220
+#: admin/MPWEM_Post_List_Modern.php:1231
 msgid "Delete Speaker?"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1221
+#: admin/MPWEM_Post_List_Modern.php:1232
 msgid "This speaker will be moved to Trash. You can restore it later."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1222
+#: admin/MPWEM_Post_List_Modern.php:1233
 msgid "This speaker will be permanently deleted. This cannot be undone."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1225
+#: admin/MPWEM_Post_List_Modern.php:1236
 #: admin/MPWEM_Taxonomy_Modern.php:873
 msgid "Deleting…"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1226
+#: admin/MPWEM_Post_List_Modern.php:1237
 msgid "Could not delete speaker. Please try again."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1229
+#: admin/MPWEM_Post_List_Modern.php:1240
 #: admin/MPWEM_Taxonomy_Modern.php:875
 #: inc/MPWEM_My_Account_Dashboard.php:348
 msgid "View"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1231
+#: admin/MPWEM_Post_List_Modern.php:1242
 msgid "Email Template Preview"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1232
+#: admin/MPWEM_Post_List_Modern.php:1243
 msgid "This template has no content yet."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1233
+#: admin/MPWEM_Post_List_Modern.php:1244
 msgid "Could not load email preview. Please try again."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1234
+#: admin/MPWEM_Post_List_Modern.php:1245
 msgid "Edit Template"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1236
+#: admin/MPWEM_Post_List_Modern.php:1247
 msgid "Speaker Details"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1239
+#: admin/MPWEM_Post_List_Modern.php:1250
 #: admin/MPWEM_Taxonomy_Modern.php:884
 msgid "Assigned Events"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1241
+#: admin/MPWEM_Post_List_Modern.php:1252
 msgid "Created"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1243
+#: admin/MPWEM_Post_List_Modern.php:1254
 #: admin/MPWEM_Taxonomy_Modern.php:886
 msgid "Not assigned to any event."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1246
+#: admin/MPWEM_Post_List_Modern.php:1257
 msgid "at"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1253
+#: admin/MPWEM_Post_List_Modern.php:1264
 msgid "Add New Review & Rating"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1254
+#: admin/MPWEM_Post_List_Modern.php:1265
 msgid "Create a review for an event. Ratings appear on the event page."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1255
+#: admin/MPWEM_Post_List_Modern.php:1266
 msgid "Review Title"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1256
+#: admin/MPWEM_Post_List_Modern.php:1267
 msgid "e.g. Amazing experience"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1258
+#: admin/MPWEM_Post_List_Modern.php:1269
 msgid "Select an event…"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1259
+#: admin/MPWEM_Post_List_Modern.php:1270
 msgid "Rating"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1261
+#: admin/MPWEM_Post_List_Modern.php:1272
 msgid "e.g. Jane Doe"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1263
+#: admin/MPWEM_Post_List_Modern.php:1274
 msgid "name@example.com"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1264
+#: admin/MPWEM_Post_List_Modern.php:1275
 msgid "Review"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1265
+#: admin/MPWEM_Post_List_Modern.php:1276
 msgid "Write the review text…"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1267
+#: admin/MPWEM_Post_List_Modern.php:1278
 msgid "Create Review"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1269
+#: admin/MPWEM_Post_List_Modern.php:1280
 msgid "Please enter a review title."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1270
+#: admin/MPWEM_Post_List_Modern.php:1281
 msgid "Please select an event."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1271
+#: admin/MPWEM_Post_List_Modern.php:1282
 msgid "Please choose a rating."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1272
+#: admin/MPWEM_Post_List_Modern.php:1283
 msgid "Please enter the reviewer name."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1273
+#: admin/MPWEM_Post_List_Modern.php:1284
 msgid "Could not create review. Please try again."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1275
+#: admin/MPWEM_Post_List_Modern.php:1286
 msgid "No events found. Create an event first."
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1308
+#: admin/MPWEM_Post_List_Modern.php:1319
 #: admin/MPWEM_Taxonomy_Modern.php:902
 msgid "Attendee management & custom forms"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1309
+#: admin/MPWEM_Post_List_Modern.php:1320
 #: admin/MPWEM_Taxonomy_Modern.php:903
 msgid "PDF ticketing & custom emailing"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1310
+#: admin/MPWEM_Post_List_Modern.php:1321
 #: admin/MPWEM_Taxonomy_Modern.php:904
 msgid "Attendee CSV export & reports"
 msgstr ""
 
-#: admin/MPWEM_Post_List_Modern.php:1311
+#: admin/MPWEM_Post_List_Modern.php:1322
 #: admin/MPWEM_Taxonomy_Modern.php:905
 msgid "Custom style & translation settings"
 msgstr ""
 
 #: admin/MPWEM_Quick_Setup.php:46
 #: admin/MPWEM_Quick_Setup.php:48
-#: admin/MPWEM_Quick_Setup.php:155
+#: admin/MPWEM_Quick_Setup.php:158
 msgid "Quick Setup"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:153
+#: admin/MPWEM_Quick_Setup.php:156
 msgid "Getting started"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:156
+#: admin/MPWEM_Quick_Setup.php:159
 msgid "Configure the essentials in a few steps so you can start selling event tickets with WooCommerce."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:160
+#: admin/MPWEM_Quick_Setup.php:163
 msgid "3-step wizard"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:173
+#: admin/MPWEM_Quick_Setup.php:177
 #: admin/MPWEM_Welcome.php:18
 #: admin/MPWEM_Welcome.php:19
 msgid "Welcome"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:180
+#: admin/MPWEM_Quick_Setup.php:184
 #: admin/MPWEM_Welcome.php:704
 #: admin/settings/global/MPWEM_AI_Assistant_Settings_UI.php:74
 #: admin/settings/global/MPWEM_Modern_Section_Settings_UI.php:233
@@ -3712,115 +3863,115 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:187
+#: admin/MPWEM_Quick_Setup.php:191
 msgid "Done"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:201
+#: admin/MPWEM_Quick_Setup.php:205
 msgid "Previous"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:225
+#: admin/MPWEM_Quick_Setup.php:229
 msgid "Welcome to Event Manager"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:226
+#: admin/MPWEM_Quick_Setup.php:230
 msgid "Thanks for choosing Event Manager & Tickets for WooCommerce. Confirm WooCommerce is ready, then continue."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:236
+#: admin/MPWEM_Quick_Setup.php:240
 msgid "Already installed and activated"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:238
+#: admin/MPWEM_Quick_Setup.php:242
 msgid "Needs to be installed and activated"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:240
+#: admin/MPWEM_Quick_Setup.php:244
 msgid "Installed — please activate it"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:249
+#: admin/MPWEM_Quick_Setup.php:253
 msgid "Ready"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:253
+#: admin/MPWEM_Quick_Setup.php:257
 msgid "Install & Activate"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:257
+#: admin/MPWEM_Quick_Setup.php:261
 msgid "Activate Now"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:278
+#: admin/MPWEM_Quick_Setup.php:282
 msgid "General settings"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:279
+#: admin/MPWEM_Quick_Setup.php:283
 msgid "Set labels, permalinks, expiry behavior, and default outgoing email details."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:286
+#: admin/MPWEM_Quick_Setup.php:290
 msgid "Events Label"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:291
+#: admin/MPWEM_Quick_Setup.php:295
 msgid "It will change the Events post type label across the plugin."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:297
+#: admin/MPWEM_Quick_Setup.php:301
 msgid "Events Slug"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:302
+#: admin/MPWEM_Quick_Setup.php:306
 msgid "After changing the slug, go to Settings → Permalinks and click Save."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:308
+#: admin/MPWEM_Quick_Setup.php:312
 msgid "When will the event expire"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:310
+#: admin/MPWEM_Quick_Setup.php:314
 #: admin/settings/global/admin_setting_panel.php:1548
 #: admin/settings/global/MPWEM_General_Settings_UI.php:204
 msgid "Event Start Time"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:311
+#: admin/MPWEM_Quick_Setup.php:315
 #: admin/settings/global/admin_setting_panel.php:1549
 #: admin/settings/global/MPWEM_General_Settings_UI.php:205
 msgid "Event End Time"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:316
+#: admin/MPWEM_Quick_Setup.php:320
 msgid "Choose when events are treated as expired on the front end."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:322
+#: admin/MPWEM_Quick_Setup.php:326
 msgid "Email From Name"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:327
+#: admin/MPWEM_Quick_Setup.php:331
 msgid "Name shown on outgoing event emails."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:333
+#: admin/MPWEM_Quick_Setup.php:337
 msgid "From Email Address"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:338
+#: admin/MPWEM_Quick_Setup.php:342
 msgid "Address used as the From email for notifications."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:351
+#: admin/MPWEM_Quick_Setup.php:355
 msgid "Finalize Setup"
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:352
+#: admin/MPWEM_Quick_Setup.php:356
 msgid "You are about to finish and save your Event Booking Manager for WooCommerce setup."
 msgstr ""
 
-#: admin/MPWEM_Quick_Setup.php:355
+#: admin/MPWEM_Quick_Setup.php:359
 msgid "Finish & Save"
 msgstr ""
 
@@ -3893,7 +4044,7 @@ msgid "%d responses found"
 msgstr ""
 
 #: admin/MPWEM_RSVP_Responses.php:102
-#: inc/MPWEM_Event_List.php:307
+#: inc/MPWEM_Event_List.php:311
 #: inc/MPWEM_Shortcodes.php:245
 msgid "of"
 msgstr ""
@@ -3996,27 +4147,27 @@ msgstr ""
 #: admin/settings/MPWEM_Date_Settings.php:301
 #: admin/settings/MPWEM_Date_Settings.php:326
 #: admin/settings/MPWEM_Date_Settings.php:332
-#: admin/settings/MPWEM_Date_Settings.php:345
-#: admin/settings/MPWEM_Date_Settings.php:406
-#: admin/settings/MPWEM_Date_Settings.php:427
-#: admin/settings/MPWEM_Date_Settings.php:451
-#: admin/settings/MPWEM_Date_Settings.php:472
-#: admin/settings/MPWEM_Date_Settings.php:510
-#: admin/settings/MPWEM_Date_Settings.php:531
-#: admin/settings/MPWEM_Date_Settings.php:558
-#: admin/settings/MPWEM_Date_Settings.php:579
-#: admin/settings/MPWEM_Date_Settings.php:606
-#: admin/settings/MPWEM_Date_Settings.php:612
-#: admin/settings/MPWEM_Date_Settings.php:622
-#: admin/settings/MPWEM_Date_Settings.php:711
-#: admin/settings/MPWEM_Date_Settings.php:732
-#: admin/settings/MPWEM_Date_Settings.php:760
-#: admin/settings/MPWEM_Date_Settings.php:1006
-#: inc/mep_functions.php:3234
-#: inc/mep_functions.php:3276
-#: inc/mep_functions.php:3317
-#: inc/mep_functions.php:3359
-#: inc/mep_functions.php:3402
+#: admin/settings/MPWEM_Date_Settings.php:346
+#: admin/settings/MPWEM_Date_Settings.php:407
+#: admin/settings/MPWEM_Date_Settings.php:428
+#: admin/settings/MPWEM_Date_Settings.php:452
+#: admin/settings/MPWEM_Date_Settings.php:473
+#: admin/settings/MPWEM_Date_Settings.php:511
+#: admin/settings/MPWEM_Date_Settings.php:532
+#: admin/settings/MPWEM_Date_Settings.php:559
+#: admin/settings/MPWEM_Date_Settings.php:580
+#: admin/settings/MPWEM_Date_Settings.php:607
+#: admin/settings/MPWEM_Date_Settings.php:613
+#: admin/settings/MPWEM_Date_Settings.php:624
+#: admin/settings/MPWEM_Date_Settings.php:713
+#: admin/settings/MPWEM_Date_Settings.php:734
+#: admin/settings/MPWEM_Date_Settings.php:762
+#: admin/settings/MPWEM_Date_Settings.php:1008
+#: inc/mep_functions.php:3315
+#: inc/mep_functions.php:3357
+#: inc/mep_functions.php:3398
+#: inc/mep_functions.php:3440
+#: inc/mep_functions.php:3483
 msgid "Remove Image"
 msgstr ""
 
@@ -4215,7 +4366,7 @@ msgstr ""
 
 #: admin/MPWEM_Taxonomy_Modern.php:894
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:27
-#: inc/MPWEM_Event_List.php:277
+#: inc/MPWEM_Event_List.php:281
 #: inc/MPWEM_Shortcodes.php:216
 #: support/elementor/widget/event-location.php:81
 #: assets/blocks/event-list-block.js:238
@@ -4224,7 +4375,7 @@ msgstr ""
 
 #: admin/MPWEM_Taxonomy_Modern.php:895
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:28
-#: inc/MPWEM_Event_List.php:238
+#: inc/MPWEM_Event_List.php:242
 #: inc/MPWEM_Shortcodes.php:227
 #: support/elementor/widget/event-location.php:80
 msgid "State"
@@ -4546,20 +4697,6 @@ msgstr ""
 msgid "Email Text"
 msgstr ""
 
-#: admin/MPWEM_Welcome.php:608
-#: admin/MPWEM_Welcome.php:681
-#: admin/settings/MPWEM_Settings.php:42
-msgid "Template"
-msgstr ""
-
-#: admin/MPWEM_Welcome.php:610
-#: support/elementor/widget/event-list-recurring.php:105
-#: support/elementor/widget/event-list.php:80
-#: support/elementor/widget/expired-event-list.php:104
-#: assets/blocks/event-list-block.js:122
-msgid "Timeline"
-msgstr ""
-
 #: admin/MPWEM_Welcome.php:611
 #: admin/MPWEM_Welcome.php:696
 #: admin/settings/MPWEM_Settings.php:51
@@ -4570,10 +4707,6 @@ msgstr ""
 #: admin/MPWEM_Welcome.php:701
 #: admin/settings/global/admin_setting_panel.php:3239
 msgid "Global Settings"
-msgstr ""
-
-#: admin/MPWEM_Welcome.php:613
-msgid "Attendee Form"
 msgstr ""
 
 #: admin/MPWEM_Welcome.php:614
@@ -5801,7 +5934,7 @@ msgstr ""
 #: admin/settings/global/admin_setting_panel.php:1767
 #: admin/settings/global/MPWEM_General_Settings_UI.php:335
 #: inc/mep_low_stock_display.php:257
-#: inc/MPWEM_Hooks.php:885
+#: inc/MPWEM_Hooks.php:873
 msgid "Limited Availability"
 msgstr ""
 
@@ -6787,7 +6920,7 @@ msgstr ""
 
 #: admin/settings/global/admin_setting_panel.php:2885
 #: admin/settings/global/MPWEM_Modern_Section_Settings_UI.php:22
-#: admin/settings/MPWEM_Settings.php:903
+#: admin/settings/MPWEM_Settings.php:905
 msgid "Early Birds"
 msgstr ""
 
@@ -6835,11 +6968,6 @@ msgstr ""
 msgid "API keys & default models"
 msgstr ""
 
-#: admin/settings/global/admin_setting_panel.php:2910
-#: admin/settings/global/MPWEM_Modern_Section_Settings_UI.php:47
-msgid "Deposit / Partial Payment"
-msgstr ""
-
 #: admin/settings/global/admin_setting_panel.php:2912
 msgid "Deposit and balance due options"
 msgstr ""
@@ -6870,7 +6998,7 @@ msgid "Sync orders to Google Sheets"
 msgstr ""
 
 #: admin/settings/global/admin_setting_panel.php:2942
-#: inc/mep_functions.php:1091
+#: inc/mep_functions.php:1111
 msgid "Confirmation Email"
 msgstr ""
 
@@ -8003,17 +8131,17 @@ msgid "To use ticket-selling events and WooCommerce checkout, install and activa
 msgstr ""
 
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:25
-#: inc/mep_functions.php:3568
-#: inc/MPWEM_Layout.php:371
-#: inc/MPWEM_Layout.php:463
+#: inc/mep_functions.php:3649
+#: inc/MPWEM_Layout.php:373
+#: inc/MPWEM_Layout.php:465
 #: inc/MPWEM_My_Account_Dashboard.php:494
 msgid "Company"
 msgstr ""
 
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:26
-#: inc/mep_functions.php:3562
-#: inc/MPWEM_Layout.php:343
-#: inc/MPWEM_Layout.php:460
+#: inc/mep_functions.php:3643
+#: inc/MPWEM_Layout.php:345
+#: inc/MPWEM_Layout.php:462
 #: inc/MPWEM_My_Account_Dashboard.php:493
 msgid "Address"
 msgstr ""
@@ -8264,7 +8392,7 @@ msgstr ""
 #: admin/settings/global/MPWEM_PDF_Settings_UI.php:377
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1645
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1738
-#: inc/MPWEM_Global_Function.php:442
+#: inc/MPWEM_Global_Function.php:444
 #: templates/layout/registration_content.php:44
 msgid "Phone Number"
 msgstr ""
@@ -8441,7 +8569,7 @@ msgstr ""
 
 #: admin/settings/global/MPWEM_Style_Icon_Settings_UI.php:132
 #: inc/MPWEM_Calendar.php:156
-#: inc/MPWEM_Hooks.php:818
+#: inc/MPWEM_Hooks.php:806
 #: templates/layout/add_to_cart.php:34
 msgid "Book Now"
 msgstr ""
@@ -8505,9 +8633,9 @@ msgid "Event Date Type"
 msgstr ""
 
 #: admin/settings/MPWEM_Date_Settings.php:79
-#: admin/settings/MPWEM_Date_Settings.php:1208
-#: admin/settings/MPWEM_Date_Settings.php:1228
-#: admin/settings/MPWEM_Date_Settings.php:1248
+#: admin/settings/MPWEM_Date_Settings.php:1213
+#: admin/settings/MPWEM_Date_Settings.php:1233
+#: admin/settings/MPWEM_Date_Settings.php:1253
 msgid "Please select ..."
 msgstr ""
 
@@ -8536,9 +8664,9 @@ msgid "Configure Your Single Date and Time Settings Here"
 msgstr ""
 
 #: admin/settings/MPWEM_Date_Settings.php:112
-#: admin/settings/MPWEM_Date_Settings.php:379
-#: admin/settings/MPWEM_Date_Settings.php:1036
-#: inc/mep_functions.php:7235
+#: admin/settings/MPWEM_Date_Settings.php:380
+#: admin/settings/MPWEM_Date_Settings.php:1038
+#: inc/mep_functions.php:7443
 #: inc/MPWEM_Calendar.php:165
 #: inc/MPWEM_Calendar.php:396
 #: inc/MPWEM_Shortcodes.php:185
@@ -8546,14 +8674,14 @@ msgid "Start Date"
 msgstr ""
 
 #: admin/settings/MPWEM_Date_Settings.php:113
-#: admin/settings/MPWEM_Date_Settings.php:380
+#: admin/settings/MPWEM_Date_Settings.php:381
 #: admin/settings/MPWEM_Email_Text.php:49
 msgid "Start Time"
 msgstr ""
 
 #: admin/settings/MPWEM_Date_Settings.php:114
-#: admin/settings/MPWEM_Date_Settings.php:381
-#: admin/settings/MPWEM_Date_Settings.php:1037
+#: admin/settings/MPWEM_Date_Settings.php:382
+#: admin/settings/MPWEM_Date_Settings.php:1039
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1171
 #: inc/MPWEM_Calendar.php:166
 #: inc/MPWEM_Calendar.php:403
@@ -8562,7 +8690,7 @@ msgid "End Date"
 msgstr ""
 
 #: admin/settings/MPWEM_Date_Settings.php:115
-#: admin/settings/MPWEM_Date_Settings.php:382
+#: admin/settings/MPWEM_Date_Settings.php:383
 msgid "End Time"
 msgstr ""
 
@@ -8570,174 +8698,174 @@ msgstr ""
 msgid "Add More Date"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:371
+#: admin/settings/MPWEM_Date_Settings.php:372
 msgid "Particular Date & Time Settings"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:372
+#: admin/settings/MPWEM_Date_Settings.php:373
 msgid "Configure Your Particular Date and Time Settings Here"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:592
+#: admin/settings/MPWEM_Date_Settings.php:593
 msgid "Add More Dates"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:672
+#: admin/settings/MPWEM_Date_Settings.php:674
 msgid "Repeated Date & Time Settings"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:673
+#: admin/settings/MPWEM_Date_Settings.php:675
 msgid "Configure Your Repeated Date and Time Settings Here"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:692
+#: admin/settings/MPWEM_Date_Settings.php:694
 msgid "Start Date & Time"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:738
+#: admin/settings/MPWEM_Date_Settings.php:740
 msgid "Select Start Date & Time"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:742
+#: admin/settings/MPWEM_Date_Settings.php:744
 msgid "End Date & Time"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:781
+#: admin/settings/MPWEM_Date_Settings.php:783
 msgid "Select End Date & Time"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:785
+#: admin/settings/MPWEM_Date_Settings.php:787
 msgid "After Repeated Days"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:788
+#: admin/settings/MPWEM_Date_Settings.php:790
 msgid "Select After Repeated Days"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:807
+#: admin/settings/MPWEM_Date_Settings.php:809
 msgid "Ticket Off days Setting"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:818
+#: admin/settings/MPWEM_Date_Settings.php:820
 msgid "Select Off days"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:823
+#: admin/settings/MPWEM_Date_Settings.php:825
 msgid "Ticket Off Dates Setting"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:824
+#: admin/settings/MPWEM_Date_Settings.php:826
 msgid "Configure Tour Off Dates"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:828
+#: admin/settings/MPWEM_Date_Settings.php:830
 msgid "Add Off Date"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:885
+#: admin/settings/MPWEM_Date_Settings.php:887
 msgid "Time Settings"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:886
+#: admin/settings/MPWEM_Date_Settings.php:888
 msgid "Configure Event Locations and Virtual Venues"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:891
+#: admin/settings/MPWEM_Date_Settings.php:893
 msgid "Display Time?"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:892
-#: admin/settings/MPWEM_Date_Settings.php:1201
+#: admin/settings/MPWEM_Date_Settings.php:894
+#: admin/settings/MPWEM_Date_Settings.php:1206
 #: admin/settings/MPWEM_Seo_content_Settings.php:32
 msgid "You can change the date and time format by going to the settings"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:908
+#: admin/settings/MPWEM_Date_Settings.php:910
 #: inc/MPWEM_Calendar.php:1926
 #: inc/MPWEM_Calendar.php:2297
-#: inc/MPWEM_Global_Function.php:705
-#: inc/MPWEM_Global_Function.php:1300
+#: inc/MPWEM_Global_Function.php:707
+#: inc/MPWEM_Global_Function.php:1302
 msgid "Saturday"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:911
+#: admin/settings/MPWEM_Date_Settings.php:913
 #: inc/MPWEM_Calendar.php:1924
 #: inc/MPWEM_Calendar.php:2291
-#: inc/MPWEM_Global_Function.php:706
-#: inc/MPWEM_Global_Function.php:1301
+#: inc/MPWEM_Global_Function.php:708
+#: inc/MPWEM_Global_Function.php:1303
 msgid "Sunday"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:914
+#: admin/settings/MPWEM_Date_Settings.php:916
 #: inc/MPWEM_Calendar.php:1925
 #: inc/MPWEM_Calendar.php:2292
-#: inc/MPWEM_Global_Function.php:700
-#: inc/MPWEM_Global_Function.php:1295
+#: inc/MPWEM_Global_Function.php:702
+#: inc/MPWEM_Global_Function.php:1297
 msgid "Monday"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:917
+#: admin/settings/MPWEM_Date_Settings.php:919
 #: inc/MPWEM_Calendar.php:2293
-#: inc/MPWEM_Global_Function.php:701
-#: inc/MPWEM_Global_Function.php:1296
+#: inc/MPWEM_Global_Function.php:703
+#: inc/MPWEM_Global_Function.php:1298
 msgid "Tuesday"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:920
+#: admin/settings/MPWEM_Date_Settings.php:922
 #: inc/MPWEM_Calendar.php:2294
-#: inc/MPWEM_Global_Function.php:702
-#: inc/MPWEM_Global_Function.php:1297
+#: inc/MPWEM_Global_Function.php:704
+#: inc/MPWEM_Global_Function.php:1299
 msgid "Wednesday"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:923
+#: admin/settings/MPWEM_Date_Settings.php:925
 #: inc/MPWEM_Calendar.php:2295
-#: inc/MPWEM_Global_Function.php:703
-#: inc/MPWEM_Global_Function.php:1298
+#: inc/MPWEM_Global_Function.php:705
+#: inc/MPWEM_Global_Function.php:1300
 msgid "Thursday"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:926
+#: admin/settings/MPWEM_Date_Settings.php:928
 #: inc/MPWEM_Calendar.php:2296
-#: inc/MPWEM_Global_Function.php:704
-#: inc/MPWEM_Global_Function.php:1299
+#: inc/MPWEM_Global_Function.php:706
+#: inc/MPWEM_Global_Function.php:1301
 msgid "Friday"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:973
+#: admin/settings/MPWEM_Date_Settings.php:975
 msgid "Add new Time Slot"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:990
+#: admin/settings/MPWEM_Date_Settings.php:992
 msgid "Time Slot Label"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1025
+#: admin/settings/MPWEM_Date_Settings.php:1027
 msgid "Special  Dates Time Settings"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1026
+#: admin/settings/MPWEM_Date_Settings.php:1028
 msgid "Here you can set special date and time for event."
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1035
-#: admin/settings/MPWEM_Date_Settings.php:1121
+#: admin/settings/MPWEM_Date_Settings.php:1037
+#: admin/settings/MPWEM_Date_Settings.php:1123
 msgid "Label"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1038
+#: admin/settings/MPWEM_Date_Settings.php:1040
 msgid "Times"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1055
+#: admin/settings/MPWEM_Date_Settings.php:1057
 msgid "Add New Special Date"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1082
+#: admin/settings/MPWEM_Date_Settings.php:1084
 msgid "Date Label "
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1122
+#: admin/settings/MPWEM_Date_Settings.php:1124
 #: admin/settings/MPWEM_Timeline_Details.php:125
 #: admin/settings/MPWEM_Timeline_Details.php:220
 #: admin/settings/MPWEM_Timeline_Details.php:221
@@ -8747,65 +8875,65 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1137
+#: admin/settings/MPWEM_Date_Settings.php:1139
 msgid "Add New Time"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1149
+#: admin/settings/MPWEM_Date_Settings.php:1151
 msgid "Time Label"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1190
-#: admin/settings/MPWEM_Date_Settings.php:1193
+#: admin/settings/MPWEM_Date_Settings.php:1195
+#: admin/settings/MPWEM_Date_Settings.php:1198
 msgid "Ticket sales close X minutes before the event starts."
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1198
+#: admin/settings/MPWEM_Date_Settings.php:1203
 msgid "Date Time format Settings"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1206
+#: admin/settings/MPWEM_Date_Settings.php:1211
 msgid "Date Format"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1212
+#: admin/settings/MPWEM_Date_Settings.php:1217
 msgid "Custom Date Formats"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1215
+#: admin/settings/MPWEM_Date_Settings.php:1220
 msgid "Please select your preferred date format from the options below. If you wish to use a custom date format, select the Custom option and enter your desired date format. Please note that this date format will only apply to events."
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1219
+#: admin/settings/MPWEM_Date_Settings.php:1224
 msgid "Custom Date Format"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1222
-#: admin/settings/MPWEM_Date_Settings.php:1242
+#: admin/settings/MPWEM_Date_Settings.php:1227
+#: admin/settings/MPWEM_Date_Settings.php:1247
 msgid "Documentation on date and time formatting."
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1226
+#: admin/settings/MPWEM_Date_Settings.php:1231
 msgid "Time Format"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1232
+#: admin/settings/MPWEM_Date_Settings.php:1237
 msgid "Custom Time Formats"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1235
+#: admin/settings/MPWEM_Date_Settings.php:1240
 msgid "Please select the time format from the list. If you want to use a custom time format, select Custom and write your desired time format. This time format will only apply to events. "
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1239
+#: admin/settings/MPWEM_Date_Settings.php:1244
 msgid "Custom Time Format"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1246
+#: admin/settings/MPWEM_Date_Settings.php:1251
 msgid "Show Timezone"
 msgstr ""
 
-#: admin/settings/MPWEM_Date_Settings.php:1253
+#: admin/settings/MPWEM_Date_Settings.php:1258
 msgid "If you want to show the date and time in your local timezone, please select Yes."
 msgstr ""
 
@@ -9267,134 +9395,129 @@ msgstr ""
 msgid "F.A.Q"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:43
-#: templates/layout/related_event.php:15
-msgid "Related Events"
-msgstr ""
-
 #: admin/settings/MPWEM_Settings.php:51
 msgid "Gallery "
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:624
+#: admin/settings/MPWEM_Settings.php:626
 msgid "By default slider is ON but you can keep it off by switching this option"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:625
+#: admin/settings/MPWEM_Settings.php:627
 msgid "Please upload images for gallery"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:626
+#: admin/settings/MPWEM_Settings.php:628
 msgid "Here gallery image can be added  to event so that guest can understand about this event."
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:689
+#: admin/settings/MPWEM_Settings.php:691
 msgid "Enable Global Qty? "
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:692
+#: admin/settings/MPWEM_Settings.php:694
 msgid "Please select if you want to enable global quantity for this event. when you turn on global qty total ticket type seat will not be count "
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:695
+#: admin/settings/MPWEM_Settings.php:697
 msgid "Global Quantity Type?"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:698
-#: admin/settings/MPWEM_Settings.php:748
+#: admin/settings/MPWEM_Settings.php:700
+#: admin/settings/MPWEM_Settings.php:750
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1420
 msgid "Particular Date Wise"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:699
-#: admin/settings/MPWEM_Settings.php:749
+#: admin/settings/MPWEM_Settings.php:701
+#: admin/settings/MPWEM_Settings.php:751
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1421
 msgid "Full Event Base"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:703
+#: admin/settings/MPWEM_Settings.php:705
 msgid "Please Select the global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise."
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:707
+#: admin/settings/MPWEM_Settings.php:709
 msgid "Total Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:712
+#: admin/settings/MPWEM_Settings.php:714
 msgid "Enter The Total Seat of this event. "
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:717
+#: admin/settings/MPWEM_Settings.php:719
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1046
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1160
 msgid "Reserve Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:722
+#: admin/settings/MPWEM_Settings.php:724
 msgid "Enter The Total Reserve Seat Qty of this event"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:737
+#: admin/settings/MPWEM_Settings.php:739
 msgid "Enable Extra service  Global Qty?"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:740
+#: admin/settings/MPWEM_Settings.php:742
 msgid "Please select if you want to enable Extra service  global quantity for this event. when you turn on global qty total ticket type seat will not be count"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:745
+#: admin/settings/MPWEM_Settings.php:747
 msgid "Extra service Global Quantity Type?"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:753
+#: admin/settings/MPWEM_Settings.php:755
 msgid "Please Select Extra service global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise."
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:758
+#: admin/settings/MPWEM_Settings.php:760
 msgid "Extra service Total Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:763
+#: admin/settings/MPWEM_Settings.php:765
 msgid "Enter The Total Extra service Reserve Seat Qty of this event "
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:768
+#: admin/settings/MPWEM_Settings.php:770
 msgid "Extra service Reserve Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:773
+#: admin/settings/MPWEM_Settings.php:775
 msgid "Enter The Total Extra service Seat of this event"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:786
+#: admin/settings/MPWEM_Settings.php:788
 msgid "Global  Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:787
+#: admin/settings/MPWEM_Settings.php:789
 msgid "Global  reserve Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:788
+#: admin/settings/MPWEM_Settings.php:790
 msgid "Extra service Global  Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:789
+#: admin/settings/MPWEM_Settings.php:791
 msgid "Extra service Global  reserve Qty"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:913
+#: admin/settings/MPWEM_Settings.php:915
 msgid "Early Bird Ticket Display"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:914
+#: admin/settings/MPWEM_Settings.php:916
 msgid "Choose whether early bird tickets end by time or by number of orders."
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:918
+#: admin/settings/MPWEM_Settings.php:920
 msgid "Based on time"
 msgstr ""
 
-#: admin/settings/MPWEM_Settings.php:919
+#: admin/settings/MPWEM_Settings.php:921
 msgid "Based on orders"
 msgstr ""
 
@@ -9848,7 +9971,7 @@ msgstr ""
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1150
 #: inc/MPWEM_My_Account_Dashboard.php:517
 #: inc/MPWEM_My_Account_Dashboard.php:605
-#: inc/MPWEM_Woocommerce.php:311
+#: inc/MPWEM_Woocommerce.php:322
 #: templates/layout/ticket_type.php:96
 #: templates/layout/ticket_type_kera.php:149
 msgid "Online Event"
@@ -10015,7 +10138,7 @@ msgstr ""
 
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1641
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1734
-#: inc/MPWEM_Global_Function.php:441
+#: inc/MPWEM_Global_Function.php:443
 #: templates/layout/native_checkout_modal.php:65
 #: templates/layout/registration_content.php:43
 msgid "Email Address"
@@ -10076,7 +10199,7 @@ msgid "Form Title"
 msgstr ""
 
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1726
-#: inc/MPWEM_Global_Function.php:439
+#: inc/MPWEM_Global_Function.php:441
 msgid "Send an Enquiry"
 msgstr ""
 
@@ -10089,7 +10212,7 @@ msgid "Question Label"
 msgstr ""
 
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1746
-#: inc/MPWEM_Global_Function.php:444
+#: inc/MPWEM_Global_Function.php:446
 msgid "Your Question"
 msgstr ""
 
@@ -10098,7 +10221,7 @@ msgid "Submit Button Label"
 msgstr ""
 
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1750
-#: inc/MPWEM_Global_Function.php:445
+#: inc/MPWEM_Global_Function.php:447
 msgid "Send Enquiry"
 msgstr ""
 
@@ -10107,8 +10230,8 @@ msgid "Success Message"
 msgstr ""
 
 #: admin/settings/MPWEM_Ticket_Price_Settings.php:1754
-#: inc/MPWEM_Global_Function.php:446
-#: inc/MPWEM_Hooks.php:1269
+#: inc/MPWEM_Global_Function.php:448
+#: inc/MPWEM_Hooks.php:1264
 msgid "Thank you! Your enquiry has been sent."
 msgstr ""
 
@@ -10305,206 +10428,206 @@ msgstr ""
 msgid "Invalid product."
 msgstr ""
 
-#: inc/mep_functions.php:1416
+#: inc/mep_functions.php:1497
 msgid "WordPress did not create the attendee record."
 msgstr ""
 
 #. translators: %s is the taxonomy label.
-#: inc/mep_functions.php:2232
+#: inc/mep_functions.php:2313
 #, php-format
 msgid "Show All %s"
 msgstr ""
 
-#: inc/mep_functions.php:3564
-#: inc/MPWEM_Layout.php:353
-#: inc/MPWEM_Layout.php:461
+#: inc/mep_functions.php:3645
+#: inc/MPWEM_Layout.php:355
+#: inc/MPWEM_Layout.php:463
 msgid "T-Shirt Size"
 msgstr ""
 
-#: inc/mep_functions.php:3566
-#: inc/MPWEM_Layout.php:362
-#: inc/MPWEM_Layout.php:462
+#: inc/mep_functions.php:3647
+#: inc/MPWEM_Layout.php:364
+#: inc/MPWEM_Layout.php:464
 msgid "Gender"
 msgstr ""
 
-#: inc/mep_functions.php:3570
-#: inc/MPWEM_Layout.php:380
-#: inc/MPWEM_Layout.php:464
+#: inc/mep_functions.php:3651
+#: inc/MPWEM_Layout.php:382
+#: inc/MPWEM_Layout.php:466
 msgid "Designation"
 msgstr ""
 
-#: inc/mep_functions.php:3572
-#: inc/MPWEM_Layout.php:389
-#: inc/MPWEM_Layout.php:465
+#: inc/mep_functions.php:3653
+#: inc/MPWEM_Layout.php:391
+#: inc/MPWEM_Layout.php:467
 msgid "Website"
 msgstr ""
 
-#: inc/mep_functions.php:3574
-#: inc/MPWEM_Layout.php:398
-#: inc/MPWEM_Layout.php:466
+#: inc/mep_functions.php:3655
+#: inc/MPWEM_Layout.php:400
+#: inc/MPWEM_Layout.php:468
 msgid "Vegetarian"
 msgstr ""
 
-#: inc/mep_functions.php:3778
+#: inc/mep_functions.php:3859
 msgid "Show All"
 msgstr ""
 
 #. translators: %s: join URL
-#: inc/mep_functions.php:4186
+#: inc/mep_functions.php:4267
 #, php-format
 msgid "Join online: %s"
 msgstr ""
 
-#: inc/mep_functions.php:4317
+#: inc/mep_functions.php:4529
 msgid "This calendar link is not valid."
 msgstr ""
 
-#: inc/mep_functions.php:4324
-#: inc/MPWEM_Hooks.php:1258
-#: inc/MPWEM_Hooks.php:1265
+#: inc/mep_functions.php:4547
+#: inc/MPWEM_Hooks.php:1253
+#: inc/MPWEM_Hooks.php:1260
 msgid "This event is no longer available."
 msgstr ""
 
-#: inc/mep_functions.php:4398
+#: inc/mep_functions.php:4604
 msgid "Online Event Access Details"
 msgstr ""
 
-#: inc/mep_functions.php:4464
+#: inc/mep_functions.php:4670
 msgid "Event Manager For Woocommerce Sidebar"
 msgstr ""
 
-#: inc/mep_functions.php:4466
+#: inc/mep_functions.php:4672
 msgid "This is the Default sidebar of the Event manager for Woocommerce  template."
 msgstr ""
 
 #. translators: %1$s is the license expiration date.
-#: inc/mep_functions.php:4505
+#: inc/mep_functions.php:4711
 #, php-format
 msgid "Your license key expired on %1$s."
 msgstr ""
 
-#: inc/mep_functions.php:4510
-#: inc/MPWEM_Global_Function.php:1326
+#: inc/mep_functions.php:4716
+#: inc/MPWEM_Global_Function.php:1328
 msgid "Your license key has been disabled."
 msgstr ""
 
-#: inc/mep_functions.php:4513
-#: inc/MPWEM_Global_Function.php:1332
+#: inc/mep_functions.php:4719
+#: inc/MPWEM_Global_Function.php:1334
 msgid "Invalid license."
 msgstr ""
 
-#: inc/mep_functions.php:4517
-#: inc/MPWEM_Global_Function.php:1335
+#: inc/mep_functions.php:4723
+#: inc/MPWEM_Global_Function.php:1337
 msgid "Your license is not active for this URL."
 msgstr ""
 
 #. translators: %1$s is the item name.
-#: inc/mep_functions.php:4522
+#: inc/mep_functions.php:4728
 #, php-format
 msgid "This appears to be an invalid license key for %1$s."
 msgstr ""
 
-#: inc/mep_functions.php:4527
-#: inc/MPWEM_Global_Function.php:1341
+#: inc/mep_functions.php:4733
+#: inc/MPWEM_Global_Function.php:1343
 msgid "Your license key has reached its activation limit."
 msgstr ""
 
-#: inc/mep_functions.php:4530
-#: inc/MPWEM_Global_Function.php:1318
-#: inc/MPWEM_Global_Function.php:1344
+#: inc/mep_functions.php:4736
+#: inc/MPWEM_Global_Function.php:1320
+#: inc/MPWEM_Global_Function.php:1346
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: inc/mep_functions.php:4763
-#: inc/mep_functions.php:5195
+#: inc/mep_functions.php:4969
+#: inc/mep_functions.php:5401
 msgid "Select Event Date:"
 msgstr ""
 
-#: inc/mep_functions.php:5242
+#: inc/mep_functions.php:5448
 msgid "Please Set Correct Event Start & Expire date"
 msgstr ""
 
-#: inc/mep_functions.php:5272
+#: inc/mep_functions.php:5478
 msgid "Day Off"
 msgstr ""
 
-#: inc/mep_functions.php:5288
-#: inc/mep_functions.php:5312
+#: inc/mep_functions.php:5494
+#: inc/mep_functions.php:5518
 msgid "Time Slot:"
 msgstr ""
 
-#: inc/mep_functions.php:5514
+#: inc/mep_functions.php:5720
 msgid "Recurring Event (Repeated)"
 msgstr ""
 
-#: inc/mep_functions.php:5516
+#: inc/mep_functions.php:5722
 msgid "Recurring Event (Selected Dates)"
 msgstr ""
 
-#: inc/mep_functions.php:5721
-#: inc/mep_functions.php:5725
+#: inc/mep_functions.php:5929
+#: inc/mep_functions.php:5933
 msgid " Date"
 msgstr ""
 
-#: inc/mep_functions.php:5851
+#: inc/mep_functions.php:6059
 msgid "<span class=err>Expired</span>"
 msgstr ""
 
-#: inc/mep_functions.php:5857
+#: inc/mep_functions.php:6065
 msgid " days "
 msgstr ""
 
-#: inc/mep_functions.php:5862
+#: inc/mep_functions.php:6070
 msgid " hours "
 msgstr ""
 
-#: inc/mep_functions.php:5867
+#: inc/mep_functions.php:6075
 msgid " minutes "
 msgstr ""
 
-#: inc/mep_functions.php:6036
-#: inc/mep_functions.php:6038
+#: inc/mep_functions.php:6244
+#: inc/mep_functions.php:6246
 #: inc/MPWEM_Dependencies.php:40
 #: inc/MPWEM_Hooks.php:711
-#: templates/layout/date_list.php:125
+#: templates/layout/date_list.php:136
 msgid "View More Dates"
 msgstr ""
 
-#: inc/mep_functions.php:6037
+#: inc/mep_functions.php:6245
 #: inc/MPWEM_Hooks.php:711
-#: templates/layout/date_list.php:125
+#: templates/layout/date_list.php:136
 msgid "Hide Date Lists"
 msgstr ""
 
-#: inc/mep_functions.php:6450
+#: inc/mep_functions.php:6658
 msgid "Closed"
 msgstr ""
 
-#: inc/mep_functions.php:6454
+#: inc/mep_functions.php:6662
 msgid "This event has ended"
 msgstr ""
 
-#: inc/mep_functions.php:6456
+#: inc/mep_functions.php:6664
 msgid "Registration is closed"
 msgstr ""
 
-#: inc/mep_functions.php:6461
+#: inc/mep_functions.php:6669
 msgid "Ended on"
 msgstr ""
 
-#: inc/mep_functions.php:6464
+#: inc/mep_functions.php:6672
 msgid "Ticket sales are no longer available for this event."
 msgstr ""
 
-#: inc/mep_functions.php:6468
+#: inc/mep_functions.php:6676
 msgid "Tickets sold"
 msgstr ""
 
-#: inc/mep_functions.php:7021
+#: inc/mep_functions.php:7229
 msgid "🌐 Global Quantity (All Ticket Types)"
 msgstr ""
 
-#: inc/mep_functions.php:7223
+#: inc/mep_functions.php:7431
 msgid "Sale Start Date & Time"
 msgstr ""
 
@@ -10721,62 +10844,79 @@ msgstr ""
 
 #: inc/MEP_Pro_Native_Checkout.php:74
 #: inc/MPWEM_Hooks.php:211
-#: inc/MPWEM_Woocommerce.php:821
+#: inc/MPWEM_Woocommerce.php:754
 msgid "This event has been cancelled and is no longer available for booking."
 msgstr ""
 
 #: inc/MEP_Pro_Native_Checkout.php:84
+#: inc/MEP_Pro_Native_Checkout.php:91
 #: inc/MPWEM_Hooks.php:205
-#: inc/MPWEM_Woocommerce.php:823
+#: inc/MPWEM_Woocommerce.php:756
 msgid "Sorry, this event is not available for booking."
 msgstr ""
 
 #: inc/MEP_Pro_Native_Checkout.php:87
 #: inc/MPWEM_Hooks.php:214
-#: inc/MPWEM_Hooks.php:995
-#: inc/MPWEM_Woocommerce.php:825
+#: inc/MPWEM_Hooks.php:983
+#: inc/MPWEM_Woocommerce.php:758
 msgid "This event is available for our members. Please log in to continue."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:105
+#: inc/MEP_Pro_Native_Checkout.php:97
+#: inc/MPWEM_Hooks.php:990
+#: inc/MPWEM_Woocommerce.php:760
+msgid "Please choose a date offered on the event page."
+msgstr ""
+
+#: inc/MEP_Pro_Native_Checkout.php:115
 msgid "Please provide your billing name, email and phone."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:108
+#: inc/MEP_Pro_Native_Checkout.php:118
 msgid "A valid email address is required."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:117
-#: inc/MEP_Pro_Native_Checkout.php:160
+#: inc/MEP_Pro_Native_Checkout.php:127
+#: inc/MEP_Pro_Native_Checkout.php:173
 msgid "Please select at least one ticket."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:145
+#: inc/MEP_Pro_Native_Checkout.php:147
+#: inc/MEP_Pro_Native_Checkout.php:158
 msgid "Invalid ticket selected."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:165
+#: inc/MEP_Pro_Native_Checkout.php:153
+#: inc/MPWEM_Woocommerce.php:762
+msgid "Ticket and extra service quantities must be whole numbers. Please choose your tickets again on the event page."
+msgstr ""
+
+#: inc/MEP_Pro_Native_Checkout.php:193
 #, php-format
 msgid "Order - %s"
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:172
+#: inc/MEP_Pro_Native_Checkout.php:200
 msgid "Could not create order record. Please try again."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:322
+#: inc/MEP_Pro_Native_Checkout.php:350
 msgid "Could not connect to the payment gateway. Please check your gateway credentials or try again."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:480
+#: inc/MEP_Pro_Native_Checkout.php:366
+msgid "Please choose one of the payment methods offered."
+msgstr ""
+
+#: inc/MEP_Pro_Native_Checkout.php:521
 msgid "Registration successful! A confirmation email has been sent."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:481
+#: inc/MEP_Pro_Native_Checkout.php:522
 msgid "Registration received! Please complete payment to confirm your spot."
 msgstr ""
 
-#: inc/MEP_Pro_Native_Checkout.php:609
+#: inc/MEP_Pro_Native_Checkout.php:650
 msgid "Payment verification failed. Please contact us if you believe this is an error."
 msgstr ""
 
@@ -10964,7 +11104,7 @@ msgid "All Day"
 msgstr ""
 
 #: inc/MPWEM_Calendar.php:134
-#: inc/MPWEM_Hooks.php:882
+#: inc/MPWEM_Hooks.php:870
 msgid "Sold Out"
 msgstr ""
 
@@ -10984,17 +11124,17 @@ msgid "Reserved"
 msgstr ""
 
 #: inc/MPWEM_Calendar.php:143
-#: inc/MPWEM_Hooks.php:845
+#: inc/MPWEM_Hooks.php:833
 msgid "Recurring"
 msgstr ""
 
 #: inc/MPWEM_Calendar.php:144
-#: inc/MPWEM_Hooks.php:840
+#: inc/MPWEM_Hooks.php:828
 msgid "Multi Date"
 msgstr ""
 
 #: inc/MPWEM_Calendar.php:145
-#: inc/MPWEM_Hooks.php:852
+#: inc/MPWEM_Hooks.php:840
 msgid "Virtual"
 msgstr ""
 
@@ -11021,7 +11161,7 @@ msgstr ""
 #: inc/MPWEM_Calendar.php:162
 #: inc/MPWEM_My_Account_Dashboard.php:517
 #: inc/MPWEM_My_Account_Dashboard.php:605
-#: inc/MPWEM_Woocommerce.php:311
+#: inc/MPWEM_Woocommerce.php:322
 #: templates/layout/ticket_type.php:98
 #: templates/layout/ticket_type_kera.php:151
 msgid "In Person"
@@ -11029,7 +11169,7 @@ msgstr ""
 
 #: inc/MPWEM_Calendar.php:163
 #: inc/MPWEM_Calendar.php:372
-#: inc/MPWEM_Event_List.php:214
+#: inc/MPWEM_Event_List.php:218
 #: inc/MPWEM_Shortcodes.php:207
 msgid "All Organizers"
 msgstr ""
@@ -11569,12 +11709,12 @@ msgid "Remove Rule"
 msgstr ""
 
 #: inc/MPWEM_Custom_Layout.php:50
-#: inc/MPWEM_Event_List.php:341
+#: inc/MPWEM_Event_List.php:345
 msgid "GoTO Previous Page"
 msgstr ""
 
 #: inc/MPWEM_Custom_Layout.php:72
-#: inc/MPWEM_Event_List.php:360
+#: inc/MPWEM_Event_List.php:364
 msgid "GoTO Next Page"
 msgstr ""
 
@@ -11588,7 +11728,7 @@ msgid "Add Image"
 msgstr ""
 
 #: inc/MPWEM_Custom_Layout.php:218
-#: inc/MPWEM_Event_List.php:330
+#: inc/MPWEM_Event_List.php:334
 msgid "Less More"
 msgstr ""
 
@@ -11626,7 +11766,7 @@ msgid "Reserve %d Tickets →"
 msgstr ""
 
 #: inc/MPWEM_Dependencies.php:509
-#: inc/MPWEM_Woocommerce.php:342
+#: inc/MPWEM_Woocommerce.php:353
 #: templates/layout/extra_service.php:30
 msgid "Extra Service"
 msgstr ""
@@ -11772,73 +11912,91 @@ msgstr ""
 msgid "Event cancelled"
 msgstr ""
 
-#: inc/MPWEM_Event_List.php:123
+#: inc/MPWEM_Event_List.php:127
 msgid "Price Starts from:"
 msgstr ""
 
-#: inc/MPWEM_Event_List.php:123
+#: inc/MPWEM_Event_List.php:127
 #: inc/MPWEM_Hooks.php:532
 msgid "Price:"
 msgstr ""
 
-#: inc/MPWEM_Event_List.php:188
+#: inc/MPWEM_Event_List.php:192
 msgid "Search by title…"
 msgstr ""
 
-#: inc/MPWEM_Event_List.php:241
+#: inc/MPWEM_Event_List.php:245
 #: inc/MPWEM_Shortcodes.php:229
 msgid "All States"
 msgstr ""
 
-#: inc/MPWEM_Event_List.php:280
+#: inc/MPWEM_Event_List.php:284
 #: inc/MPWEM_Shortcodes.php:218
 msgid "All Cities"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:369
+#. translators: 1: event name, 2: event date, 3: tickets left, 4: tickets requested.
+#: inc/MPWEM_Functions.php:579
+#, php-format
+msgid "Sorry, %1$s on %2$s does not have enough tickets left. Only %3$d remaining, but you selected %4$d. Please change the quantity and try again."
+msgstr ""
+
+#. translators: 1: ticket type, 2: event name, 3: event date, 4: tickets left, 5: tickets requested.
+#: inc/MPWEM_Functions.php:588
+#, php-format
+msgid "Sorry, \"%1$s\" for %2$s on %3$s does not have enough tickets left. Only %4$d remaining, but you selected %5$d. Please change the quantity and try again."
+msgstr ""
+
+#. translators: %d: most tickets one booking may hold.
+#: inc/MPWEM_Functions.php:634
+#, php-format
+msgid "You can book at most %d tickets at a time."
+msgstr ""
+
+#: inc/MPWEM_Global_Function.php:371
 msgid "This event has been cancelled"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:429
+#: inc/MPWEM_Global_Function.php:431
 msgid "Book"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:430
-#: inc/MPWEM_Hooks.php:818
+#: inc/MPWEM_Global_Function.php:432
+#: inc/MPWEM_Hooks.php:806
 msgid "View More"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:553
-#: inc/MPWEM_Global_Function.php:796
+#: inc/MPWEM_Global_Function.php:555
+#: inc/MPWEM_Global_Function.php:798
 #: inc/MPWEM_Hooks.php:750
 msgid "Free"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:1077
+#: inc/MPWEM_Global_Function.php:1079
 msgid "Lifetime"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:1323
+#: inc/MPWEM_Global_Function.php:1325
 msgid "Your license key expired on "
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:1329
+#: inc/MPWEM_Global_Function.php:1331
 msgid "Missing license."
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:1338
+#: inc/MPWEM_Global_Function.php:1340
 msgid "This appears to be an invalid license key for ."
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:1350
+#: inc/MPWEM_Global_Function.php:1352
 msgid "Success, License Key is valid for the plugin"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:1350
+#: inc/MPWEM_Global_Function.php:1352
 msgid "Your Order id is"
 msgstr ""
 
-#: inc/MPWEM_Global_Function.php:1350
+#: inc/MPWEM_Global_Function.php:1352
 msgid "Validity of this licenses is"
 msgstr ""
 
@@ -11885,132 +12043,135 @@ msgstr ""
 msgid "Limited stock"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:782
-#: templates/layout/add_calendar.php:32
+#: inc/MPWEM_Hooks.php:770
+#: templates/layout/add_calendar.php:22
 msgid "Hide Calender"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:782
-#: inc/MPWEM_Hooks.php:784
+#: inc/MPWEM_Hooks.php:770
+#: inc/MPWEM_Hooks.php:772
 msgid "Add To Calendar"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:789
-#: templates/layout/add_calendar.php:40
+#: inc/MPWEM_Hooks.php:777
+#: templates/layout/add_calendar.php:54
+#: templates/layout/add_calendar.php:65
 msgid "Google"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:790
-#: templates/layout/add_calendar.php:41
+#: inc/MPWEM_Hooks.php:778
+#: templates/layout/add_calendar.php:55
+#: templates/layout/add_calendar.php:66
 msgid "Yahoo"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:791
-#: templates/layout/add_calendar.php:42
+#: inc/MPWEM_Hooks.php:779
+#: templates/layout/add_calendar.php:56
+#: templates/layout/add_calendar.php:67
 msgid "Outlook"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:792
-#: templates/layout/add_calendar.php:43
+#: inc/MPWEM_Hooks.php:780
+#: templates/layout/add_calendar.php:68
 msgid "Apple"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:855
+#: inc/MPWEM_Hooks.php:843
 msgid "Hybrid"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:982
-#: inc/MPWEM_Hooks.php:987
+#: inc/MPWEM_Hooks.php:970
+#: inc/MPWEM_Hooks.php:975
 msgid "This event is not accepting RSVP responses."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:992
+#: inc/MPWEM_Hooks.php:980
 msgid "This event has been cancelled and is no longer accepting RSVP responses."
 msgstr ""
 
 #. translators: %s: RSVP field label.
-#: inc/MPWEM_Hooks.php:1068
+#: inc/MPWEM_Hooks.php:1063
 #, php-format
 msgid "%s is required."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1098
-#: inc/MPWEM_Hooks.php:1279
+#: inc/MPWEM_Hooks.php:1093
+#: inc/MPWEM_Hooks.php:1274
 msgid "Please fill out all required fields."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1137
+#: inc/MPWEM_Hooks.php:1132
 msgid "You have already submitted an RSVP for this event."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1207
+#: inc/MPWEM_Hooks.php:1202
 msgid "Sorry, this event is fully booked."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1210
+#: inc/MPWEM_Hooks.php:1205
 #, php-format
 msgid "Only %d seats are remaining."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1234
+#: inc/MPWEM_Hooks.php:1229
 msgid "RSVP submitted successfully!"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1236
+#: inc/MPWEM_Hooks.php:1231
 msgid "Failed to submit RSVP. Please try again."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1272
-#: inc/MPWEM_Hooks.php:1276
+#: inc/MPWEM_Hooks.php:1267
+#: inc/MPWEM_Hooks.php:1271
 msgid "Enquiries are not accepted for this event."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1300
+#: inc/MPWEM_Hooks.php:1295
 msgid "You have just sent an enquiry for this event. Please wait a moment before sending another."
 msgstr ""
 
 #. translators: %s: event name.
-#: inc/MPWEM_Hooks.php:1306
+#: inc/MPWEM_Hooks.php:1301
 #, php-format
 msgid "Enquiry about %s"
 msgstr ""
 
 #. translators: 1: sender name, 2: event name.
-#: inc/MPWEM_Hooks.php:1313
+#: inc/MPWEM_Hooks.php:1308
 #, php-format
 msgid "%1$s - %2$s"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1318
+#: inc/MPWEM_Hooks.php:1313
 msgid "Your enquiry could not be sent. Please try again."
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1359
+#: inc/MPWEM_Hooks.php:1354
 msgid "(not given)"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1381
+#: inc/MPWEM_Hooks.php:1376
 msgid "New Event Enquiry"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1387
+#: inc/MPWEM_Hooks.php:1382
 msgid "Someone submitted an enquiry through your event page. Here are the details:"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1402
+#: inc/MPWEM_Hooks.php:1397
 msgid "Re:"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1402
+#: inc/MPWEM_Hooks.php:1397
 msgid "Reply to Sender"
 msgstr ""
 
-#: inc/MPWEM_Hooks.php:1405
+#: inc/MPWEM_Hooks.php:1400
 msgid "View event page →"
 msgstr ""
 
 #. translators: 1: site name, 2: date/time.
-#: inc/MPWEM_Hooks.php:1412
+#: inc/MPWEM_Hooks.php:1407
 #, php-format
 msgid "Sent via the enquiry form on %1$s on %2$s."
 msgstr ""
@@ -12050,33 +12211,33 @@ msgstr ""
 msgid "Select Event"
 msgstr ""
 
-#: inc/MPWEM_Layout.php:85
+#: inc/MPWEM_Layout.php:87
 msgid "Event Not Found !"
 msgstr ""
 
-#: inc/MPWEM_Layout.php:115
+#: inc/MPWEM_Layout.php:117
 #: templates/layout/date_select.php:39
 msgid "Select Date"
 msgstr ""
 
-#: inc/MPWEM_Layout.php:176
+#: inc/MPWEM_Layout.php:178
 msgid "Event Running"
 msgstr ""
 
-#: inc/MPWEM_Layout.php:189
+#: inc/MPWEM_Layout.php:191
 msgid "Already Expired"
 msgstr ""
 
-#: inc/MPWEM_Layout.php:207
+#: inc/MPWEM_Layout.php:209
 msgid "Reload Seat Status"
 msgstr ""
 
-#: inc/MPWEM_Layout.php:208
-#: inc/MPWEM_Layout.php:213
+#: inc/MPWEM_Layout.php:210
+#: inc/MPWEM_Layout.php:215
 msgid "Click To View Statistics"
 msgstr ""
 
-#: inc/MPWEM_Layout.php:213
+#: inc/MPWEM_Layout.php:215
 msgid "View Statistics"
 msgstr ""
 
@@ -12163,7 +12324,7 @@ msgid "Attendee information requires Form Builder addon to be active."
 msgstr ""
 
 #: inc/MPWEM_My_Account_Dashboard.php:596
-#: inc/MPWEM_Woocommerce.php:303
+#: inc/MPWEM_Woocommerce.php:314
 msgid "Ticket Information"
 msgstr ""
 
@@ -12234,11 +12395,11 @@ msgstr ""
 msgid "There are currently no events scheduled."
 msgstr ""
 
-#: inc/MPWEM_Shortcodes.php:893
+#: inc/MPWEM_Shortcodes.php:896
 msgid "Explore events"
 msgstr ""
 
-#: inc/MPWEM_Shortcodes.php:896
+#: inc/MPWEM_Shortcodes.php:899
 msgid "Browse"
 msgstr ""
 
@@ -12258,61 +12419,59 @@ msgstr ""
 msgid "Completed order"
 msgstr ""
 
-#: inc/MPWEM_Woocommerce.php:363
+#: inc/MPWEM_Woocommerce.php:128
+msgid "The selected tickets do not match the attendee details. Please choose your tickets again on the event page."
+msgstr ""
+
+#: inc/MPWEM_Woocommerce.php:374
 msgid "Details Information"
 msgstr ""
 
 #. translators: %s: event name.
-#: inc/MPWEM_Woocommerce.php:400
+#: inc/MPWEM_Woocommerce.php:411
 #, php-format
 msgid "%s was removed from your cart because the event has been cancelled."
 msgstr ""
 
 #. translators: %s: event name.
-#: inc/MPWEM_Woocommerce.php:434
+#: inc/MPWEM_Woocommerce.php:445
 #, php-format
 msgid "%s was removed from your cart because no tickets were selected for it. Please choose your tickets on the event page."
 msgstr ""
 
-#. translators: 1: event name, 2: event date, 3: tickets left, 4: tickets requested.
-#: inc/MPWEM_Woocommerce.php:641
-#, php-format
-msgid "Sorry, %1$s on %2$s does not have enough tickets left. Only %3$d remaining, but you selected %4$d. Please change the quantity and try again."
-msgstr ""
-
-#. translators: 1: ticket type, 2: event name, 3: event date, 4: tickets left, 5: tickets requested.
-#: inc/MPWEM_Woocommerce.php:650
-#, php-format
-msgid "Sorry, \"%1$s\" for %2$s on %3$s does not have enough tickets left. Only %4$d remaining, but you selected %5$d. Please change the quantity and try again."
-msgstr ""
-
-#: inc/MPWEM_Woocommerce.php:689
+#: inc/MPWEM_Woocommerce.php:622
 msgid "This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again."
 msgstr ""
 
-#: inc/MPWEM_Woocommerce.php:769
+#: inc/MPWEM_Woocommerce.php:702
 msgid "Tickets for this event can only be booked from the event page."
 msgstr ""
 
-#: inc/MPWEM_Woocommerce.php:827
+#: inc/MPWEM_Woocommerce.php:764
 msgid "Please select at least one ticket on the event page before booking."
 msgstr ""
 
+#. translators: 1: extra service name, 2: quantity left, 3: quantity requested.
+#: inc/MPWEM_Woocommerce.php:847
+#, php-format
+msgid "Sorry, \"%1$s\" does not have enough left. Only %2$d remaining, but you selected %3$d. Please change the quantity and try again."
+msgstr ""
+
 #. translators: %s: comma separated list of event names.
-#: inc/MPWEM_Woocommerce.php:1038
+#: inc/MPWEM_Woocommerce.php:1063
 #, php-format
 msgid "EventPress: this order reached the site without its booking details, so the booking has been rebuilt automatically for %s. The attendee was created from the billing details - the registration form answers were not recoverable and need to be collected from the customer."
 msgstr ""
 
-#: inc/MPWEM_Woocommerce.php:1740
+#: inc/MPWEM_Woocommerce.php:1837
 msgid "Attendee Information"
 msgstr ""
 
-#: inc/MPWEM_Woocommerce.php:1826
+#: inc/MPWEM_Woocommerce.php:1923
 msgid "View Virtual Info"
 msgstr ""
 
-#: inc/MPWEM_Woocommerce.php:1838
+#: inc/MPWEM_Woocommerce.php:1935
 msgid "Virtual Event Information:"
 msgstr ""
 
@@ -13378,9 +13537,29 @@ msgstr ""
 msgid "Event Style Settings"
 msgstr ""
 
-#: templates/layout/add_calendar.php:32
-#: templates/layout/add_calendar.php:36
+#: templates/layout/add_calendar.php:22
+#: templates/layout/add_calendar.php:26
 msgid "Add Calendar"
+msgstr ""
+
+#. translators: %d: number of event dates
+#: templates/layout/add_calendar.php:31
+#, php-format
+msgid "Add all %d date at once"
+msgid_plural "Add all %d dates at once"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/layout/add_calendar.php:33
+msgid "Google Calendar"
+msgstr ""
+
+#: templates/layout/add_calendar.php:34
+msgid "Apple / Outlook / iCal"
+msgstr ""
+
+#: templates/layout/add_calendar.php:36
+msgid "Or add one date"
 msgstr ""
 
 #: templates/layout/add_to_cart.php:28
@@ -13727,7 +13906,7 @@ msgstr ""
 msgid "Event Timelines"
 msgstr ""
 
-#: templates/layout/time_only.php:49
+#: templates/layout/time_only.php:59
 msgid "Event Time"
 msgstr ""
 
@@ -13783,6 +13962,14 @@ msgstr ""
 
 #: woocommerce-event-press.php:348
 msgid "Upgrade to PRO Version"
+msgstr ""
+
+#: woocommerce-event-press.php:570
+msgid "You do not have permission to manage licences."
+msgstr ""
+
+#: woocommerce-event-press.php:583
+msgid "Invalid licence request."
 msgstr ""
 
 #: assets/blocks/event-list-block.js:14

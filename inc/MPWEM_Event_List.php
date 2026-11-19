@@ -118,7 +118,11 @@
 					$reg_status                     = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 					$ticket_types                   = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
 					$event_multidate                = is_array($event_infos) && array_key_exists( 'mep_event_more_date', $event_infos ) ? $event_infos['mep_event_more_date'] : [];
-					$total_left                     = $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $upcoming_date );
+					// A non-recurring event's bookings are stored against its start, while
+					// upcoming_date follows the "Expire On" setting and can be its end. Count
+					// seats on the start, as the list ribbon (MPWEM_Hooks::list_ribbon) does.
+					$seat_date                      = $recurring == 'no' && is_array( $event_infos ) && ! empty( $event_infos['event_start_datetime'] ) ? $event_infos['event_start_datetime'] : $upcoming_date;
+					$total_left                     = $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $seat_date );
 					$class_name                     = $total_left > 0 ? 'event-availabe-seat' : 'event-no-availabe-seat';
 					$show_price_label               = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
 					$start_time_format              = MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ? $upcoming_date : '';

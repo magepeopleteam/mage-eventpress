@@ -1304,6 +1304,31 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return str_replace( 'T', ' ', $date );
 		}
 	}
+	if ( ! function_exists( 'mep_event_date_query_value' ) ) {
+		/**
+		 * The value to LIKE-match against ea_event_date when counting bookings.
+		 *
+		 * Bookings store 'Y-m-d H:i' (or 'Y-m-d'), but some callers pass the
+		 * event_start_datetime meta, which carries seconds ('Y-m-d H:i:s'). As a
+		 * substring that never matches a stored 'Y-m-d H:i', so a full event counted
+		 * 0 sold and the event list showed it as available. Only the seconds are
+		 * dropped: a date-only value still matches the whole day, and anything that
+		 * is not a full date-time is returned as it was.
+		 *
+		 * @param mixed $date Date as passed by the caller.
+		 * @return mixed
+		 */
+		function mep_event_date_query_value( $date ) {
+			if ( ! is_string( $date ) ) {
+				return $date;
+			}
+			$normalized = mep_normalize_event_date_value( $date );
+			if ( preg_match( '/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}):\d{2}$/', $normalized, $match ) ) {
+				return $match[1];
+			}
+			return $date;
+		}
+	}
 	if ( ! function_exists( 'mep_get_ticket_price_by_event' ) ) {
 		function mep_get_ticket_price_by_event( $event, $type, $default_price = 0 ) {
 			$ticket_type = get_post_meta( $event, 'mep_event_ticket_type', true );
@@ -2920,7 +2945,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			) : '';
 			$date_filter = ! empty( $date ) ? array(
 				'key'     => 'ea_event_date',
-				'value'   => $date,
+				'value'   => mep_event_date_query_value( $date ),
 				'compare' => 'LIKE'
 			) : '';
 			$args        = array(
@@ -7239,7 +7264,7 @@ function mep_change_date_status() {
     }
     if ( ! function_exists( 'mep_gq_ticket_total_sold' ) ) {
         function mep_gq_ticket_total_sold( $event_id, $date = '' ) {
-            //   echo $date;
+            $date = mep_event_date_query_value( $date );
             if ( $date ) {
                 $args = array(
                     'post_type'      => 'mep_events_attendees',

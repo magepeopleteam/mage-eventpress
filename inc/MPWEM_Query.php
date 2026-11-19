@@ -501,7 +501,8 @@
 				if ( is_array($filter_args) && array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_event_date',
-						'value'   => $filter_args['event_date'],
+						// Stored dates have no seconds; see mep_event_date_query_value().
+						'value'   => function_exists( 'mep_event_date_query_value' ) ? mep_event_date_query_value( $filter_args['event_date'] ) : $filter_args['event_date'],
 						'compare' => 'LIKE'
 					);
 				}

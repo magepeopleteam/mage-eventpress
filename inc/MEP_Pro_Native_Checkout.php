@@ -127,18 +127,21 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			// WooCommerce cart path, which already looks the price up by name). The client price
 			// is discarded.
 			$configured_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', array() );
-			$valid_names      = array();
-			if ( is_array( $configured_types ) ) {
-				foreach ( $configured_types as $configured_type ) {
-					$configured_name = is_array( $configured_type ) && isset( $configured_type['option_name_t'] ) ? $configured_type['option_name_t'] : '';
-					$valid_names[]   = html_entity_decode( urldecode( $configured_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-				}
-			}
+			// Only the ticket types the event page offers: not switched off, not withheld
+			// by mpwem_ticket_permission (same list as the WooCommerce cart).
+			$valid_names      = MPWEM_Functions::get_bookable_ticket_names( $event_id );
 			$total = 0.0;
 			$items = array();
 			foreach ( $tickets as $ticket ) {
-				$qty   = isset( $ticket['ticket_qty'] )   ? absint( $ticket['ticket_qty'] )           : 0;
-				$name  = isset( $ticket['ticket_name'] )  ? sanitize_text_field( $ticket['ticket_name'] ) : '';
+				if ( ! is_array( $ticket ) ) {
+					wp_send_json_error( array( 'message' => __( 'Invalid ticket selected.', 'mage-eventpress' ) ) );
+				}
+				// Whole numbers only. absint() turned -3 into 3 and 1.9 into 1.
+				$qty   = isset( $ticket['ticket_qty'] ) ? MPWEM_Functions::parse_quantity( is_string( $ticket['ticket_qty'] ) ? sanitize_text_field( $ticket['ticket_qty'] ) : $ticket['ticket_qty'] ) : 0;
+				$name  = isset( $ticket['ticket_name'] ) && is_scalar( $ticket['ticket_name'] ) ? sanitize_text_field( (string) $ticket['ticket_name'] ) : '';
+				if ( null === $qty ) {
+					wp_send_json_error( array( 'message' => __( 'Ticket and extra service quantities must be whole numbers. Please choose your tickets again on the event page.', 'mage-eventpress' ) ) );
+				}
 				if ( $qty > 0 ) {
 					$name_decoded = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 					if ( '' === $name || ! in_array( $name_decoded, $valid_names, true ) ) {
@@ -158,6 +161,21 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 
 			if ( empty( $items ) ) {
 				wp_send_json_error( array( 'message' => __( 'Please select at least one ticket.', 'mage-eventpress' ) ) );
+			}
+			// Seats left per ticket type (rows of one type summed) and the per-booking
+			// ceiling, measured the same way as the WooCommerce checkout. The form caps the
+			// quantity in the browser only, and one attendee record is created per ticket.
+			$quantity_rows = array();
+			foreach ( $items as $item ) {
+				$quantity_rows[] = array(
+					'ticket_name' => $item['name'],
+					'ticket_qty'  => $item['qty'],
+					'event_date'  => $event_date,
+				);
+			}
+			$quantity_rejection = MPWEM_Functions::get_booking_quantity_rejection( $event_id, $quantity_rows, $event_date );
+			if ( '' !== $quantity_rejection ) {
+				wp_send_json_error( array( 'message' => $quantity_rejection ) );
 			}
 
 			// 5. Create the mep_custom_order record (tracks payments independently of WooCommerce)

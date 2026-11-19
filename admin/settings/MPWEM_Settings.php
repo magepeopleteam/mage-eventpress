@@ -61,7 +61,7 @@
                             <button type="button" class="button button-primary mpwem-step-next"><?php esc_html_e( 'Next', 'mage-eventpress' ); ?></button>
                             <span class="mpwem-step-status" aria-live="polite"></span>
                         </div>
-                        <p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;"> #WC:<?php echo get_post_meta( $post_id, 'link_wc_product', true ); ?></p>
+                        <p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;"> #WC:<?php echo absint( get_post_meta( $post_id, 'link_wc_product', true ) ); ?></p>
                     </div>
                 </div>
                 <script type="text/javascript">

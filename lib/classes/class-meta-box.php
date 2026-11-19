@@ -214,7 +214,7 @@ if ( ! empty( $get_option_name ) ) {
 																<?php
 																$option_value = get_post_meta($this->get_post_id(), $option['id'], true);
 																if (is_serialized($option_value)) {
-																	$option_value = maybe_unserialize($option_value);
+																	$option_value = is_serialized( $option_value ) ? @unserialize( trim( $option_value ), array( 'allowed_classes' => false ) ) : $option_value;
 																}
 																$option['value'] = $option_value;
 																$this->field_generator($option)
@@ -266,12 +266,12 @@ if ( ! empty( $get_option_name ) ) {
 
 					$prent_option_value = get_post_meta($post_id, $prent_option_name, true);
 
-					$prent_option_value = is_serialized($prent_option_value) ? maybe_unserialize($prent_option_value) : array();
+					$prent_option_value = is_serialized($prent_option_value) ? @unserialize( trim( $prent_option_value ), array( 'allowed_classes' => false ) ) : array();
 					$option['value']    = isset($prent_option_value[$id]) ? $prent_option_value[$id] : '';
 				else :
 					$option['field_name'] = $id;
 					$option_value         = get_post_meta($post_id, $id, true);
-					$option['value']      = is_serialized($option_value) ? maybe_unserialize($option_value) : $option_value;
+					$option['value']      = is_serialized($option_value) ? @unserialize( trim( $option_value ), array( 'allowed_classes' => false ) ) : $option_value;
 
 				endif;
 

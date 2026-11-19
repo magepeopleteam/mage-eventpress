@@ -421,6 +421,12 @@ if ( ! function_exists( 'mep_is_shop_manager_eventpress_request' ) ) {
 				return false;
 			}
 			$action = sanitize_key( wp_unslash( $_REQUEST['action'] ) );
+			// Never extended to Shop Managers: the licence handlers write site options by
+			// name, the MCP screen hands out an administrator's access token, and the template
+			// actions write files into the active theme.
+			if ( in_array( $action, array( 'mep_wl_ajax_license_activate', 'mep_wl_ajax_license_deactivate', 'mep_mcp', 'mep_copy_template_to_theme', 'mep_remove_template_from_theme' ), true ) ) {
+				return false;
+			}
 			// AJAX actions registered by EventPress PRO under legacy prefixes.
 			$legacy_actions = array(
 				'wbbm_get_bus_details',
@@ -464,6 +470,9 @@ if ( ! function_exists( 'mep_is_shop_manager_eventpress_request' ) ) {
 			}
 			global $_registered_pages;
 			$page = plugin_basename( wp_unslash( $_GET['page'] ) );
+			if ( 'mep_mcp' === $page ) {
+				return false;
+			}
 			foreach ( array( 'edit.php?post_type=mep_events', 'mep_events' ) as $parent ) {
 				if ( ! empty( $_registered_pages[ get_plugin_page_hookname( $page, $parent ) ] ) ) {
 					return true;
@@ -506,6 +515,80 @@ if ( ! function_exists( 'mep_is_shop_manager_eventpress_request' ) ) {
 		return false;
 	}
 }
+
+if ( ! function_exists( 'mep_protect_event_meta_keys' ) ) {
+	/**
+	 * Keeps the plugin's own event settings out of core's generic meta editors.
+	 *
+	 * Core's Custom Fields box (post.php) and XML-RPC let anyone who may edit an event write
+	 * any meta key that does not start with "_", skipping the validation the event editor
+	 * applies: the single-event template name, date lists, coordinates and the linked
+	 * product were all written that way. Those keys now need manage_options there. The
+	 * event editor saves through its own handlers, which are unaffected. map_meta_cap is
+	 * used rather than is_protected_meta, which would also hide the keys from multilingual
+	 * plugins that copy meta between translations.
+	 *
+	 * @param string[] $caps    Primitive caps required.
+	 * @param string   $cap     Meta capability checked.
+	 * @param int      $user_id User.
+	 * @param array    $args    Post ID, meta key.
+	 * @return string[]
+	 */
+	function mep_protect_event_meta_keys( $caps, $cap, $user_id, $args ) {
+		if ( ! in_array( $cap, array( 'add_post_meta', 'edit_post_meta', 'delete_post_meta' ), true ) ) {
+			return $caps;
+		}
+		$post_id  = isset( $args[0] ) ? (int) $args[0] : 0;
+		$meta_key = isset( $args[1] ) && is_string( $args[1] ) ? $args[1] : '';
+		if ( ! $post_id || '' === $meta_key || 'mep_events' !== get_post_type( $post_id ) ) {
+			return $caps;
+		}
+		$owned = (bool) preg_match( '/^(mep_|mpwem_|event_|ex_|mp_event_)/', $meta_key )
+			|| in_array( $meta_key, array( 'latitude', 'longitude', 'link_wc_product', 'link_mep_event', 'enable_global_qty', 'location_name', 'related_section_label', 'min_qty_all_must' ), true );
+		if ( $owned && ! user_can( $user_id, 'manage_options' ) ) {
+			$caps[] = 'do_not_allow';
+		}
+		return $caps;
+	}
+	add_filter( 'map_meta_cap', 'mep_protect_event_meta_keys', 10, 4 );
+}
+
+if ( ! function_exists( 'mep_license_request_guard' ) ) {
+	/**
+	 * Guard for the licence AJAX actions every MagePeople event add-on ships.
+	 *
+	 * The add-ons share mep_wl_ajax_license_activate / _deactivate under one name, and
+	 * whichever loads first answers for all of them. Several copies take the option names
+	 * from the request with no capability check, some even for logged-out visitors, which
+	 * lets anyone blank any site option. Every add-on needs this plugin, so this guard
+	 * runs first (priority 1) whichever copy answers: administrators only, and only the
+	 * four "<prefix>_license_{key,status,expire,order_id}" options of one prefix. Add-on
+	 * screens that post no nonce keep working; PRO adds its own nonce check on top.
+	 */
+	function mep_license_request_guard() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to manage licences.', 'mage-eventpress' ), '', array( 'response' => 403 ) );
+		}
+		$names = array();
+		foreach ( array( 'key', 'status', 'expire', 'order_id' ) as $part ) {
+			$field          = $part . '_option_name';
+			$names[ $part ] = isset( $_REQUEST[ $field ] ) && is_string( $_REQUEST[ $field ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $field ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- capability checked above.
+		}
+		$prefix = preg_match( '/^([a-z0-9_]+)_license_key$/', $names['key'], $m ) ? $m[1] : '';
+		$valid  = '' !== $prefix;
+		foreach ( array( 'status', 'expire', 'order_id' ) as $part ) {
+			$valid = $valid && $names[ $part ] === $prefix . '_license_' . $part;
+		}
+		if ( ! $valid ) {
+			wp_die( esc_html__( 'Invalid licence request.', 'mage-eventpress' ), '', array( 'response' => 400 ) );
+		}
+	}
+}
+foreach ( array( 'mep_wl_ajax_license_activate', 'mep_wl_ajax_license_deactivate' ) as $mep_license_action ) {
+	add_action( 'wp_ajax_' . $mep_license_action, 'mep_license_request_guard', 1 );
+	add_action( 'wp_ajax_nopriv_' . $mep_license_action, 'mep_license_request_guard', 1 );
+}
+unset( $mep_license_action );
 
 if ( ! function_exists( 'mep_pro_grant_shop_manager_access' ) ) {
 	add_filter( 'user_has_cap', 'mep_grant_shop_manager_access', 10, 4 );

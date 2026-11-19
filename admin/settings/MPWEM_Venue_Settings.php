@@ -257,8 +257,8 @@
                                         function initMap() {
                                             var map = new google.maps.Map(document.getElementById('map'), {
                                                 center: {
-                                                    lat: <?php echo esc_attr( $lat ); ?>,
-                                                    lng: <?php echo esc_attr( $lon ); ?>
+                                                    lat: <?php echo wp_json_encode( (float) $lat ); ?>,
+                                                    lng: <?php echo wp_json_encode( (float) $lon ); ?>
                                                 },
                                                 zoom: 17
                                             });
@@ -274,8 +274,8 @@
                                                 anchorPoint: new google.maps.Point(0, -29),
                                                 draggable: true,
                                                 position: {
-                                                    lat: <?php echo esc_attr( $lat ); ?>,
-                                                    lng: <?php echo esc_attr( $lon ); ?>
+                                                    lat: <?php echo wp_json_encode( (float) $lat ); ?>,
+                                                    lng: <?php echo wp_json_encode( (float) $lon ); ?>
                                                 }
                                             });
                                             google.maps.event.addListener(marker, 'dragend', function () {

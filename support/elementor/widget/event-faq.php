@@ -89,7 +89,7 @@ class MEPEventFaqtWidget extends Widget_Base {
         $user_select_event  = $settings['mep_event_list'];    
 		$event_id           = $user_select_event > 0 ? $user_select_event : $post->ID;
 		if (get_post_type($event_id) == 'mep_events') {
-			$mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_faq', true)) : [];
+			$mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? mep_safe_maybe_unserialize(get_post_meta($event_id, 'mep_event_faq', true)) : [];
 	?>	
         <div class="mep-default-title mep-elementor-widget-faq">         
             <div class="mep-event-faq-part">

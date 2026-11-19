@@ -744,6 +744,11 @@ class MEP_Custom_Orders_Page {
 		if ( ! $note_id ) {
 			wp_send_json_error( 'Invalid note ID' );
 		}
+		// Only an order note on a native order, never another comment.
+		$note = get_comment( $note_id );
+		if ( ! $note || 'mep_order_note' !== $note->comment_type || 'mep_custom_order' !== get_post_type( (int) $note->comment_post_ID ) ) {
+			wp_send_json_error( 'Invalid note ID' );
+		}
 
 		$deleted = wp_delete_comment( $note_id, true );
 		if ( ! $deleted ) {

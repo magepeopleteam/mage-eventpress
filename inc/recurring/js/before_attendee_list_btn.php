@@ -1,11 +1,11 @@
 <script>
 jQuery(document).ready(function($){
     <?php 
-    $event_off_days        = get_post_meta($event_id,'mep_ticket_offdays',true) ? maybe_unserialize(get_post_meta($event_id,'mep_ticket_offdays',true)) : [];
-    $global_off_dates       = get_post_meta($event_id,'mep_ticket_off_dates',true) ? maybe_unserialize(get_post_meta($event_id,'mep_ticket_off_dates',true)) : [];
+    $event_off_days        = get_post_meta($event_id,'mep_ticket_offdays',true) ? mep_safe_maybe_unserialize(get_post_meta($event_id,'mep_ticket_offdays',true)) : [];
+    $global_off_dates       = get_post_meta($event_id,'mep_ticket_off_dates',true) ? mep_safe_maybe_unserialize(get_post_meta($event_id,'mep_ticket_off_dates',true)) : [];
     $global_off_dates_arr = [];
     $off_dates = '';
-    if(sizeof($global_off_dates) > 0){
+    if(is_array($global_off_dates) && sizeof($global_off_dates) > 0){
         foreach ($global_off_dates as $off_dates) {    
             $global_off_dates_arr[] = '"'.date('j-n-Y',strtotime($off_dates['mep_ticket_off_date'])).'"';
         }
@@ -13,8 +13,10 @@ jQuery(document).ready(function($){
     }
     $global_off_days_arr = [];
     $off_days = '';
-    if(sizeof($event_off_days) > 0){
+    if(is_array($event_off_days) && sizeof($event_off_days) > 0){
         foreach ($event_off_days as $off_days) { 
+            // Printed into JavaScript below: weekday codes only.
+            if ( ! in_array( $off_days, array( 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ), true ) ) { continue; }
 
             if($off_days == 'sat'){
                 $off_days = 'satur';

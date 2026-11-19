@@ -1251,6 +1251,42 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
+	if ( ! function_exists( 'mep_csv_safe_cell' ) ) {
+		/**
+		 * A CSV cell a spreadsheet will not run as a formula.
+		 *
+		 * Exports carry text visitors typed (enquiries, RSVP answers). A cell starting with
+		 * = + - @ or a tab/carriage return gets a leading apostrophe; numbers are kept.
+		 *
+		 * @param mixed $value Cell value.
+		 * @return mixed
+		 */
+		function mep_csv_safe_cell( $value ) {
+			if ( is_string( $value ) && '' !== $value && ! is_numeric( $value ) && in_array( $value[0], array( '=', '+', '-', '@', "\t", "\r" ), true ) ) {
+				return "'" . $value;
+			}
+			return $value;
+		}
+	}
+	if ( ! function_exists( 'mep_safe_maybe_unserialize' ) ) {
+		/**
+		 * Unserializes a value that may still be serialized, never into an object.
+		 *
+		 * get_post_meta() already unserializes once. Some event settings were saved by
+		 * older versions as serialized strings, so they are unserialized a second time when
+		 * read - but a value written through core's Custom Fields box is stored the same
+		 * way, and maybe_unserialize() on it would instantiate any class it names.
+		 *
+		 * @param mixed $value Value read from the database.
+		 * @return mixed
+		 */
+		function mep_safe_maybe_unserialize( $value ) {
+			if ( is_string( $value ) && is_serialized( $value ) ) {
+				return @unserialize( trim( $value ), array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+			}
+			return $value;
+		}
+	}
 	if ( ! function_exists( 'mep_normalize_event_date_value' ) ) {
 		/**
 		 * ea_event_date meta must stay space-separated ('Y-m-d H:i' / 'Y-m-d') because sold/
@@ -5011,7 +5047,7 @@ die();
 		if ( $recurring == 'everyday' ) {
 			$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 			$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 			$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 			$event_start_date   = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 			$event_end_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
@@ -5033,7 +5069,7 @@ die();
 			} elseif ( $time_status == 'yes' ) {
 				$calender_day = strtolower( date( 'D', strtotime( $every_day ) ) );
 				$day_name     = 'mep_ticket_times_' . $calender_day;
-				$time         = get_post_meta( $event_id, $day_name, true ) ? maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : maybe_unserialize( $global_time_slots );
+				$time         = get_post_meta( $event_id, $day_name, true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : mep_safe_maybe_unserialize( $global_time_slots );
 				$time_list    = [];
 				foreach ( $time as $_time ) {
 					$time_list[] = $_time['mep_ticket_time'];
@@ -5077,7 +5113,7 @@ die();
 		if ( $recurring == 'everyday' ) {
 			$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 			$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 			$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 			$event_start_date   = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 			$event_end_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
@@ -5101,7 +5137,7 @@ die();
 		if ( $recurring == 'everyday' ) {
 			$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 			$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 			$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 			$event_start_date   = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 			$event_end_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
@@ -5124,7 +5160,7 @@ die();
 		if ( $recurring == 'everyday' ) {
 			$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 			$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 			$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 			$event_start_date   = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 			$event_end_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
@@ -5154,7 +5190,7 @@ die();
 		if ( $recurring == 'everyday' ) {
 			$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 			$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 			$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 			$event_start_date   = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 			$event_end_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
@@ -5174,8 +5210,8 @@ die();
 	function mep_re_get_the_upcomming_date_arr( $event_id ) {
 		$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 		$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-		$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
-		$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : '';
+		$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
+		$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : '';
 		$event_start_date   = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 		$event_end_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
 		$interval           = get_post_meta( $event_id, 'mep_repeated_periods', true ) ? get_post_meta( $event_id, 'mep_repeated_periods', true ) : 1;
@@ -5278,7 +5314,7 @@ die();
 	function mep_re_get_everyday_event_date_sec( $event_id ) {
 		$time_status       = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 		$global_time_slots = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-		$global_off_days   = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+		$global_off_days   = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 		$global_off_dates  = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 		$raw_start         = get_post_meta( $event_id, 'event_start_date', true );
 		$raw_end           = get_post_meta( $event_id, 'event_end_date', true );
@@ -5403,10 +5439,10 @@ die();
 		$selected_day         = strtolower( date( 'D', strtotime( $event_date ) ) );
 		$day_time_slot_name   = 'mep_ticket_times_' . $selected_day;
 		$time_status          = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
-		$global_time_slots    = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_times_global', true ) ) : [];
-		$day_time_slots       = get_post_meta( $event_id, $day_time_slot_name, true ) ? maybe_unserialize( get_post_meta( $event_id, $day_time_slot_name, true ) ) : [];
-		$event_off_days       = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
-		$global_off_dates     = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : [];
+		$global_time_slots    = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_times_global', true ) ) : [];
+		$day_time_slots       = get_post_meta( $event_id, $day_time_slot_name, true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, $day_time_slot_name, true ) ) : [];
+		$event_off_days       = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+		$global_off_dates     = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : [];
 		$global_off_dates_arr = [];
 		if ( is_array( $global_off_dates ) && sizeof( $global_off_dates ) > 0 ) {
 			foreach ( $global_off_dates as $off_dates ) {
@@ -5473,7 +5509,7 @@ die();
 	function mep_rq_show_everyday_datepicker( $event_id ) {
 		$time_status       = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 		$global_time_slots = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-		$global_off_days   = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+		$global_off_days   = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 		$global_off_dates  = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 		$input_name        = $time_status == 'yes' ? 'mep_everyday_dates' : 'ea_event_date';
 		ob_start();
@@ -5496,7 +5532,7 @@ die();
 	function mep_rq_show_everyday_datepicker_csv_btn( $event_id ) {
 		$time_status       = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 		$global_time_slots = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-		$global_off_days   = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+		$global_off_days   = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 		$global_off_dates  = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 		$input_name        = $time_status == 'yes' ? 'mep_everyday_dates' : 'ea_event_date';
 		ob_start();
@@ -5580,7 +5616,7 @@ die();
 			} else {
 				$calender_day   = strtolower( date( 'D', strtotime( $date ) ) );
 				$day_name       = 'mep_ticket_times_' . $calender_day;
-				$this_day_times = get_post_meta( $event_id, $day_name, true ) ? maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : maybe_unserialize( $global_time_slots );
+				$this_day_times = get_post_meta( $event_id, $day_name, true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : mep_safe_maybe_unserialize( $global_time_slots );
 				$times          = [];
 				if ( is_array( $this_day_times ) && sizeof( $this_day_times ) > 0 ) {
 					foreach ( $this_day_times as $_time ) {
@@ -5599,8 +5635,8 @@ die();
 		if ( $recurring == 'everyday' ) {
 			$event_start_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_datetime', true ) ) );
 			$event_end_date       = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_datetime', true ) ) );
-			$event_off_days       = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
-			$global_off_dates     = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : [];
+			$event_off_days       = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
+			$global_off_dates     = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : [];
 			$global_off_dates_arr = [];
 			if ( is_array( $global_off_dates ) && sizeof( $global_off_dates ) > 0 ) {
 				foreach ( $global_off_dates as $off_dates ) {
@@ -6027,7 +6063,7 @@ die();
 		if ( $recurring == 'everyday' ) {
 			$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 			$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
+			$global_off_days    = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 			$global_off_dates   = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 			$event_start_date   = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 			$event_end_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
@@ -6243,7 +6279,7 @@ die();
 	function mep_re_event_everyday_date_list_display( $event_id, $type = 'display' ) {
 		$time_status             = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 		$global_time_slots       = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-		$global_off_days         = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
+		$global_off_days         = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
 		$global_off_dates        = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
 		$event_start_date        = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
 		$event_end_date          = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
@@ -6347,7 +6383,7 @@ die();
                             <?php
 	                            $calender_day = strtolower( date( 'D', strtotime( $every_day ) ) );
 	                            $day_name     = 'mep_ticket_times_' . $calender_day;
-	                            $time         = get_post_meta( $event_id, $day_name, true ) ? maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : maybe_unserialize( $global_time_slots );
+	                            $time         = get_post_meta( $event_id, $day_name, true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : mep_safe_maybe_unserialize( $global_time_slots );
 	                            $time_list    = [];
 	                            foreach ( $time as $_time ) { ?>
                                     <span class="time"><?php echo $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime( $_time['mep_ticket_time'], 'time' ) . ')'; ?></span>
@@ -6405,8 +6441,8 @@ die();
 			$now                  = current_time( 'Y-m-d H:i:s' );
 			$event_start_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_datetime', true ) ) );
 			$event_end_date       = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_datetime', true ) ) );
-			$event_off_days       = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
-			$global_off_dates     = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : [];
+			$event_off_days       = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
+			$global_off_dates     = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? mep_safe_maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ) : [];
 			$global_off_dates_arr = [];
 			if ( sizeof( $global_off_dates ) > 0 ) {
 				foreach ( $global_off_dates as $off_dates ) {
@@ -6483,7 +6519,7 @@ die();
 		$start_date              = get_post_meta( get_the_id(), 'event_start_date', true );
 		$end_datetime            = get_post_meta( get_the_id(), 'event_end_datetime', true );
 		$end_date                = get_post_meta( get_the_id(), 'event_end_date', true );
-		$more_date               = get_post_meta( get_the_id(), 'mep_event_more_date', true ) ? maybe_unserialize( get_post_meta( get_the_id(), 'mep_event_more_date', true ) ) : [];
+		$more_date               = get_post_meta( get_the_id(), 'mep_event_more_date', true ) ? mep_safe_maybe_unserialize( get_post_meta( get_the_id(), 'mep_event_more_date', true ) ) : [];
 		$recurring               = get_post_meta( get_the_id(), 'mep_enable_recurring', true ) ? get_post_meta( get_the_id(), 'mep_enable_recurring', true ) : 'no';
 		$mep_show_upcoming_event = get_post_meta( get_the_id(), 'mep_show_upcoming_event', true ) ? get_post_meta( get_the_id(), 'mep_show_upcoming_event', true ) : 'no';
 		$cn                      = 1;

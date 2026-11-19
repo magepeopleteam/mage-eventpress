@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin, raselsha
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.15
+Stable tag: 5.7.16
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,11 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.16 =
+* Security: Improved security hardening.
+* Fix: Validate ticket quantities and seats on the server.
+* Fix: Validate the booked date and the native payment route.
 
 = 5.7.15 =
 * New: One-click "Add all N dates at once" on top.

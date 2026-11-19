@@ -68,14 +68,17 @@
 
 			public function quick_setup() {
 				$status = MPWEM_Global_Function::check_woocommerce();
-				if ( isset( $_POST['active_woo_btn'] ) ) {
+				// Every button below changes the site, so each needs the form's nonce (no
+				// cross-site POST) and the capability the action itself requires.
+				$qs_nonce_ok = isset( $_POST['_mpwem_qs_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_mpwem_qs_nonce'] ) ), 'mpwem_quick_setup' );
+				if ( $qs_nonce_ok && current_user_can( 'activate_plugins' ) && isset( $_POST['active_woo_btn'] ) ) {
 					?>
 					<script>mpwem_loader_body();</script>
 					<?php
 					activate_plugin( 'woocommerce/woocommerce.php' );
 					$this->reload_setup_script();
 				}
-				if ( isset( $_POST['install_and_active_woo_btn'] ) ) {
+				if ( $qs_nonce_ok && current_user_can( 'install_plugins' ) && current_user_can( 'activate_plugins' ) && isset( $_POST['install_and_active_woo_btn'] ) ) {
 					echo '<div style="display:none">';
 					include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
 					include_once( ABSPATH . 'wp-admin/includes/file.php' );
@@ -108,7 +111,7 @@
 					echo '</div>';
 					$this->reload_setup_script();
 				}
-				if ( isset( $_POST['finish_quick_setup'] ) ) {
+				if ( $qs_nonce_ok && current_user_can( 'manage_options' ) && isset( $_POST['finish_quick_setup'] ) ) {
 					$host                        = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'example.com';
 					$label                       = isset( $_POST['event_label'] ) ? sanitize_text_field( wp_unslash( $_POST['event_label'] ) ) : 'Events';
 					$slug                        = isset( $_POST['event_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['event_slug'] ) ) : 'event';
@@ -163,6 +166,7 @@
 
 						<div class="_shadow_6_admin_layout mpwem-qs-shell">
 							<form method="post" action="">
+								<?php wp_nonce_field( 'mpwem_quick_setup', '_mpwem_qs_nonce' ); ?>
 								<div class="tabs_next">
 									<div class="tabListsNext _margin_auto mpwem-qs-steps">
 										<div data-tabs-target-next="#mpwem_qs_welcome" class="tabItemNext" data-open-text="1" data-close-text=" " data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">

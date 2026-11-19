@@ -794,7 +794,7 @@
 			public function off_days_section( $post_id ) {
 				$off_day_array = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_offdays' );
 				if ( ! is_array( $off_day_array ) ) {
-					$maybe_unserialized = @unserialize( $off_day_array );
+					$maybe_unserialized = @unserialize( $off_day_array, array( 'allowed_classes' => false ) );
 					if ( is_array( $maybe_unserialized ) ) {
 						$off_day_array = $maybe_unserialized;
 					} else {
@@ -1072,7 +1072,7 @@
 				$end_date           = is_array($special_date) && array_key_exists( 'end_date', $special_date ) ? $special_date['end_date'] : '';
 				$hidden_end_date    = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 				$visible_end_date   = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-				$time               = is_array($special_date) && array_key_exists( 'time', $special_date ) ? maybe_unserialize( $special_date['time'] ) : array();
+				$time               = is_array($special_date) && array_key_exists( 'time', $special_date ) ? mep_safe_maybe_unserialize( $special_date['time'] ) : array();
 				$unique_name        = uniqid();
 				$slot_name          = 'mep_special_time_label_' . $unique_name . '[]';
 				$time_name          = 'mep_special_time_value_' . $unique_name . '[]';
@@ -1127,7 +1127,7 @@
                         </thead>
                         <tbody class="mpwem_sortable_area mpwem_item_insert">
 						<?php
-							$time_slots = is_array($time_slots) && sizeof( $time_slots ) > 0 ? $time_slots : maybe_unserialize( MPWEM_Global_Function::get_post_info( $tour_id, $key, array() ) );
+							$time_slots = is_array($time_slots) && sizeof( $time_slots ) > 0 ? $time_slots : mep_safe_maybe_unserialize( MPWEM_Global_Function::get_post_info( $tour_id, $key, array() ) );
 							if ( is_array($time_slots) && sizeof( $time_slots ) > 0 ) {
 								foreach ( $time_slots as $time_slot ) {
 									$this->time_slot_item( $slot_name, $time_name, $time_slot );

@@ -550,7 +550,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 						$checkin_str = ( 'Yes' === $checkin ) ? 'Checked In' : 'Not Checked In';
 						$event_date  = get_post_meta( $id, 'ea_event_date', true );
 
-						fputcsv( $output, array( $id, $name, $email, $phone, $qty, $event_name, $event_date, $checkin_str, get_the_date(), self::format_form_fields( $id ) ), ',', '"', '\\' );
+						fputcsv( $output, array_map( 'mep_csv_safe_cell', array( $id, $name, $email, $phone, $qty, $event_name, $event_date, $checkin_str, get_the_date(), self::format_form_fields( $id ) ) ), ',', '"', '\\' );
 					}
 				}
 				wp_reset_postdata();

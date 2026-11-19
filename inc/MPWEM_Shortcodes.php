@@ -863,9 +863,12 @@
 			public function add_to_cart_section( $atts, $content = null ) {
 				$defaults = array( "event" => "0" );
 				$params   = shortcode_atts( $defaults, $atts );
-				$event_id = $params['event'];
+				$event_id = absint( $params['event'] );
 				ob_start();
-				if ( $event_id > 0 ) {
+				// Only an event the visitor may see: a published one, or one they can read
+				// (a draft or private event's ticket panel and prices stay hidden). A password
+				// protected event still gets its password form from the registration hook.
+				if ( $event_id > 0 && 'mep_events' === get_post_type( $event_id ) && ( 'publish' === get_post_status( $event_id ) || current_user_can( 'read_post', $event_id ) ) ) {
 					do_action( 'mpwem_registration', $event_id );
 				}
 				return ob_get_clean();

@@ -157,7 +157,7 @@
 				), ',', '"', '\\' );
 				foreach ( $ids as $id ) {
 					$event_id = (int) get_post_meta( $id, 'mep_enquiry_event_id', true );
-					fputcsv( $out, array(
+					fputcsv( $out, array_map( 'mep_csv_safe_cell', array(
 						get_the_date( 'Y-m-d H:i', $id ),
 						$event_id ? get_the_title( $event_id ) : '',
 						(string) get_post_meta( $id, 'mep_enquiry_name', true ),
@@ -166,7 +166,7 @@
 						(string) get_post_meta( $id, 'mep_enquiry_subject', true ),
 						(string) get_post_meta( $id, 'mep_enquiry_message', true ),
 						'read' === get_post_meta( $id, 'mep_enquiry_status_flag', true ) ? __( 'Read', 'mage-eventpress' ) : __( 'New', 'mage-eventpress' ),
-					), ',', '"', '\\' );
+					) ), ',', '"', '\\' );
 				}
 				fclose( $out );
 				exit;

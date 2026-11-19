@@ -637,7 +637,7 @@ function mep_export_analytics_csv() {
 	$csv_string = '';
 	foreach ( $csv_data as $row ) {
 		$escaped = array_map( function( $field ) {
-			$field = str_replace( '"', '""', $field );
+			$field = str_replace( '"', '""', (string) mep_csv_safe_cell( $field ) );
 			return '"' . $field . '"';
 		}, $row );
 		$csv_string .= implode( ',', $escaped ) . "\n";

@@ -781,6 +781,10 @@
 				if ( ! in_array( $status, [ 'publish', 'draft' ], true ) ) {
 					$status = 'publish';
 				}
+				// Contributors may create speakers but not publish them.
+				if ( 'publish' === $status && ! current_user_can( $pto->cap->publish_posts ) ) {
+					$status = 'pending';
+				}
 
 				$post_id = wp_insert_post(
 					[
@@ -900,6 +904,10 @@
 				if ( ! in_array( $status, [ 'publish', 'draft' ], true ) ) {
 					$status = 'publish';
 				}
+				$speaker_pto = get_post_type_object( 'mep_event_speaker' );
+				if ( 'publish' === $status && 'publish' !== $post->post_status && ( ! $speaker_pto || ! current_user_can( $speaker_pto->cap->publish_posts ) ) ) {
+					$status = 'pending';
+				}
 
 				$result = wp_update_post(
 					[
@@ -1008,6 +1016,9 @@
 				}
 				if ( ! in_array( $status, [ 'publish', 'draft', 'pending' ], true ) ) {
 					$status = 'publish';
+				}
+				if ( 'publish' === $status && ! current_user_can( $pto->cap->publish_posts ) ) {
+					$status = 'pending';
 				}
 
 				$post_id = wp_insert_post(

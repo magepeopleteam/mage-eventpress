@@ -181,7 +181,7 @@ function mpwem_attendee_management(parent, total_qty) {
                         let seat_name = jQuery(this).attr('data-seat-name');
                         let ticket_name = jQuery(this).attr('data-seat-type');
                         if (form_target.find('[data-seat_name="' + seat_name + '"]').length === 0) {
-                            hidden_target.find('.mpwem_ticket_name').html(ticket_name);
+                            hidden_target.find('.mpwem_ticket_name').text(ticket_name);
                             hidden_target.find('.mep_form_item').attr('data-seat_name', seat_name);
                             hidden_target.find('.mpwem_ticket_count').html(seat_name).promise().done(function () {
                                 form_target.append(hidden_target.html());
@@ -228,7 +228,7 @@ function mpwem_attendee_management(parent, total_qty) {
                         } else {
                             for (let i = form_length; i < qty; i++) {
                                 let ticket_name = current_parent.find('[name="option_name[]"]').val();
-                                hidden_target.find('.mpwem_ticket_name').html(ticket_name);
+                                hidden_target.find('.mpwem_ticket_name').text(ticket_name);
                                 hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
                                     form_target.append(hidden_target.html()).promise().done(function () {
                                         mpwem_enable_attendee_clone(jQuery(this));

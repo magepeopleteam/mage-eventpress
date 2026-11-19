@@ -344,6 +344,101 @@
 				return (int) $value;
 			}
 			/**
+			 * The days an event can be booked on, as Y-m-d, from the list the booking form uses.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return string[]
+			 */
+			public static function get_bookable_days( $event_id ) {
+				static $cache = [];
+				$event_id = (int) $event_id;
+				if ( ! isset( $cache[ $event_id ] ) ) {
+					$days = [];
+					foreach ( (array) self::get_dates( $event_id ) as $entry ) {
+						$value = is_array( $entry ) ? ( isset( $entry['time'] ) ? $entry['time'] : ( isset( $entry['date'] ) ? $entry['date'] : '' ) ) : $entry;
+						$time  = is_scalar( $value ) && '' !== (string) $value ? strtotime( (string) $value ) : false;
+						if ( $time ) {
+							$days[] = date( 'Y-m-d', $time );
+						}
+					}
+					$cache[ $event_id ] = array_values( array_unique( $days ) );
+				}
+				return $cache[ $event_id ];
+			}
+			/**
+			 * A posted booking date in the one spelling seat counts match, or null when the
+			 * event does not offer that day.
+			 *
+			 * Sold seats are counted with a LIKE on the stored date, and attendees are stored
+			 * with "T" turned into a space. A date posted as "2026-12-05T10:00" or with other
+			 * spelling therefore counted no sold seats while its attendees still counted
+			 * against the real date - and a day the event never runs was accepted as well.
+			 * The result is "Y-m-d H:i" (or "Y-m-d" without a time), which is what the booking
+			 * form posts. An empty value stays empty, as before.
+			 *
+			 * @param int    $event_id Event post ID.
+			 * @param string $date     Posted date.
+			 * @return string|null
+			 */
+			public static function canonical_booking_date( $event_id, $date ) {
+				$date = trim( str_replace( 'T', ' ', is_scalar( $date ) ? (string) $date : '' ) );
+				if ( '' === $date ) {
+					return '';
+				}
+				$time = strtotime( $date );
+				if ( ! $time ) {
+					return null;
+				}
+				$day = date( 'Y-m-d', $time );
+				if ( ! in_array( $day, self::get_bookable_days( $event_id ), true ) ) {
+					return null;
+				}
+				if ( ! preg_match( '/\d{1,2}:\d{2}/', $date ) ) {
+					return $day;
+				}
+				// A start time the day does not have would count its seats on its own. Midnight
+				// stays allowed: a date-only link resolves to the day's first start later.
+				$hm     = date( 'H:i', $time );
+				$starts = self::get_start_times_of_day( $event_id, $day );
+				if ( '00:00' !== $hm && $starts && ! in_array( $hm, $starts, true ) ) {
+					return null;
+				}
+				return $day . ' ' . $hm;
+			}
+			/**
+			 * Start times ("H:i") an event offers on one day: its time slots and occurrences.
+			 *
+			 * @param int    $event_id Event post ID.
+			 * @param string $day      Y-m-d.
+			 * @return string[] Empty when the event lists no time for that day.
+			 */
+			public static function get_start_times_of_day( $event_id, $day ) {
+				static $cache = [];
+				$key = (int) $event_id . '|' . $day;
+				if ( isset( $cache[ $key ] ) ) {
+					return $cache[ $key ];
+				}
+				$starts = [];
+				$dates  = self::get_dates( $event_id );
+				foreach ( (array) $dates as $entry ) {
+					$value = is_array( $entry ) && isset( $entry['time'] ) ? $entry['time'] : '';
+					$stamp = is_scalar( $value ) && '' !== (string) $value ? strtotime( (string) $value ) : false;
+					if ( $stamp && date( 'Y-m-d', $stamp ) === $day ) {
+						$starts[] = date( 'H:i', $stamp );
+					}
+				}
+				foreach ( (array) self::get_times( $event_id, $dates, $day ) as $slot ) {
+					$value = is_array( $slot ) && isset( $slot['start']['time'] ) ? $slot['start']['time'] : '';
+					$value = is_scalar( $value ) ? (string) $value : '';
+					$stamp = '' !== $value ? strtotime( preg_match( '/\d{4}-\d{2}-\d{2}/', $value ) ? $value : $day . ' ' . $value ) : false;
+					if ( $stamp ) {
+						$starts[] = date( 'H:i', $stamp );
+					}
+				}
+				$cache[ $key ] = array_values( array_unique( $starts ) );
+				return $cache[ $key ];
+			}
+			/**
 			 * Ticket type names a visitor may book, decoded the same way posted names are.
 			 *
 			 * The event page leaves out ticket types the organiser switched off and any that

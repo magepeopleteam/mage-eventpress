@@ -86,6 +86,16 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			if ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 				wp_send_json_error( array( 'message' => __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' ) ) );
 			}
+			// RSVP events book through the RSVP form, with its own limits.
+			if ( 'rsvp' === MPWEM_Global_Function::get_event_mode( $event_id ) ) {
+				wp_send_json_error( array( 'message' => __( 'Sorry, this event is not available for booking.', 'mage-eventpress' ) ) );
+			}
+			// One spelling of the date, on a day the event offers, so the seat check below
+			// counts the same attendees the booking will be stored with.
+			$event_date = MPWEM_Functions::canonical_booking_date( $event_id, $event_date );
+			if ( null === $event_date ) {
+				wp_send_json_error( array( 'message' => __( 'Please choose a date offered on the event page.', 'mage-eventpress' ) ) );
+			}
 
 			// Everyday events that hide the ticket-time selector post a date with no real
 			// time. Default it to the event's "Start Date Time" time field so the booking —
@@ -342,7 +352,20 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 				return;
 			}
 
-			// No gateway configured — offline / pay at door
+			// Offline / pay at door - only when the site offers it, or offers no payment method
+			// at all (the modal then registers for review). An unknown or disabled method
+			// must not turn into an unpaid booking.
+			$payment_opts   = get_option( 'payment_setting_sec', array() );
+			$payment_opts   = is_array( $payment_opts ) ? $payment_opts : array();
+			$offline_on     = isset( $payment_opts['mep_offline_enable'] ) && 'on' === $payment_opts['mep_offline_enable'];
+			$any_gateway_on = $offline_on
+				|| ( isset( $payment_opts['mep_paypal_enable'] ) && 'on' === $payment_opts['mep_paypal_enable'] )
+				|| ( isset( $payment_opts['mep_stripe_enable'] ) && 'on' === $payment_opts['mep_stripe_enable'] );
+			if ( ! $offline_on && $any_gateway_on ) {
+				wp_delete_post( $order_id, true );
+				wp_send_json_error( array( 'message' => __( 'Please choose one of the payment methods offered.', 'mage-eventpress' ) ) );
+				return;
+			}
 			$this->complete_order( $order_id, $event_id, $items, $billing_name, $billing_email, $billing_phone, $event_date, 'offline', 'pending', $seat_metas );
 		}
 

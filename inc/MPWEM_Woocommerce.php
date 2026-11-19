@@ -88,6 +88,12 @@
 			public static function get_posted_event_date( $event_id ) {
 				$start_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['mep_event_start_date'] ) ) : [];
 				$start_date = (string) current( $start_date );
+				// One spelling for every date, so seat counts and stored attendees agree. A day
+				// the event does not offer is refused in get_booking_rejection().
+				$canonical = MPWEM_Functions::canonical_booking_date( $event_id, $start_date );
+				if ( is_string( $canonical ) && '' !== $canonical ) {
+					$start_date = $canonical;
+				}
 				return MPWEM_Functions::resolve_occurrence_datetime( $event_id, $start_date );
 			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
@@ -750,6 +756,8 @@
 					$rejection = __( 'Sorry, this event is not available for booking.', 'mage-eventpress' );
 				} elseif ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
 					$rejection = __( 'This event is available for our members. Please log in to continue.', 'mage-eventpress' );
+				} elseif ( ! self::posted_event_date_is_offered( $event_id ) ) {
+					$rejection = __( 'Please choose a date offered on the event page.', 'mage-eventpress' );
 				} elseif ( self::has_invalid_posted_quantity() ) {
 					$rejection = __( 'Ticket and extra service quantities must be whole numbers. Please choose your tickets again on the event page.', 'mage-eventpress' );
 				} elseif ( ! self::has_ticket_selection( $ticket_info ) ) {
@@ -761,6 +769,18 @@
 					}
 				}
 				return (string) apply_filters( 'mep_event_booking_rejection', $rejection, $event_id, $ticket_info );
+			}
+			/**
+			 * Whether the posted occurrence is a day the event offers (or no date was posted).
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return bool
+			 */
+			private static function posted_event_date_is_offered( $event_id ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read during WooCommerce's add to cart.
+				$posted = isset( $_POST['mep_event_start_date'] ) ? (array) wp_unslash( $_POST['mep_event_start_date'] ) : array();
+				$posted = current( $posted );
+				return null !== MPWEM_Functions::canonical_booking_date( $event_id, is_scalar( $posted ) ? sanitize_text_field( (string) $posted ) : '' );
 			}
 			/**
 			 * Whether any posted ticket or extra service quantity is not a whole number.

@@ -339,19 +339,19 @@
 	}
 
 	/** Native checkout AJAX call as the registration modal sends it. */
-	function mep_wq_native( $fixture, $tickets ) {
+	function mep_wq_native( $fixture, $tickets, $date = null, $method = '' ) {
 		$client = new MEP_WQ_Client();
 		$res    = $client->send( 'POST', admin_url( 'admin-ajax.php' ), array(
 			'action'          => 'mep_native_checkout',
 			'nonce'           => wp_create_nonce( 'mep_native_checkout_nonce' ),
 			'event_id'        => $fixture['event_id'],
-			'event_date'      => $fixture['date'],
+			'event_date'      => null === $date ? $fixture['date'] : $date,
 			'billing_name'    => 'Native Guest',
 			'billing_email'   => 'whole-quantity-native@example.com',
 			'billing_phone'   => '5550100',
 			'ticket_data'     => wp_json_encode( $tickets ),
 			'attendee_fields' => '',
-			'payment_method'  => '',
+			'payment_method'  => $method,
 		) );
 
 		return array(
@@ -380,7 +380,7 @@
 			$order->delete( true );
 		}
 		foreach ( $fixtures as $fixture ) {
-			foreach ( array( 'mep_temp_attendee' => 'event_id', 'mep_events_attendees' => 'ea_event_id', 'mep_extra_service' => 'ea_extra_service_event', 'mep_custom_order' => '_mep_event_id' ) as $post_type => $meta_key ) {
+			foreach ( array( 'mep_temp_attendee' => 'event_id', 'mep_events_attendees' => 'ea_event_id', 'mep_extra_service' => 'ea_extra_service_event', 'mep_custom_order' => '_mep_event_id', 'mep_rsvp_responses' => 'ea_event_id' ) as $post_type => $meta_key ) {
 				$ids = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => $meta_key, 'meta_value' => $fixture['event_id'] ) );
 				foreach ( $ids as $id ) {
 					wp_delete_post( $id, true );
@@ -417,6 +417,7 @@
 		$native = $mep_wq_fixtures[] = mep_wq_create_event( 'WQ regression - native', array(
 			mep_wq_ticket_type( 'Free', 0, 3 ),
 			mep_wq_ticket_type( 'Staff Comp', 0, 50, array( 'option_ticket_enable' => 'no' ) ),
+			mep_wq_ticket_type( 'Paid', 5, 10 ),
 		) );
 		WP_CLI::log( sprintf( 'Fixtures: reported #%d, seats #%d, native #%d', $attack['event_id'], $seats['event_id'], $native['event_id'] ) );
 
@@ -447,6 +448,22 @@
 
 		$cart = mep_wq_add( new MEP_WQ_Client(), $attack, array( array( 'Staff Comp', 1 ) ) );
 		MEP_WQ_Run::check( 'a switched-off ticket type is refused', 0 === $cart['count'], sprintf( '%d line(s), total %.2f', $cart['count'], $cart['total'] ) );
+
+		// --- The posted date ----------------------------------------------------------------
+
+		$dated     = $attack;
+		$dated['date'] = gmdate( 'Y-m-d H:i', strtotime( $attack['date'] ) + DAY_IN_SECONDS );
+		$cart          = mep_wq_add( new MEP_WQ_Client(), $dated, array( array( 'Cheap', 1 ) ) );
+		MEP_WQ_Run::check( 'a day the event does not run is refused', 0 === $cart['count'], sprintf( '%d line(s)', $cart['count'] ) );
+		$dated['date'] = gmdate( 'Y-m-d H:i', strtotime( $attack['date'] ) + MINUTE_IN_SECONDS );
+		$cart          = mep_wq_add( new MEP_WQ_Client(), $dated, array( array( 'Cheap', 1 ) ) );
+		MEP_WQ_Run::check( 'a start time the day does not have is refused', 0 === $cart['count'], sprintf( '%d line(s)', $cart['count'] ) );
+		$dated['date'] = str_replace( ' ', 'T', $attack['date'] );
+		$client        = new MEP_WQ_Client();
+		$cart          = mep_wq_add( $client, $dated, array( array( 'Cheap', 1 ) ) );
+		$lines         = mep_wq_session_lines( end( MEP_WQ_Run::$session_keys ) );
+		$stored        = $lines && isset( $lines[0]['event_cart_date'] ) ? $lines[0]['event_cart_date'] : '';
+		MEP_WQ_Run::check( 'a "T" date is booked in the canonical spelling', 1 === $cart['count'] && $attack['date'] === $stored, 'stored ' . $stored );
 
 		// --- Extra services ----------------------------------------------------------------
 
@@ -521,6 +538,42 @@
 		MEP_WQ_Run::check( 'native checkout books 2 of 3 free seats', $res['success'] && array( 'Free' => 2 ) === mep_wq_attendees( $native['event_id'] ), $res['message'] . ' attendees: ' . mep_wq_describe( mep_wq_attendees( $native['event_id'] ) ) );
 		$res = mep_wq_native( $native, array( array( 'ticket_name' => 'Free', 'ticket_qty' => 2 ) ) );
 		MEP_WQ_Run::check( 'native checkout then refuses 2 more (1 left)', ! $res['success'] && array( 'Free' => 2 ) === mep_wq_attendees( $native['event_id'] ), $res['message'] );
+		$t_date = str_replace( ' ', 'T', $native['date'] );
+		$res    = mep_wq_native( $native, array( array( 'ticket_name' => 'Free', 'ticket_qty' => 2 ) ), $t_date );
+		MEP_WQ_Run::check( 'native checkout counts a "T" date against the same seats (2 more refused)', ! $res['success'] && array( 'Free' => 2 ) === mep_wq_attendees( $native['event_id'] ), $res['message'] );
+		$res = mep_wq_native( $native, array( array( 'ticket_name' => 'Free', 'ticket_qty' => 1 ) ), gmdate( 'Y-m-d H:i', strtotime( $native['date'] ) + DAY_IN_SECONDS ) );
+		MEP_WQ_Run::check( 'native checkout refuses a day the event does not run', ! $res['success'] && array( 'Free' => 2 ) === mep_wq_attendees( $native['event_id'] ), $res['message'] );
+		$res = mep_wq_native( $native, array( array( 'ticket_name' => 'Free', 'ticket_qty' => 1 ) ), gmdate( 'Y-m-d H:i', strtotime( $native['date'] ) + MINUTE_IN_SECONDS ) );
+		MEP_WQ_Run::check( 'native checkout refuses a start time the day does not have', ! $res['success'] && array( 'Free' => 2 ) === mep_wq_attendees( $native['event_id'] ), $res['message'] );
+		update_option( 'payment_setting_sec', array_merge( (array) $mep_wq_payment_opt, array( 'mep_enable_wc_payment' => 'off', 'mep_offline_enable' => 'off', 'mep_stripe_enable' => 'on' ) ) );
+		$res = mep_wq_native( $native, array( array( 'ticket_name' => 'Paid', 'ticket_qty' => 1 ) ), null, 'bogus' );
+		$orphans = get_posts( array( 'post_type' => 'mep_custom_order', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => '_mep_order_total', 'meta_value' => '5' ) );
+		MEP_WQ_Run::check( 'with offline payment off, an unknown method is refused and leaves no order', ! $res['success'] && false !== strpos( $res['message'], 'payment methods offered' ) && array() === $orphans && ! isset( mep_wq_attendees( $native['event_id'] )['Paid'] ), $res['message'] );
+		update_option( 'payment_setting_sec', array_merge( (array) $mep_wq_payment_opt, array( 'mep_enable_wc_payment' => 'off', 'mep_offline_enable' => 'on' ) ) );
+		$res = mep_wq_native( $native, array( array( 'ticket_name' => 'Paid', 'ticket_qty' => 1 ) ), null, 'offline' );
+		MEP_WQ_Run::check( 'with offline payment on, a paid booking is registered for payment later', $res['success'] && isset( mep_wq_attendees( $native['event_id'] )['Paid'] ), $res['message'] );
+		update_post_meta( $native['event_id'], 'mep_reg_status', 'rsvp' );
+		$res = mep_wq_native( $native, array( array( 'ticket_name' => 'Free', 'ticket_qty' => 1 ) ) );
+		MEP_WQ_Run::check( 'native checkout refuses an RSVP-mode event', ! $res['success'] && false !== strpos( $res['message'], 'not available for booking' ), $res['message'] );
+
+		// --- RSVP dates ---------------------------------------------------------------------
+		wp_set_current_user( 0 );
+		$rsvp_nonce = wp_create_nonce( 'mep_rsvp_nonce_' . $native['event_id'] );
+		$rsvp       = function ( $date, $email ) use ( $native, $rsvp_nonce ) {
+			$client = new MEP_WQ_Client();
+			$res    = $client->send( 'POST', admin_url( 'admin-ajax.php' ), array( 'action' => 'mep_submit_rsvp', 'nonce' => $rsvp_nonce, 'event_id' => $native['event_id'], 'rsvp_name' => 'RSVP Guest', 'rsvp_email' => $email, 'rsvp_phone' => '5550100', 'rsvp_date' => $date, 'rsvp_qty' => 1 ) );
+
+			return is_array( $res['json'] ) && ! empty( $res['json']['success'] );
+		};
+		$rsvp_dates = function () use ( $native ) {
+			global $wpdb;
+
+			return $wpdb->get_col( $wpdb->prepare( "SELECT pm.meta_value FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} e ON e.post_id = p.ID AND e.meta_key = 'ea_event_id' AND e.meta_value = %s JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID AND pm.meta_key = 'ea_event_date' WHERE p.post_type = 'mep_rsvp_responses'", (string) $native['event_id'] ) );
+		};
+		$ok_fake = $rsvp( gmdate( 'Y-m-d H:i', strtotime( $native['date'] ) + DAY_IN_SECONDS ), 'rsvp-fake@example.com' );
+		MEP_WQ_Run::check( 'RSVP refuses a day the event does not run', ! $ok_fake && array() === $rsvp_dates(), wp_json_encode( $rsvp_dates() ) );
+		$ok_t = $rsvp( str_replace( ' ', 'T', $native['date'] ), 'rsvp-t@example.com' );
+		MEP_WQ_Run::check( 'RSVP stores a "T" date in the canonical spelling', $ok_t && array( $native['date'] ) === $rsvp_dates(), wp_json_encode( $rsvp_dates() ) );
 	} finally {
 		if ( null === $mep_wq_payment_opt ) {
 			delete_option( 'payment_setting_sec' );

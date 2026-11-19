@@ -421,6 +421,11 @@ if ( ! function_exists( 'mep_is_shop_manager_eventpress_request' ) ) {
 				return false;
 			}
 			$action = sanitize_key( wp_unslash( $_REQUEST['action'] ) );
+			// Never extended to Shop Managers: the licence handlers write site options by
+			// name and the MCP screen hands out an administrator's access token.
+			if ( in_array( $action, array( 'mep_wl_ajax_license_activate', 'mep_wl_ajax_license_deactivate', 'mep_mcp' ), true ) ) {
+				return false;
+			}
 			// AJAX actions registered by EventPress PRO under legacy prefixes.
 			$legacy_actions = array(
 				'wbbm_get_bus_details',
@@ -464,6 +469,9 @@ if ( ! function_exists( 'mep_is_shop_manager_eventpress_request' ) ) {
 			}
 			global $_registered_pages;
 			$page = plugin_basename( wp_unslash( $_GET['page'] ) );
+			if ( 'mep_mcp' === $page ) {
+				return false;
+			}
 			foreach ( array( 'edit.php?post_type=mep_events', 'mep_events' ) as $parent ) {
 				if ( ! empty( $_registered_pages[ get_plugin_page_hookname( $page, $parent ) ] ) ) {
 					return true;
@@ -506,6 +514,43 @@ if ( ! function_exists( 'mep_is_shop_manager_eventpress_request' ) ) {
 		return false;
 	}
 }
+
+if ( ! function_exists( 'mep_license_request_guard' ) ) {
+	/**
+	 * Guard for the licence AJAX actions every MagePeople event add-on ships.
+	 *
+	 * The add-ons share mep_wl_ajax_license_activate / _deactivate under one name, and
+	 * whichever loads first answers for all of them. Several copies take the option names
+	 * from the request with no capability check, some even for logged-out visitors, which
+	 * lets anyone blank any site option. Every add-on needs this plugin, so this guard
+	 * runs first (priority 1) whichever copy answers: administrators only, and only the
+	 * four "<prefix>_license_{key,status,expire,order_id}" options of one prefix. Add-on
+	 * screens that post no nonce keep working; PRO adds its own nonce check on top.
+	 */
+	function mep_license_request_guard() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to manage licences.', 'mage-eventpress' ), '', array( 'response' => 403 ) );
+		}
+		$names = array();
+		foreach ( array( 'key', 'status', 'expire', 'order_id' ) as $part ) {
+			$field          = $part . '_option_name';
+			$names[ $part ] = isset( $_REQUEST[ $field ] ) && is_string( $_REQUEST[ $field ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $field ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- capability checked above.
+		}
+		$prefix = preg_match( '/^([a-z0-9_]+)_license_key$/', $names['key'], $m ) ? $m[1] : '';
+		$valid  = '' !== $prefix;
+		foreach ( array( 'status', 'expire', 'order_id' ) as $part ) {
+			$valid = $valid && $names[ $part ] === $prefix . '_license_' . $part;
+		}
+		if ( ! $valid ) {
+			wp_die( esc_html__( 'Invalid licence request.', 'mage-eventpress' ), '', array( 'response' => 400 ) );
+		}
+	}
+}
+foreach ( array( 'mep_wl_ajax_license_activate', 'mep_wl_ajax_license_deactivate' ) as $mep_license_action ) {
+	add_action( 'wp_ajax_' . $mep_license_action, 'mep_license_request_guard', 1 );
+	add_action( 'wp_ajax_nopriv_' . $mep_license_action, 'mep_license_request_guard', 1 );
+}
+unset( $mep_license_action );
 
 if ( ! function_exists( 'mep_pro_grant_shop_manager_access' ) ) {
 	add_filter( 'user_has_cap', 'mep_grant_shop_manager_access', 10, 4 );

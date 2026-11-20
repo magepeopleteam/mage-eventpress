@@ -385,6 +385,7 @@
 			 */
 			public function check_cart_items() {
 				self::remove_cancelled_event_items();
+				self::remove_unbookable_event_items();
 				self::remove_ticketless_event_items();
 				self::validate_cart_seat_availability();
 			}
@@ -413,7 +414,109 @@
 					), 'error' );
 				}
 			}
+			/**
+			 * Takes lines for events that are no longer bookable for this visitor out of the cart.
+			 *
+			 * An event may have been bookable when the customer added its tickets, but has
+			 * since been drafted, made private, given a password, restricted to members,
+			 * closed, or its dates changed or removed. Runs on the cart page, in classic
+			 * checkout, and in Store API validation (block and express checkout).
+			 */
+			private static function remove_unbookable_event_items() {
+				if ( ! function_exists( 'WC' ) || is_null( WC()->cart ) ) {
+					return;
+				}
+				foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+					$event_id = is_array( $values ) && array_key_exists( 'event_id', $values ) ? (int) $values['event_id'] : 0;
+					if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' ) {
+						continue;
+					}
+					// Cancelled events are handled by remove_cancelled_event_items() with its own notice.
+					if ( MPWEM_Global_Function::is_cancelled_event( $event_id ) ) {
+						continue;
+					}
+					$reason = '';
+					$title  = get_the_title( $event_id );
+					if ( get_post_status( $event_id ) !== 'publish' && ! current_user_can( 'edit_post', $event_id ) ) {
+						$reason = sprintf(
+							/* translators: %s: event name. */
+							__( '%s was removed from your cart because the event is no longer available.', 'mage-eventpress' ),
+							esc_html( $title )
+						);
+					} elseif ( post_password_required( $event_id ) ) {
+						$reason = sprintf(
+							/* translators: %s: event name. */
+							__( '%s was removed from your cart because the event is password-protected.', 'mage-eventpress' ),
+							esc_html( $title )
+						);
+					} elseif ( ! MPWEM_Global_Function::user_can_register_for_event( $event_id ) ) {
+						$reason = sprintf(
+							/* translators: %s: event name. */
+							__( '%s was removed from your cart because this event is available for members only.', 'mage-eventpress' ),
+							esc_html( $title )
+						);
+					} elseif ( ! MPWEM_Global_Function::is_bookable_event( $event_id ) ) {
+						$reason = sprintf(
+							/* translators: %s: event name. */
+							__( '%s was removed from your cart because booking for this event is closed.', 'mage-eventpress' ),
+							esc_html( $title )
+						);
+					} else {
+						$dates = MPWEM_Functions::get_dates( $event_id );
+						if ( ! is_array( $dates ) || empty( $dates ) ) {
+							$reason = sprintf(
+								/* translators: %s: event name. */
+								__( '%s was removed from your cart because the event has no upcoming dates.', 'mage-eventpress' ),
+								esc_html( $title )
+							);
+						} elseif ( ! self::cart_item_date_is_offered( $event_id, $values ) ) {
+							$reason = sprintf(
+								/* translators: %s: event name. */
+								__( '%s was removed from your cart because the selected date is no longer available.', 'mage-eventpress' ),
+								esc_html( $title )
+							);
+						}
+					}
+					if ( '' !== $reason ) {
+						WC()->cart->remove_cart_item( $cart_item_key );
+						wc_add_notice( $reason, 'error' );
+					}
+				}
+			}
+			/**
+			 * Whether the dates stored on a cart item are still offered by the event.
+			 *
+			 * @param int   $event_id Event post ID.
+			 * @param array $values   Cart item values.
+			 * @return bool
+			 */
+			private static function cart_item_date_is_offered( $event_id, $values ) {
+				$dates = array();
+				if ( ! empty( $values['event_cart_date'] ) ) {
+					$dates[] = (string) $values['event_cart_date'];
+				}
+				if ( ! empty( $values['event_ticket_info'] ) && is_array( $values['event_ticket_info'] ) ) {
+					foreach ( $values['event_ticket_info'] as $ticket ) {
+						if ( is_array( $ticket ) && ! empty( $ticket['event_date'] ) ) {
+							$dates[] = (string) $ticket['event_date'];
+						}
+					}
+				}
+				$dates = array_unique( array_filter( $dates ) );
+				if ( empty( $dates ) ) {
+					return true;
+				}
+				foreach ( $dates as $date ) {
+					if ( null === MPWEM_Functions::canonical_booking_date( $event_id, $date, true ) ) {
+						return false;
+					}
+				}
+				return true;
+			}
 			public function after_checkout_validation( $posted ) {
+				self::remove_cancelled_event_items();
+				self::remove_unbookable_event_items();
+				self::remove_ticketless_event_items();
 				self::validate_cart_seat_availability();
 			}
 			/**

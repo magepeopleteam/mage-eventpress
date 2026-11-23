@@ -3448,6 +3448,71 @@ div.default_theme .mep-default-speaker__role.is-expanded .mep-default-speaker__r
 	display: none !important;
 }
 
+/* One speaker: a full-width profile card (avatar beside name and role)
+   instead of a lone card in half of the two-column grid. */
+div.default_theme .speaker_list.mep-default-speakers--single,
+#mage-container.mage div.default_theme .speaker_list.mep-default-speakers--single {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+div.default_theme .speaker_list.mep-default-speakers--single > .mep-default-speaker--single,
+#mage-container.mage div.default_theme .speaker_list.mep-default-speakers--single > .mep-default-speaker--single {
+	flex-direction: row !important;
+	align-items: flex-start !important;
+	gap: 14px !important;
+	padding: 16px !important;
+	text-align: start;
+}
+
+div.default_theme .mep-default-speaker--single .mep-default-speaker__avatar-link,
+#mage-container.mage div.default_theme .mep-default-speaker--single .mep-default-speaker__avatar-link {
+	display: block !important;
+	flex: 0 0 auto !important;
+	text-decoration: none !important;
+}
+
+div.default_theme .mep-default-speaker--single .mep-default-speaker__avatar,
+#mage-container.mage div.default_theme .mep-default-speaker--single .mep-default-speaker__avatar {
+	width: 64px !important;
+	height: 64px !important;
+	max-width: 64px !important;
+	margin: 0 !important;
+}
+
+div.default_theme .mep-default-speaker--single .mep-default-speaker__initial {
+	font-size: 20px;
+}
+
+div.default_theme .mep-default-speaker--single .mep-default-speaker__body,
+#mage-container.mage div.default_theme .mep-default-speaker--single .mep-default-speaker__body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+div.default_theme .mep-default-speaker--single .mep-default-speaker__link,
+#mage-container.mage div.default_theme .mep-default-speaker--single .mep-default-speaker__link {
+	display: block !important;
+	width: 100% !important;
+}
+
+div.default_theme .mep-default-speaker--single .mep-default-speaker__name,
+#mage-container.mage div.default_theme .mep-default-speaker--single .mep-default-speaker__name {
+	font-size: 15px !important;
+	text-align: start;
+}
+
+div.default_theme .mep-default-speaker--single .mep-default-speaker__role,
+#mage-container.mage div.default_theme .mep-default-speaker--single .mep-default-speaker__role {
+	font-size: 13px !important;
+	line-height: 1.5 !important;
+	overflow-wrap: break-word;
+	text-align: start !important;
+}
+
 @media screen and (max-width: 640px) {
 	div.default_theme .speaker_list.mep-default-speakers,
 	#mage-container.mage div.default_theme .speaker_list.mep-default-speakers {

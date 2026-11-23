@@ -125,6 +125,14 @@
 			public function date_select( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/date_select.php' ); }
 			public function time( $event_id, $all_dates = [], $all_times = [], $date = '', $single = true ): void { require MPWEM_Functions::template_path( 'layout/time.php' ); }
 			public function registration( $event_id, $event_infos = [] ): void {
+				// Up to 5.0.1 this hook was ( $event_id, $all_dates, $all_times, $date ), and
+				// copies of those templates in a theme's mage-event/ folder still call it that
+				// way. The list of dates then arrived here as $event_infos, registration.php
+				// found no 'all_date' in it and printed an empty box: no dates, tickets or
+				// button. Only this event's own info array is used; anything else is rebuilt.
+				if ( ! is_array( $event_infos ) || ! isset( $event_infos['event_id'] ) || (int) $event_infos['event_id'] !== (int) $event_id ) {
+					$event_infos = [];
+				}
 				// The single event template asks for the password before getting here; the
 				// [event-add-cart-section] shortcode, on any other page, does not.
 				if ( post_password_required( (int) $event_id ) ) {

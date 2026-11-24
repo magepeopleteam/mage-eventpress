@@ -17,7 +17,7 @@
 	require_once __DIR__ . '/vendor/appneck/wordpress-sdk/appneck-wordpress-sdk/appneck-sdk.php';
 	appneck_sdk_load_latest();
 
-	$GLOBALS['my_plugin_sdk'] = \Appneck\Sdk\Sdk::bootstrap(
+	$GLOBALS['mage_eventpress_appneck_sdk'] = \Appneck\Sdk\Sdk::bootstrap(
 		'pk_kPwWvzEZBtD3hCWNQtOFMdcIPEnXcxyA',  // your API key
 		'sk_pW81mYkN7UbGmF7sw7fMxMp0WdTajG2wa5OcpAOViNTYUqBN', // your product secret
 		'https://appneck.com',                  // the Appneck server URL

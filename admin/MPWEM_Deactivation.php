@@ -44,12 +44,12 @@
 			 * which case the modal simply skips the survey section.
 			 */
 			private function survey(): ?\Appneck\Sdk\Admin\DeactivationSurvey {
-				if ( empty( $GLOBALS['my_plugin_sdk'] ) || ! is_object( $GLOBALS['my_plugin_sdk'] )
-					|| ! method_exists( $GLOBALS['my_plugin_sdk'], 'deactivation_survey' ) ) {
+				if ( empty( $GLOBALS['mage_eventpress_appneck_sdk'] ) || ! is_object( $GLOBALS['mage_eventpress_appneck_sdk'] )
+					|| ! method_exists( $GLOBALS['mage_eventpress_appneck_sdk'], 'deactivation_survey' ) ) {
 					return null;
 				}
 
-				return $GLOBALS['my_plugin_sdk']->deactivation_survey();
+				return $GLOBALS['mage_eventpress_appneck_sdk']->deactivation_survey();
 			}
 
 			public function enqueue( $hook ): void {

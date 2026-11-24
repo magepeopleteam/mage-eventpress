@@ -3850,6 +3850,118 @@ die();
 			return $redirect_url;
 		}
 	}
+	add_filter( 'register_post_type_args', 'mep_attendee_post_type_args', 10, 2 );
+	if ( ! function_exists( 'mep_attendee_post_type_args' ) ) {
+		/**
+		 * Attendees are personal data, whichever add-on registers their post type
+		 * (PRO, or the standalone Form Builder add-on, which registered it with
+		 * 'public' => true). A public post type is listed by WordPress and SEO-plugin
+		 * sitemaps, and attendee slugs are attendee names. The type is never public;
+		 * the admin screens (show_ui) and the ticket page that QR codes link to
+		 * (publicly_queryable, access-checked by its template) keep the value
+		 * 'public' used to give them.
+		 *
+		 * @param array  $args      Post type arguments.
+		 * @param string $post_type Post type key.
+		 * @return array
+		 */
+		function mep_attendee_post_type_args( $args, $post_type ) {
+			if ( 'mep_events_attendees' !== $post_type || ! is_array( $args ) ) {
+				return $args;
+			}
+			$was_public = ! empty( $args['public'] );
+			foreach ( array( 'show_ui', 'publicly_queryable' ) as $key ) {
+				if ( ! isset( $args[ $key ] ) ) {
+					$args[ $key ] = $was_public;
+				}
+			}
+			$args['public']              = false;
+			$args['show_in_nav_menus']   = false;
+			$args['exclude_from_search'] = true;
+			return $args;
+		}
+	}
+	add_action( 'pre_get_posts', 'mep_attendee_block_public_queries' );
+	if ( ! function_exists( 'mep_attendee_block_public_queries' ) ) {
+		/**
+		 * The only front-end view of an attendee is its ticket page, whose template
+		 * checks who is asking. Because the type is publicly queryable, the main
+		 * query also served attendee lists (?post_type=mep_events_attendees, with
+		 * paging and search), RSS feeds and embeds (/embed/, ?embed=true by id) to
+		 * anyone, and none of those go through that template. They list attendee
+		 * names, so they find nothing and answer 404.
+		 *
+		 * @param WP_Query $query Query being prepared.
+		 */
+		function mep_attendee_block_public_queries( $query ) {
+			if ( is_admin() || ! $query->is_main_query() ) {
+				return;
+			}
+			if ( ! in_array( 'mep_events_attendees', (array) $query->get( 'post_type' ), true ) ) {
+				return;
+			}
+			if ( $query->is_singular() && ! $query->is_embed() && ! $query->is_feed() && ! $query->is_trackback() ) {
+				return;
+			}
+			// 'p' wins over post__in in WP_Query, so clear it too (?p=ID&embed=true).
+			$query->set( 'p', 0 );
+			$query->set( 'post__in', array( 0 ) );
+			$query->set( 'mep_attendee_blocked', 1 );
+		}
+	}
+	add_filter( 'pre_handle_404', 'mep_attendee_blocked_query_404', 10, 2 );
+	if ( ! function_exists( 'mep_attendee_blocked_query_404' ) ) {
+		/**
+		 * Lists, searches and feeds that find nothing still answer 200; a refused
+		 * attendee query answers 404.
+		 *
+		 * @param bool     $preempt  Whether another callback already handled the 404.
+		 * @param WP_Query $wp_query Main query.
+		 * @return bool
+		 */
+		function mep_attendee_blocked_query_404( $preempt, $wp_query ) {
+			if ( $preempt || ! $wp_query instanceof WP_Query || ! $wp_query->get( 'mep_attendee_blocked' ) ) {
+				return $preempt;
+			}
+			$wp_query->set_404();
+			status_header( 404 );
+			nocache_headers();
+			return true;
+		}
+	}
+	add_filter( 'wp_insert_post_data', 'mep_attendee_neutral_slug', 10, 3 );
+	if ( ! function_exists( 'mep_attendee_neutral_slug' ) ) {
+		/**
+		 * Attendee posts are titled with the attendee's name, so WordPress made the
+		 * name the URL slug, and that URL is printed in every ticket's QR code. A new
+		 * attendee gets a random slug instead. Slugs already stored are kept, so QR
+		 * codes on tickets already sent keep working; a slug a caller passes is kept.
+		 *
+		 * @param array $data                Sanitized post data about to be saved.
+		 * @param array $postarr             Sanitized post array (with the stored post merged in on updates).
+		 * @param array|null $unsanitized_postarr Post array as passed by the caller (not passed before WP 5.4.1).
+		 * @return array
+		 */
+		function mep_attendee_neutral_slug( $data, $postarr, $unsanitized_postarr = null ) {
+			if ( ! isset( $data['post_type'] ) || 'mep_events_attendees' !== $data['post_type'] ) {
+				return $data;
+			}
+			if ( ! is_array( $unsanitized_postarr ) ) {
+				$unsanitized_postarr = (array) $postarr;
+			}
+			// WordPress gives drafts no slug until they are published; do the same.
+			if ( in_array( $data['post_status'], array( 'draft', 'pending', 'auto-draft' ), true ) ) {
+				return $data;
+			}
+			if ( isset( $unsanitized_postarr['post_name'] ) && '' !== (string) $unsanitized_postarr['post_name'] ) {
+				return $data;
+			}
+			$post_id           = ! empty( $postarr['ID'] ) ? (int) $postarr['ID'] : 0;
+			$slug              = sanitize_title( 'ticket-' . strtolower( wp_generate_password( 12, false, false ) ) );
+			$data['post_name'] = wp_unique_post_slug( $slug, $post_id, $data['post_status'], 'mep_events_attendees', 0 );
+			return $data;
+		}
+	}
 	if ( ! function_exists( 'mep_elementor_get_tax_term' ) ) {
 		function mep_elementor_get_tax_term( $tax ) {
 			$terms = get_terms( array(

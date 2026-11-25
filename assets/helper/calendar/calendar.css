@@ -493,6 +493,62 @@
 	display: none;
 }
 
+/* Available tickets badge inside calendar event cells */
+.mep-calendar-container .mep-cal-event-stock-badge {
+	display: inline-flex;
+	align-items: center;
+	flex: 0 0 auto;
+	font-size: 0.72em;
+	font-weight: 600;
+	line-height: 1.2;
+	padding: 1px 6px;
+	border-radius: 999px;
+	white-space: nowrap;
+	background: rgba(255, 255, 255, 0.22);
+	color: inherit;
+}
+
+.mep-calendar-container.fc .fc-dayGridMonth-view .fc-daygrid-event .mep-cal-event-stock-badge,
+.mep-calendar-container .mep-cal-lite-event .mep-cal-event-stock-badge {
+	margin-left: auto;
+}
+
+.mep-calendar-container .mep-cal-lite-event {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	min-width: 0;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.mep-calendar-container .mep-cal-lite-event .mep-cal-event-title {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.mep-calendar-container.fc .fc-list-event .mep-cal-event-stock-badge {
+	margin-left: 8px;
+}
+
+.mep-calendar-container.fc .fc-list-event .mep-cal-event-stock-available {
+	background: #e8f5e9;
+	color: #1e7e34;
+}
+
+.mep-calendar-container.fc .fc-list-event .mep-cal-event-stock-low {
+	background: #fff3cd;
+	color: #856404;
+}
+
+.mep-calendar-container.fc .fc-list-event .mep-cal-event-stock-soldout {
+	background: #f8d7da;
+	color: #721c24;
+}
+
 .mep-calendar-container.fc .fc-dayGridMonth-view .fc-daygrid-event:hover {
 	transform: none;
 }

@@ -654,8 +654,10 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$settings                   = mep_cal_get_all_settings();
 			$hide_expired               = $settings['mep_cal_hide_expired'];
 			$show_expired_events        = isset( $_POST['show_expired_events'] ) ? sanitize_text_field( wp_unslash( $_POST['show_expired_events'] ) ) : $settings['mep_cal_show_expired_events'];
-			$expired_event_color        = $settings['mep_cal_expired_event_color'];
-			$expired_text_color         = $settings['mep_cal_expired_text_color'];
+			$expired_event_color        = isset( $_POST['expired_event_color'] ) && ! empty( $_POST['expired_event_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['expired_event_color'] ) ) : $settings['mep_cal_expired_event_color'];
+			$expired_text_color         = isset( $_POST['expired_text_color'] ) && ! empty( $_POST['expired_text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['expired_text_color'] ) ) : $settings['mep_cal_expired_text_color'];
+			$expired_event_color        = $expired_event_color ? $expired_event_color : $settings['mep_cal_expired_event_color'];
+			$expired_text_color         = $expired_text_color ? $expired_text_color : $settings['mep_cal_expired_text_color'];
 			$event_color                = isset( $_POST['event_color'] ) && ! empty( $_POST['event_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['event_color'] ) ) : $settings['mep_cal_event_color'];
 			$text_color                 = isset( $_POST['text_color'] ) && ! empty( $_POST['text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color'] ) ) : $settings['mep_cal_event_text_color'];
 			$sold_out_color             = $settings['mep_cal_sold_out_color'];
@@ -1847,6 +1849,11 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					$sanitized[ $key ] = in_array( $value, $allowed_sources, true ) ? $value : 'all';
 				} elseif ( 'mep_cal_specific_events' === $key ) {
 					$sanitized[ $key ] = $this->sanitize_event_ids( $value );
+				} elseif ( 'mep_cal_event_click' === $key ) {
+					$allowed_clicks    = array( 'navigate', 'tooltip', 'none' );
+					$sanitized[ $key ] = in_array( $value, $allowed_clicks, true ) ? $value : 'navigate';
+				} elseif ( 'mep_cal_show_view_switcher' === $key ) {
+					$sanitized[ $key ] = ( 'no' === $value ) ? 'no' : 'yes';
 				} elseif ( $key === 'mep_cal_low_stock_threshold' ) {
 					$sanitized[ $key ] = absint( $value );
 				} else {
@@ -1934,6 +1941,26 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 										<option value="yes" <?php selected( $settings['mep_cal_show_tooltip'], 'yes' ); ?>><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></option>
 										<option value="no" <?php selected( $settings['mep_cal_show_tooltip'], 'no' ); ?>><?php esc_html_e( 'No', 'mage-eventpress' ); ?></option>
 									</select>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="mep_cal_event_click"><?php esc_html_e( 'Event Click Action', 'mage-eventpress' ); ?></label></th>
+								<td>
+									<select name="mep_calendar_settings[mep_cal_event_click]" id="mep_cal_event_click">
+										<option value="navigate" <?php selected( $settings['mep_cal_event_click'], 'navigate' ); ?>><?php esc_html_e( 'Open Event Page', 'mage-eventpress' ); ?></option>
+										<option value="tooltip" <?php selected( $settings['mep_cal_event_click'], 'tooltip' ); ?>><?php esc_html_e( 'Show Tooltip', 'mage-eventpress' ); ?></option>
+										<option value="none" <?php selected( $settings['mep_cal_event_click'], 'none' ); ?>><?php esc_html_e( 'Do Nothing', 'mage-eventpress' ); ?></option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="mep_cal_show_view_switcher"><?php esc_html_e( 'Show View Switcher', 'mage-eventpress' ); ?></label></th>
+								<td>
+									<select name="mep_calendar_settings[mep_cal_show_view_switcher]" id="mep_cal_show_view_switcher">
+										<option value="yes" <?php selected( $settings['mep_cal_show_view_switcher'], 'yes' ); ?>><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></option>
+										<option value="no" <?php selected( $settings['mep_cal_show_view_switcher'], 'no' ); ?>><?php esc_html_e( 'No', 'mage-eventpress' ); ?></option>
+									</select>
+									<p class="description"><?php esc_html_e( 'Show Month/Week/Day/List view buttons in Full style.', 'mage-eventpress' ); ?></p>
 								</td>
 							</tr>
 							<tr>
@@ -2198,7 +2225,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 								</thead>
 								<tbody>
 									<tr><td><code>style</code></td><td>full</td><td><?php esc_html_e( 'Calendar style: full or lite', 'mage-eventpress' ); ?></td></tr>
-									<tr><td><code>show_stock_details</code></td><td>no</td><td><?php esc_html_e( 'Show seat availability in tooltip', 'mage-eventpress' ); ?></td></tr>
+									<tr><td><code>show_stock_details</code></td><td>no</td><td><?php esc_html_e( 'Show available tickets in calendar and tooltip', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>hide_time</code></td><td>no</td><td><?php esc_html_e( 'Hide event time', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>split_multi_day</code></td><td>no</td><td><?php esc_html_e( 'Show multi-day events as separate day blocks instead of one long spanning bar', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>cat</code></td><td>0</td><td><?php esc_html_e( 'Filter by category ID/slug (comma-separated)', 'mage-eventpress' ); ?></td></tr>
@@ -2227,7 +2254,9 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 									<tr><td><code>show_organizer</code></td><td>no</td><td><?php esc_html_e( 'Show organizer in tooltip', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>show_recurring_badge</code></td><td>yes</td><td><?php esc_html_e( 'Show recurring/multi-date badge', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>hide_tooltip</code></td><td>no</td><td><?php esc_html_e( 'Disable tooltip completely', 'mage-eventpress' ); ?></td></tr>
+									<tr><td><code>event_click</code></td><td>(setting)</td><td><?php esc_html_e( 'Click behavior: navigate, tooltip, none', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>show_navigation</code></td><td>yes</td><td><?php esc_html_e( 'Show prev/next/today buttons', 'mage-eventpress' ); ?></td></tr>
+									<tr><td><code>show_view_switcher</code></td><td>(setting)</td><td><?php esc_html_e( 'Show Month/Week/Day/List view switcher', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>show_year_nav</code></td><td>(setting)</td><td><?php esc_html_e( 'Show prev/next year buttons', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>show_prev_next</code></td><td>(setting)</td><td><?php esc_html_e( 'Show prev/next month arrows', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>show_expired_events</code></td><td>(setting)</td><td><?php esc_html_e( 'Show expired events: yes (with faded style) or no (hide)', 'mage-eventpress' ); ?></td></tr>

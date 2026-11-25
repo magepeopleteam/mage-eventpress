@@ -551,25 +551,7 @@
 
             // Style expired events — use !important to override theme CSS
             eventDidMount: function(info) {
-                var props = info.event.extendedProps || {};
-                if (props.isExpired) {
-                    info.el.classList.add('mep-cal-expired-event');
-                    info.el.style.setProperty('background-color', expiredColor, 'important');
-                    info.el.style.setProperty('border-color', expiredColor, 'important');
-                    info.el.style.setProperty('color', expiredTextColor, 'important');
-                    info.el.style.setProperty('background-image', 'none', 'important');
-                    info.el.style.opacity = expiredOpacity;
-                    if (props.expiredBadge) {
-                        info.el.title = mepCalendar.i18n.expired + ': ' + info.event.title;
-                    }
-                }
-                if (props.isCancelled) {
-                    info.el.title = (mepCalendar.i18n.cancelled || 'Cancelled') + ': ' + info.event.title;
-                }
-
-                styleCalendarEventCard(info, explicitEventColor);
-                stabilizeMonthGridEvent(info);
-                stabilizeTimeGridAllDayEvent(info);
+                handleCalendarEventDidMount(info, expiredColor, expiredTextColor, expiredOpacity, explicitEventColor);
             },
 
             eventsSet: function(events) {
@@ -663,12 +645,8 @@
                     }
                 }
 
-                // Stock indicator dot
-                if (!isMonthGrid && props.showStock === 'yes' && props.regStatus === 'on' && props.totalSeats > 0) {
-                    if (props.availableSeats <= 0) {
-                        html += ' <span class="mep-cal-stock-dot mep-cal-stock-dot-soldout" title="' + mepCalendar.i18n.soldOut + '">â—</span>';
-                    }
-                }
+                // Available tickets badge
+                html += buildEventStockBadgeHtml(props);
 
                 html += '</div>';
 
@@ -698,10 +676,14 @@
 
         var firstDay = parseInt($el.data('first-day')) || 0;
         var hideTooltip = $el.data('hide-tooltip') === 'yes';
-        var clickAction = $el.data('event-click') || 'navigate';
         var settings = mepCalendar.settings || {};
+        var clickAction = $el.data('event-click') || settings.mep_cal_event_click || 'navigate';
+        var expiredColor = $el.data('expired-event-color') || settings.mep_cal_expired_event_color || '#999999';
+        var expiredTextColor = $el.data('expired-text-color') || settings.mep_cal_expired_text_color || '#ffffff';
+        var expiredOpacity = $el.data('expired-opacity') || settings.mep_cal_expired_opacity || '0.6';
         var locale = resolveCalendarLocaleCode(settings.mep_cal_locale || '');
         var height = normalizeCalendarHeight($el.data('height') || 'auto');
+        var explicitEventColor = resolveConfiguredEventColor($el);
 
         var calendarOptions = {
             initialView: 'dayGridMonth',
@@ -728,6 +710,10 @@
 
             dayCellDidMount: function(info) {
                 applyCalendarDayAppearance($el, info.el, info.date, false);
+            },
+
+            eventDidMount: function(info) {
+                handleCalendarEventDidMount(info, expiredColor, expiredTextColor, expiredOpacity, explicitEventColor);
             },
 
             events: function(info, successCallback, failureCallback) {
@@ -769,8 +755,10 @@
             },
 
             eventContent: function(arg) {
+                var props = arg.event.extendedProps || {};
                 var html = '<div class="mep-cal-event-inner mep-cal-lite-event">';
                 html += '<span class="mep-cal-event-title">' + escapeHtml(arg.event.title) + '</span>';
+                html += buildEventStockBadgeHtml(props);
                 html += '</div>';
                 return { html: html };
             }
@@ -884,6 +872,8 @@
             event_limit: $el.data('event-limit') || '-1',
             event_color: $el.data('event-color') || '',
             text_color: $el.data('text-color') || '',
+            expired_event_color: $el.data('expired-event-color') || '',
+            expired_text_color: $el.data('expired-text-color') || '',
             show_stock_details: $el.data('show-stock') || 'no',
             hide_time: $el.data('hide-time') || 'no',
             split_multi_day: $el.data('split-multi-day') || 'no',
@@ -1051,6 +1041,42 @@
         html += '</div>';
 
         return html;
+    }
+
+    /**
+     * Build compact stock availability badge HTML for calendar event cells
+     */
+    function buildEventStockBadgeHtml(props) {
+        if (!props || props.showStock !== 'yes' || props.regStatus !== 'on' || props.isCancelled || props.isExpired) {
+            return '';
+        }
+
+        var totalSeats = parseInt(props.totalSeats, 10) || 0;
+        if (!props.unlimitedSeats && totalSeats <= 0) {
+            return '';
+        }
+
+        var i18n = mepCalendar.i18n || {};
+        var settings = mepCalendar.settings || {};
+        var threshold = parseInt(settings.mep_cal_low_stock_threshold, 10) || 5;
+        var available = parseInt(props.availableSeats, 10) || 0;
+        var label = '';
+        var statusClass = 'mep-cal-event-stock-available';
+
+        if (props.unlimitedSeats) {
+            label = i18n.unlimited || 'Unlimited';
+        } else if (available <= 0) {
+            label = i18n.soldOut || 'Sold Out';
+            statusClass = 'mep-cal-event-stock-soldout';
+        } else {
+            label = available + ' ' + (i18n.available || 'Available');
+            if (available <= threshold) {
+                statusClass = 'mep-cal-event-stock-low';
+            }
+        }
+
+        var safeLabel = escapeHtml(label);
+        return ' <span class="mep-cal-event-stock-badge ' + statusClass + '" title="' + safeLabel + '">' + safeLabel + '</span>';
     }
 
     /**
@@ -1275,6 +1301,28 @@
         if (pointer) {
             positionTooltip($tooltip, pointer);
         }
+    }
+
+    function handleCalendarEventDidMount(info, expiredColor, expiredTextColor, expiredOpacity, explicitEventColor) {
+        var props = info.event.extendedProps || {};
+        if (props.isExpired) {
+            info.el.classList.add('mep-cal-expired-event');
+            info.el.style.setProperty('background-color', expiredColor, 'important');
+            info.el.style.setProperty('border-color', expiredColor, 'important');
+            info.el.style.setProperty('color', expiredTextColor, 'important');
+            info.el.style.setProperty('background-image', 'none', 'important');
+            info.el.style.opacity = expiredOpacity;
+            if (props.expiredBadge) {
+                info.el.title = mepCalendar.i18n.expired + ': ' + info.event.title;
+            }
+        }
+        if (props.isCancelled) {
+            info.el.title = (mepCalendar.i18n.cancelled || 'Cancelled') + ': ' + info.event.title;
+        }
+
+        styleCalendarEventCard(info, explicitEventColor);
+        stabilizeMonthGridEvent(info);
+        stabilizeTimeGridAllDayEvent(info);
     }
 
     function applyStockStylesToEvent(event, props) {

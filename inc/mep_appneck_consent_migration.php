@@ -36,7 +36,7 @@ if ( ! function_exists( 'mep_migrate_appsero_tracking_consent' ) ) {
 			return;
 		}
 
-		$sdk = isset( $GLOBALS['my_plugin_sdk'] ) ? $GLOBALS['my_plugin_sdk'] : null;
+		$sdk = isset( $GLOBALS['mage_eventpress_appneck_sdk'] ) ? $GLOBALS['mage_eventpress_appneck_sdk'] : null;
 		if ( ! is_object( $sdk ) || ! method_exists( $sdk, 'consent' ) ) {
 			return;
 		}

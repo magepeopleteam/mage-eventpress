@@ -356,10 +356,10 @@
 			 * @param int $event_id Event post ID.
 			 * @return string[]
 			 */
-			public static function get_bookable_days( $event_id ) {
+			public static function get_bookable_days( $event_id, $fresh = false ) {
 				static $cache = [];
 				$event_id = (int) $event_id;
-				if ( ! isset( $cache[ $event_id ] ) ) {
+				if ( $fresh || ! isset( $cache[ $event_id ] ) ) {
 					$days = [];
 					foreach ( (array) self::get_dates( $event_id ) as $entry ) {
 						$value = is_array( $entry ) ? ( isset( $entry['time'] ) ? $entry['time'] : ( isset( $entry['date'] ) ? $entry['date'] : '' ) ) : $entry;
@@ -385,9 +385,10 @@
 			 *
 			 * @param int    $event_id Event post ID.
 			 * @param string $date     Posted date.
+			 * @param bool   $fresh    Bypass static cache when true.
 			 * @return string|null
 			 */
-			public static function canonical_booking_date( $event_id, $date ) {
+			public static function canonical_booking_date( $event_id, $date, $fresh = false ) {
 				$date = trim( str_replace( 'T', ' ', is_scalar( $date ) ? (string) $date : '' ) );
 				if ( '' === $date ) {
 					return '';
@@ -397,7 +398,7 @@
 					return null;
 				}
 				$day = date( 'Y-m-d', $time );
-				if ( ! in_array( $day, self::get_bookable_days( $event_id ), true ) ) {
+				if ( ! in_array( $day, self::get_bookable_days( $event_id, $fresh ), true ) ) {
 					return null;
 				}
 				if ( ! preg_match( '/\d{1,2}:\d{2}/', $date ) ) {
@@ -406,7 +407,7 @@
 				// A start time the day does not have would count its seats on its own. Midnight
 				// stays allowed: a date-only link resolves to the day's first start later.
 				$hm     = date( 'H:i', $time );
-				$starts = self::get_start_times_of_day( $event_id, $day );
+				$starts = self::get_start_times_of_day( $event_id, $day, $fresh );
 				if ( '00:00' !== $hm && $starts && ! in_array( $hm, $starts, true ) ) {
 					return null;
 				}
@@ -417,12 +418,13 @@
 			 *
 			 * @param int    $event_id Event post ID.
 			 * @param string $day      Y-m-d.
+			 * @param bool   $fresh    Bypass static cache when true.
 			 * @return string[] Empty when the event lists no time for that day.
 			 */
-			public static function get_start_times_of_day( $event_id, $day ) {
+			public static function get_start_times_of_day( $event_id, $day, $fresh = false ) {
 				static $cache = [];
 				$key = (int) $event_id . '|' . $day;
-				if ( isset( $cache[ $key ] ) ) {
+				if ( ! $fresh && isset( $cache[ $key ] ) ) {
 					return $cache[ $key ];
 				}
 				$starts = [];

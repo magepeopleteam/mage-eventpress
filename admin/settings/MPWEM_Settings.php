@@ -462,29 +462,32 @@
 					$mep_time_zone_display = isset( $_POST['mep_time_zone_display'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_time_zone_display'] ) ) : 'no';
 					update_post_meta( $post_id, 'mep_time_zone_display', $mep_time_zone_display );
 					// These legacy registration fields are rendered by PRO. Preserve their
-					// stored values when PRO is inactive or a section is omitted.
-					$mep_full_name           = isset( $_POST['mep_full_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_full_name'] ) ) : get_post_meta( $post_id, 'mep_full_name', true );
-					$mep_reg_email           = isset( $_POST['mep_reg_email'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_email'] ) ) : get_post_meta( $post_id, 'mep_reg_email', true );
-					$mep_reg_phone           = isset( $_POST['mep_reg_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_phone'] ) ) : get_post_meta( $post_id, 'mep_reg_phone', true );
-					$mep_reg_address         = isset( $_POST['mep_reg_address'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_address'] ) ) : get_post_meta( $post_id, 'mep_reg_address', true );
-					$mep_reg_designation     = isset( $_POST['mep_reg_designation'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_designation'] ) ) : get_post_meta( $post_id, 'mep_reg_designation', true );
-					$mep_reg_website         = isset( $_POST['mep_reg_website'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_website'] ) ) : get_post_meta( $post_id, 'mep_reg_website', true );
-					$mep_reg_veg             = isset( $_POST['mep_reg_veg'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_veg'] ) ) : get_post_meta( $post_id, 'mep_reg_veg', true );
-					$mep_reg_company         = isset( $_POST['mep_reg_company'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_company'] ) ) : get_post_meta( $post_id, 'mep_reg_company', true );
-					$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_gender'] ) ) : get_post_meta( $post_id, 'mep_reg_gender', true );
-					$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_tshirtsize'] ) ) : get_post_meta( $post_id, 'mep_reg_tshirtsize', true );
-					$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_tshirtsize_list'] ) ) : get_post_meta( $post_id, 'mep_reg_tshirtsize_list', true );
-					update_post_meta( $post_id, 'mep_full_name', $mep_full_name );
-					update_post_meta( $post_id, 'mep_reg_email', $mep_reg_email );
-					update_post_meta( $post_id, 'mep_reg_phone', $mep_reg_phone );
-					update_post_meta( $post_id, 'mep_reg_address', $mep_reg_address );
-					update_post_meta( $post_id, 'mep_reg_designation', $mep_reg_designation );
-					update_post_meta( $post_id, 'mep_reg_website', $mep_reg_website );
-					update_post_meta( $post_id, 'mep_reg_veg', $mep_reg_veg );
-					update_post_meta( $post_id, 'mep_reg_company', $mep_reg_company );
-					update_post_meta( $post_id, 'mep_reg_gender', $mep_reg_gender );
-					update_post_meta( $post_id, 'mep_reg_tshirtsize', $mep_reg_tshirtsize );
-					update_post_meta( $post_id, 'mep_reg_tshirtsize_list', $mep_reg_tshirtsize_list );
+					// stored values when PRO is inactive or a section is omitted, and let
+					// PRO formBuilder JSON saver own them when mep_fb_formbuilder_json posts.
+					if ( empty( $_POST['mep_fb_formbuilder_json'] ) || ! class_exists( 'MPWEM_Form_Manager' ) ) {
+						$mep_full_name           = isset( $_POST['mep_full_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_full_name'] ) ) : get_post_meta( $post_id, 'mep_full_name', true );
+						$mep_reg_email           = isset( $_POST['mep_reg_email'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_email'] ) ) : get_post_meta( $post_id, 'mep_reg_email', true );
+						$mep_reg_phone           = isset( $_POST['mep_reg_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_phone'] ) ) : get_post_meta( $post_id, 'mep_reg_phone', true );
+						$mep_reg_address         = isset( $_POST['mep_reg_address'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_address'] ) ) : get_post_meta( $post_id, 'mep_reg_address', true );
+						$mep_reg_designation     = isset( $_POST['mep_reg_designation'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_designation'] ) ) : get_post_meta( $post_id, 'mep_reg_designation', true );
+						$mep_reg_website         = isset( $_POST['mep_reg_website'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_website'] ) ) : get_post_meta( $post_id, 'mep_reg_website', true );
+						$mep_reg_veg             = isset( $_POST['mep_reg_veg'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_veg'] ) ) : get_post_meta( $post_id, 'mep_reg_veg', true );
+						$mep_reg_company         = isset( $_POST['mep_reg_company'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_company'] ) ) : get_post_meta( $post_id, 'mep_reg_company', true );
+						$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_gender'] ) ) : get_post_meta( $post_id, 'mep_reg_gender', true );
+						$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_tshirtsize'] ) ) : get_post_meta( $post_id, 'mep_reg_tshirtsize', true );
+						$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_tshirtsize_list'] ) ) : get_post_meta( $post_id, 'mep_reg_tshirtsize_list', true );
+						update_post_meta( $post_id, 'mep_full_name', $mep_full_name );
+						update_post_meta( $post_id, 'mep_reg_email', $mep_reg_email );
+						update_post_meta( $post_id, 'mep_reg_phone', $mep_reg_phone );
+						update_post_meta( $post_id, 'mep_reg_address', $mep_reg_address );
+						update_post_meta( $post_id, 'mep_reg_designation', $mep_reg_designation );
+						update_post_meta( $post_id, 'mep_reg_website', $mep_reg_website );
+						update_post_meta( $post_id, 'mep_reg_veg', $mep_reg_veg );
+						update_post_meta( $post_id, 'mep_reg_company', $mep_reg_company );
+						update_post_meta( $post_id, 'mep_reg_gender', $mep_reg_gender );
+						update_post_meta( $post_id, 'mep_reg_tshirtsize', $mep_reg_tshirtsize );
+						update_post_meta( $post_id, 'mep_reg_tshirtsize_list', $mep_reg_tshirtsize_list );
+					}
 					$sku = isset( $_POST['mep_event_sku'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_sku'] ) ) : $post_id;
 					update_post_meta( $post_id, '_sku', $sku );
 					$mep_show_end_datetime = isset( $_POST['mep_show_end_datetime'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_end_datetime'] ) ) ? 'yes' : 'no';

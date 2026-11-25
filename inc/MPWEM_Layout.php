@@ -257,34 +257,38 @@
 
 				// Switched on with no fields stored yet: the PRO builder shows its
 				// default fields for such an event, so seed the same core fields
-				// and quantity still opens the attendee form.
+				// and quantity still opens the attendee form. An explicitly saved
+				// empty builder JSON ('[]') means the admin deleted every field.
 				if ( empty( $form_array ) && self::is_attendee_form_enabled( $event_id ) ) {
-					$form_id    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
-					$form_id    = $form_id == 'custom_form' ? $event_id : $form_id;
-					$form_array = [
-						'user_name'  => [
-							'type'     => 'text',
-							'name'     => 'user_name',
-							'd_name'   => 'ea_name',
-							'required' => 1,
-							'label'    => esc_html__( 'Name', 'mage-eventpress' ),
-						],
-						'user_email' => [
-							'type'     => 'email',
-							'name'     => 'user_email',
-							'd_name'   => 'ea_email',
-							'required' => 1,
-							'label'    => esc_html__( 'Email', 'mage-eventpress' ),
-						],
-						'user_phone' => [
-							'type'     => 'text',
-							'name'     => 'user_phone',
-							'd_name'   => 'ea_phone',
-							'required' => 1,
-							'label'    => esc_html__( 'Phone', 'mage-eventpress' ),
-						],
-					];
-					$form_array = self::apply_conditional_infos_to_form( $form_array, $form_id );
+					$form_id     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
+					$form_id     = $form_id == 'custom_form' ? $event_id : $form_id;
+					$stored_json = MPWEM_Global_Function::get_post_info( $form_id, 'mep_fb_formbuilder_json', '' );
+					if ( '[]' !== $stored_json ) {
+						$form_array = [
+							'user_name'  => [
+								'type'     => 'text',
+								'name'     => 'user_name',
+								'd_name'   => 'ea_name',
+								'required' => 1,
+								'label'    => esc_html__( 'Name', 'mage-eventpress' ),
+							],
+							'user_email' => [
+								'type'     => 'email',
+								'name'     => 'user_email',
+								'd_name'   => 'ea_email',
+								'required' => 1,
+								'label'    => esc_html__( 'Email', 'mage-eventpress' ),
+							],
+							'user_phone' => [
+								'type'     => 'text',
+								'name'     => 'user_phone',
+								'd_name'   => 'ea_phone',
+								'required' => 1,
+								'label'    => esc_html__( 'Phone', 'mage-eventpress' ),
+							],
+						];
+						$form_array = self::apply_conditional_infos_to_form( $form_array, $form_id );
+					}
 				}
 
 				return $form_array;

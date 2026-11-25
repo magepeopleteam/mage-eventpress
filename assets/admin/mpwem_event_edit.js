@@ -8826,6 +8826,10 @@
             window.tinymce.triggerSave();
         }
 
+        if (typeof window.mepFbEventBuilderSync === 'function') {
+            window.mepFbEventBuilderSync();
+        }
+
         $('#mpwem_post_status_action').val('');
         $('#mpwem_quiet_save').val('1');
         $('#mpwem_active_step').val(($root.find('.mpwem-step.is-active').data('step-key') || STEP_KEY_FALLBACK).toString());

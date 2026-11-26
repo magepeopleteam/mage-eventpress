@@ -7021,10 +7021,24 @@ die();
 		function mep_filter_public_related_events( $event_ids ) {
 			return array_filter( (array) $event_ids, static function ( $event_id ) {
 				$event_id = absint( $event_id );
-				return $event_id
-					&& 'mep_events' === get_post_type( $event_id )
-					&& 'publish' === get_post_status( $event_id )
-					&& ! post_password_required( $event_id );
+				if (
+					! $event_id
+					|| 'mep_events' !== get_post_type( $event_id )
+					|| 'publish' !== get_post_status( $event_id )
+					|| post_password_required( $event_id )
+				) {
+					return false;
+				}
+				if ( apply_filters( 'mep_hide_expired_related_events', true, $event_id ) ) {
+					$no_date = get_post_meta( $event_id, 'mep_event_no_date', true );
+					if ( 'yes' !== $no_date && class_exists( 'MPWEM_Functions' ) ) {
+						$upcoming_dates = MPWEM_Functions::get_dates( $event_id );
+						if ( empty( $upcoming_dates ) ) {
+							return false;
+						}
+					}
+				}
+				return true;
 			} );
 		}
 	}

@@ -167,9 +167,10 @@
 		                                        $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		                                        $hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		                                        $visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		                                        $start_year  = date( 'Y', strtotime( $start_date ) );
-		                                        $start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		                                        $start_day   = date( 'j', strtotime( $start_date ) );
+		                                        $min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		                                        $start_year  = date( 'Y', strtotime( $min_end_base ) );
+		                                        $start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		                                        $start_day   = date( 'j', strtotime( $min_end_base ) );
 				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
 				if($mep_hide_old_date=='yes'){
 	                                        ?>
@@ -218,13 +219,14 @@
                                                         //self::date_item( 'event_more_start_date_normal[]', $more_start_date );
 
 		                                                $date_format  = MPWEM_Global_Function::date_picker_format();
-		                                                $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                                                $now_current  = current_time( 'Y-m-d' );
+		                                                $now          = date_i18n( $date_format, strtotime( $now_current ) );
 		                                                $hidden_more_start_date   = $more_start_date ? date( 'Y-m-d', strtotime( $more_start_date ) ) : '';
 		                                                $visible_more_start_date = $more_start_date ? date_i18n( $date_format, strtotime( $more_start_date ) ) : '';
-		                                                $_more_start_date=strtotime( $more_start_date )<strtotime(current_time( 'Y-m-d' ) )?current_time( 'Y-m-d' ) :$more_start_date;
-		                                                $start_year  = date( 'Y', strtotime( $_more_start_date ) );
-		                                                $start_month = ( date( 'n', strtotime( $_more_start_date ) ) - 1 );
-		                                                $start_day   = date( 'j', strtotime( $_more_start_date ) );
+		                                                $_more_start_date=strtotime( $more_start_date )<strtotime( $now_current )?$now_current :$more_start_date;
+		                                                $start_year  = date( 'Y', strtotime( $now_current ) );
+		                                                $start_month = ( date( 'n', strtotime( $now_current ) ) - 1 );
+		                                                $start_day   = date( 'j', strtotime( $now_current ) );
                                                         $id='event_more_start_date_normal_'.$count;
 		                                                $mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
                                                         if($mep_hide_old_date=='yes'){
@@ -265,10 +267,10 @@
 		                                                $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		                                                $hidden_more_end_date   = $more_end_date ? date( 'Y-m-d', strtotime( $more_end_date ) ) : '';
 		                                                $visible_more_end_date = $more_end_date ? date_i18n( $date_format, strtotime( $more_end_date ) ) : '';
-		                                                $_more_end_date=strtotime( $more_end_date )<strtotime($_more_start_date )?$_more_start_date :$more_end_date;
-		                                                $start_year  = date( 'Y', strtotime( $_more_end_date ) );
-		                                                $start_month = ( date( 'n', strtotime( $_more_end_date ) ) - 1 );
-		                                                $start_day   = date( 'j', strtotime( $_more_end_date ) );
+		                                                $_more_end_min = $_more_start_date ? $_more_start_date : current_time( 'Y-m-d' );
+		                                                $start_year  = date( 'Y', strtotime( $_more_end_min ) );
+		                                                $start_month = ( date( 'n', strtotime( $_more_end_min ) ) - 1 );
+		                                                $start_day   = date( 'j', strtotime( $_more_end_min ) );
                                                         $id='event_more_end_date_normal_'.$count;
                                                         $count++;
 						$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
@@ -439,9 +441,10 @@
 		                                        $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		                                        $hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		                                        $visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		                                        $start_year  = date( 'Y', strtotime( $start_date ) );
-		                                        $start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		                                        $start_day   = date( 'j', strtotime( $start_date ) );
+		                                        $min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		                                        $start_year  = date( 'Y', strtotime( $min_end_base ) );
+		                                        $start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		                                        $start_day   = date( 'j', strtotime( $min_end_base ) );
 				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
 				if($mep_hide_old_date=='yes'){
                                                 ?>
@@ -493,13 +496,14 @@
 
 
 		                                                $date_format  = MPWEM_Global_Function::date_picker_format();
-		                                                $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                                                $now_current  = current_time( 'Y-m-d' );
+		                                                $now          = date_i18n( $date_format, strtotime( $now_current ) );
 		                                                $hidden_more_start_date   = $more_start_date ? date( 'Y-m-d', strtotime( $more_start_date ) ) : '';
 		                                                $visible_more_start_date = $more_start_date ? date_i18n( $date_format, strtotime( $more_start_date ) ) : '';
-		                                                $_more_start_date=strtotime( $more_start_date )<strtotime(current_time( 'Y-m-d' ) )?current_time( 'Y-m-d' ) :$more_start_date;
-		                                                $start_year  = date( 'Y', strtotime( $_more_start_date ) );
-		                                                $start_month = ( date( 'n', strtotime( $_more_start_date ) ) - 1 );
-		                                                $start_day   = date( 'j', strtotime( $_more_start_date ) );
+		                                                $_more_start_date=strtotime( $more_start_date )<strtotime( $now_current )?$now_current :$more_start_date;
+		                                                $start_year  = date( 'Y', strtotime( $now_current ) );
+		                                                $start_month = ( date( 'n', strtotime( $now_current ) ) - 1 );
+		                                                $start_day   = date( 'j', strtotime( $now_current ) );
 		                                                $id='event_more_start_date_'.$count;
 					$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
 				if($mep_hide_old_date=='yes'){
@@ -543,10 +547,10 @@
 		                                                $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		                                                $hidden_more_end_date   = $more_end_date ? date( 'Y-m-d', strtotime( $more_end_date ) ) : '';
 		                                                $visible_more_end_date = $more_end_date ? date_i18n( $date_format, strtotime( $more_end_date ) ) : '';
-		                                                $_more_end_date=strtotime( $more_end_date )<strtotime($_more_start_date )?$_more_start_date :$more_end_date;
-		                                                $start_year  = date( 'Y', strtotime( $_more_end_date ) );
-		                                                $start_month = ( date( 'n', strtotime( $_more_end_date ) ) - 1 );
-		                                                $start_day   = date( 'j', strtotime( $_more_end_date ) );
+		                                                $_more_end_min = $_more_start_date ? $_more_start_date : current_time( 'Y-m-d' );
+		                                                $start_year  = date( 'Y', strtotime( $_more_end_min ) );
+		                                                $start_month = ( date( 'n', strtotime( $_more_end_min ) ) - 1 );
+		                                                $start_day   = date( 'j', strtotime( $_more_end_min ) );
 		                                                $id='event_more_end_date_'.$count;
 		                                                $count++;
 					$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
@@ -752,9 +756,10 @@
 		                        $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		                        $hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		                        $visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		                        $start_year  = date( 'Y', strtotime( $start_date ) );
-		                        $start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		                        $start_day   = date( 'j', strtotime( $start_date ) );
+		                        $min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		                        $start_year  = date( 'Y', strtotime( $min_end_base ) );
+		                        $start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		                        $start_day   = date( 'j', strtotime( $min_end_base ) );
 	                        ?>
                             <label>
                                 <input type="hidden" name="event_end_date_everyday" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>

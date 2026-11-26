@@ -3305,9 +3305,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		$hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		$visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		$start_year  = date( 'Y', strtotime( $start_date ) );
-		$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		$start_day   = date( 'j', strtotime( $start_date ) );
+		$min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		$start_year  = date( 'Y', strtotime( $min_end_base ) );
+		$start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		$start_day   = date( 'j', strtotime( $min_end_base ) );
 		?>
         <label>
             <input type="hidden" name="event_end_date_normal" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
@@ -3347,9 +3348,10 @@ die();
 		$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		$hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		$visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		$start_year  = date( 'Y', strtotime( $start_date ) );
-		$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		$start_day   = date( 'j', strtotime( $start_date ) );
+		$min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		$start_year  = date( 'Y', strtotime( $min_end_base ) );
+		$start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		$start_day   = date( 'j', strtotime( $min_end_base ) );
 		?>
         <label>
             <input required type="hidden" name="event_end_date" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
@@ -3388,9 +3390,10 @@ die();
 		$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		$hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		$visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		$start_year  = date( 'Y', strtotime( $start_date ) );
-		$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		$start_day   = date( 'j', strtotime( $start_date ) );
+		$min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		$start_year  = date( 'Y', strtotime( $min_end_base ) );
+		$start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		$start_day   = date( 'j', strtotime( $min_end_base ) );
 		?>
         <label>
             <input type="hidden" name="event_end_date_everyday" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
@@ -3429,9 +3432,10 @@ die();
 		$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		$hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		$visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		$start_year  = date( 'Y', strtotime( $start_date ) );
-		$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		$start_day   = date( 'j', strtotime( $start_date ) );
+		$min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		$start_year  = date( 'Y', strtotime( $min_end_base ) );
+		$start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		$start_day   = date( 'j', strtotime( $min_end_base ) );
 		$id='event_more_end_date_normal_'.rand();
 		?>
         <label>
@@ -3472,9 +3476,10 @@ die();
 		$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 		$hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 		$visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-		$start_year  = date( 'Y', strtotime( $start_date ) );
-		$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
-		$start_day   = date( 'j', strtotime( $start_date ) );
+		$min_end_base = $start_date ? $start_date : current_time( 'Y-m-d' );
+		$start_year  = date( 'Y', strtotime( $min_end_base ) );
+		$start_month = ( date( 'n', strtotime( $min_end_base ) ) - 1 );
+		$start_day   = date( 'j', strtotime( $min_end_base ) );
 		$id='event_more_end_date_'.rand();
 		?>
         <label>

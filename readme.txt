@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin, raselsha
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.7.16
+Stable tag: 5.7.17
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,20 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.7.17 =
+* New: Display available tickets badge and fix lite/settings gaps.
+* Improvement: Allow adding or editing event dates earlier than existing posted dates.
+* Improvement: Hide expired events in Related Events section automatically.
+* Fix: Show a fully booked non-recurring event as sold out.
+* Fix: Translate the Advanced step section headers and guide.
+* Fix: Validate event status, password and bookability in cart and checkout.
+* Fix: Show the booking section for pre-5.0.2 template copies.
+* Fix: Refresh the Dutch translation and fix wrong calendar labels.
+* Fix: Show a single speaker as a full-width profile card.
+* Fix: Give the AppNeck SDK instance its own variable name.
+* Fix: Keep attendee records out of sitemaps, lists and slugs.
+* Fix: Persist deleted attendee fields across classic and modern editors.
 
 = 5.7.16 =
 * Security: Improved security hardening.

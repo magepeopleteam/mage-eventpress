@@ -7040,25 +7040,33 @@
         return new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
 
+    function shouldHideOldDate() {
+        if (typeof mpwemEventEdit !== 'undefined' && mpwemEventEdit && typeof mpwemEventEdit.hide_old_date === 'string') {
+            return mpwemEventEdit.hide_old_date !== 'no';
+        }
+        return true;
+    }
+
     function syncRepeatedDateConstraints($scope) {
         const $context = $scope && $scope.length ? $scope : $('.mpwem-event-wizard').first();
         const $repeatSection = $context.find('[data-collapse="#mep_everyday_event"]').first();
         if (!$repeatSection.length) return;
 
-        const today = getTodayDateOnly();
+        const hideOldDate = shouldHideOldDate();
+        const minFloor = hideOldDate ? getTodayDateOnly() : null;
         const $startLabel = $repeatSection.find('input[name="event_start_date_everyday"]').first().closest('label');
         const $endLabel = $repeatSection.find('input[name="event_end_date_everyday"]').first().closest('label');
         const $startInput = $startLabel.find('.mpwem-date-input, input.formControl').first();
         const $endInput = $endLabel.find('.mpwem-date-input, input.formControl').first();
         const startValue = ($startLabel.find('input[name="event_start_date_everyday"]').first().val() || '').toString().trim();
         const startDate = parseIsoDate(startValue);
-        const endMinDate = startDate && startDate > today ? startDate : today;
+        const endMinDate = startDate && (!minFloor || startDate > minFloor) ? startDate : minFloor;
 
         if ($startInput.length) {
-            $startInput.data('mpwemMinDate', today);
+            $startInput.data('mpwemMinDate', minFloor);
             if ($.datepicker && $startInput.hasClass('hasDatepicker')) {
                 try {
-                    $startInput.datepicker('option', 'minDate', today);
+                    $startInput.datepicker('option', 'minDate', minFloor);
                 } catch (error) {
                     // Ignore incomplete legacy datepicker state.
                 }
@@ -7078,11 +7086,14 @@
     }
 
     function getDynamicDateMinDate($input) {
-        const today = getTodayDateOnly();
+        const hideOldDate = shouldHideOldDate();
+        const today = hideOldDate ? getTodayDateOnly() : null;
         const resolved = resolveDynamicDateMinDate($input, today);
-        // Whatever rule resolved the minimum (paired start/end, previous row,
-        // a captured legacy datepicker value, or none at all), past dates are
-        // never selectable - floor every result to today.
+        if (!hideOldDate) {
+            return resolved || null;
+        }
+        // When Hide Past Dates is enabled, floor every result to today while
+        // still allowing any future date regardless of other rows' dates.
         return resolved && resolved > today ? resolved : today;
     }
 
@@ -7098,8 +7109,15 @@
         const $hidden = $input.closest('label').find('input[type="hidden"]').first();
         const fieldName = ($hidden.attr('name') || $input.attr('name') || '').toString();
 
-        // Start-date fields cannot be earlier than today.
-        if (fieldName === 'event_start_date_everyday') {
+        // Start-date fields (main and "Add More Date" rows) are independent of
+        // other rows so admins can insert/edit dates earlier than existing ones.
+        if (
+            fieldName === 'event_start_date_everyday' ||
+            fieldName === 'event_start_date_normal' ||
+            fieldName === 'event_start_date' ||
+            fieldName === 'event_more_start_date_normal[]' ||
+            fieldName === 'event_more_start_date[]'
+        ) {
             return today;
         }
 
@@ -7126,37 +7144,9 @@
 
             const startDate = parseIsoDate(startValue);
             if (startDate) {
-                return pair.floorToday && startDate < today ? today : startDate;
+                return pair.floorToday && today && startDate < today ? today : startDate;
             }
             return pair.floorToday ? today : normalizeMinDate($proxyInput.data('mpwemMinDate'));
-        }
-
-        // "Add More Date" start fields: the minimum is the previous row's End
-        // date, so each additional schedule begins at/after the one above it
-        // (the first more-row starts from the main/top row's End date).
-        const moreStartPrevEnds = {
-            'event_more_start_date_normal[]': ['event_end_date_normal', 'event_more_end_date_normal[]'],
-            'event_more_start_date[]':        ['event_end_date', 'event_more_end_date[]']
-        };
-        const prevEndNames = moreStartPrevEnds[fieldName];
-        if (prevEndNames) {
-            const $prevRow = $input.closest('tr').prevAll('tr').filter(function() {
-                return $(this).closest('.mpwem_hidden_content').length === 0;
-            }).first();
-
-            if ($prevRow.length) {
-                let prevEndValue = '';
-                prevEndNames.forEach(function(name) {
-                    if (prevEndValue) return;
-                    const v = ($prevRow.find('input[name="' + name + '"]').first().val() || '').toString().trim();
-                    if (v) prevEndValue = v;
-                });
-                const prevEnd = parseIsoDate(prevEndValue);
-                if (prevEnd) {
-                    return prevEnd;
-                }
-            }
-            return normalizeMinDate($proxyInput.data('mpwemMinDate'));
         }
 
         return normalizeMinDate($proxyInput.data('mpwemMinDate'));

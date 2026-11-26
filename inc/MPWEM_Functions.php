@@ -1200,14 +1200,22 @@
 						}else{
 							$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
 							if(is_array($more_dates) && count($more_dates) > 0){
-								$last_date=end( $more_dates );
-								$more_start_date      = is_array($last_date) && array_key_exists( 'event_more_start_date', $last_date ) ? $last_date['event_more_start_date'] : '';
-								$more_start_time      = is_array($last_date) && array_key_exists( 'event_more_start_time', $last_date ) ? $last_date['event_more_start_time'] : '';
-								$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
-								$more_end_date        = is_array($last_date) && array_key_exists( 'event_more_end_date', $last_date ) ? $last_date['event_more_end_date'] : '';
-								$more_end_time        = is_array($last_date) && array_key_exists( 'event_more_end_time', $last_date ) ? $last_date['event_more_end_time'] : '';
-								$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
-								if ( $start_date_time && $more_end_date_time && strtotime( $more_end_date_time ) > $now ) {
+								$latest_end_ts = 0;
+								$more_end_date_time = '';
+								foreach ( $more_dates as $more_row ) {
+									if ( ! is_array( $more_row ) ) {
+										continue;
+									}
+									$row_end_date = array_key_exists( 'event_more_end_date', $more_row ) ? $more_row['event_more_end_date'] : '';
+									$row_end_time = array_key_exists( 'event_more_end_time', $more_row ) ? $more_row['event_more_end_time'] : '';
+									$row_end_dt   = $row_end_time ? $row_end_date . ' ' . $row_end_time : $row_end_date;
+									$row_end_ts   = $row_end_dt ? strtotime( $row_end_dt ) : false;
+									if ( $row_end_ts && $row_end_ts > $latest_end_ts ) {
+										$latest_end_ts      = $row_end_ts;
+										$more_end_date_time = $row_end_dt;
+									}
+								}
+								if ( $start_date_time && $more_end_date_time && $latest_end_ts > $now ) {
 									$all_dates[ $count ]['time'] = $start_date_time;
 									$all_dates[ $count ]['end']  = $more_end_date_time;
 									// 'end' spans to the last date (whole-course summary); keep this row's own end

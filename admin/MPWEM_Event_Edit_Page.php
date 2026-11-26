@@ -1507,6 +1507,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						'createSuccess'   => __('Speaker created successfully.', 'mage-eventpress'),
 					],
 					'advanced'      => $this->get_advanced_step_strings(),
+					'hide_old_date' => MPWEM_Global_Function::get_settings('general_setting_sec', 'mep_hide_old_date', 'yes'),
 				]
 			);
 		}

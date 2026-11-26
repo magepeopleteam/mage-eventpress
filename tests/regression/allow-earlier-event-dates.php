@@ -146,6 +146,12 @@ try {
 	$check( is_array( $saved_more ) && count( $saved_more ) === 2, 'Backend saves both later and earlier more_dates' );
 	$check( ( $saved_more[1]['event_more_start_date'] ?? '' ) === $mid_start, 'Earlier date added after later date is persisted' );
 	$check( get_post_meta( $event_id, 'event_expire_datetime', true ) === $late_end . ' 13:00:00', 'event_expire_datetime uses latest end date, not last-entered row' );
+	$check( strpos( (string) get_post_meta( $event_id, 'event_upcoming_datetime', true ), $main_start ) === 0, 'event_upcoming_datetime is refreshed on save to earliest bookable date' );
+
+	// Verify changing an earlier-already-saved event_upcoming_datetime to an even earlier date updates it on save.
+	update_post_meta( $event_id, 'event_upcoming_datetime', $late_start . ' 09:00:00' );
+	$settings->save_settings( $event_id );
+	$check( strpos( (string) get_post_meta( $event_id, 'event_upcoming_datetime', true ), $main_start ) === 0, 'event_upcoming_datetime updates when an earlier date is saved while a later one was cached' );
 
 	// 3. Frontend get_all_dates() & get_dates() sort chronologically regardless of row order
 	$all_dates = MPWEM_Functions::get_all_dates( $event_id );

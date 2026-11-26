@@ -446,6 +446,9 @@
 					}
 					$buffer_time = isset( $_POST['mep_buffer_time'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_buffer_time'] ) ) : 0;
 					update_post_meta( $post_id, 'mep_buffer_time', $buffer_time );
+					if ( 'yes' !== $mep_event_no_date && class_exists( 'MPWEM_Functions' ) ) {
+						update_post_meta( $post_id, 'event_upcoming_datetime', MPWEM_Functions::calculate_upcoming_date_time( $post_id ) );
+					}
 					/********************/
 					// Date/time formats keep backslash escapes (e.g. H\H i\m\i\n). update_post_meta()
 					// unslashes its value, so re-slash what wp_unslash() already returned.

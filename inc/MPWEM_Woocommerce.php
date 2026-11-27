@@ -96,15 +96,72 @@
 				}
 				return MPWEM_Functions::resolve_occurrence_datetime( $event_id, $start_date );
 			}
+			/**
+			 * Build the event venue string on the server from the event's own meta.
+			 *
+			 * @param int $event_id Event post ID.
+			 * @return string
+			 */
+			public static function get_server_event_location( $event_id ) {
+				$event_id = absint( $event_id );
+				if ( $event_id <= 0 || 'mep_events' !== get_post_type( $event_id ) ) {
+					return '';
+				}
+				$full_location = MPWEM_Functions::get_location( $event_id );
+				if ( ! is_array( $full_location ) ) {
+					return '';
+				}
+				return implode( ', ', array_filter( array_map( 'trim', array_map( 'strval', $full_location ) ) ) );
+			}
+			/**
+			 * Validate a submitted everyday time slot label against the event's configured slots.
+			 *
+			 * @param int    $event_id   Event post ID.
+			 * @param string $event_date Selected event date/datetime.
+			 * @param string $candidate  Submitted time slot label.
+			 * @return string Validated slot label from event configuration, or '' when invalid.
+			 */
+			public static function validate_event_time_slot( $event_id, $event_date, $candidate ) {
+				$event_id  = absint( $event_id );
+				$candidate = is_scalar( $candidate ) ? trim( sanitize_text_field( (string) $candidate ) ) : '';
+				if ( $event_id <= 0 || '' === $candidate || 'mep_events' !== get_post_type( $event_id ) ) {
+					return '';
+				}
+				if ( 'everyday' !== MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' ) ) {
+					return '';
+				}
+				if ( 'yes' !== MPWEM_Global_Function::get_post_info( $event_id, 'mep_disable_ticket_time', 'no' ) ) {
+					return '';
+				}
+				$ts        = $event_date ? strtotime( (string) $event_date ) : false;
+				$date_ymd  = $ts ? date( 'Y-m-d', $ts ) : '';
+				$all_slots = array_merge(
+					(array) MPWEM_Functions::get_all_times( $event_id, $date_ymd ),
+					(array) MPWEM_Functions::get_times( $event_id, [], $date_ymd )
+				);
+				$norm_candidate = trim( html_entity_decode( $candidate, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+				foreach ( $all_slots as $slot ) {
+					$label = isset( $slot['start']['label'] ) && is_scalar( $slot['start']['label'] ) ? trim( (string) $slot['start']['label'] ) : '';
+					if ( '' === $label ) {
+						continue;
+					}
+					$norm_label = trim( sanitize_text_field( html_entity_decode( $label, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) ) );
+					if ( $candidate === $label || $candidate === sanitize_text_field( $label ) || $norm_candidate === $norm_label ) {
+						return $label;
+					}
+				}
+				return '';
+			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 				$linked_event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
 				if ( get_post_type( $product_id ) == 'mep_events' ) {
 					$recurring      = MPWEM_Global_Function::get_post_info( $product_id, 'mep_enable_recurring', 'no' );
 					$start_date     = self::get_posted_event_date( $product_id );
-					$location       = isset( $_POST['mep_event_location_cart'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_location_cart'] ) ) : '';
-					$recurring_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['recurring_event_date'] ) ) : [];
-					$time_slot_text = isset( $_POST['time_slot_name'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_name'] ) ) : '';
+					$location       = self::get_server_event_location( $product_id );
+					$recurring_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['recurring_event_date'] ) ) : [];
+					$time_slot_raw  = isset( $_POST['time_slot_name'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_name'] ) ) : '';
+					$time_slot_text = '' !== $time_slot_raw ? self::validate_event_time_slot( $product_id, $start_date, $time_slot_raw ) : '';
 					$ticket_info    = self::get_cart_ticket_info( $product_id );
 					// Refuse before anything below holds seats or stores uploads. This filter is
 					// the one step every add-to-cart passes through: WooCommerce 11 skips
@@ -1266,7 +1323,7 @@
 				if ( get_post_type( $eid ) == 'mep_events' ) {
 					$event_id                = $eid;
 					$mep_events_extra_prices = is_array($values) && array_key_exists( 'event_extra_option', $values ) ? $values['event_extra_option'] : [];
-					$cart_location           = is_array($values) && array_key_exists( 'event_cart_location', $values ) ? $values['event_cart_location'] : '';
+					$cart_location           = esc_html( self::get_server_event_location( $eid ) );
 					$event_extra_service     = is_array($values) && array_key_exists( 'event_extra_service', $values ) ? $values['event_extra_service'] : [];
 					$ticket_type_arr         = is_array($values) && array_key_exists( 'event_ticket_info', $values ) ? $values['event_ticket_info'] : '';
 					$event_cart_date_raw     = is_array($values) && array_key_exists( 'event_cart_date', $values ) ? $values['event_cart_date'] : '';
@@ -1311,41 +1368,42 @@
 					$custom_forms_id = mep_get_user_custom_field_ids( $eid );
 					foreach ( $event_user_info as $userinf ) {
 						if ( is_array($userinf) && array_key_exists( 'user_name', $userinf ) && ! empty( $userinf['user_name'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Name' ), $userinf['user_name'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Name' ), esc_html( (string) $userinf['user_name'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_email', $userinf ) && ! empty( $userinf['user_email'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Email' ), $userinf['user_email'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Email' ), esc_html( (string) $userinf['user_email'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_phone', $userinf ) && ! empty( $userinf['user_phone'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Phone' ), $userinf['user_phone'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Phone' ), esc_html( (string) $userinf['user_phone'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_address', $userinf ) && ! empty( $userinf['user_address'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Address' ), $userinf['user_address'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Address' ), esc_html( (string) $userinf['user_address'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_gender', $userinf ) && ! empty( $userinf['user_gender'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Gender' ), $userinf['user_gender'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Gender' ), esc_html( (string) $userinf['user_gender'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_tshirtsize', $userinf ) && ! empty( $userinf['user_tshirtsize'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'T-Shirt Size' ), $userinf['user_tshirtsize'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'T-Shirt Size' ), esc_html( (string) $userinf['user_tshirtsize'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_company', $userinf ) && ! empty( $userinf['user_company'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Company' ), $userinf['user_company'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Company' ), esc_html( (string) $userinf['user_company'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_designation', $userinf ) && ! empty( $userinf['user_designation'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Designation' ), $userinf['user_designation'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Designation' ), esc_html( (string) $userinf['user_designation'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_website', $userinf ) && ! empty( $userinf['user_website'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Website' ), $userinf['user_website'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Website' ), esc_html( (string) $userinf['user_website'] ) );
 						}
 						if ( is_array($userinf) && array_key_exists( 'user_vegetarian', $userinf ) && ! empty( $userinf['user_vegetarian'] ) ) {
-							$item->add_meta_data( mep_get_reg_label( $event_id, 'Vegetarian' ), $userinf['user_vegetarian'] );
+							$item->add_meta_data( mep_get_reg_label( $event_id, 'Vegetarian' ), esc_html( (string) $userinf['user_vegetarian'] ) );
 						}
 						if ( is_array( $custom_forms_id ) && sizeof( $custom_forms_id ) > 0 ) {
 							foreach ( $custom_forms_id as $key => $value ) {
 								// A form-builder field the attendee left blank (or one added to the
 								// form after this booking was configured) has no key in $userinf.
 								if ( is_array( $userinf ) && array_key_exists( $value, $userinf ) ) {
-									$item->add_meta_data( $key, $userinf[ $value ] );
+									$val = is_scalar( $userinf[ $value ] ) ? (string) $userinf[ $value ] : '';
+									$item->add_meta_data( esc_html( (string) $key ), esc_html( $val ) );
 								}
 							}
 						}
@@ -1884,7 +1942,7 @@
 								$type = is_array($form) && array_key_exists( 'type', $form ) ? $form['type'] : '';
 								$name = is_array($form) && array_key_exists( 'name', $form ) ? $form['name'] : '';
 								if ( $type && $name && $type != 'title' ) {
-									$submit_infos[ $name ] = isset( $_POST[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name ] ) ) : [];
+									$submit_infos[ $name ] = isset( $_POST[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST[ $name ] ) ) : [];
 								}
 							}
 						}

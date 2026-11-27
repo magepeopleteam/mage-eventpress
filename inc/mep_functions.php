@@ -5606,10 +5606,16 @@ die();
 	}
 	add_action( 'mep_event_cart_order_data_add', 'mep_re_add_cart_order_data', 10, 2 );
 	function mep_re_add_cart_order_data( $values, $item ) {
-		$cart_location = is_array($values) && array_key_exists( "event_everyday_time_slot", $values ) ? $values['event_everyday_time_slot'] : '';
-		if ( $cart_location ) {
-			$item->add_meta_data( mep_get_option( 'mep_event_rec_time_slot_text', 'label_setting_sec', __( 'Time Slot:', 'mage-eventpress' ) ), $cart_location );
-			$item->add_meta_data( '_time_slot', $cart_location );
+		$event_id  = is_array( $values ) && array_key_exists( 'event_id', $values ) ? absint( $values['event_id'] ) : 0;
+		$cart_date = is_array( $values ) && array_key_exists( 'event_cart_date', $values ) ? (string) $values['event_cart_date'] : '';
+		$raw_slot  = is_array( $values ) && array_key_exists( 'event_everyday_time_slot', $values ) ? (string) $values['event_everyday_time_slot'] : '';
+		$time_slot = '' !== $raw_slot && $event_id > 0 && class_exists( 'MPWEM_Woocommerce' ) && method_exists( 'MPWEM_Woocommerce', 'validate_event_time_slot' )
+			? MPWEM_Woocommerce::validate_event_time_slot( $event_id, $cart_date, $raw_slot )
+			: '';
+		if ( '' !== $time_slot ) {
+			$escaped_slot = esc_html( $time_slot );
+			$item->add_meta_data( mep_get_option( 'mep_event_rec_time_slot_text', 'label_setting_sec', __( 'Time Slot:', 'mage-eventpress' ) ), $escaped_slot );
+			$item->add_meta_data( '_time_slot', $escaped_slot );
 		}
 	}
 	add_filter( 'mep_event_attendee_dynamic_data', 'mep_re_event_attendee_data_save', 15, 6 );

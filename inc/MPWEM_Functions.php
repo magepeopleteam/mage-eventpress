@@ -1331,14 +1331,20 @@
 
 				if ( is_array( $all_dates ) && count( $all_dates ) > 0 ) {
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						$date = $date ?date( 'Y-m-d', strtotime( $date ) ): date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
+						$date = $date ? date( 'Y-m-d', strtotime( $date ) ) : date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
 						foreach ( $all_dates as $dates ) {
 							$current_date = date( 'Y-m-d', strtotime( $dates['time'] ) );
 							if ( strtotime( $current_date ) == strtotime( $date ) ) {
-								$times[0]['start']['label'] = '';
-								$times[0]['start']['time']  = date( 'H:i', strtotime( $dates['time'] ) );
-								$times[0]['end']['label']   = '';
-								$times[0]['end']['time']    = date( 'H:i', strtotime( array_key_exists( 'occurrence_end', $dates ) ? $dates['occurrence_end'] : $dates['end'] ) );
+								$times[] = array(
+									'start' => array(
+										'label' => '',
+										'time'  => date( 'H:i', strtotime( $dates['time'] ) ),
+									),
+									'end'   => array(
+										'label' => '',
+										'time'  => date( 'H:i', strtotime( array_key_exists( 'occurrence_end', $dates ) ? $dates['occurrence_end'] : $dates['end'] ) ),
+									),
+								);
 							}
 						}
 					} else {
